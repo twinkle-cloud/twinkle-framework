@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/twinkle-api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/twinkle-bootstarter" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/twinkle-configure" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/twinkle-connector" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/twinkle-core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/twinkle-datacenter" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/twinkle-ruleengine" charset="UTF-8" />
+  </component>
+</project>

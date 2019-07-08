@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.twinkle.framework</groupId>
+	<artifactId>twinkle-framework</artifactId>
+	<packaging>pom</packaging>
+	<name>Twinkle Cloud - Twinkle Framework.</name>
+	<description>Twinkle Cloud - Twinkle Framework.</description>
+	<url>https://www.example.com</url>
+	
+    <parent>
+        <groupId>com.twinkle.cloud</groupId>
+        <artifactId>twinkle-cloud</artifactId>
+        <version>0.1.0</version>
+        <relativePath/>
+        <!-- lookup parent from repository Brixton.RELEASE -->
+    </parent>
+	
+	<properties>
+		<project.uri>${project.baseUri}/../</project.uri>
+	</properties>
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>xuejin</id>
+			<name>Chen XueJin</name>
+			<email>cxj_hit@126.com</email>
+			<organization>Twinkle Tech</organization>
+			<organizationUrl>https://www.example.com</organizationUrl>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>+8</timezone>
+		</developer>
+	</developers>
+	<modules>
+		<module>twinkle-core</module>
+		<module>twinkle-api</module>
+		<module>twinkle-configure</module>
+		<module>twinkle-datacenter</module>
+		<module>twinkle-ruleengine</module>
+		<module>twinkle-connector</module>
+		<module>twinkle-bootstarter</module>
+  </modules>
+</project>

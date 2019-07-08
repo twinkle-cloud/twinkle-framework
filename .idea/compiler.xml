@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="twinkle-ruleengine" />
+        <module name="twinkle-core" />
+        <module name="twinkle-bootstarter" />
+        <module name="twinkle-api" />
+        <module name="twinkle-configure" />
+        <module name="twinkle-datacenter" />
+        <module name="twinkle-connector" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="twinkle-api" options="-parameters" />
+      <module name="twinkle-bootstarter" options="-parameters" />
+      <module name="twinkle-configure" options="-parameters" />
+      <module name="twinkle-connector" options="-parameters" />
+      <module name="twinkle-core" options="-parameters" />
+      <module name="twinkle-datacenter" options="-parameters" />
+      <module name="twinkle-ruleengine" options="-parameters" />
+    </option>
+  </component>
+</project>
