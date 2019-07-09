@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>twinkle-api</artifactId>
     <packaging>jar</packaging>
-    <name>Twinkle Framework - API Library.</name>
+    <name>Twinkle Framework - API Library</name>
     <description>Twinkle Framework - API Library.</description>
 
     <parent>
@@ -15,12 +15,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>com.twinkle.framework</groupId>
+            <artifactId>twinkle-core</artifactId>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

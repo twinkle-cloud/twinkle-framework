@@ -4,11 +4,11 @@ import com.twinkle.framework.core.asm.data.AnnotationDefine;
 import com.twinkle.framework.core.asm.data.FieldDefine;
 import com.twinkle.framework.core.asm.utils.TypeUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +83,8 @@ public class AddFieldTransformer extends ClassTransformer {
         log.debug("Going to add field's annotation {}", _define);
         AnnotationNode tempNode = new AnnotationNode(Type.getDescriptor(_define.getAnnotationClass()));
         Map<String, Object> tempItemMap = _define.getValuesMap();
-        if (CollectionUtils.isEmpty(tempItemMap)) {
+
+        if (tempItemMap == null || tempItemMap.size() == 0) {
             return tempNode;
         }
         List<Object> tempValuesList = new ArrayList<>();

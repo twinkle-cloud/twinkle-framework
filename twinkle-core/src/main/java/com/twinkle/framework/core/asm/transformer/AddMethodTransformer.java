@@ -5,11 +5,11 @@ import com.twinkle.framework.core.asm.data.MethodDefine;
 import com.twinkle.framework.core.asm.data.ParameterDefine;
 import com.twinkle.framework.core.asm.utils.TypeUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.*;
-import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -159,7 +159,7 @@ public abstract class AddMethodTransformer extends ClassTransformer {
         }
         for (AnnotationDefine tempAnnotationDefine : _defineList) {
             AnnotationNode tempAnnotationNode = new AnnotationNode(Type.getDescriptor(tempAnnotationDefine.getAnnotationClass()));
-            if (CollectionUtils.isEmpty(tempAnnotationDefine.getValuesMap())) {
+            if (tempAnnotationDefine.getValuesMap() == null || tempAnnotationDefine.getValuesMap().size() == 0) {
                 log.debug("Do not find Method[{}]-Annotation[{}]'s values.", this.methodDefine.getName(), tempAnnotationDefine.getAnnotationClass());
                 tempAnnotationNodeList.add(tempAnnotationNode);
                 continue;

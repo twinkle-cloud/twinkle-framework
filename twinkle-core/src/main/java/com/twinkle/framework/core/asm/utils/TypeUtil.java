@@ -3,8 +3,8 @@ package com.twinkle.framework.core.asm.utils;
 import com.twinkle.framework.core.asm.constants.AsmConstant;
 import com.twinkle.framework.core.asm.data.TypeDefine;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.objectweb.asm.Type;
-import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.Field;
 

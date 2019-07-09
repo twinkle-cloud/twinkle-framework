@@ -4,22 +4,223 @@
 
 	<groupId>com.twinkle.framework</groupId>
 	<artifactId>twinkle-framework</artifactId>
+	<version>0.1.0</version>
 	<packaging>pom</packaging>
-	<name>Twinkle Cloud - Twinkle Framework.</name>
+	<name>Twinkle Cloud - Twinkle Framework</name>
 	<description>Twinkle Cloud - Twinkle Framework.</description>
 	<url>https://www.example.com</url>
-	
-    <parent>
-        <groupId>com.twinkle.cloud</groupId>
-        <artifactId>twinkle-cloud</artifactId>
-        <version>0.1.0</version>
-        <relativePath/>
-        <!-- lookup parent from repository Brixton.RELEASE -->
-    </parent>
+
+	<parent>
+		<groupId>org.springframework.cloud</groupId>
+		<artifactId>spring-cloud-starter-parent</artifactId>
+		<version>Greenwich.SR2</version>
+		<relativePath/>
+		<!-- lookup parent from repository Brixton.RELEASE -->
+	</parent>
 	
 	<properties>
 		<project.uri>${project.baseUri}/../</project.uri>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+
+		<twinkleframework.version>0.1.0</twinkleframework.version>
+
+		<spring-cloud.version>Greenwich.SR2</spring-cloud.version>
+		<asm.version>7.1</asm.version>
+		<lombok.version>1.18.8</lombok.version>
+		<guava.version>28.0-jre</guava.version>
+		<commons-text.version>1.7</commons-text.version>
+		<jregex.version>1.2_01</jregex.version>
+		<javamail.version>1.5.0-b01</javamail.version>
+		<commonspool.version>2.6.2</commonspool.version>
+		<commonslang.version>3.8.1</commonslang.version>
+		<commonscollection.version>4.1</commonscollection.version>
+		<commonbeanutils.version>1.9.3</commonbeanutils.version>
+		<jodatime.version>2.10.1</jodatime.version>
+
+		<hibernatejpa.version>1.0.2.Final</hibernatejpa.version>
+		<hibernatevalidator.version>6.0.13.Final</hibernatevalidator.version>
+		<validationapi.version>2.0.1.Final</validationapi.version>
+		<springfox.version>2.9.2</springfox.version>
+		<fastjson.version>1.2.58</fastjson.version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!-- twinkle framework libs. -->
+			<dependency>
+				<groupId>com.twinkle.framework</groupId>
+				<artifactId>twinkle-core</artifactId>
+				<scope>compile</scope>
+				<version>${twinkleframework.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>com.twinkle.framework</groupId>
+				<artifactId>twinkle-api</artifactId>
+				<version>${twinkleframework.version}</version>
+				<scope>compile</scope>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>com.twinkle.framework</groupId>
+				<artifactId>twinkle-configure</artifactId>
+				<version>${twinkleframework.version}</version>
+				<scope>compile</scope>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>com.twinkle.framework</groupId>
+				<artifactId>twinkle-datacenter</artifactId>
+				<version>${twinkleframework.version}</version>
+				<scope>compile</scope>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>com.twinkle.framework</groupId>
+				<artifactId>twinkle-ruleengine</artifactId>
+				<version>${twinkleframework.version}</version>
+				<scope>compile</scope>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>com.twinkle.framework</groupId>
+				<artifactId>twinkle-connector</artifactId>
+				<version>${twinkleframework.version}</version>
+				<scope>compile</scope>
+				<type>jar</type>
+			</dependency>
+
+			<!-- ASM Support. -->
+			<dependency>
+				<groupId>org.ow2.asm</groupId>
+				<artifactId>asm</artifactId>
+				<version>${asm.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.asm</groupId>
+				<artifactId>asm-commons</artifactId>
+				<version>${asm.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.asm</groupId>
+				<artifactId>asm-tree</artifactId>
+				<version>${asm.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.asm</groupId>
+				<artifactId>asm-analysis</artifactId>
+				<version>${asm.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.asm</groupId>
+				<artifactId>asm-util</artifactId>
+				<version>${asm.version}</version>
+			</dependency>
+
+			<!-- lombok lib -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>mail</artifactId>
+				<version>${javamail.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>${jodatime.version}</version>
+			</dependency>
+
+			<!-- Common libs -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-pool2</artifactId>
+				<version>${commonspool.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commonslang.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-collections4</artifactId>
+				<version>${commonscollection.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>${commonbeanutils.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-text</artifactId>
+				<version>${commons-text.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sourceforge.jregex</groupId>
+				<artifactId>jregex</artifactId>
+				<version>${jregex.version}</version>
+			</dependency>
+			<!-- Hibernate JPA support. -->
+			<dependency>
+				<groupId>org.hibernate.javax.persistence</groupId>
+				<artifactId>hibernate-jpa-2.1-api</artifactId>
+				<version>${hibernatejpa.version}</version>
+			</dependency>
+			<!-- Validation support. -->
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>${hibernatevalidator.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>${validationapi.version}</version>
+			</dependency>
+			<!-- Swagger2 libs -->
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger2</artifactId>
+				<version>${springfox.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger-ui</artifactId>
+				<version>${springfox.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-spi</artifactId>
+				<version>${springfox.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>fastjson</artifactId>
+				<version>${fastjson.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<licenses>
 		<license>
 			<name>Apache 2</name>
@@ -50,5 +251,17 @@
 		<module>twinkle-ruleengine</module>
 		<module>twinkle-connector</module>
 		<module>twinkle-bootstarter</module>
-  </modules>
+	</modules>
+	<distributionManagement>
+		<repository>
+			<id>twinkle-nexus-releases</id>
+			<name>Nexus Release Repository</name>
+			<url>http://mvn-repo.twinkle.net:9881/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>twinkle-nexus-snapshots</id>
+			<name>Nexus Snapshot Repository</name>
+			<url>http://mvn-repo.twinkle.net:9881/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
