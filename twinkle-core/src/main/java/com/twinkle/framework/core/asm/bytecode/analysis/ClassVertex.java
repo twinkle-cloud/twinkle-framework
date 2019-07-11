@@ -3,8 +3,8 @@ package com.twinkle.framework.core.asm.bytecode.analysis;
 import com.twinkle.framework.core.asm.graph.DirectedEdge;
 import com.twinkle.framework.core.asm.graph.Edge;
 import com.twinkle.framework.core.asm.graph.Vertex;
-import com.twinkle.framework.core.asm.utils.ClassUtil;
-import com.twinkle.framework.core.asm.utils.Classpath;
+import com.twinkle.framework.core.utils.ClassUtil;
+import com.twinkle.framework.core.utils.Classpath;
 import org.objectweb.asm.tree.ClassNode;
 
 import java.io.IOException;

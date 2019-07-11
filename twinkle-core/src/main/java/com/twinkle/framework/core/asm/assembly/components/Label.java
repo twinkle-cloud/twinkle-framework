@@ -2,8 +2,8 @@ package com.twinkle.framework.core.asm.assembly.components;
 
 import com.twinkle.framework.core.asm.assembly.AbstractAssembler;
 import com.twinkle.framework.core.asm.bytecode.insn.NamedLabelNode;
-import com.twinkle.framework.core.asm.utils.InsnUtil;
-import com.twinkle.framework.core.asm.utils.UniMatcher;
+import com.twinkle.framework.core.utils.InsnUtil;
+import com.twinkle.framework.core.utils.UniMatcher;
 import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.MethodNode;
 

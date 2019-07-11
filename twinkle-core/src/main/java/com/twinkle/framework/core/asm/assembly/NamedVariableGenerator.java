@@ -1,7 +1,7 @@
 package com.twinkle.framework.core.asm.assembly;
 
 import com.twinkle.framework.core.asm.bytecode.AccessFlag;
-import com.twinkle.framework.core.asm.utils.InsnUtil;
+import com.twinkle.framework.core.utils.InsnUtil;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.LocalVariableNode;
 import org.objectweb.asm.tree.MethodNode;

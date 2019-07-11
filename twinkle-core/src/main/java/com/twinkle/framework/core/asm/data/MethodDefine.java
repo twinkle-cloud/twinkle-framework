@@ -1,6 +1,6 @@
 package com.twinkle.framework.core.asm.data;
 
-import com.twinkle.framework.core.asm.utils.TypeUtil;
+import com.twinkle.framework.core.utils.TypeUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;

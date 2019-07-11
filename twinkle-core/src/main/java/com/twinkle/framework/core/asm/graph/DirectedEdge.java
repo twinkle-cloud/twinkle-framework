@@ -1,6 +1,6 @@
 package com.twinkle.framework.core.asm.graph;
 
-import com.twinkle.framework.core.asm.utils.Pair;
+import com.twinkle.framework.core.utils.Pair;
 
 /**
  * Graph directed-edge.

@@ -2,7 +2,7 @@ package com.twinkle.framework.core.asm.bytecode.insn;
 
 import com.twinkle.framework.core.asm.assembly.exception.AssemblyResolveError;
 import com.twinkle.framework.core.asm.bytecode.AccessFlag;
-import com.twinkle.framework.core.asm.utils.Parse;
+import com.twinkle.framework.core.utils.Parse;
 import jregex.Matcher;
 import jregex.Pattern;
 import org.objectweb.asm.Type;

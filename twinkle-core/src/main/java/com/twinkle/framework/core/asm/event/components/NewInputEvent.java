@@ -3,7 +3,7 @@ package com.twinkle.framework.core.asm.event.components;
 import com.twinkle.framework.core.asm.AsmInput;
 import com.twinkle.framework.core.asm.event.Bus;
 import com.twinkle.framework.core.asm.event.Event;
-import com.twinkle.framework.core.asm.utils.Threads;
+import com.twinkle.framework.core.utils.Threads;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;

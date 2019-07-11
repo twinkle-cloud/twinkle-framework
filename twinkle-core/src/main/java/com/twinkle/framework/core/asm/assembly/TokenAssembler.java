@@ -1,8 +1,8 @@
 package com.twinkle.framework.core.asm.assembly;
 
 import com.twinkle.framework.core.asm.assembly.exception.AssemblyParseException;
-import com.twinkle.framework.core.asm.utils.MatchResult;
-import com.twinkle.framework.core.asm.utils.RegexToken;
+import com.twinkle.framework.core.utils.MatchResult;
+import com.twinkle.framework.core.utils.RegexToken;
 import org.objectweb.asm.tree.AbstractInsnNode;
 
 import java.util.Collections;

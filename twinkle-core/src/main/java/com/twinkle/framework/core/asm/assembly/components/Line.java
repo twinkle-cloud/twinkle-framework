@@ -3,7 +3,7 @@ package com.twinkle.framework.core.asm.assembly.components;
 import com.twinkle.framework.core.asm.assembly.TokenAssembler;
 import com.twinkle.framework.core.asm.bytecode.insn.LazyLineNumberNode;
 import com.twinkle.framework.core.asm.bytecode.insn.NamedLineNumberNode;
-import com.twinkle.framework.core.asm.utils.*;
+import com.twinkle.framework.core.utils.*;
 import org.objectweb.asm.tree.LineNumberNode;
 import org.objectweb.asm.tree.MethodNode;
 

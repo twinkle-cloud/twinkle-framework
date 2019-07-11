@@ -2,7 +2,7 @@ package com.twinkle.framework.core.asm.bytecode;
 
 import com.twinkle.framework.core.asm.AsmInput;
 import com.twinkle.framework.core.asm.constants.AsmConfiguration;
-import com.twinkle.framework.core.asm.utils.ClassUtil;
+import com.twinkle.framework.core.utils.ClassUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;

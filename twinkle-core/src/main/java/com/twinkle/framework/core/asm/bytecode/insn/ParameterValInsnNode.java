@@ -1,6 +1,6 @@
 package com.twinkle.framework.core.asm.bytecode.insn;
 
-import com.twinkle.framework.core.asm.utils.OpcodeUtil;
+import com.twinkle.framework.core.utils.OpcodeUtil;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.ParameterNode;
