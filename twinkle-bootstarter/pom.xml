@@ -15,12 +15,20 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>com.twinkle.framework</groupId>
+            <artifactId>twinkle-ruleengine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.twinkle.framework</groupId>
+            <artifactId>twinkle-connector</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.twinkle.framework</groupId>
+            <artifactId>twinkle-datacenter</artifactId>
         </dependency>
     </dependencies>
 

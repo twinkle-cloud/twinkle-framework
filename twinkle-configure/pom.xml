@@ -15,12 +15,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>com.twinkle.framework</groupId>
+            <artifactId>twinkle-api</artifactId>
         </dependency>
     </dependencies>
 
