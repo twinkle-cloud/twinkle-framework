@@ -28,6 +28,9 @@ public class GeneralResult<T> implements Serializable{
      * */
     private T data;
     
+    public GeneralResult() {
+    }
+    
     public GeneralResult(String code) {
         this(code, null, null);
     }
