@@ -1,5 +1,7 @@
 package com.twinkle.framework.api.config;
 
+import com.alibaba.fastjson.JSONObject;
+
 /**
  * Function: TODO ADD FUNCTION. <br/>
  * Reason:	 TODO ADD REASON. <br/>
@@ -10,5 +12,5 @@ package com.twinkle.framework.api.config;
  * @since JDK 1.8
  */
 public interface Configurable {
-    void configure(ConfigNode _conf) throws com.twinkle.framework.api.exception.ConfigurationException;
+    void configure(JSONObject _conf) throws com.twinkle.framework.api.exception.ConfigurationException;
 }

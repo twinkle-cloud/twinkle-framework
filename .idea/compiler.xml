@@ -6,11 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="twinkle-ruleengine" />
         <module name="twinkle-core" />
         <module name="twinkle-bootstarter" />
-        <module name="twinkle-api" />
+        <module name="twinkle-ruleengine" />
+        <module name="twinkle-demo" />
         <module name="twinkle-configure" />
+        <module name="twinkle-api" />
         <module name="twinkle-datacenter" />
         <module name="twinkle-connector" />
       </profile>
@@ -24,6 +25,7 @@
       <module name="twinkle-connector" options="-parameters" />
       <module name="twinkle-core" options="-parameters" />
       <module name="twinkle-datacenter" options="-parameters" />
+      <module name="twinkle-demo" options="-parameters" />
       <module name="twinkle-ruleengine" options="-parameters" />
     </option>
   </component>

@@ -1,9 +1,16 @@
 package com.twinkle.framework.ruleengine;
 
-import com.twinkle.framework.api.rule.RuleChain;
+import com.alibaba.fastjson.JSONObject;
+import com.twinkle.framework.api.exception.ConfigurationException;
+import com.twinkle.framework.api.rule.IRuleChain;
 import com.twinkle.framework.api.rule.RuleChainManager;
 
 public class DefaultRuleChainManager implements RuleChainManager{
+
+    @Override
+    public void configure(JSONObject _conf) throws ConfigurationException {
+
+    }
 
     @Override
     public void initialize() {
@@ -12,13 +19,13 @@ public class DefaultRuleChainManager implements RuleChainManager{
     }
 
     @Override
-    public void registerRuleChain(RuleChain ruleChain) {
+    public void registerRuleChain(IRuleChain IRuleChain) {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public RuleChain getRuleChain(String ruleKey) {
+    public IRuleChain getRuleChain(String ruleKey) {
         // TODO Auto-generated method stub
         return null;
     }

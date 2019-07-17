@@ -4,7 +4,6 @@ import com.twinkle.framework.core.asm.data.AnnotationDefine;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldNode;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>

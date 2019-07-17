@@ -171,6 +171,11 @@
 				<version>${commons-text.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.6</version>
+			</dependency>
+			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
 				<version>${guava.version}</version>
@@ -251,6 +256,7 @@
 		<module>twinkle-ruleengine</module>
 		<module>twinkle-connector</module>
 		<module>twinkle-bootstarter</module>
+		<module>twinkle-demo</module>
   </modules>
 	<distributionManagement>
 		<repository>

@@ -1,9 +1,11 @@
 package com.twinkle.framework.api.rule;
 
+import com.twinkle.framework.api.config.Configurable;
+
 /**
  * RuleChainManager
  * */
-public interface RuleChainManager {
+public interface RuleChainManager extends Configurable {
 
     /**
      * RuleChainManager 初始化
@@ -13,10 +15,10 @@ public interface RuleChainManager {
     /**
      * 注册ruleChain
      * */
-    public void registerRuleChain(RuleChain ruleChain);
+    public void registerRuleChain(IRuleChain IRuleChain);
     
     /**
      * 获取ruleChain
      * */
-    public RuleChain getRuleChain(String ruleKey);
+    public IRuleChain getRuleChain(String ruleKey);
 }

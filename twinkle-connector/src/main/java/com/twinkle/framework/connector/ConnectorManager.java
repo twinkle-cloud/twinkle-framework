@@ -1,6 +1,6 @@
 package com.twinkle.framework.connector;
 
-import com.twinkle.framework.api.config.ConfigNode;
+import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.config.Configurable;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ public class ConnectorManager implements Configurable {
     }
 
     @Override
-    public void configure(ConfigNode _conf) throws ConfigurationException {
+    public void configure(JSONObject _conf) throws ConfigurationException {
 
     }
 

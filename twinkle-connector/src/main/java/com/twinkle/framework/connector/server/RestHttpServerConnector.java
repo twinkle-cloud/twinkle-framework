@@ -1,6 +1,6 @@
 package com.twinkle.framework.connector.server;
 
-import com.twinkle.framework.api.config.ConfigNode;
+import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.exception.ConfigurationException;
 
 /**
@@ -15,7 +15,7 @@ import com.twinkle.framework.api.exception.ConfigurationException;
 public class RestHttpServerConnector implements ServerConnector {
 
     @Override
-    public void configure(ConfigNode _conf) throws ConfigurationException {
+    public void configure(JSONObject _conf) throws ConfigurationException {
 
     }
 

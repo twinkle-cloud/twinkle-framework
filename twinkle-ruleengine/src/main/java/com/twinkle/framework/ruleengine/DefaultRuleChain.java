@@ -1,9 +1,16 @@
 package com.twinkle.framework.ruleengine;
 
+import com.alibaba.fastjson.JSONObject;
+import com.twinkle.framework.api.exception.ConfigurationException;
+import com.twinkle.framework.api.rule.IRuleChain;
 import com.twinkle.framework.api.rule.Rule;
-import com.twinkle.framework.api.rule.RuleChain;
 
-public class DefaultRuleChain implements RuleChain{
+public class DefaultRuleChain implements IRuleChain {
+
+    @Override
+    public void configure(JSONObject _conf) throws ConfigurationException {
+
+    }
 
     @Override
     public void initialize() {

@@ -9,7 +9,7 @@ package com.twinkle.framework.api.exception;
  * @see
  * @since JDK 1.8
  */
-public class ConfigurationException extends Exception {
+public class ConfigurationException extends RuntimeException {
     private int code;
 
     public ConfigurationException(){

@@ -1,6 +1,6 @@
 package com.twinkle.framework.connector.encoder;
 
-import com.twinkle.framework.api.config.ConfigNode;
+import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.core.context.model.NormalizedContext;
 
@@ -15,7 +15,7 @@ import com.twinkle.framework.core.context.model.NormalizedContext;
  */
 public class JsonEncoder implements Encoder {
     @Override
-    public void configure(ConfigNode _conf) throws ConfigurationException {
+    public void configure(JSONObject _conf) throws ConfigurationException {
 
     }
 
