@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.twinkle.framework.configure.client.loader;
+package com.twinkle.framework.configure.client.bootstrap;
 
 import java.io.Closeable;
 import java.util.concurrent.atomic.AtomicBoolean;

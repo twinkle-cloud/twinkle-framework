@@ -16,9 +16,7 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -47,7 +45,7 @@ public abstract class AbstractRemoteLoader implements PropertySourceLocator {
 
     abstract IConfigurationParser getConfigurationParser();
     abstract IRemotePath getRemotePath(ConfigClientProperties properties, String label);
-    abstract String getRemoteEnv(ConfigClientProperties properties, String label, String state);
+    abstract String getRemoteEnv(ConfigClientProperties properties, String label);
     @Override
     @Retryable(interceptor = "configServerRetryInterceptor")
     public PropertySource<?> locate(Environment environment) {
@@ -61,10 +59,9 @@ public abstract class AbstractRemoteLoader implements PropertySourceLocator {
                 labels = StringUtils
                         .commaDelimitedListToStringArray(properties.getLabel());
             }
-            String state = ConfigClientStateHolder.getState();
             // Try all the labels until one works
             for (String label : labels) {
-                String tempResult = this.getRemoteEnv(properties, label.trim(), state);
+                String tempResult = this.getRemoteEnv(properties, label.trim());
                 if (!StringUtils.isEmpty(tempResult)) {
                     log(tempResult);
                     Object tempObj = this.getConfigurationParser().doParser(tempResult);

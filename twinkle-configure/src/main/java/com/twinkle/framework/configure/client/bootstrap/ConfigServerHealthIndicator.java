@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.twinkle.framework.configure.client.loader;
+package com.twinkle.framework.configure.client.bootstrap;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health.Builder;
-import org.springframework.cloud.config.client.ConfigServicePropertySourceLocator;
+import org.springframework.cloud.bootstrap.config.PropertySourceLocator;
 import org.springframework.core.env.CompositePropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
@@ -32,7 +32,7 @@ import org.springframework.core.env.PropertySource;
  */
 public class ConfigServerHealthIndicator extends AbstractHealthIndicator {
 
-	private ConfigServicePropertySourceLocator locator;
+	private PropertySourceLocator locator;
 
 	private ConfigClientHealthProperties properties;
 
@@ -42,7 +42,7 @@ public class ConfigServerHealthIndicator extends AbstractHealthIndicator {
 
 	private PropertySource<?> cached;
 
-	public ConfigServerHealthIndicator(ConfigServicePropertySourceLocator locator,
+	public ConfigServerHealthIndicator(PropertySourceLocator locator,
 			Environment environment, ConfigClientHealthProperties properties) {
 		this.environment = environment;
 		this.locator = locator;

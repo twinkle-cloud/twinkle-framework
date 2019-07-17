@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package com.twinkle.framework.configure.client.loader;
+package com.twinkle.framework.configure.client.bootstrap;
 
 import com.twinkle.framework.configure.client.data.ConfigClientProperties;
+import com.twinkle.framework.configure.client.loader.SpringRemoteSysConfigurationLoader;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.cloud.config.client.ConfigServicePropertySourceLocator;
-import org.springframework.cloud.context.refresh.ContextRefresher;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;import org.springframework.cloud.context.refresh.ContextRefresher;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -62,13 +61,13 @@ public class ConfigClientAutoConfiguration {
 
 	@Configuration
 	@ConditionalOnClass(HealthIndicator.class)
-	@ConditionalOnBean(ConfigServicePropertySourceLocator.class)
+	@ConditionalOnBean(SpringRemoteSysConfigurationLoader.class)
 	@ConditionalOnProperty(value = "health.config.enabled", matchIfMissing = true)
 	protected static class ConfigServerHealthIndicatorConfiguration {
 
 		@Bean
 		public ConfigServerHealthIndicator clientConfigServerHealthIndicator(
-				ConfigServicePropertySourceLocator locator,
+				SpringRemoteSysConfigurationLoader locator,
 				ConfigClientHealthProperties properties, Environment environment) {
 			return new ConfigServerHealthIndicator(locator, environment, properties);
 		}

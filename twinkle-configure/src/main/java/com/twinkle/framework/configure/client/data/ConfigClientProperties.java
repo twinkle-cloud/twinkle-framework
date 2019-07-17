@@ -129,6 +129,11 @@ public class ConfigClientProperties {
 	 */
 	private Map<String, String> headers = new HashMap<>();
 
+    /**
+     * Local configuration file, ONLY for Logic configuration.
+     */
+	private String localFile;
+
 	private ConfigClientProperties() {
 	}
 
@@ -256,7 +261,15 @@ public class ConfigClientProperties {
 		this.headers = headers;
 	}
 
-	private Credentials extractCredentials(int index) {
+    public String getLocalFile() {
+        return localFile;
+    }
+
+    public void setLocalFile(String localFile) {
+        this.localFile = localFile;
+    }
+
+    private Credentials extractCredentials(int index) {
 		Credentials result = new Credentials();
 		int noOfUrl = this.uri.length;
 		if (index < 0 || index >= noOfUrl) {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.twinkle.framework.configure.client.loader;
+package com.twinkle.framework.configure.client.bootstrap;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

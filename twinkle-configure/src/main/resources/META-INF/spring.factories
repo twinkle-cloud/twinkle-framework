@@ -1,6 +1,6 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.twinkle.framework.configure.client.loader.ConfigClientAutoConfiguration
+com.twinkle.framework.configure.client.bootstrap.ConfigClientAutoConfiguration
 # Bootstrap components
 org.springframework.cloud.bootstrap.BootstrapConfiguration=\
 org.springframework.cloud.config.client.ConfigServiceBootstrapConfiguration,\
