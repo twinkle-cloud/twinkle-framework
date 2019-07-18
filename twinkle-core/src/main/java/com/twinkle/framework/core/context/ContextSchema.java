@@ -370,10 +370,10 @@ public class ContextSchema {
         return tempAttrInfo == null ? -1 : tempAttrInfo.getIndex();
     }
 
-    public int getAttributeIndex(String _attrName, String var2) throws IllegalArgumentException {
+    public int getAttributeIndex(String _attrName, String _tag) throws IllegalArgumentException {
         AttributeInfo tempAttrInfo = this.getAttribute(_attrName);
         if (tempAttrInfo == null) {
-            throw new IllegalArgumentException(var2 + " - Unable to find attribute '" + _attrName + "' in the NME Schema.");
+            throw new IllegalArgumentException(_tag + " - Unable to find attribute '" + _attrName + "' in the NME Schema.");
         } else {
             return tempAttrInfo.getIndex();
         }

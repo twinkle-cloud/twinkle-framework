@@ -9,13 +9,15 @@
         <module name="twinkle-core" />
         <module name="twinkle-bootstarter" />
         <module name="twinkle-ruleengine" />
-        <module name="twinkle-demo" />
         <module name="twinkle-configure" />
         <module name="twinkle-api" />
         <module name="twinkle-datacenter" />
         <module name="twinkle-connector" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="twinkle-demo" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

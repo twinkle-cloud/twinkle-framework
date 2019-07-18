@@ -256,7 +256,6 @@
 		<module>twinkle-ruleengine</module>
 		<module>twinkle-connector</module>
 		<module>twinkle-bootstarter</module>
-		<module>twinkle-demo</module>
   </modules>
 	<distributionManagement>
 		<repository>
