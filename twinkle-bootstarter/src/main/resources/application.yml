@@ -1,0 +1,18 @@
+
+server:
+  port: 9000
+logging:
+  path: /Users/chenxj/Documents/Temp/
+  
+ribbon:
+  eureka:
+    enabled: true
+
+---
+spring:
+  profiles: development
+
+
+---
+spring:
+  profiles: test
