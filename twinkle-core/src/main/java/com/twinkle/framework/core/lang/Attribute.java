@@ -63,6 +63,8 @@ public interface Attribute extends Cloneable, Serializable {
      */
     int JSON_TYPE = 9;
 
+    int LIST_ATTRIBUTE_TYPE = 110;
+
     int getPrimitiveType();
 
     int getType();

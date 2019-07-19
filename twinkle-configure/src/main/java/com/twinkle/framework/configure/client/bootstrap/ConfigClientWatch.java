@@ -24,7 +24,6 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.springframework.cloud.config.client.ConfigServicePropertySourceLocator;
 import org.springframework.cloud.context.refresh.ContextRefresher;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
@@ -37,7 +36,7 @@ import static org.springframework.util.StringUtils.hasText;
  */
 public class ConfigClientWatch implements Closeable, EnvironmentAware {
 
-	private static Log log = LogFactory.getLog(ConfigServicePropertySourceLocator.class);
+	private static Log log = LogFactory.getLog(ConfigClientWatch.class);
 
 	private final AtomicBoolean running = new AtomicBoolean(false);
 

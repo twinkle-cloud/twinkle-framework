@@ -1,8 +1,8 @@
 package com.twinkle.framework.configure.client.data;
 
+import com.twinkle.framework.configure.client.bootstrap.ConfigClientStateHolder;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.cloud.config.client.ConfigClientStateHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.Base64Utils;
@@ -11,10 +11,6 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static com.twinkle.framework.configure.client.data.ConfigClientProperties.STATE_HEADER;
-import static com.twinkle.framework.configure.client.data.ConfigClientProperties.TOKEN_HEADER;
-import static org.springframework.cloud.config.client.ConfigClientProperties.AUTHORIZATION;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>

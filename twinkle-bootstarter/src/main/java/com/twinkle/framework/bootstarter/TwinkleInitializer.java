@@ -3,9 +3,9 @@ package com.twinkle.framework.bootstarter;
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
-import com.twinkle.framework.api.rule.IRuleManager;
 import com.twinkle.framework.configure.component.IComponentFactory;
 import com.twinkle.framework.connector.ConnectorManager;
+import com.twinkle.framework.ruleengine.RuleChainManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor{
             throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_CONNECTOR ,"Did not find valid connector obj in the logic configuration.");
         }
 
-        IRuleManager tempRuleManager = componentFactory.loadComponent(tempObj.getJSONObject(KEY_RULECHAIN_MANAGER));
+        RuleChainManager tempRuleManager = componentFactory.loadComponent(tempObj.getJSONObject(KEY_RULECHAIN_MANAGER));
         if(tempRuleManager == null) {
             throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_RULECHAIN ,"Did not find valid IRuleChain obj in the logic configuration.");
         }

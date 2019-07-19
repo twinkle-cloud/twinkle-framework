@@ -12,6 +12,20 @@ import org.springframework.http.HttpHeaders;
  * @since JDK 1.8
  */
 public interface IRemotePath {
+    /**
+     * Token header name.
+     */
+    String TOKEN_HEADER = "X-Config-Token";
+
+    /**
+     * State header name.
+     */
+    String STATE_HEADER = "X-Config-State";
+    /**
+     * Authorization header name.
+     */
+    String AUTHORIZATION = "authorization";
+
     String getFullPath();
     String[] getArgs();
     HttpHeaders getHttpHeaders(ConfigClientProperties _properties, int _uriIndex);
