@@ -51,7 +51,7 @@ public class ContextSchema {
             this.normalizedAttributeTypeMap.put(DEFAULT_NME_TYPE, this.defaultNormalizedAttributeType_);
         }
 
-        for (int i = 0; i < _attrColumns.length; ++i) {
+        for (int i = 0; i < _attrColumns.length; i++) {
             if (_attrColumns[i][0] == null) {
                 throw new IllegalArgumentException("Attribute name is empty/null in \"" + _attrColumns[i] + "\" value");
             }
@@ -71,7 +71,7 @@ public class ContextSchema {
         List<String> attrValueList = new ArrayList();
         this.collectNewAttributes(_attrColumns, attrNameList, attrTypeList, attrValueList);
 
-        for (int i = 0; i < attrNameList.size(); ++i) {
+        for (int i = 0; i < attrNameList.size(); i++) {
             this.addAttribute(attrNameList.get(i), attrTypeList.get(i), attrValueList.get(i));
         }
 
@@ -80,7 +80,7 @@ public class ContextSchema {
     private void collectNewAttributes(String[][] _attrColumns, List<String> _attrNameList, List<String> _attrTypeList, List<String> _attrValueList) throws IllegalArgumentException {
         this.readLock.lock();
         try {
-            for (int i = 0; i < _attrColumns.length; ++i) {
+            for (int i = 0; i < _attrColumns.length; i++) {
                 if (_attrColumns[i][0] == null && _attrColumns[i][1] == null) {
                     throw new IllegalArgumentException("Null/Empty Values in ContextSchema are not allowed, ignore it.");
                 }
@@ -177,10 +177,24 @@ public class ContextSchema {
         }
     }
 
+    /**
+     * Get the AttributeInfo by Attribute Name.
+     *
+     * @param _attrName
+     * @return
+     */
     public AttributeInfo getAttribute(String _attrName) {
         return this.getAttribute(_attrName, true);
     }
 
+    /**
+     * Get the AttributeInfo by Attribute Name.
+     * if the attribute does not exists, then create it.
+     *
+     * @param _attrName
+     * @param _createFlag
+     * @return
+     */
     private AttributeInfo getAttribute(String _attrName, boolean _createFlag) {
         Object tempObj = null;
         this.readLock.lock();
@@ -194,12 +208,12 @@ public class ContextSchema {
         if (tempObj == null) {
             return null;
         } else {
-            AttributeInfo var4 = (AttributeInfo) tempObj;
-            if (_createFlag && !this.defaultNormalizedAttributeType_.isMember(var4.getIndex())) {
-                this.defaultNormalizedAttributeType_.addAttribute(var4);
+            AttributeInfo tempAttrInfo = (AttributeInfo) tempObj;
+            if (_createFlag && !this.defaultNormalizedAttributeType_.isMember(tempAttrInfo.getIndex())) {
+                this.defaultNormalizedAttributeType_.addAttribute(tempAttrInfo);
             }
 
-            return var4;
+            return tempAttrInfo;
         }
     }
 
@@ -234,7 +248,7 @@ public class ContextSchema {
         try {
             AttributeInfo[] tempInfoArray = new AttributeInfo[_attrNames.length];
 
-            for (int i = 0; i < tempInfoArray.length; ++i) {
+            for (int i = 0; i < tempInfoArray.length; i++) {
                 AttributeInfo tempInfo = this.getAttribute(_attrNames[i]);
                 if (tempInfo == null) {
                     return null;
@@ -254,12 +268,12 @@ public class ContextSchema {
         Enumeration tempAttrEnum;
         try {
             tempAttrEnum = new Enumeration() {
-                private Iterator it_;
-                private int numAttrs_;
+                private Iterator it;
+                private int numAttrs;
 
                 {
-                    this.it_ = ContextSchema.this.attributeNameMap.values().iterator();
-                    this.numAttrs_ = ContextSchema.this.attributeList.size();
+                    this.it = ContextSchema.this.attributeNameMap.values().iterator();
+                    this.numAttrs = ContextSchema.this.attributeList.size();
                 }
 
                 @Override
@@ -268,11 +282,11 @@ public class ContextSchema {
 
                     boolean tempHasMoreFlag;
                     try {
-                        if (this.numAttrs_ != ContextSchema.this.attributeList.size()) {
+                        if (this.numAttrs != ContextSchema.this.attributeList.size()) {
                             throw new ConcurrentModificationException();
                         }
 
-                        tempHasMoreFlag = this.it_.hasNext();
+                        tempHasMoreFlag = this.it.hasNext();
                     } finally {
                         ContextSchema.this.readLock.unlock();
                     }
@@ -285,10 +299,10 @@ public class ContextSchema {
                     ContextSchema.this.readLock.lock();
                     Object tempNextObj;
                     try {
-                        if (this.numAttrs_ != ContextSchema.this.attributeList.size()) {
+                        if (this.numAttrs != ContextSchema.this.attributeList.size()) {
                             throw new ConcurrentModificationException();
                         }
-                        tempNextObj = this.it_.next();
+                        tempNextObj = this.it.next();
                     } finally {
                         ContextSchema.this.readLock.unlock();
                     }
@@ -305,7 +319,7 @@ public class ContextSchema {
     public int getTypeID(String _typeName) throws ClassNotFoundException {
         this.readLock.lock();
         try {
-            for (int i = 0; i < this.typeList.size(); ++i) {
+            for (int i = 0; i < this.typeList.size(); i++) {
                 if (_typeName.equals(this.typeList.get(i).getClass().getName())) {
                     return i + 1;
                 }
@@ -319,7 +333,7 @@ public class ContextSchema {
     public int getPrimitiveType(String _typeName) throws ClassNotFoundException {
         this.readLock.lock();
         try {
-            for (int i = 0; i < this.typeList.size(); ++i) {
+            for (int i = 0; i < this.typeList.size(); i++) {
                 if (Class.forName(_typeName).isInstance(this.typeList.get(i))) {
                     int tempPrimitiveType = ((Attribute) this.typeList.get(i)).getPrimitiveType();
                     return tempPrimitiveType;
@@ -373,7 +387,7 @@ public class ContextSchema {
     public int getAttributeIndex(String _attrName, String _tag) throws IllegalArgumentException {
         AttributeInfo tempAttrInfo = this.getAttribute(_attrName);
         if (tempAttrInfo == null) {
-            throw new IllegalArgumentException(_tag + " - Unable to find attribute '" + _attrName + "' in the NME Schema.");
+            throw new IllegalArgumentException(_tag + " - Unable to find attribute '" + _attrName + "' in the NE Schema.");
         } else {
             return tempAttrInfo.getIndex();
         }
@@ -386,7 +400,7 @@ public class ContextSchema {
         try {
             int[] tempIndexes = new int[_attrNames.length];
 
-            for (int i = 0; i < _attrNames.length; ++i) {
+            for (int i = 0; i < _attrNames.length; i++) {
                 tempIndexes[i] = this.getAttributeIndex(_attrNames[i]);
                 if (tempIndexes[i] == -1) {
                     throw new IllegalArgumentException(var2 + "the NME attribute '" + _attrNames[i] + "' is not defined in the NME Schema.");
@@ -471,7 +485,7 @@ public class ContextSchema {
      */
     public NormalizedAttributeType createNormalizedEventType(String _neTypeName, String[] _attrNames) {
         NormalizedAttributeType tempNEType = this.createNormalizedEventType(_neTypeName);
-        for (int i = 0; i < _attrNames.length; ++i) {
+        for (int i = 0; i < _attrNames.length; i++) {
             tempNEType.addAttribute(_attrNames[i]);
         }
         return tempNEType;

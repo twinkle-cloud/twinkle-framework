@@ -1,4 +1,4 @@
-package com.twinkle.framework.connector.encoder;
+package com.twinkle.framework.connector.convert.encoder;
 
 import com.twinkle.framework.api.config.Configurable;
 import com.twinkle.framework.core.context.model.NormalizedContext;

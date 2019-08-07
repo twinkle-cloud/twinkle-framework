@@ -37,6 +37,15 @@ public interface ExceptionCode {
     int RULE_CON_EXPRES_ATTR_INVALID = 0x01100A;
 
     int RULE_MADANTORY_ATTR_MISSED = 0x011000;
+
+    int CONNECTOR_MADANTORY_ATTR_MISSED = 0x012000;
+
+    int CONNECTOR_CLASS_MISSED = 0x012001;
+    int CONNECTOR_INSTANTIATED_FAILED = 0x012002;
+    /**
+     * Access level of the class is incorrect.
+     */
+    int CONNECTOR_ACCESS_INCORRECT = 0x012003;
     /**
      * Apply Rule error.
      */

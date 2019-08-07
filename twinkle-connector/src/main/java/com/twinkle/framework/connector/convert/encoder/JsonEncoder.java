@@ -1,4 +1,4 @@
-package com.twinkle.framework.connector.decoder;
+package com.twinkle.framework.connector.convert.encoder;
 
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.exception.ConfigurationException;
@@ -7,20 +7,20 @@ import com.twinkle.framework.core.context.model.NormalizedContext;
 /**
  * Function: TODO ADD FUNCTION. <br/>
  * Reason:	 TODO ADD REASON. <br/>
- * Date:     2019-07-14 17:53<br/>
+ * Date:     2019-07-14 18:10<br/>
  *
  * @author chenxj
  * @see
  * @since JDK 1.8
  */
-public class JsonDecoder implements Decoder {
+public class JsonEncoder implements Encoder {
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
-        // Get the Decoder Configuration.
+
     }
 
     @Override
-    public void doDecode(NormalizedContext _nc) {
-        // do the real decode.
+    public Object handleEncode(NormalizedContext _nc) {
+        return null;
     }
 }

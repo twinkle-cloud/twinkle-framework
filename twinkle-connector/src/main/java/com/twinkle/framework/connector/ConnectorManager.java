@@ -1,12 +1,16 @@
 package com.twinkle.framework.connector;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.config.Configurable;
+import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -22,15 +26,38 @@ public class ConnectorManager implements Configurable {
     /**
      * Connector Map.
      */
-    private HashMap connectorMap = null;
+    private static Map<String, Connector> connectorMap = null;
 
     public ConnectorManager() {
-        this.connectorMap = new HashMap();
     }
 
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
+        JSONArray tempArray = _conf.getJSONArray("Connectors");
+        if (CollectionUtils.isEmpty(tempArray)) {
+            throw new ConfigurationException(ExceptionCode.CONNECTOR_MADANTORY_ATTR_MISSED, "ConnectorManager.configure(): Connectors is a mandatory parameter. ");
+        }
+        try {
+            //Build the connector one by one.
+            for (int i = 0; i < tempArray.size(); i++) {
+                JSONObject tempObj = tempArray.getJSONObject(i);
+                String tempName = tempObj.getString("Name");
+                String tempClassName = tempObj.getString("ClassName");
+                Connector tempConnector = (Connector)((Class.forName(tempClassName)).newInstance());
+                tempConnector.configure(tempObj);
 
+                this.addConnector(tempName, tempConnector);
+            }
+        } catch (ClassNotFoundException ex) {
+            log.error("ConnectorManager.configure(): Connector not found.", ex);
+            throw new ConfigurationException(ExceptionCode.CONNECTOR_CLASS_MISSED, "ConnectorManager.configure(): Connector class not found.");
+        } catch (InstantiationException ex) {
+            log.error("ConnectorManager.configure(): Connector instantiated failed.", ex);
+            throw new ConfigurationException(ExceptionCode.CONNECTOR_INSTANTIATED_FAILED, "ConnectorManager.configure(): Connector instantiated failed.");
+        } catch (IllegalAccessException ex) {
+            log.error("ConnectorManager.configure(): The access level of the connector class is incorrect.", ex);
+            throw new ConfigurationException(ExceptionCode.CONNECTOR_ACCESS_INCORRECT, "ConnectorManager.configure(): The class access level of the connector is incorrect.");
+        }
     }
 
     /**
@@ -39,8 +66,11 @@ public class ConnectorManager implements Configurable {
      * @param _name
      * @return
      */
-    public Connector getConnector(String _name) {
-        return (Connector)this.connectorMap.get(_name);
+    public static Connector getConnector(String _name) {
+        if(connectorMap == null) {
+            connectorMap = new HashMap<>(8);
+        }
+        return connectorMap.get(_name);
     }
 
     /**
@@ -49,8 +79,11 @@ public class ConnectorManager implements Configurable {
      * @param _name
      * @param _connector
      */
-    public void addConnector(String _name, Connector _connector) {
-        this.connectorMap.put(_name, _connector);
+    private void addConnector(String _name, Connector _connector) {
+        if(connectorMap == null) {
+            connectorMap = new HashMap<>(8);
+        }
+        connectorMap.put(_name, _connector);
     }
 
     /**
@@ -58,8 +91,11 @@ public class ConnectorManager implements Configurable {
      *
      * @param _name
      */
-    public void removeConnector(String _name) {
-        this.connectorMap.remove(_name);
+    public static void removeConnector(String _name) {
+        if(connectorMap == null) {
+            connectorMap = new HashMap<>(8);
+        }
+        connectorMap.remove(_name);
     }
 
     /**
@@ -67,7 +103,10 @@ public class ConnectorManager implements Configurable {
      *
      * @return
      */
-    public Iterator getConnectors() {
-        return this.connectorMap.values().iterator();
+    public static Iterator getConnectors() {
+        if(connectorMap == null) {
+            connectorMap = new HashMap<>(8);
+        }
+        return connectorMap.values().iterator();
     }
 }
