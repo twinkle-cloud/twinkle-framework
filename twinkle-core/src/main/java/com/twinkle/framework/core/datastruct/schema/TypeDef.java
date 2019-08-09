@@ -12,17 +12,52 @@ import org.objectweb.asm.Type;
  * @since JDK 1.8
  */
 public interface TypeDef {
+    /**
+     * Get Type's name.
+     *
+     * @return
+     */
     String getName();
 
+    /**
+     * Type's ASM Type.
+     *
+     * @return
+     */
     Type getType();
 
+    /**
+     * Is primitive type or not?
+     *
+     * @return
+     */
     boolean isPrimitive();
 
+    /**
+     * Is bean type or not?
+     *
+     * @return
+     */
     boolean isBean();
 
+    /**
+     * Is array type or not?
+     *
+     * @return
+     */
     boolean isArray();
 
+    /**
+     * Is generic type or not?
+     *
+     * @return
+     */
     boolean isGeneric();
 
+    /**
+     * Is enum type or not?
+     *
+     * @return
+     */
     boolean isEnum();
 }

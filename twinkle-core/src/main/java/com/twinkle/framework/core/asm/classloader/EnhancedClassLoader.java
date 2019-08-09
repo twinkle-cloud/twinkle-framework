@@ -154,7 +154,7 @@ public abstract class EnhancedClassLoader extends ClassLoader{
     }
 
     private static Class getPrimitiveClass(String _className, ClassLoader _classLoader) throws ClassNotFoundException {
-        EnhancedClassLoader.ClassDescriptor tempDescriptor = (EnhancedClassLoader.ClassDescriptor)_primitives.get(_className);
+        EnhancedClassLoader.ClassDescriptor tempDescriptor = _primitives.get(_className);
         if (_classLoader != null) {
             String tempClassName = "[" + tempDescriptor.code;
             return _classLoader.loadClass(tempClassName).getComponentType();

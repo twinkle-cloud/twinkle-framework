@@ -14,13 +14,39 @@ import java.util.List;
  * @since JDK 1.8
  */
 public interface BeanTypeDef extends BeanRefTypeDef {
+    /**
+     * Get interfaces list the Bean will implement.
+     *
+     * @return
+     */
     List<String> getInterfaces();
 
+    /**
+     * Get class and interface list the Bean will extend or implement.
+     *
+     * @return
+     */
     List<TypeDef> getParents();
 
-    TypeDef addParent(Type var1);
+    /**
+     * To add parent type for this bean.
+     *
+     * @param _parenttype
+     * @return
+     */
+    TypeDef addParent(Type _parenttype);
 
+    /**
+     * Get the attributes list of this bean.
+     *
+     * @return
+     */
     List<AttributeDef> getAttributes();
 
+    /**
+     * Get the annotations list of this bean.
+     *
+     * @return
+     */
     List<AnnotationDef> getAnnotations();
 }

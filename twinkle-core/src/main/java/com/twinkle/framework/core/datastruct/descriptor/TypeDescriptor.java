@@ -14,8 +14,6 @@ import java.util.Set;
 public interface TypeDescriptor {
     String getName();
 
-    String getNamespace();
-
     String getDescription();
 
     boolean isPrimitive();
@@ -23,8 +21,6 @@ public interface TypeDescriptor {
     boolean isBean();
 
     Set<String> getAnnotations();
-
-    String getXMLSchemaName();
 
     String getClassName();
 }

@@ -136,7 +136,7 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
      * @return
      */
     protected MethodVisitor addFlagGetterDefinition(ClassVisitor _visitor, String _className, AttributeDef _attrDef) {
-        MethodVisitor tempVisitor = _visitor.visitMethod(Opcodes.ACC_PUBLIC, TypeUtil.getFlagGetterName(_attrDef), TypeUtil.getFlagGetterSignature(), null, null);
+        MethodVisitor tempVisitor = _visitor.visitMethod(Opcodes.ACC_PUBLIC, TypeUtil.getFlagGetterName(_attrDef), TypeUtil.getFlagGetterDescriptor(), null, null);
         tempVisitor.visitCode();
         tempVisitor.visitVarInsn(Opcodes.ALOAD, 0);
         tempVisitor.visitFieldInsn(Opcodes.GETFIELD, _className, AttributeUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
@@ -155,7 +155,7 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
      * @return
      */
     protected MethodVisitor addFlagSetterDefinition(ClassVisitor _visitor, String _className, AttributeDef _attrDef) {
-        MethodVisitor tempVisitor = _visitor.visitMethod(Opcodes.ACC_PUBLIC, TypeUtil.getFlagSetterName(_attrDef), TypeUtil.getFlagSetterSignature(), null, null);
+        MethodVisitor tempVisitor = _visitor.visitMethod(Opcodes.ACC_PUBLIC, TypeUtil.getFlagSetterName(_attrDef), TypeUtil.getFlagSetterDescriptor(), null, null);
         tempVisitor.visitCode();
         if (_attrDef.isReadOnly()) {
             tempVisitor.visitTypeInsn(Opcodes.NEW, "java/lang/UnsupportedOperationException");

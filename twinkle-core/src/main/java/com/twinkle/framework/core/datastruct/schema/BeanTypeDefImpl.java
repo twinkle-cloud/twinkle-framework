@@ -98,13 +98,13 @@ public class BeanTypeDefImpl extends BeanRefTypeDefImpl implements BeanTypeDef, 
     }
 
     @Override
-    public TypeDef addParent(Type _parentType) {
+    public TypeDef addParent(Type _parenttype) {
         Optional<TypeDef> tempResult = this.parents.stream().parallel()
-                .filter(item -> _parentType.equals(item.getType())).findAny();
+                .filter(item -> _parenttype.equals(item.getType())).findAny();
         if(tempResult.isPresent()) {
             return tempResult.get();
         }
-        return new BeanRefTypeDefImpl(_parentType.getClassName(), _parentType);
+        return new BeanRefTypeDefImpl(_parenttype.getClassName(), _parenttype);
     }
 
     @Override

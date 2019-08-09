@@ -327,7 +327,7 @@ public class SimpleReflectiveBeanClassDesigner extends AbstractReflectiveBeanCla
                 } else {
                     _visitor.visitVarInsn(Opcodes.ALOAD, 0);
                     _visitor.visitInsn(Opcodes.ICONST_0);
-                    _visitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, _className, TypeUtil.getFlagSetterName(_attrDef), TypeUtil.getFlagSetterSignature());
+                    _visitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, _className, TypeUtil.getFlagSetterName(_attrDef), TypeUtil.getFlagSetterDescriptor());
                 }
 
             }

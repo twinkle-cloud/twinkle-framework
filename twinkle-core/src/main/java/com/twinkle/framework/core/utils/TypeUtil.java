@@ -396,20 +396,20 @@ public class TypeUtil {
     }
 
     /**
-     * Get Boolean Getter signature.
+     * Get Boolean Getter descriptor.
      *
      * @return
      */
-    public static String getFlagGetterSignature() {
+    public static String getFlagGetterDescriptor() {
         return "()Z";
     }
 
     /**
-     * Get Boolean Setter signature.
+     * Get Boolean Setter descriptor.
      *
      * @return
      */
-    public static String getFlagSetterSignature() {
+    public static String getFlagSetterDescriptor() {
         return "(Z)V";
     }
 
