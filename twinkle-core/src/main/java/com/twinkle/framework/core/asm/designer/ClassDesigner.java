@@ -1,7 +1,5 @@
 package com.twinkle.framework.core.asm.designer;
 
-import org.objectweb.asm.Type;
-
 import java.io.PrintWriter;
 
 /**
@@ -22,11 +20,22 @@ public interface ClassDesigner {
     int AUTO_STACK_SIZE = 0;
     int AUTO_LOCAL_VARS = 0;
 
+    /**
+     * Get canonical class name.
+     *
+     * @return
+     */
     String getCanonicalClassName();
 
+    /**
+     * Generate the class and output as byte array.
+     *
+     * @return
+     */
     byte[] toByteArray();
 
     /**
+     * Write the class byte array to the printwriter.
      *
      * @param _checkFlag
      * @param _printWriter

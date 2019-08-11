@@ -3,7 +3,6 @@ package com.twinkle.framework.core.datastruct.descriptor;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.xml.namespace.QName;
 import java.util.Set;
 
 /**
@@ -22,7 +21,7 @@ public class TypeDescriptorImpl implements TypeDescriptor {
     private final String description;
     private final String name;
 
-    private TypeDescriptorImpl(String _className, String _description, String _name, String var4, QName var5) {
+    private TypeDescriptorImpl(String _className, String _description, String _name) {
         this.className = _className;
         this.description = _description;
         this.name = _name;
@@ -44,8 +43,11 @@ public class TypeDescriptorImpl implements TypeDescriptor {
     }
     @Override
     public String toString() {
-        StringBuilder var1 = new StringBuilder();
-        var1.append("TypeDescriptorImpl [\n_name=").append(this.name).append(", \n_className=").append(this.className).append(", \n_description=").append(this.description).append("\n]");
-        return var1.toString();
+        StringBuilder tempBuilder = new StringBuilder();
+        tempBuilder.append("TypeDescriptorImpl [\n_name=").append(this.name)
+                .append(", \n_className=").append(this.className)
+                .append(", \n_description=").append(this.description)
+                .append("\n]");
+        return tempBuilder.toString();
     }
 }

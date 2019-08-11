@@ -3,6 +3,7 @@ package com.twinkle.framework.core.datastruct.converter;
 import com.twinkle.framework.core.datastruct.schema.AttributeConverter;
 import com.twinkle.framework.core.datastruct.schema.AttributeDef;
 import com.twinkle.framework.core.datastruct.schema.AttributeDefImpl;
+import com.twinkle.framework.core.utils.AttributeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,8 +70,8 @@ public class LooseAttributeConverter extends StrictAttributeConverter implements
 
         tempBuilder.append(_attrDef.getName());
         String tempAttrName = tempBuilder.toString();
-        String tempGetterName = AttributeDefImpl.getGetterName(tempAttrName);
-        String tempSetterName = AttributeDefImpl.getSetterName(tempAttrName);
+        String tempGetterName = AttributeUtil.getGetterName(tempAttrName);
+        String tempSetterName = AttributeUtil.getSetterName(tempAttrName);
         if (log.isWarnEnabled()) {
             log.warn("Replacing getter [{}] with [{}] for type {}", new Object[]{_attrDef.getGetterName(), tempGetterName, this.getTypeName()});
             log.warn("Replacing setter [{}] with [{}] for type {}", new Object[]{_attrDef.getSetterName(), tempSetterName, this.getTypeName()});

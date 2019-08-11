@@ -12,18 +12,52 @@ import java.util.Set;
  * @since JDK 1.8
  */
 public interface AttributeDescriptor {
-
+    /**
+     * Attribute's name.
+     *
+     * @return
+     */
     String getName();
 
+    /**
+     * Attribute's ASM type.
+     *
+     * @return
+     */
     TypeDescriptor getType();
 
+    /**
+     * Attribute's owner, some bean.
+     *
+     * @return
+     */
     BeanTypeDescriptor getOwner();
 
+    /**
+     * Attribute's annotations.
+     *
+     * @return
+     */
     Set<String> getAnnotations();
 
+    /**
+     * Is required or not?
+     *
+     * @return
+     */
     boolean isRequired();
 
+    /**
+     * Is final or not?
+     *
+     * @return
+     */
     boolean isReadOnly();
 
+    /**
+     * Get default value.
+     *
+     * @return
+     */
     Object getDefaultValue();
 }

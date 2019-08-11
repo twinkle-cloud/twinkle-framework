@@ -256,7 +256,7 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
     }
 
     /**
-     * Add Class Clinit Constructor Definition.
+     * Add Class cinit() Constructor Definition.
      * static segment for the bean.
      * If the attribute is static and has default value, then will be used to create the contructor.
      *

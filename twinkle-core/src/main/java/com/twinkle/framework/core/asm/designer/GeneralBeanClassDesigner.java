@@ -19,7 +19,6 @@ import java.util.*;
  * @see
  * @since JDK 1.8
  */
-
 public class GeneralBeanClassDesigner extends AbstractBeanClassDesigner {
     public static final String IMPL_SUFFIX = "Impl";
     @Getter

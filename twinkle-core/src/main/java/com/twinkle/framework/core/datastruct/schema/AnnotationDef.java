@@ -14,10 +14,25 @@ import java.util.List;
  * @since JDK 1.8
  */
 public interface AnnotationDef {
+    /**
+     * Annotation Type.
+     *
+     * @return
+     */
     AnnotationDef.Kind getKind();
 
+    /**
+     * Annotation's ASM Type.
+     *
+     * @return
+     */
     Type getType();
 
+    /**
+     * Annotation's element's Define.
+     *
+     * @return
+     */
     List<AnnotationElementDef> getElements();
 
     public static enum Kind {

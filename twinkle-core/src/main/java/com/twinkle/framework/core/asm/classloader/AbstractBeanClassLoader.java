@@ -22,7 +22,6 @@ import java.util.List;
  * @since JDK 1.8
  */
 public abstract class AbstractBeanClassLoader extends EnhancedClassLoader {
-    public static final String PACKAGE_PREFIX = "com.twinkle.framework.core.datastruct.beans.";
     public static final String IMPL_SUFFIX = "Impl";
     public static final String IMPL_BUILDER_SUFFIX = "$ImplBuilder";
     public static final String IMPL_IMPL_BUILDER_SUFFIX = "Impl$ImplBuilder";
@@ -43,7 +42,7 @@ public abstract class AbstractBeanClassLoader extends EnhancedClassLoader {
     }
     @Override
     protected Class<?> findClass(String _className) throws ClassNotFoundException {
-        if (_className != null && _className.startsWith(PACKAGE_PREFIX) && !_className.endsWith("[]")) {
+        if (_className != null && _className.startsWith(Bean.DEFAULT_PACKAGE) && !_className.endsWith("[]")) {
             String tempInferfaceName = getInterfaceName(_className);
             TypeDescriptor tempInterfaceDescriptor = this.getTypeDescriptor(tempInferfaceName);
             if (tempInterfaceDescriptor != null) {

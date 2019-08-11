@@ -12,5 +12,10 @@ import org.objectweb.asm.Type;
  * @since JDK 1.8
  */
 public interface GenericTypeDef extends ClassTypeDef {
+    /**
+     * Generic Type list.
+     *
+     * @return
+     */
     Type[] getTypeParameters();
 }

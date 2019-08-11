@@ -10,7 +10,18 @@ package com.twinkle.framework.core.datastruct.builder;
  * @since JDK 1.8
  */
 public interface InstanceBuilder<T> {
+    /**
+     * Build a new instance.
+     *
+     * @return
+     */
     T newInstance();
 
+    /**
+     * Build a new Array.
+     *
+     * @param _size
+     * @return
+     */
     T[] newArray(int _size);
 }

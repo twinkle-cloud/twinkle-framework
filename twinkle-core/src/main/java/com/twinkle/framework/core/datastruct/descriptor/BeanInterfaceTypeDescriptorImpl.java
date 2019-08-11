@@ -16,7 +16,7 @@ import java.util.Set;
 public class BeanInterfaceTypeDescriptorImpl implements BeanTypeDescriptor {
     private final String interfaceName;
 
-    BeanInterfaceTypeDescriptorImpl(String _interfaceName) {
+    public BeanInterfaceTypeDescriptorImpl(String _interfaceName) {
         this.interfaceName = _interfaceName;
     }
     @Override

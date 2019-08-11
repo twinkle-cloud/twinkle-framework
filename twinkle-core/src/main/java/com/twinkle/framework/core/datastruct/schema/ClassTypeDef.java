@@ -10,5 +10,10 @@ package com.twinkle.framework.core.datastruct.schema;
  * @since JDK 1.8
  */
 public interface ClassTypeDef extends TypeDef {
+    /**
+     * The Class for this type.
+     *
+     * @return
+     */
     Class getTypeClass();
 }

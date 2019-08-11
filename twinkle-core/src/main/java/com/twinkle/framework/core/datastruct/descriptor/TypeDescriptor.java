@@ -12,15 +12,45 @@ import java.util.Set;
  * @since JDK 1.8
  */
 public interface TypeDescriptor {
+    /**
+     * Type's Name
+     *
+     * @return
+     */
     String getName();
 
+    /**
+     * Type's description.
+     *
+     * @return
+     */
     String getDescription();
 
+    /**
+     * Is this type a primitive type or not?
+     *
+     * @return
+     */
     boolean isPrimitive();
 
+    /**
+     * Is this type is a bean type or not?
+     *
+     * @return
+     */
     boolean isBean();
 
+    /**
+     * Get annotations list of this type.
+     *
+     * @return
+     */
     Set<String> getAnnotations();
 
+    /**
+     * Get the class of this type.
+     *
+     * @return
+     */
     String getClassName();
 }

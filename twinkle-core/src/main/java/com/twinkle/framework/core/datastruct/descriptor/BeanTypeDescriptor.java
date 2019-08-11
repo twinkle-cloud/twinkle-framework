@@ -13,9 +13,25 @@ import java.util.Set;
  * @since JDK 1.8
  */
 public interface BeanTypeDescriptor extends TypeDescriptor {
+    /**
+     * Parents' descriptor list.
+     *
+     * @return
+     */
     Set<BeanTypeDescriptor> getParents();
 
+    /**
+     * Get attributes list.
+     *
+     * @return
+     */
     List<AttributeDescriptor> getAttributes();
 
+    /**
+     * Get attribute descriptor by given _attrName.
+     *
+     * @param _attrName
+     * @return
+     */
     AttributeDescriptor getAttribute(String _attrName);
 }

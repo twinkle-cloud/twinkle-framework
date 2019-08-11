@@ -20,12 +20,12 @@ import java.util.Set;
 @Builder
 public class EnumTypeDescriptorImpl implements EnumTypeDescriptor {
     private final String className;
-    private final String valueClassName;
     private final String name;
     private final Map<String, Object> enumerationValues;
     private EnumHandler enumHandler;
+    private final String valueClassName;
 
-    private EnumTypeDescriptorImpl(String _className, String var2, String _name, Map<String, Object> _enumerationValues, QName var5, EnumHandler _enumHandler, String _valueClassName) {
+    private EnumTypeDescriptorImpl(String _className, String _name, Map<String, Object> _enumerationValues, EnumHandler _enumHandler, String _valueClassName) {
         this.className = _className;
         this.name = _name;
         this.enumerationValues = _enumerationValues;

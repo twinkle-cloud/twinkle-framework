@@ -21,15 +21,15 @@ public class ArrayTypeDescriptorImpl implements ArrayTypeDescriptor {
     private final Set<String> annotations;
     private final String description;
     private final String name;
-    private final String className;
     private TypeDescriptor elementType;
+    private final String className;
 
     private ArrayTypeDescriptorImpl(Set<String> _annotations, String _description, String _name, TypeDescriptor _elementType, String _className) {
         this.annotations = _annotations;
         this.description = _description;
         this.name = _name;
-        this.className = _className;
         this.elementType = _elementType;
+        this.className = _className;
     }
     @Override
     public String getClassName() {

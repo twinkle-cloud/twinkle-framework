@@ -36,7 +36,7 @@ public class BeanClassLoader extends AbstractBeanClassLoader {
         return this.typeDescriptors.getType(_typeName);
     }
 
-    protected TypeDescriptors getTypeDescriptors() {
+    public TypeDescriptors getTypeDescriptors() {
         return this.typeDescriptors;
     }
 

@@ -1,9 +1,9 @@
 package com.twinkle.framework.core.datastruct.descriptor;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.xml.namespace.QName;
 import java.util.*;
 
 /**
@@ -16,18 +16,19 @@ import java.util.*;
  * @since JDK 1.8
  */
 @Data
+@AllArgsConstructor
 @Builder
 public class BeanTypeDescriptorImpl implements BeanTypeDescriptor {
-    private List<AttributeDescriptor> attributes;
     private final String className;
     private final String description;
     private final String name;
     private final List<String> parentNames;
+    private List<AttributeDescriptor> attributes;
     private final Set<BeanTypeDescriptor> parents;
     private Set<String> annotations;
     private final List<BeanTypeDescriptor> interfaces;
 
-    private BeanTypeDescriptorImpl(String _className, String _name, String _description, List<AttributeDescriptor> _attributes, List<String> _parentNames, QName var7, Set<String> _annotations, List<BeanTypeDescriptor> _interfaces) {
+    private BeanTypeDescriptorImpl(String _className, String _name, String _description, List<AttributeDescriptor> _attributes, List<String> _parentNames, Set<String> _annotations, List<BeanTypeDescriptor> _interfaces) {
         this.className = _className;
         this.name = _name;
         this.description = _description;

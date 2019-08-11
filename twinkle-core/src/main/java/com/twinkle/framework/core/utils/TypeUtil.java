@@ -228,6 +228,32 @@ public class TypeUtil {
         return tempBuilder.toString();
     }
 
+    /*public static String getTypeSignature(TypeDef _typeDef) {
+        StringBuilder tempBuilder = new StringBuilder();
+        if (_typeDef == null || !(_typeDef instanceof GenericTypeDefImpl)) {
+            return tempBuilder.toString();
+        }
+        GenericTypeDefImpl tempTypeDef = (GenericTypeDefImpl) _typeDef;
+        String tempTypeSignature = Type.getDescriptor(tempTypeDef.getTypeClass());
+        if (tempTypeDef.getTypeParameters() == null || tempTypeDef.getTypeParameters().length == 0) {
+            tempBuilder.append(tempTypeSignature);
+            return tempBuilder.toString();
+        }
+        //
+        if (!tempTypeSignature.endsWith(";")) {
+            tempBuilder.append(tempTypeSignature);
+            log.warn("The main class {} does not support generic classes.", _typeDefine.getTypeClass());
+            return tempTypeSignature;
+        }
+        tempBuilder.append(tempTypeSignature.substring(0, tempTypeSignature.length() - 1));
+        tempBuilder.append("<");
+        for (int i = 0; i <tempTypeDef.getTypeParameters().length; i++) {
+            TypeDef tempTypeDefine = tempTypeDef.getTypeParameters()[i];
+            tempBuilder.append(getTypeSignature(tempTypeDefine));
+        }
+        tempBuilder.append(">;");
+        return tempBuilder.toString();
+    }*/
     /**
      * To get the getterName from the given attribute define.
      *

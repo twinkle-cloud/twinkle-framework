@@ -38,6 +38,7 @@
 		<commonscollection.version>4.1</commonscollection.version>
 		<commonbeanutils.version>1.9.3</commonbeanutils.version>
 		<jodatime.version>2.10.1</jodatime.version>
+		<logstash.version>6.1</logstash.version>
 
 		<hibernatejpa.version>1.0.2.Final</hibernatejpa.version>
 		<hibernatevalidator.version>6.0.13.Final</hibernatevalidator.version>
@@ -124,6 +125,13 @@
 				<groupId>org.ow2.asm</groupId>
 				<artifactId>asm-util</artifactId>
 				<version>${asm.version}</version>
+			</dependency>
+
+			<!-- LogStash formatter. -->
+			<dependency>
+				<groupId>net.logstash.logback</groupId>
+				<artifactId>logstash-logback-encoder</artifactId>
+				<version>${logstash.version}</version>
 			</dependency>
 
 			<!-- lombok lib -->

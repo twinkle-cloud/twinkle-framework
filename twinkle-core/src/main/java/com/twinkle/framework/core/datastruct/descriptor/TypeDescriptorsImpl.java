@@ -14,12 +14,12 @@ import java.util.*;
 public class TypeDescriptorsImpl implements TypeDescriptors {
     protected Map<String, TypeDescriptor> _beansByClass;
 
-    public TypeDescriptorsImpl(List<TypeDescriptor> var1) {
-        this.init(var1);
+    public TypeDescriptorsImpl(List<TypeDescriptor> _typeDescriptorList) {
+        this.init(_typeDescriptorList);
     }
 
     protected void init(List<TypeDescriptor> _typeDescriptorList) {
-        this._beansByClass = new HashMap();
+        this._beansByClass = new HashMap(8);
         for(TypeDescriptor tempItem : _typeDescriptorList) {
             this._beansByClass.put(tempItem.getClassName(), tempItem);
         }

@@ -10,4 +10,6 @@ package com.twinkle.framework.core.datastruct;
  * @since JDK 1.8
  */
 public interface Bean {
+    String DEFAULT_PACKAGE = "com.twinkle.framework.core.datastruct.beans.";
+    String REST_CONTROL_PACKAGE = "com.twinkle.framework.core.datastruct.beans.";
 }
