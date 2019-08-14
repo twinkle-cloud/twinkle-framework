@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * @since JDK 1.8
  */
 @Slf4j
-@Service
+//@Service
 public class HelloWorldServiceImpl implements HelloWorldService{
     @Override
     public String sayHello(String _name) {

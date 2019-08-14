@@ -3,7 +3,7 @@ package com.twinkle.framework.core.asm.designer;
 import com.twinkle.framework.core.datastruct.Bean;
 import com.twinkle.framework.core.datastruct.RecyclableBean;
 import com.twinkle.framework.core.datastruct.schema.*;
-import com.twinkle.framework.core.utils.AttributeUtil;
+import com.twinkle.framework.core.utils.TypeDefUtil;
 import com.twinkle.framework.core.utils.TypeUtil;
 import org.objectweb.asm.*;
 
@@ -45,7 +45,7 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
     }
 
     protected FieldVisitor addFlagField(ClassVisitor _visitor, AttributeDef _attrDef) {
-        FieldVisitor tempVisitor = _visitor.visitField(Opcodes.ACC_PRIVATE, AttributeUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE), null, null);
+        FieldVisitor tempVisitor = _visitor.visitField(Opcodes.ACC_PRIVATE, TypeDefUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE), null, null);
         tempVisitor.visitEnd();
         return tempVisitor;
     }
@@ -70,7 +70,7 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
         if (tempDefaultValue != null) {
             _visitor.visitVarInsn(Opcodes.ALOAD, 0);
             _visitor.visitInsn(Opcodes.ICONST_1);
-            _visitor.visitFieldInsn(Opcodes.PUTFIELD, _className, AttributeUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
+            _visitor.visitFieldInsn(Opcodes.PUTFIELD, _className, TypeDefUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
         }
     }
 
@@ -96,11 +96,11 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
         } else {
             tempVisitor.visitVarInsn(Opcodes.ALOAD, 0);
             tempVisitor.visitVarInsn(TypeUtil.getOpcode(_attrDef.getType().getType(), 21), 1);
-            tempVisitor.visitFieldInsn(Opcodes.PUTFIELD, _className, AttributeUtil.getFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(_attrDef.getType().getType()));
+            tempVisitor.visitFieldInsn(Opcodes.PUTFIELD, _className, TypeDefUtil.getFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(_attrDef.getType().getType()));
             if (TypeUtil.isPrimitive(_attrDef.getType().getType())) {
                 tempVisitor.visitVarInsn(Opcodes.ALOAD, 0);
                 tempVisitor.visitInsn(Opcodes.ICONST_1);
-                tempVisitor.visitFieldInsn(Opcodes.PUTFIELD, _className, AttributeUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
+                tempVisitor.visitFieldInsn(Opcodes.PUTFIELD, _className, TypeDefUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
             } else {
                 Label tempLabelA = new Label();
                 Label tempLabelB = new Label();
@@ -108,13 +108,13 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
                 tempVisitor.visitJumpInsn(Opcodes.IFNULL, tempLabelA);
                 tempVisitor.visitVarInsn(Opcodes.ALOAD, 0);
                 tempVisitor.visitInsn(Opcodes.ICONST_1);
-                tempVisitor.visitFieldInsn(Opcodes.PUTFIELD, _className, AttributeUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
+                tempVisitor.visitFieldInsn(Opcodes.PUTFIELD, _className, TypeDefUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
                 tempVisitor.visitJumpInsn(Opcodes.GOTO, tempLabelB);
                 tempVisitor.visitLabel(tempLabelA);
                 tempVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
                 tempVisitor.visitVarInsn(Opcodes.ALOAD, 0);
                 tempVisitor.visitInsn(Opcodes.ICONST_0);
-                tempVisitor.visitFieldInsn(Opcodes.PUTFIELD, _className, AttributeUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
+                tempVisitor.visitFieldInsn(Opcodes.PUTFIELD, _className, TypeDefUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
                 tempVisitor.visitLabel(tempLabelB);
                 tempVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             }
@@ -139,7 +139,7 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
         MethodVisitor tempVisitor = _visitor.visitMethod(Opcodes.ACC_PUBLIC, TypeUtil.getFlagGetterName(_attrDef), TypeUtil.getFlagGetterDescriptor(), null, null);
         tempVisitor.visitCode();
         tempVisitor.visitVarInsn(Opcodes.ALOAD, 0);
-        tempVisitor.visitFieldInsn(Opcodes.GETFIELD, _className, AttributeUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
+        tempVisitor.visitFieldInsn(Opcodes.GETFIELD, _className, TypeDefUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
         tempVisitor.visitInsn(TypeUtil.getOpcode(Type.BOOLEAN_TYPE, Opcodes.IRETURN));
         tempVisitor.visitMaxs(AUTO_STACK_SIZE, AUTO_LOCAL_VARS);
         tempVisitor.visitEnd();
@@ -176,7 +176,7 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
             tempVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             tempVisitor.visitVarInsn(Opcodes.ALOAD, 0);
             tempVisitor.visitInsn(Opcodes.ICONST_1);
-            tempVisitor.visitFieldInsn(Opcodes.PUTFIELD, _className, AttributeUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
+            tempVisitor.visitFieldInsn(Opcodes.PUTFIELD, _className, TypeDefUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
             tempVisitor.visitLabel(tempLabelB);
             tempVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             tempVisitor.visitInsn(Opcodes.RETURN);
@@ -233,7 +233,7 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
             _visitor.visitInsn(TypeUtil.getNullOpcode(_attrDef.getType().getType()));
         }
 
-        _visitor.visitFieldInsn(Opcodes.PUTFIELD, _className, AttributeUtil.getFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(_attrDef.getType().getType()));
+        _visitor.visitFieldInsn(Opcodes.PUTFIELD, _className, TypeDefUtil.getFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(_attrDef.getType().getType()));
         _visitor.visitVarInsn(Opcodes.ALOAD, 0);
         if (tempDefaultValueObj != null) {
             _visitor.visitInsn(Opcodes.ICONST_1);
@@ -241,7 +241,7 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
             _visitor.visitInsn(Opcodes.ICONST_0);
         }
 
-        _visitor.visitFieldInsn(Opcodes.PUTFIELD, _className, AttributeUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
+        _visitor.visitFieldInsn(Opcodes.PUTFIELD, _className, TypeDefUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
         return _visitor;
     }
 
@@ -249,7 +249,7 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
     protected void handleAttributeClone(MethodVisitor _visitor, String _className, AttributeDef _attrDef) {
         if (!_attrDef.isReadOnly()) {
             _visitor.visitVarInsn(Opcodes.ALOAD, 0);
-            _visitor.visitFieldInsn(Opcodes.GETFIELD, _className, AttributeUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
+            _visitor.visitFieldInsn(Opcodes.GETFIELD, _className, TypeDefUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
             Label var4 = new Label();
             _visitor.visitJumpInsn(Opcodes.IFEQ, var4);
             super.handleAttributeClone(_visitor, _className, _attrDef);
@@ -261,16 +261,16 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
     @Override
     protected void handleAttributeEquals(MethodVisitor _visitor, String _className, AttributeDef _attrDef) {
         _visitor.visitVarInsn(Opcodes.ALOAD, 0);
-        _visitor.visitFieldInsn(Opcodes.GETFIELD, _className, AttributeUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
+        _visitor.visitFieldInsn(Opcodes.GETFIELD, _className, TypeDefUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
         _visitor.visitVarInsn(Opcodes.ALOAD, 2);
-        _visitor.visitFieldInsn(Opcodes.GETFIELD, _className, AttributeUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
+        _visitor.visitFieldInsn(Opcodes.GETFIELD, _className, TypeDefUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
         Label tempLabelA = new Label();
         _visitor.visitJumpInsn(Opcodes.IF_ICMPEQ, tempLabelA);
         _visitor.visitInsn(Opcodes.ICONST_0);
         _visitor.visitInsn(Opcodes.IRETURN);
         _visitor.visitLabel(tempLabelA);
         _visitor.visitVarInsn(Opcodes.ALOAD, 0);
-        _visitor.visitFieldInsn(Opcodes.GETFIELD, _className, AttributeUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
+        _visitor.visitFieldInsn(Opcodes.GETFIELD, _className, TypeDefUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
         Label tempLabelB = new Label();
         _visitor.visitJumpInsn(Opcodes.IFEQ, tempLabelB);
         super.handleAttributeEquals(_visitor, _className, _attrDef);
@@ -284,7 +284,7 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
         _visitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, STRING_BUILDER_CLASS_NAME, STRING_BUILDER_APPEND_METHOD, STRING_BUILDER_APPEND_STRING);
         _visitor.visitInsn(Opcodes.POP);
         _visitor.visitVarInsn(Opcodes.ALOAD, 0);
-        _visitor.visitFieldInsn(Opcodes.GETFIELD, _className, AttributeUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
+        _visitor.visitFieldInsn(Opcodes.GETFIELD, _className, TypeDefUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
         Label tempLabelA = new Label();
         _visitor.visitJumpInsn(Opcodes.IFNE, tempLabelA);
         _visitor.visitVarInsn(Opcodes.ALOAD, 1);
@@ -327,7 +327,7 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
                 Label tempLabelA = new Label();
                 tempVisitor.visitVarInsn(Opcodes.ALOAD, tempFIndex);
                 String tempAttrName = tempAttrDef.getName();
-                tempVisitor.visitFieldInsn(Opcodes.GETFIELD, _className, AttributeUtil.getFlagFieldName(tempAttrName), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
+                tempVisitor.visitFieldInsn(Opcodes.GETFIELD, _className, TypeDefUtil.getFlagFieldName(tempAttrName), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
                 tempVisitor.visitJumpInsn(Opcodes.IFEQ, tempLabelA);
                 tempVisitor.visitVarInsn(Opcodes.ILOAD, tempLocalVarIndex);
                 tempVisitor.visitVarInsn(Opcodes.ILOAD, tempFourthVarIndex);
@@ -336,7 +336,7 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
                 Type tempAttrType = tempAttrTypeDef.getType();
                 int tempAttrTypeSort = tempAttrType.getSort();
                 tempVisitor.visitVarInsn(Opcodes.ALOAD, tempFIndex);
-                tempVisitor.visitFieldInsn(Opcodes.GETFIELD, _className, AttributeUtil.getFieldName(tempAttrName), TypeUtil.getFieldDescriptor(tempAttrType));
+                tempVisitor.visitFieldInsn(Opcodes.GETFIELD, _className, TypeDefUtil.getFieldName(tempAttrName), TypeUtil.getFieldDescriptor(tempAttrType));
                 if (!tempAttrTypeDef.isArray() && tempAttrTypeSort != Type.ARRAY) {
                     if (!tempAttrTypeDef.isBean() && !tempAttrTypeDef.isGeneric() && tempAttrTypeSort != 10) {
                         switch (tempAttrTypeSort) {

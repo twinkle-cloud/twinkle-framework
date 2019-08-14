@@ -26,8 +26,8 @@ public class ClassTypeDefImpl extends AbstractTypeDefImpl implements ClassTypeDe
     public ClassTypeDefImpl(String _name, Class _typeClass) {
         super(_name, Type.getType(_typeClass));
         this.typeClass = _typeClass;
-        this.typeClass.isArray();
-        this.typeClass.isPrimitive();
+//        this.typeClass.isArray();
+//        this.typeClass.isPrimitive();
         Bean.class.isAssignableFrom(this.typeClass);
     }
 
@@ -41,7 +41,7 @@ public class ClassTypeDefImpl extends AbstractTypeDefImpl implements ClassTypeDe
     }
     @Override
     public boolean isArray() {
-        return false;
+        return this.typeClass.isArray();
     }
     @Override
     public boolean isGeneric() {

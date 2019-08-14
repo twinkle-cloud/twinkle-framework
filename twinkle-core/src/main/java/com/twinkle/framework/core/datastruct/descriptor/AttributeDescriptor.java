@@ -13,6 +13,12 @@ import java.util.Set;
  */
 public interface AttributeDescriptor {
     /**
+     * Attribute's access.
+     *
+     * @return
+     */
+    int getAccess();
+    /**
      * Attribute's name.
      *
      * @return

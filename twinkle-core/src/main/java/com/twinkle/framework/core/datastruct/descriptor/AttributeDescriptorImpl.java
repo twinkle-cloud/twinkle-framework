@@ -2,6 +2,7 @@ package com.twinkle.framework.core.datastruct.descriptor;
 
 import lombok.Builder;
 import lombok.Data;
+import org.objectweb.asm.Opcodes;
 
 import java.util.Set;
 
@@ -17,6 +18,7 @@ import java.util.Set;
 @Data
 @Builder
 public class AttributeDescriptorImpl implements AttributeDescriptor {
+    private int access = Opcodes.ACC_PRIVATE;
     private final String name;
     private final Object defaultValue;
     private final boolean isRequired;
@@ -27,6 +29,18 @@ public class AttributeDescriptorImpl implements AttributeDescriptor {
     private final BeanTypeDescriptor owner;
 
     private AttributeDescriptorImpl(String _name, Object _defaultValue, boolean _isRequired, boolean _isReadOnly, String _className, Set<String> _annotations, TypeDescriptor _type, BeanTypeDescriptor _woner) {
+        this.name = _name;
+        this.defaultValue = _defaultValue;
+        this.isRequired = _isRequired;
+        this.isReadOnly = _isReadOnly;
+        this.elementClassName = _className;
+        this.annotations = _annotations;
+        this.type = _type;
+        this.owner = _woner;
+    }
+
+    private AttributeDescriptorImpl(int _access, String _name, Object _defaultValue, boolean _isRequired, boolean _isReadOnly, String _className, Set<String> _annotations, TypeDescriptor _type, BeanTypeDescriptor _woner) {
+        this.access = _access;
         this.name = _name;
         this.defaultValue = _defaultValue;
         this.isRequired = _isRequired;
@@ -52,8 +66,8 @@ public class AttributeDescriptorImpl implements AttributeDescriptor {
 
     @Override
     public String toString() {
-        StringBuilder var1 = new StringBuilder();
-        var1.append("AttributeDescriptorImpl [\n_name=").append(this.name).append(", \n_elementJavaClassName=").append(this.elementClassName).append(", \n_annotations=").append(this.annotations).append(", \n_defaultValue=").append(this.defaultValue).append(", \n_isReadOnly=").append(this.isReadOnly).append(", \n_isRequired=").append(this.isRequired).append("\n]");
-        return var1.toString();
+        StringBuilder tempBuilder = new StringBuilder();
+        tempBuilder.append("AttributeDescriptorImpl [\n_name=").append(this.name).append(", \n_elementJavaClassName=").append(this.elementClassName).append(", \n_annotations=").append(this.annotations).append(", \n_defaultValue=").append(this.defaultValue).append(", \n_isReadOnly=").append(this.isReadOnly).append(", \n_isRequired=").append(this.isRequired).append("\n]");
+        return tempBuilder.toString();
     }
 }

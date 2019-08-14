@@ -20,10 +20,10 @@ import java.util.*;
 @Builder
 public class BeanTypeDescriptorImpl implements BeanTypeDescriptor {
     private final String className;
-    private final String description;
     private final String name;
-    private final List<String> parentNames;
+    private final String description;
     private List<AttributeDescriptor> attributes;
+    private final List<String> parentNames;
     private final Set<BeanTypeDescriptor> parents;
     private Set<String> annotations;
     private final List<BeanTypeDescriptor> interfaces;
@@ -62,8 +62,8 @@ public class BeanTypeDescriptorImpl implements BeanTypeDescriptor {
     }
     @Override
     public String toString() {
-        StringBuilder var1 = new StringBuilder();
-        var1.append("BeanTypeDescriptorImpl [\n_typeName=").append(this.name).append(", \n_className=").append(this.className).append(", \n_attributes=").append(this.attributes).append(", \n_parents=").append(this.parentNames).append(", \n_description=").append(this.description).append("\n]");
-        return var1.toString();
+        StringBuilder tempBuilder = new StringBuilder();
+        tempBuilder.append("BeanTypeDescriptorImpl [\n_typeName=").append(this.name).append(", \n_className=").append(this.className).append(", \n_attributes=").append(this.attributes).append(", \n_parents=").append(this.parentNames).append(", \n_description=").append(this.description).append("\n]");
+        return tempBuilder.toString();
     }
 }

@@ -11,7 +11,8 @@ ribbon:
 ---
 spring:
   profiles: development
-
+  main:
+    allow-bean-definition-overriding: true
 
 ---
 spring:

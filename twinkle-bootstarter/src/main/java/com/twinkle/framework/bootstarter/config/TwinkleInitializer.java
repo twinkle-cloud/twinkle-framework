@@ -3,6 +3,8 @@ package com.twinkle.framework.bootstarter.config;
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
+import com.twinkle.framework.bootstarter.service.HelloWorldService;
+import com.twinkle.framework.bootstarter.service.HelloWorldServiceImpl;
 import com.twinkle.framework.configure.component.IComponentFactory;
 import com.twinkle.framework.connector.ConnectorManager;
 import com.twinkle.framework.core.asm.classloader.BeanClassLoader;
@@ -13,7 +15,9 @@ import com.twinkle.framework.ruleengine.RuleChainManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +39,7 @@ import java.util.Set;
  * @since JDK 1.8
  */
 @Slf4j
-//@Configuration
+@Configuration
 public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor{
     private final static String KEY_CONNECTOR_MANAGER = "Connectors";
     private final static String KEY_RULECHAIN_MANAGER = "RuleChains";
@@ -58,7 +62,7 @@ public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor{
     }
 
     @Override
-    public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
+    public  void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
         // TODO Auto-generated method stub
 //        String tempConfiguration = this.env.getProperty("");
 //        JSONObject tempObj = JSONObject.parseObject(tempConfiguration);
@@ -74,16 +78,49 @@ public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor{
 //        if(tempRuleManager == null) {
 //            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_RULECHAIN ,"Did not find valid IRuleChain obj in the logic configuration.");
 //        }
-//        ClassLoader currentLoader = this.getClass().getClassLoader();
-//
-//        BeanClassLoader tempLoader = new BeanClassLoader(currentLoader, this.packDescriptors());
-//
-//        BeanFactory tempBeanFactory = new BeanFactoryImpl(tempLoader);
-//        Object tempObj = tempBeanFactory.newInstance("HelloWorld");
-//        log.debug("The new obj is:{}", tempObj);
-//        Class<?> tempClass = tempObj.getClass();
-//        log.debug("The new obj Class is:{}", tempClass);
 
+        ClassLoader currentLoader = Thread.currentThread().getContextClassLoader();
+
+        BeanClassLoader tempLoader = new BeanClassLoader(currentLoader, this.packDescriptors());
+
+        BeanFactory tempBeanFactory = new BeanFactoryImpl(tempLoader);
+//        Object tempObj = tempBeanFactory.newInstance("HelloWorld");
+        Class<?> tempBeanClass = tempBeanFactory.getBeanClass("HelloWorld");
+        log.debug("The new obj is:{}", tempBeanClass);
+
+        //构造bean定义
+        BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder
+                .genericBeanDefinition(tempBeanClass);
+        BeanDefinition beanDefinition = beanDefinitionBuilder.getRawBeanDefinition();
+        //注册bean定义
+        registry.registerBeanDefinition("hellController2", beanDefinition);
+
+        //构造bean定义
+        beanDefinitionBuilder = BeanDefinitionBuilder
+                .genericBeanDefinition(HelloWorldService.class, () ->new HelloWorldServiceImpl());
+        beanDefinition = beanDefinitionBuilder.getRawBeanDefinition();
+        //注册bean定义
+        registry.registerBeanDefinition("helloWorldService", beanDefinition);
+        log.debug("The new obj is:{}", beanDefinition);
+
+
+    }
+    private <T extends HelloWorldService> void registerService(){
+        try{
+            Class<HelloWorldService> tempBeanClass = HelloWorldService.class;
+
+            HelloWorldService tempObj = new HelloWorldServiceImpl();
+            genericWebApplicationContext.registerBean("helloWorldService",
+                    HelloWorldServiceImpl.class, () -> new HelloWorldServiceImpl());
+            log.debug("The new obj is:{}", tempBeanClass);
+        } catch (NoClassDefFoundError ex) {
+            throw new IllegalArgumentException("Cannot resolve dependencies for class: " + ex);
+        } catch (Throwable te) {
+            throw new IllegalArgumentException("Problem loading class:" + te);
+        }
+
+//        Class<?> tempClass = tempObj.getClass();
+//        log.debug("The new obj Class is:{}", tempBeanClass);
     }
     private TypeDescriptors packDescriptors() {
         List<TypeDescriptor> tempDecriptorList = new ArrayList<>();

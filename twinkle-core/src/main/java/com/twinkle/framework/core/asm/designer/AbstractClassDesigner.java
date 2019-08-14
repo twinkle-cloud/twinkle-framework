@@ -20,18 +20,18 @@ public abstract class AbstractClassDesigner implements ClassDesigner {
 
     protected ClassWriter newClass(boolean _checkFlag, PrintWriter _writer) {
         ClassWriter tempClassWriter = new ClassWriter(AUTO_CALCULATE_STACK_SIZE_AND_LOCAL_VARS_NUMBER);
-        Object tempVistorObj = tempClassWriter;
+        ClassVisitor tempVistor = tempClassWriter;
         if (_checkFlag) {
-            tempVistorObj = new CheckClassAdapter(tempClassWriter);
+            tempVistor = new CheckClassAdapter(tempClassWriter);
         }
 
         if (_writer != null) {
-            tempVistorObj = new TraceClassVisitor(tempClassWriter, _writer);
+            tempVistor = new TraceClassVisitor(tempClassWriter, _writer);
         }
 
-        this.addClassDeclaration((ClassVisitor)tempVistorObj);
-        this.addClassDefinition((ClassVisitor)tempVistorObj);
-        ((ClassVisitor)tempVistorObj).visitEnd();
+        this.addClassDeclaration(tempVistor);
+        this.addClassDefinition(tempVistor);
+        ((ClassVisitor)tempVistor).visitEnd();
         return tempClassWriter;
     }
 

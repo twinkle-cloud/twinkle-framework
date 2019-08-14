@@ -5,6 +5,7 @@ import com.twinkle.framework.core.asm.data.TypeDefine;
 import com.twinkle.framework.core.datastruct.Bean;
 import com.twinkle.framework.core.datastruct.annotation.Key;
 import com.twinkle.framework.core.datastruct.schema.AttributeDef;
+import com.twinkle.framework.core.datastruct.schema.GenericTypeDef;
 import com.twinkle.framework.core.datastruct.schema.GenericTypeDefImpl;
 import com.twinkle.framework.core.datastruct.schema.TypeDef;
 import lombok.extern.slf4j.Slf4j;
@@ -228,32 +229,26 @@ public class TypeUtil {
         return tempBuilder.toString();
     }
 
-    /*public static String getTypeSignature(TypeDef _typeDef) {
+    /**
+     * Pack the Type signature with the given Type Define.
+     *
+     * @param _typeDef
+     * @return
+     */
+    public static String getTypeSignature(TypeDef _typeDef) {
         StringBuilder tempBuilder = new StringBuilder();
-        if (_typeDef == null || !(_typeDef instanceof GenericTypeDefImpl)) {
+        if (_typeDef == null) {
             return tempBuilder.toString();
         }
-        GenericTypeDefImpl tempTypeDef = (GenericTypeDefImpl) _typeDef;
-        String tempTypeSignature = Type.getDescriptor(tempTypeDef.getTypeClass());
-        if (tempTypeDef.getTypeParameters() == null || tempTypeDef.getTypeParameters().length == 0) {
-            tempBuilder.append(tempTypeSignature);
+
+        if (_typeDef instanceof GenericTypeDef) {
+            tempBuilder.append(((GenericTypeDefImpl) _typeDef).getFieldSignature());
             return tempBuilder.toString();
         }
-        //
-        if (!tempTypeSignature.endsWith(";")) {
-            tempBuilder.append(tempTypeSignature);
-            log.warn("The main class {} does not support generic classes.", _typeDefine.getTypeClass());
-            return tempTypeSignature;
-        }
-        tempBuilder.append(tempTypeSignature.substring(0, tempTypeSignature.length() - 1));
-        tempBuilder.append("<");
-        for (int i = 0; i <tempTypeDef.getTypeParameters().length; i++) {
-            TypeDef tempTypeDefine = tempTypeDef.getTypeParameters()[i];
-            tempBuilder.append(getTypeSignature(tempTypeDefine));
-        }
-        tempBuilder.append(">;");
+        tempBuilder.append(Type.getDescriptor(_typeDef.getType().getClass()));
         return tempBuilder.toString();
-    }*/
+    }
+
     /**
      * To get the getterName from the given attribute define.
      *

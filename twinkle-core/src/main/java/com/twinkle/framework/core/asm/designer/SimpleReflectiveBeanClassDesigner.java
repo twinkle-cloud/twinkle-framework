@@ -5,7 +5,7 @@ import com.twinkle.framework.core.datastruct.RecyclableBean;
 import com.twinkle.framework.core.datastruct.SimpleReflectiveBean;
 import com.twinkle.framework.core.datastruct.schema.AttributeDef;
 import com.twinkle.framework.core.datastruct.schema.BeanTypeDef;
-import com.twinkle.framework.core.utils.AttributeUtil;
+import com.twinkle.framework.core.utils.TypeDefUtil;
 import com.twinkle.framework.core.utils.TypeUtil;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -241,7 +241,7 @@ public class SimpleReflectiveBeanClassDesigner extends AbstractReflectiveBeanCla
             public void addCase(MethodVisitor _visitor, String _className, AttributeDef _attrDef) {
                 Type tempAttrType = _attrDef.getType().getType();
                 _visitor.visitVarInsn(Opcodes.ALOAD, 0);
-                _visitor.visitFieldInsn(Opcodes.GETFIELD, _className, AttributeUtil.getFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(tempAttrType));
+                _visitor.visitFieldInsn(Opcodes.GETFIELD, _className, TypeDefUtil.getFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(tempAttrType));
                 _visitor.visitInsn(TypeUtil.getOpcode(tempAttrType, 172));
             }
         }, this.getSwitchCaseDefaultAppender(tempLoadRefObjIndex, tempStoreIntIndex), tempLoadRefObjIndex, tempStoreIntIndex, false, SWITCH_SEGMENT_SIZE);
@@ -298,7 +298,7 @@ public class SimpleReflectiveBeanClassDesigner extends AbstractReflectiveBeanCla
             @Override
             public void addCase(MethodVisitor _visitor, String _className, AttributeDef _attrDef) {
                 _visitor.visitVarInsn(Opcodes.ALOAD, 0);
-                _visitor.visitFieldInsn(Opcodes.GETFIELD, _className, AttributeUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
+                _visitor.visitFieldInsn(Opcodes.GETFIELD, _className, TypeDefUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE));
                 _visitor.visitInsn(TypeUtil.getOpcode(Type.BOOLEAN_TYPE, 172));
             }
         }, this.getSwitchCaseDefaultAppender(tempLoadRefObjIndex, tempStoreIntIndex), tempLoadRefObjIndex, tempStoreIntIndex, false, SWITCH_SEGMENT_SIZE);

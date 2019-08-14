@@ -1,4 +1,4 @@
-package com.twinkle.framework.core.dto;
+package com.twinkle.framework.api.data;
 
 import java.io.Serializable;
 

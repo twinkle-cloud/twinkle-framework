@@ -38,6 +38,7 @@ public interface AnnotationDef {
     public static enum Kind {
         CLASS,
         FIELD,
+        METHOD,
         GETTER,
         SETTER;
 

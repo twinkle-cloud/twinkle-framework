@@ -2,8 +2,7 @@ package com.twinkle.framework.core.datastruct.converter;
 
 import com.twinkle.framework.core.datastruct.schema.AttributeConverter;
 import com.twinkle.framework.core.datastruct.schema.AttributeDef;
-import com.twinkle.framework.core.datastruct.schema.AttributeDefImpl;
-import com.twinkle.framework.core.utils.AttributeUtil;
+import com.twinkle.framework.core.utils.TypeDefUtil;
 import lombok.Getter;
 
 import java.util.*;
@@ -30,7 +29,7 @@ public class StrictAttributeConverter implements AttributeConverter {
 
     @Override
     public String normalize(String _attrName) {
-        return AttributeUtil.toBeanNormalForm(_attrName);
+        return TypeDefUtil.toBeanNormalForm(_attrName);
     }
     @Override
     public List<AttributeDef> normalize(List<AttributeDef> _attrDefList) {

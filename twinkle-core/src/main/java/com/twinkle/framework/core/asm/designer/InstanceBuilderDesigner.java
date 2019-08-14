@@ -118,9 +118,9 @@ public class InstanceBuilderDesigner extends AbstractClassDesigner{
         return tempVisitor;
     }
 
-    protected MethodVisitor addSyntheticNewInstanceDefinition(ClassVisitor _visitor, Type var2) {
+    protected MethodVisitor addSyntheticNewInstanceDefinition(ClassVisitor _visitor, Type _type) {
         MethodVisitor tempVisitor = _visitor.visitMethod(Opcodes.ACC_PUBLIC + Opcodes.ACC_VOLATILE + Opcodes.ACC_SYNTHETIC,
-                "newInstance", "()" + var2.getDescriptor(), (String)null, (String[])null);
+                "newInstance", "()" + _type.getDescriptor(), (String)null, (String[])null);
         tempVisitor.visitCode();
         tempVisitor.visitVarInsn(Opcodes.ALOAD, 0);
         tempVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, this.getBuilderClassName(), "newInstance", "()L" + this.getInterfaceType().getInternalName() + ";");

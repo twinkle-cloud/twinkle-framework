@@ -19,7 +19,8 @@ import java.util.List;
  */
 @Data
 @RequiredArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Slf4j
 public class MethodDefImpl implements MethodDef, Cloneable {
     /**
@@ -64,10 +65,31 @@ public class MethodDefImpl implements MethodDef, Cloneable {
      * The exceptions of this method.
      */
     private List<TypeDef> exceptions;
+    /**
+     * The instructionMethodName for this method.
+     */
+    private String instructionMethodName;
 
+    /**
+     * Get Method's descriptor.
+     *
+     * @return
+     */
     public String getDescriptor(){
-        return this.packDescriptor();
+        this.descriptor = this.packDescriptor();
+        return this.descriptor;
     }
+
+    /**
+     * Get Method's signature.
+     *
+     * @return
+     */
+    public String getSignature() {
+        this.signature = this.packDetailSignature();
+        return this.signature;
+    }
+
     /**
      * Get Method Descriptor.
      *
@@ -91,21 +113,21 @@ public class MethodDefImpl implements MethodDef, Cloneable {
      *
      * @return
      */
-//    private String packDetailSignature() {
-//        StringBuilder tempBuilder = new StringBuilder();
-//        if(CollectionUtils.isEmpty(this.parameterAttrs)) {
-//            return tempBuilder.toString();
-//        }
-//        tempBuilder.append("(");
-//        for(AttributeDef tempDefine : this.parameterAttrs) {
-//            tempBuilder.append(TypeUtil.getTypeSignature(tempDefine.getTypeDefine()));
-//        }
-//        tempBuilder.append(")");
-//        tempBuilder.append(TypeUtil.getTypeSignature(this.returnTypeDefine));
-//        if(tempBuilder.indexOf("<") < 0) {
-//            log.info("There is no generic type found, so return the empty signature.");
-//            return "";
-//        }
-//        return tempBuilder.toString();
-//    }
+    private String packDetailSignature() {
+        StringBuilder tempBuilder = new StringBuilder();
+        if(CollectionUtils.isEmpty(this.parameterAttrs)) {
+            return tempBuilder.toString();
+        }
+        tempBuilder.append("(");
+        for(AttributeDef tempDefine : this.parameterAttrs) {
+            tempBuilder.append(TypeUtil.getTypeSignature(tempDefine.getType()));
+        }
+        tempBuilder.append(")");
+        tempBuilder.append(TypeUtil.getTypeSignature(this.returnType));
+        if(tempBuilder.indexOf("<") < 0) {
+            log.info("There is no generic type found, so return the empty signature.");
+            return "";
+        }
+        return tempBuilder.toString();
+    }
 }

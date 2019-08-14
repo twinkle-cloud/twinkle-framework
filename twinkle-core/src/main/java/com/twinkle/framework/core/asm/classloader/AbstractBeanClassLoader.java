@@ -78,12 +78,12 @@ public abstract class AbstractBeanClassLoader extends EnhancedClassLoader {
                         tempInterfaceClassDesigner = this.getInterfaceDesigner(_className, tempInterfaceBeanTypeDef);
                     }
                 }
-
-                return this.defineClass(_className, tempInterfaceClassDesigner);
+                Class<?> tempClass = this.defineClass(_className, tempInterfaceClassDesigner);
+                return tempClass;
             }
         }
-
-        return super.findClass(_className);
+        Class<?> tempClass = super.findClass(_className);
+        return tempClass;
     }
 
     /**

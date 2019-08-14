@@ -3,7 +3,7 @@ package com.twinkle.framework.core.datastruct.schema;
 import com.twinkle.framework.core.datastruct.Blob;
 import com.twinkle.framework.core.datastruct.codec.BinEncoding;
 import com.twinkle.framework.core.datastruct.descriptor.AttributeDescriptor;
-import com.twinkle.framework.core.utils.AttributeUtil;
+import com.twinkle.framework.core.utils.TypeDefUtil;
 import com.twinkle.framework.core.utils.ListParser;
 import lombok.Getter;
 import lombok.Setter;
@@ -111,10 +111,10 @@ public class AttributeDefImpl implements AttributeDef, Cloneable{
 
     protected void setName(String _name) {
         this.name = _name;
-        this.getterName = AttributeUtil.getGetterName(_name);
-        this.setterName = AttributeUtil.getSetterName(_name);
-        this.constantName = AttributeUtil.getConstantName(_name);
-        this.fieldName = AttributeUtil.getFieldName(_name);
+        this.getterName = TypeDefUtil.getGetterName(_name);
+        this.setterName = TypeDefUtil.getSetterName(_name);
+        this.constantName = TypeDefUtil.getConstantName(_name);
+        this.fieldName = TypeDefUtil.getFieldName(_name);
     }
 
     @Override

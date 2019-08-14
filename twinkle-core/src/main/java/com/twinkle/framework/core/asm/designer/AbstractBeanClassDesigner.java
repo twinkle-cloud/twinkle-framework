@@ -219,7 +219,6 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
         if (!tempAttrDefList.isEmpty()) {
             this.addClassConstructorDefinition(_visitor, _className, tempAttrDefList);
         }
-
     }
 
     protected boolean clinit(AttributeDef _attrDef) {
@@ -250,7 +249,7 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
             tempSignature = null;
         }
         Type tepmFieldType = _attrDef.getType().getType();
-        FieldVisitor tempFieldVistor = _visitor.visitField(26, this.getDefaultConstantName(_attrDef), TypeUtil.getFieldDescriptor(tepmFieldType), tempSignature, _value);
+        FieldVisitor tempFieldVistor = _visitor.visitField(Opcodes.ACC_PRIVATE + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL, this.getDefaultConstantName(_attrDef), TypeUtil.getFieldDescriptor(tepmFieldType), tempSignature, _value);
         tempFieldVistor.visitEnd();
         return tempFieldVistor;
     }

@@ -2,6 +2,7 @@ package com.twinkle.framework.configure.component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.config.Configurable;
+import com.twinkle.framework.core.datastruct.Bean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -53,5 +54,22 @@ public class ComponentFactory implements IComponentFactory {
             throw new IllegalArgumentException("Problem loading class:" + tempClassName);
         }
         return null;
+    }
+
+    @Override
+    public void registerCustomizeBean(Bean _bean) {
+//        try {
+//            if (null != _bean) {
+//                context.registerBean("",
+//                        _bean.getClass(), () -> _bean);
+//
+//                log.debug("Load the bean [{}] had been successfully.",
+//                        _bean);
+//            }
+//        } catch (NoClassDefFoundError ex) {
+//            throw new IllegalArgumentException("Cannot resolve dependencies for class: " + tempClassName);
+//        } catch (Throwable te) {
+//            throw new IllegalArgumentException("Problem loading class:" + tempClassName);
+//        }
     }
 }

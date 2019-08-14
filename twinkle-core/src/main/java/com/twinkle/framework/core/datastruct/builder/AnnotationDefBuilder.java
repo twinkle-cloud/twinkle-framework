@@ -86,13 +86,13 @@ public class AnnotationDefBuilder {
      * Get annotation's elements defines.
      *
      * @param _annotationClass
-     * @param var1
+     * @param _itemStr
      * @param _classLoader
      * @return
      * @throws ClassNotFoundException
      */
-    protected static AnnotationElementDef getAnnotationElementDef(Class<? extends Annotation> _annotationClass, String var1, ClassLoader _classLoader) throws ClassNotFoundException {
-        List<String> tempAnnotationParamterList = ListParser.parseList(var1, "=", ANNOTATION_BRACKETS);
+    protected static AnnotationElementDef getAnnotationElementDef(Class<? extends Annotation> _annotationClass, String _itemStr, ClassLoader _classLoader) throws ClassNotFoundException {
+        List<String> tempAnnotationParamterList = ListParser.parseList(_itemStr, "=", ANNOTATION_BRACKETS);
         String tempParameter;
         String tempValue;
         if (tempAnnotationParamterList.size() > 1) {

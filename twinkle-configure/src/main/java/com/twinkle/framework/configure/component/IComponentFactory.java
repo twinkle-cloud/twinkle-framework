@@ -2,6 +2,7 @@ package com.twinkle.framework.configure.component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.config.Configurable;
+import com.twinkle.framework.core.datastruct.Bean;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -21,4 +22,6 @@ public interface IComponentFactory {
      * @return
      */
     <T extends Configurable> T loadComponent(JSONObject _obj);
+
+    void registerCustomizeBean(Bean _bean);
 }
