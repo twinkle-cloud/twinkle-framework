@@ -2,6 +2,7 @@ package com.twinkle.framework.core.lang;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.objectweb.asm.Type;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -43,6 +44,16 @@ public class AttributeInfo {
      * The description of the attribute class.
      */
     private String description;
+
+    public AttributeInfo(int _type, int _primitiveType, String _name, int _index, Class<?> _class) {
+        this.type = _type;
+        this.primitiveType = _primitiveType;
+        this.name = _name;
+        this.index = _index;
+        this.className = _class.getName();
+        this.attributeClass = _class;
+        this.description = Type.getDescriptor(_class);
+    }
 
     public AttributeInfo(int _type, int _primitiveType, String _name, int _index, String _className) {
         this(_type, _primitiveType, _name, _index, _className, null);

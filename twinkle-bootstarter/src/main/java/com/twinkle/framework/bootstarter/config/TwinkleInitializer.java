@@ -1,17 +1,12 @@
 package com.twinkle.framework.bootstarter.config;
 
-import com.alibaba.fastjson.JSONObject;
-import com.twinkle.framework.api.constant.ExceptionCode;
-import com.twinkle.framework.api.exception.ConfigurationException;
-import com.twinkle.framework.bootstarter.service.HelloWorldService;
-import com.twinkle.framework.bootstarter.service.HelloWorldServiceImpl;
+import com.twinkle.framework.bootstarter.service.HelloWorld2Service;
+import com.twinkle.framework.bootstarter.service.HelloWorld2ServiceImpl;
 import com.twinkle.framework.configure.component.IComponentFactory;
-import com.twinkle.framework.connector.ConnectorManager;
 import com.twinkle.framework.core.asm.classloader.BeanClassLoader;
 import com.twinkle.framework.core.asm.factory.BeanFactoryImpl;
 import com.twinkle.framework.core.datastruct.BeanFactory;
 import com.twinkle.framework.core.datastruct.descriptor.*;
-import com.twinkle.framework.ruleengine.RuleChainManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +17,6 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.util.ClassUtils;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 
 import java.util.ArrayList;
@@ -39,7 +33,7 @@ import java.util.Set;
  * @since JDK 1.8
  */
 @Slf4j
-@Configuration
+//@Configuration
 public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor{
     private final static String KEY_CONNECTOR_MANAGER = "Connectors";
     private final static String KEY_RULECHAIN_MANAGER = "RuleChains";
@@ -97,7 +91,7 @@ public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor{
 
         //构造bean定义
         beanDefinitionBuilder = BeanDefinitionBuilder
-                .genericBeanDefinition(HelloWorldService.class, () ->new HelloWorldServiceImpl());
+                .genericBeanDefinition(HelloWorld2Service.class, () ->new HelloWorld2ServiceImpl());
         beanDefinition = beanDefinitionBuilder.getRawBeanDefinition();
         //注册bean定义
         registry.registerBeanDefinition("helloWorldService", beanDefinition);
@@ -105,13 +99,13 @@ public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor{
 
 
     }
-    private <T extends HelloWorldService> void registerService(){
+    private <T extends HelloWorld2Service> void registerService(){
         try{
-            Class<HelloWorldService> tempBeanClass = HelloWorldService.class;
+            Class<HelloWorld2Service> tempBeanClass = HelloWorld2Service.class;
 
-            HelloWorldService tempObj = new HelloWorldServiceImpl();
+            HelloWorld2Service tempObj = new HelloWorld2ServiceImpl();
             genericWebApplicationContext.registerBean("helloWorldService",
-                    HelloWorldServiceImpl.class, () -> new HelloWorldServiceImpl());
+                    HelloWorld2ServiceImpl.class, () -> new HelloWorld2ServiceImpl());
             log.debug("The new obj is:{}", tempBeanClass);
         } catch (NoClassDefFoundError ex) {
             throw new IllegalArgumentException("Cannot resolve dependencies for class: " + ex);
@@ -122,6 +116,7 @@ public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor{
 //        Class<?> tempClass = tempObj.getClass();
 //        log.debug("The new obj Class is:{}", tempBeanClass);
     }
+
     private TypeDescriptors packDescriptors() {
         List<TypeDescriptor> tempDecriptorList = new ArrayList<>();
         tempDecriptorList.add(this.packDescriptor());

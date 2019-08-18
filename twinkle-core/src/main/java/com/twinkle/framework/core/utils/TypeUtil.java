@@ -4,10 +4,7 @@ import com.twinkle.framework.core.asm.constants.AsmConstant;
 import com.twinkle.framework.core.asm.data.TypeDefine;
 import com.twinkle.framework.core.datastruct.Bean;
 import com.twinkle.framework.core.datastruct.annotation.Key;
-import com.twinkle.framework.core.datastruct.schema.AttributeDef;
-import com.twinkle.framework.core.datastruct.schema.GenericTypeDef;
-import com.twinkle.framework.core.datastruct.schema.GenericTypeDefImpl;
-import com.twinkle.framework.core.datastruct.schema.TypeDef;
+import com.twinkle.framework.core.datastruct.schema.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.objectweb.asm.Opcodes;
@@ -40,6 +37,7 @@ public class TypeUtil {
     public static final Type LONG_ARRAY_TYPE = Type.getType(long[].class);
     public static final Type FLOAT_ARRAY_TYPE = Type.getType(float[].class);
     public static final Type DOUBLE_ARRAY_TYPE = Type.getType(double[].class);
+    public static final Type STRING_ARRAY_TYPE = Type.getType(String[].class);
     public static final Type OBJECT_TYPE = Type.getType(Object.class);
     public static final Type STRING_TYPE = Type.getType(String.class);
     public static final Type CLASS_TYPE = Type.getType(Class.class);
@@ -245,7 +243,11 @@ public class TypeUtil {
             tempBuilder.append(((GenericTypeDefImpl) _typeDef).getFieldSignature());
             return tempBuilder.toString();
         }
-        tempBuilder.append(Type.getDescriptor(_typeDef.getType().getClass()));
+        if(_typeDef instanceof ClassTypeDef) {
+            tempBuilder.append(Type.getDescriptor(((ClassTypeDef)_typeDef).getTypeClass()));
+            return tempBuilder.toString();
+        }
+        tempBuilder.append(_typeDef.getType().getDescriptor());
         return tempBuilder.toString();
     }
 

@@ -51,8 +51,8 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
     }
 
     @Override
-    protected void addMethodsDefinition(ClassVisitor _visitor, String _className, List<AttributeDef> _attrDefList) {
-        super.addMethodsDefinition(_visitor, _className, _attrDefList);
+    protected void addGetterSetterMethodsDefinition(ClassVisitor _visitor, String _className, List<AttributeDef> _attrDefList) {
+        super.addGetterSetterMethodsDefinition(_visitor, _className, _attrDefList);
 
         _attrDefList.parallelStream().forEach(item -> {
             this.addFlagGetterDefinition(_visitor, _className, item);

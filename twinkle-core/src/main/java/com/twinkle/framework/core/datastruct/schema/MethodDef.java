@@ -60,4 +60,25 @@ public interface MethodDef {
      * @return
      */
     List<TypeDef> getExceptions();
+
+    /**
+     * Get the descriptor of this method.
+     *
+     * @return
+     */
+    String getDescriptor();
+
+    /**
+     * Get the signature of this method.
+     *
+     * @return
+     */
+    String getSignature();
+
+    /**
+     * The get pack instruction method name for this method.
+     *
+     * @return
+     */
+    String getInstructionMethodName();
 }

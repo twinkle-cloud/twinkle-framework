@@ -1,8 +1,6 @@
 package com.twinkle.framework.core.datastruct.builder;
 
-import com.twinkle.framework.core.datastruct.descriptor.AttributeDescriptor;
 import com.twinkle.framework.core.datastruct.descriptor.MethodTypeDescriptor;
-import com.twinkle.framework.core.datastruct.schema.AttributeDef;
 import com.twinkle.framework.core.datastruct.schema.MethodDef;
 import com.twinkle.framework.core.datastruct.schema.MethodDefImpl;
 import com.twinkle.framework.core.datastruct.schema.TypeDef;
@@ -62,7 +60,7 @@ public class MethodDefBuilder {
         }
         List<MethodDef> tempResultList = new ArrayList<>(_descriptors.size());
         for(MethodTypeDescriptor tempItem : _descriptors) {
-            getMethodDef(tempItem, _classLoader, _typeDefMap);
+            tempResultList.add(getMethodDef(tempItem, _classLoader, _typeDefMap));
         }
         return tempResultList;
     }

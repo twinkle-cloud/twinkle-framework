@@ -20,17 +20,32 @@ public class GenericTypeDefImpl extends ClassTypeDefImpl implements GenericTypeD
         super(_name, _typeClass);
         this.typeParameters = _genericTypeArray;
     }
-
+    @Override
     public String getFieldSignature() {
         return getGenericFieldSignature(this.getType(), this.getTypeParameters());
     }
-
+    @Override
     public String getGetterSignature() {
         return getGenericGetterSignature(this.getType(), this.getTypeParameters());
     }
-
+    @Override
     public String getSetterSignature() {
         return getGenericSetterSignature(this.getType(), this.getTypeParameters());
+    }
+
+    @Override
+    public String getFieldDescriptor() {
+        return getGenericDescriptor(this.getType(), this.getTypeParameters());
+    }
+
+    @Override
+    public String getGetterDescriptor() {
+        return getGenericDescriptor(this.getType(), this.getTypeParameters());
+    }
+
+    @Override
+    public String getSetterDescriptor() {
+        return getGenericDescriptor(this.getType(), this.getTypeParameters());
     }
 
     @Override

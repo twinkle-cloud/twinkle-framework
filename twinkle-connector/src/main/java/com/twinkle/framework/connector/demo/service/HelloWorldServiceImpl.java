@@ -1,4 +1,4 @@
-package com.twinkle.framework.bootstarter.service;
+package com.twinkle.framework.connector.demo.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * @since JDK 1.8
  */
 @Slf4j
-//@Service
+@Service
 public class HelloWorldServiceImpl implements HelloWorldService{
     @Override
     public String sayHello(String _name) {

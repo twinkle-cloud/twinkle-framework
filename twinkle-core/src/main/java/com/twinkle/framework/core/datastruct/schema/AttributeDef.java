@@ -18,6 +18,13 @@ public interface AttributeDef {
     String FLAG_SUFFIX = "Flag";
     String DEFAULT_SUFFIX = "Default";
 
+    /**
+     * Get Field Access.
+     *
+     * @return
+     */
+    int getAccess();
+
     String getName();
 
     TypeDef getType();

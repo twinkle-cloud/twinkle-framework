@@ -131,16 +131,21 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
                         AnnotationVisitor tempAnnotationVisitor2 = tempAnnotationVisitor.visitAnnotation(null, tempElementType.getDescriptor());
                         this.addAnnotationElements(tempAnnotationVisitor2, (AnnotationDef)tempItemValueObj);
                         tempAnnotationVisitor2.visitEnd();
+                    } else if (tempItemValueObj instanceof String[]) {
+                        String[] typeValue = (String[]) tempItemValueObj;
+                        tempAnnotationVisitor.visitEnum(null, typeValue[0], typeValue[1]);
                     } else {
                         tempAnnotationVisitor.visit(null, tempItemValueObj);
                     }
                 }
-
                 tempAnnotationVisitor.visitEnd();
             } else if (tempValue instanceof AnnotationDef) {
                 AnnotationVisitor tempAnnotationVisitor = _visitor.visitAnnotation(null, tempType.getDescriptor());
                 this.addAnnotationElements(tempAnnotationVisitor, (AnnotationDef)tempValue);
                 tempAnnotationVisitor.visitEnd();
+            } else if (tempValue instanceof String[]) {
+                String[] typeValue = (String[]) tempValue;
+                _visitor.visitEnum(item.getName(), typeValue[0], typeValue[1]);
             } else {
                 _visitor.visit(item.getName(), tempValue);
             }
@@ -189,14 +194,14 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
      * @return
      */
     protected AnnotationVisitor addMethodAnnotation(MethodVisitor _visitor, AnnotationDef _annotationDef, AnnotationDef.Kind _kind) {
-        if (_annotationDef.getKind() == _kind) {
+//        if (_annotationDef.getKind() == _kind) {
             AnnotationVisitor tempVisitor = _visitor.visitAnnotation(_annotationDef.getType().getDescriptor(), true);
             this.addAnnotationElements(tempVisitor, _annotationDef);
             tempVisitor.visitEnd();
             return tempVisitor;
-        } else {
-            return null;
-        }
+//        } else {
+//            return null;
+//        }
     }
 
     /**
@@ -221,6 +226,12 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
         }
     }
 
+    /**
+     * Judge the attribute is valid for clinit() method or not?
+     *
+     * @param _attrDef
+     * @return
+     */
     protected boolean clinit(AttributeDef _attrDef) {
         return !_attrDef.getType().isPrimitive() && !this._notToClInitDefaults.contains(_attrDef.getType().getType());
     }
@@ -249,7 +260,7 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
             tempSignature = null;
         }
         Type tepmFieldType = _attrDef.getType().getType();
-        FieldVisitor tempFieldVistor = _visitor.visitField(Opcodes.ACC_PRIVATE + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL, this.getDefaultConstantName(_attrDef), TypeUtil.getFieldDescriptor(tepmFieldType), tempSignature, _value);
+        FieldVisitor tempFieldVistor = _visitor.visitField(_attrDef.getAccess(), _attrDef.getFieldName(), TypeUtil.getFieldDescriptor(tepmFieldType), tempSignature, _value);
         tempFieldVistor.visitEnd();
         return tempFieldVistor;
     }
@@ -304,6 +315,11 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
                 }
 
                 tempVisitor.visitFieldInsn(Opcodes.PUTSTATIC, _className, this.getDefaultConstantName(item), TypeUtil.getFieldDescriptor(item.getType().getType()));
+            } else if (tempDefaultValue instanceof StaticAttributeValueDef) {
+                tempVisitor.visitLdcInsn(Type.getObjectType(_className));
+                StaticAttributeValueDef tempValue = (StaticAttributeValueDef) tempDefaultValue;
+                tempVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, tempValue.getClassInternalName(), tempValue.getMethodName(), tempValue.getMethodDescriptor());
+                tempVisitor.visitFieldInsn(Opcodes.PUTSTATIC, _className, item.getFieldName(), TypeUtil.getFieldDescriptor(item.getType().getType()));
             } else {
                 this.addObjectClassConstructorDefinition(tempVisitor, _className, item, tempInitCount.getAndIncrement());
             }
@@ -338,6 +354,11 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
 
                 _visitor.visitLdcInsn(tempValueObj);
                 _visitor.visitMethodInsn(Opcodes.INVOKESTATIC, tempAttrType.getInternalName(), "valueOf", TypeUtil.getMethodDescriptor(new Type[]{TypeUtil.STRING_TYPE}, tempAttrType));
+                _visitor.visitFieldInsn(Opcodes.PUTSTATIC, _className, this.getDefaultConstantName(_attrDef), TypeUtil.getFieldDescriptor(tempAttrType));
+            } else if (tempValueObj instanceof StaticAttributeValueDef) {
+                _visitor.visitLdcInsn(Type.getObjectType(_className));
+                StaticAttributeValueDef tempValueDef = (StaticAttributeValueDef) tempValueObj;
+                _visitor.visitMethodInsn(Opcodes.INVOKESTATIC, tempValueDef.getClassInternalName(), tempValueDef.getMethodName(), tempValueDef.getMethodDescriptor());
                 _visitor.visitFieldInsn(Opcodes.PUTSTATIC, _className, this.getDefaultConstantName(_attrDef), TypeUtil.getFieldDescriptor(tempAttrType));
             } else {
                 _visitor.visitTypeInsn(Opcodes.NEW, tempAttrType.getInternalName());

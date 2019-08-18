@@ -34,8 +34,8 @@ public class SimpleReflectiveBeanClassDesigner extends AbstractReflectiveBeanCla
         return new String[]{Bean.class.getName(), RecyclableBean.class.getName(), SimpleReflectiveBean.class.getName(), Cloneable.class.getName()};
     }
     @Override
-    protected void addMethodsDefinition(ClassVisitor _visitor, String _className, List<AttributeDef> _attrDefList) {
-        super.addMethodsDefinition(_visitor, _className, _attrDefList);
+    protected void addGetterSetterMethodsDefinition(ClassVisitor _visitor, String _className, List<AttributeDef> _attrDefList) {
+        super.addGetterSetterMethodsDefinition(_visitor, _className, _attrDefList);
         List<AttributeDef> tempSortedAttrDefList = this.sort(_attrDefList);
         this.addAttributeGettersSetters(_visitor, _className, tempSortedAttrDefList);
         this.addAttributeGetFlagDefinition(_visitor, _className, tempSortedAttrDefList);

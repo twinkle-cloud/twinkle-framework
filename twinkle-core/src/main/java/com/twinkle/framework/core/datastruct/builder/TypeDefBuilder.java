@@ -169,6 +169,6 @@ public class TypeDefBuilder {
             tempResultList = ListParser.parseList(_className, TYPE_TERMINATOR, true);
         }
 
-        return (String[])tempResultList.toArray(new String[tempResultList.size()]);
+        return tempResultList.toArray(new String[tempResultList.size()]);
     }
 }

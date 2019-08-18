@@ -1,18 +1,11 @@
 package com.twinkle.framework.core.datastruct.schema;
 
-import com.sun.tools.doclets.internal.toolkit.builders.MethodBuilder;
 import com.twinkle.framework.core.datastruct.builder.MethodDefBuilder;
-import com.twinkle.framework.core.datastruct.descriptor.BeanTypeDescriptor;
 import com.twinkle.framework.core.datastruct.descriptor.GeneralClassTypeDescriptor;
-import com.twinkle.framework.core.datastruct.descriptor.MethodTypeDescriptor;
-import lombok.Builder;
 import lombok.Data;
-import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -24,7 +17,6 @@ import java.util.stream.Collectors;
  * @since JDK 1.8
  */
 @Data
-@Builder
 public class GeneralClassTypeDefImpl extends BeanTypeDefImpl implements GeneralClassTypeDef {
     /**
      * Class's methods.

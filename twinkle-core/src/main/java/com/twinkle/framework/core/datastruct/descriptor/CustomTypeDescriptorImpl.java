@@ -15,9 +15,9 @@ public class CustomTypeDescriptorImpl implements TypeDescriptor {
     private final TypeDescriptor typeDescriptor;
     private final String className;
 
-    public CustomTypeDescriptorImpl(TypeDescriptor _typeDescriptor, String _elementClassName) {
+    public CustomTypeDescriptorImpl(TypeDescriptor _typeDescriptor, String _className) {
         this.typeDescriptor = _typeDescriptor;
-        this.className = _elementClassName;
+        this.className = _className;
     }
     @Override
     public String getClassName() {
@@ -46,7 +46,7 @@ public class CustomTypeDescriptorImpl implements TypeDescriptor {
     @Override
     public String toString() {
         StringBuilder tempBuilder = new StringBuilder();
-        tempBuilder.append("CustomTypeDescriptorImpl [\n_elementJavaClassName=").append(this.className).append(", \n_typeDescriptor=").append(this.typeDescriptor).append("\n]");
+        tempBuilder.append("CustomTypeDescriptorImpl [\n_className=").append(this.className).append(", \n_typeDescriptor=").append(this.typeDescriptor).append("\n]");
         return tempBuilder.toString();
     }
 }

@@ -2,7 +2,7 @@ package com.twinkle.framework.bootstarter.controller;
 
 import com.twinkle.framework.api.constant.ResultCode;
 import com.twinkle.framework.bootstarter.data.HelloRequest;
-import com.twinkle.framework.bootstarter.service.HelloWorldService;
+import com.twinkle.framework.bootstarter.service.HelloWorld2Service;
 import com.twinkle.framework.api.data.GeneralResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @Api
 public class HelloController {
     @Autowired
-    private HelloWorldService helloWorldService;
+    private HelloWorld2Service helloWorldService;
 
     @ApiOperation(value = "获取用户Token")
     @RequestMapping(value = "authsec/token/{_userName}", method = RequestMethod.POST)

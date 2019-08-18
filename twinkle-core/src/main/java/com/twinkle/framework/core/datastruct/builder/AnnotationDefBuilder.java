@@ -5,6 +5,7 @@ import com.twinkle.framework.core.datastruct.schema.AnnotationDefImpl;
 import com.twinkle.framework.core.datastruct.schema.AnnotationElementDef;
 import com.twinkle.framework.core.datastruct.schema.AnnotationElementDefImpl;
 import com.twinkle.framework.core.utils.ListParser;
+import com.twinkle.framework.core.utils.TypeUtil;
 import org.objectweb.asm.Type;
 
 import java.lang.annotation.Annotation;
@@ -147,12 +148,19 @@ public class AnnotationDefBuilder {
             }
         } else if (String.class.equals(tempReturnTypeClass)) {
             tempObjValue = ListParser.stripQuotes(tempValue);
+        } else if (tempReturnTypeClass.isEnum()) {
+            String tempEnumValue = ListParser.stripQuotes(tempValue);
+            tempEnumValue = tempEnumValue.substring(tempEnumValue.lastIndexOf(".") + 1);
+
+            tempObjValue = new String[] {Type.getDescriptor(tempReturnTypeClass),
+                    tempEnumValue
+            };
         } else {
             if (!tempReturnTypeClass.isArray()) {
                 throw new UnsupportedOperationException(tempReturnTypeClass.getName());
             }
 
-            List<String> tempValueList = ListParser.parseList(ListParser.substringBetweenCurlyBraces(tempValue), COMMA_SEPARATOR, ANNOTATION_BRACKETS);
+            List<String> tempValueList = ListParser.parseList(ListParser.subAnnotationValueBetweenCurlyBraces(tempValue), COMMA_SEPARATOR, ANNOTATION_BRACKETS);
             Class tempReturnComponentClass = tempReturnTypeClass.getComponentType();
             int i;
             if (tempReturnComponentClass.isAnnotation()) {
@@ -223,6 +231,16 @@ public class AnnotationDefBuilder {
                             return new AnnotationElementDefImpl(tempValueType, tempParameter, tempObjValue);
                         default:
                             throw new UnsupportedOperationException();
+                    }
+                } else if (tempReturnComponentClass.isEnum()) {
+                    tempObjValue = Array.newInstance(String[].class, tempValueList.size());
+                    for(i = 0; i < tempValueList.size(); i++) {
+                        tempValueItem = ListParser.stripQuotes(tempValueList.get(i));
+                        String tempEnumValue = tempValueItem.substring(tempValueItem.lastIndexOf(".") + 1);
+                        Array.set(tempObjValue, i, new String[]{
+                                Type.getDescriptor(tempReturnComponentClass),
+                                tempEnumValue
+                        });
                     }
                 } else {
                     if (!String.class.equals(tempReturnComponentClass)) {

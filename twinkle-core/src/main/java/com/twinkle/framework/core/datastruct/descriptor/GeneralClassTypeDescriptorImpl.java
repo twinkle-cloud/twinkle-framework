@@ -1,6 +1,5 @@
 package com.twinkle.framework.core.datastruct.descriptor;
 
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -17,15 +16,25 @@ import java.util.Set;
  * @since JDK 1.8
  */
 @Data
-@Builder
 public class GeneralClassTypeDescriptorImpl extends BeanTypeDescriptorImpl implements GeneralClassTypeDescriptor {
     /**
      * Class's methods.
      */
     private List<MethodTypeDescriptor> methods;
 
-    public GeneralClassTypeDescriptorImpl(String className, String name, String description, List<AttributeDescriptor> attributes, List<String> parentNames, Set<BeanTypeDescriptor> parents, Set<String> annotations, List<BeanTypeDescriptor> interfaces) {
-        super(className, name, description, attributes, parentNames, parents, annotations, interfaces);
+    public GeneralClassTypeDescriptorImpl(String _className, String _name, String _description, List<AttributeDescriptor> _attributes, Set<String> _annotations, List<MethodTypeDescriptor> methods) {
+        super(_className, _name, _description, _attributes, _annotations);
+        this.methods = methods;
+    }
+
+    public GeneralClassTypeDescriptorImpl(String _className, String _name, String _description, List<AttributeDescriptor> _attributes, Set<String> _annotations, List<BeanTypeDescriptor> _interfaces, List<MethodTypeDescriptor> methods) {
+        super(_className, _name, _description, _attributes, _annotations, _interfaces);
+        this.methods = methods;
+    }
+
+    public GeneralClassTypeDescriptorImpl(String _className, String _name, String _description, List<AttributeDescriptor> _attributes, List<String> _parentNames, Set<String> _annotations, List<BeanTypeDescriptor> _interfaces, List<MethodTypeDescriptor> methods) {
+        super(_className, _name, _description, _attributes, _parentNames, _annotations, _interfaces);
+        this.methods = methods;
     }
 
     /**

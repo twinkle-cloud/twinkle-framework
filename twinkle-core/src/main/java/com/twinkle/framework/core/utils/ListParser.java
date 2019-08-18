@@ -1,5 +1,7 @@
 package com.twinkle.framework.core.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -308,6 +310,22 @@ public class ListParser {
      * @return
      */
     public static String substringBetweenCurlyBraces(String _str) {
+        return substringBetween(_str, LEFT_CURLY_BRACE, RIGHT_CURLY_BRACE);
+    }
+
+    /**
+     * Substring the given string to get the annotation value.
+     *
+     * @param _str
+     * @return
+     */
+    public static String subAnnotationValueBetweenCurlyBraces(String _str) {
+        if(StringUtils.isBlank(_str)) {
+            return "";
+        }
+        if(_str.indexOf(LEFT_CURLY_BRACE) > 0) {
+            return _str;
+        }
         return substringBetween(_str, LEFT_CURLY_BRACE, RIGHT_CURLY_BRACE);
     }
 

@@ -68,16 +68,16 @@ public class ContextSchema {
     public void updateContextSchema(String[][] _attrColumns) throws IllegalArgumentException {
         List<String> attrNameList = new ArrayList();
         List<String> attrTypeList = new ArrayList();
-        List<String> attrValueList = new ArrayList();
-        this.collectNewAttributes(_attrColumns, attrNameList, attrTypeList, attrValueList);
+        List<String> attrDescriptorList = new ArrayList();
+        this.collectNewAttributes(_attrColumns, attrNameList, attrTypeList, attrDescriptorList);
 
         for (int i = 0; i < attrNameList.size(); i++) {
-            this.addAttribute(attrNameList.get(i), attrTypeList.get(i), attrValueList.get(i));
+            this.addAttribute(attrNameList.get(i), attrTypeList.get(i), attrDescriptorList.get(i));
         }
 
     }
 
-    private void collectNewAttributes(String[][] _attrColumns, List<String> _attrNameList, List<String> _attrTypeList, List<String> _attrValueList) throws IllegalArgumentException {
+    private void collectNewAttributes(String[][] _attrColumns, List<String> _attrNameList, List<String> _attrTypeList, List<String> _attrDescriptorList) throws IllegalArgumentException {
         this.readLock.lock();
         try {
             for (int i = 0; i < _attrColumns.length; i++) {
@@ -88,7 +88,7 @@ public class ContextSchema {
                 if (!this.attributeNameMap.containsKey(_attrColumns[i][0])) {
                     _attrNameList.add(_attrColumns[i][0]);
                     _attrTypeList.add(_attrColumns[i][1]);
-                    _attrValueList.add(_attrColumns[i][2]);
+                    _attrDescriptorList.add(_attrColumns[i][2]);
                 }
             }
         } finally {
@@ -110,10 +110,10 @@ public class ContextSchema {
     }
 
     public void addAttribute(String _attrName, String _attrType) {
-        this.addAttribute(_attrName, _attrType, (String) null);
+        this.addAttribute(_attrName, _attrType, null);
     }
 
-    public void addAttribute(String _attrName, String _attrType, String _attrValue) {
+    public void addAttribute(String _attrName, String _attrType, String _descriptor) {
         this.writeLock.lock();
         try {
             int tempTypeId;
@@ -134,7 +134,7 @@ public class ContextSchema {
 
             AttributeInfo tempAttrInfo = this.getAttribute(_attrName, false);
             if (tempAttrInfo == null) {
-                tempAttrInfo = new AttributeInfo(tempTypeId, tempPrimitiveType, _attrName, this.attributeCount++, _attrType, _attrValue);
+                tempAttrInfo = new AttributeInfo(tempTypeId, tempPrimitiveType, _attrName, this.attributeCount++, _attrType, _descriptor);
                 this.attributeNameMap.put(_attrName.toLowerCase(), tempAttrInfo);
                 this.attributeList.add(tempAttrInfo);
                 this.initialized = true;
@@ -143,7 +143,7 @@ public class ContextSchema {
                 this.initialized = true;
             } else {
                 log.info("ContextSchema-Going to add new attr.", new Object[]{_attrName, tempAttrInfo.getClassName(), _attrType});
-                tempAttrInfo = new AttributeInfo(tempTypeId, tempPrimitiveType, _attrName, tempAttrInfo.getIndex(), _attrType, _attrValue);
+                tempAttrInfo = new AttributeInfo(tempTypeId, tempPrimitiveType, _attrName, tempAttrInfo.getIndex(), _attrType, _descriptor);
                 this.attributeNameMap.put(_attrName.toLowerCase(), tempAttrInfo);
                 this.attributeList.set(tempAttrInfo.getIndex(), tempAttrInfo);
             }

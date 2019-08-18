@@ -1,6 +1,5 @@
 package com.twinkle.framework.core.datastruct.descriptor;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,7 +15,6 @@ import java.util.*;
  * @since JDK 1.8
  */
 @Data
-@AllArgsConstructor
 @Builder
 public class BeanTypeDescriptorImpl implements BeanTypeDescriptor {
     private final String className;
@@ -28,21 +26,43 @@ public class BeanTypeDescriptorImpl implements BeanTypeDescriptor {
     private Set<String> annotations;
     private final List<BeanTypeDescriptor> interfaces;
 
-    private BeanTypeDescriptorImpl(String _className, String _name, String _description, List<AttributeDescriptor> _attributes, List<String> _parentNames, Set<String> _annotations, List<BeanTypeDescriptor> _interfaces) {
+    public BeanTypeDescriptorImpl(String _className, String _name, String _description, List<AttributeDescriptor> _attributes, Set<String> _annotations) {
+        this(_className, _name, _description, _attributes, Collections.EMPTY_LIST,
+                new HashSet(4), _annotations,
+                Collections.EMPTY_LIST
+        );
+    }
+
+    public BeanTypeDescriptorImpl(String _className, String _name, String _description, List<AttributeDescriptor> _attributes, Set<String> _annotations, List<BeanTypeDescriptor> _interfaces) {
+        this(_className, _name, _description, _attributes, Collections.EMPTY_LIST,
+                new HashSet(_interfaces.size()), _annotations,
+                _interfaces
+        );
+    }
+
+    public BeanTypeDescriptorImpl(String _className, String _name, String _description, List<AttributeDescriptor> _attributes, List<String> _parentNames, Set<String> _annotations, List<BeanTypeDescriptor> _interfaces) {
+        this(_className, _name, _description, _attributes, _parentNames,
+                new HashSet(_interfaces.size() + _parentNames.size()), _annotations,
+                _interfaces
+        );
+    }
+
+    private BeanTypeDescriptorImpl(String _className, String _name, String _description, List<AttributeDescriptor> _attributes, List<String> _parentNames, Set<BeanTypeDescriptor> _parents, Set<String> _annotations, List<BeanTypeDescriptor> _interfaces) {
         this.className = _className;
         this.name = _name;
         this.description = _description;
         this.attributes = _attributes;
         this.parentNames = _parentNames;
         this.annotations = _annotations;
-        this.parents = new HashSet(_interfaces.size() + this.parentNames.size());
-        this.interfaces = _interfaces;
+        this.parents = _parents == null? Collections.EMPTY_SET : _parents;
+        this.interfaces = _interfaces == null ? Collections.EMPTY_LIST : _interfaces;
         this.parents.addAll(_interfaces);
     }
+
     @Override
     public AttributeDescriptor getAttribute(String _attrName) {
         Optional<AttributeDescriptor> tempResult = this.attributes.stream().parallel().filter(item -> item.getName().equals(_attrName)).findFirst();
-        if(tempResult.isPresent()) {
+        if (tempResult.isPresent()) {
             return tempResult.get();
         }
         return null;
@@ -52,6 +72,7 @@ public class BeanTypeDescriptorImpl implements BeanTypeDescriptor {
     public boolean isBean() {
         return true;
     }
+
     @Override
     public boolean isPrimitive() {
         return false;
@@ -60,6 +81,7 @@ public class BeanTypeDescriptorImpl implements BeanTypeDescriptor {
     public void addParents(Collection<BeanTypeDescriptor> _parentDescriptors) {
         this.parents.addAll(_parentDescriptors);
     }
+
     @Override
     public String toString() {
         StringBuilder tempBuilder = new StringBuilder();

@@ -18,4 +18,11 @@ public interface GenericTypeDef extends ClassTypeDef {
      * @return
      */
     Type[] getTypeParameters();
+
+    String getFieldDescriptor();
+    String getGetterDescriptor();
+    String getSetterDescriptor();
+    String getFieldSignature();
+    String getGetterSignature();
+    String getSetterSignature();
 }

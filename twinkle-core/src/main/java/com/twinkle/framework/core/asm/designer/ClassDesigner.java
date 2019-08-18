@@ -1,5 +1,7 @@
 package com.twinkle.framework.core.asm.designer;
 
+import org.objectweb.asm.Opcodes;
+
 import java.io.PrintWriter;
 
 /**
@@ -15,7 +17,7 @@ public interface ClassDesigner {
     /**
      * By default the version is JDK1.8
      */
-    int TARGET_JVM = 52;
+    int TARGET_JVM = Opcodes.V1_8;
     int AUTO_CALCULATE_STACK_SIZE_AND_LOCAL_VARS_NUMBER = 3;
     int AUTO_STACK_SIZE = 0;
     int AUTO_LOCAL_VARS = 0;

@@ -3,10 +3,11 @@ package com.twinkle.framework.core.datastruct.schema;
 import com.twinkle.framework.core.datastruct.Blob;
 import com.twinkle.framework.core.datastruct.codec.BinEncoding;
 import com.twinkle.framework.core.datastruct.descriptor.AttributeDescriptor;
-import com.twinkle.framework.core.utils.TypeDefUtil;
 import com.twinkle.framework.core.utils.ListParser;
+import com.twinkle.framework.core.utils.TypeDefUtil;
 import lombok.Getter;
 import lombok.Setter;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import java.lang.reflect.Array;
@@ -22,8 +23,9 @@ import java.util.*;
  * @since JDK 1.8
  */
 @Getter
-public class AttributeDefImpl implements AttributeDef, Cloneable{
+public class AttributeDefImpl implements AttributeDef, Cloneable {
     public static final Set<String> RESERVED_ATTRIBUTE_NAMES = new HashSet(Arrays.asList("class", "Class", "type", "Type"));
+    private int access;
     private String name;
     private final TypeDef type;
     private List<AnnotationDef> annotations;
@@ -38,12 +40,32 @@ public class AttributeDefImpl implements AttributeDef, Cloneable{
     private transient String constantName;
     private transient String fieldName;
 
-    public AttributeDefImpl(String _name, TypeDef _type, boolean _isReadOnly, boolean _isRequired, Object _value) {
+    public AttributeDefImpl(String _name, TypeDef _type, int _access, Object _value) {
         this.setName(_name);
         if (_type == null) {
             throw new NullPointerException("type");
         } else {
             this.type = _type;
+            this.access = _access;
+            this.readOnly = false;
+            this.required = false;
+            this.defaultValue = this.initDefaultValue(_name, _type.getType(), _value);
+            this.descriptor = null;
+            this.annotations = Collections.emptyList();
+        }
+    }
+
+    public AttributeDefImpl(String _name, TypeDef _type, boolean _isReadOnly, boolean _isRequired, Object _value) {
+        this(_name, _type, Opcodes.ACC_PRIVATE, _isReadOnly, _isRequired, _value);
+    }
+
+    public AttributeDefImpl(String _name, TypeDef _type, int _access, boolean _isReadOnly, boolean _isRequired, Object _value) {
+        this.setName(_name);
+        if (_type == null) {
+            throw new NullPointerException("type");
+        } else {
+            this.type = _type;
+            this.access = _access;
             this.readOnly = _isReadOnly;
             this.required = _isRequired;
             this.defaultValue = this.initDefaultValue(_name, _type.getType(), _value);
@@ -53,7 +75,7 @@ public class AttributeDefImpl implements AttributeDef, Cloneable{
     }
 
     public AttributeDefImpl(String _name, TypeDef _typeDef) {
-        this(_name, _typeDef, false, false, (Object)null);
+        this(_name, _typeDef, Opcodes.ACC_PRIVATE, false, false, null);
     }
 
     public AttributeDefImpl(AttributeDescriptor _attrDesp, TypeDef _typeDef, List<AnnotationDef> _annotationDefList) {
@@ -62,6 +84,7 @@ public class AttributeDefImpl implements AttributeDef, Cloneable{
             throw new NullPointerException("type");
         } else {
             this.type = _typeDef;
+            this.access = _attrDesp.getAccess();
             this.readOnly = _attrDesp.isReadOnly();
             this.required = _attrDesp.isRequired();
             this.defaultValue = this.initDefaultValue(_attrDesp.getName(), _typeDef.getType(), _attrDesp.getDefaultValue());
@@ -76,21 +99,23 @@ public class AttributeDefImpl implements AttributeDef, Cloneable{
 
     public AttributeDefImpl(AttributeDef _attrDef) {
         this.setName(_attrDef.getName());
+        this.access = _attrDef.getAccess();
         this.type = _attrDef.getType();
         this.readOnly = _attrDef.isReadOnly();
         this.required = _attrDef.isRequired();
         this.defaultValue = _attrDef.getDefaultValue();
         if (_attrDef instanceof AttributeDefImpl) {
-            this.descriptor = ((AttributeDefImpl)_attrDef).getDescriptor();
+            this.descriptor = ((AttributeDefImpl) _attrDef).getDescriptor();
         } else {
             this.descriptor = null;
         }
 
         this.annotations = new ArrayList(_attrDef.getAnnotations());
     }
+
     @Override
     public Object clone() throws CloneNotSupportedException {
-        AttributeDefImpl newObj = (AttributeDefImpl)super.clone();
+        AttributeDefImpl newObj = (AttributeDefImpl) super.clone();
         newObj.setName(this.name);
         newObj.annotations = new ArrayList(this.annotations);
         return newObj;
@@ -100,13 +125,15 @@ public class AttributeDefImpl implements AttributeDef, Cloneable{
     public String toString() {
         return this.name;
     }
+
     @Override
     public int hashCode() {
         return this.name.hashCode();
     }
+
     @Override
     public boolean equals(Object _obj) {
-        return _obj == this || _obj instanceof AttributeDefImpl && this.name.equals(((AttributeDefImpl)_obj).getName());
+        return _obj == this || _obj instanceof AttributeDefImpl && this.name.equals(((AttributeDefImpl) _obj).getName());
     }
 
     protected void setName(String _name) {
@@ -126,25 +153,27 @@ public class AttributeDefImpl implements AttributeDef, Cloneable{
         if (_value == null) {
             return null;
         } else if (_value instanceof String) {
-            return this.initDefaultValue(_attrName, _type, (String)_value);
+            return this.initDefaultValue(_attrName, _type, (String) _value);
+        } else if (_value instanceof StaticAttributeValueDef) {
+            return _value;
         } else {
-            switch(_type.getSort()) {
+            switch (_type.getSort()) {
                 case Type.BOOLEAN:
-                    return (Boolean)_value ? 1 : 0;
+                    return (Boolean) _value ? 1 : 0;
                 case Type.CHAR:
-                    return Integer.valueOf((Character)_value);
+                    return Integer.valueOf((Character) _value);
                 case Type.BYTE:
-                    return ((Byte)_value).intValue();
+                    return ((Byte) _value).intValue();
                 case Type.SHORT:
-                    return ((Short)_value).intValue();
+                    return ((Short) _value).intValue();
                 case Type.INT:
-                    return (Integer)_value;
+                    return (Integer) _value;
                 case Type.FLOAT:
-                    return (Float)_value;
+                    return (Float) _value;
                 case Type.LONG:
-                    return (Long)_value;
+                    return (Long) _value;
                 case Type.DOUBLE:
-                    return (Double)_value;
+                    return (Double) _value;
                 case Type.ARRAY:
                     return this.initDefaultArrayValue(_attrName, _type, _value);
                 case Type.OBJECT:
@@ -152,7 +181,7 @@ public class AttributeDefImpl implements AttributeDef, Cloneable{
                         return ListParser.stripQuotes(_value.toString());
                     } else {
                         if (Type.getType(Blob.class).equals(_type) && _value instanceof byte[]) {
-                            return (new Blob((byte[])((byte[])_value))).encode(BinEncoding.Hex, true);
+                            return (new Blob((byte[]) ((byte[]) _value))).encode(BinEncoding.Hex, true);
                         }
 
                         throw new IllegalArgumentException("Data type " + _type + " is not supported for default value of attribute [" + _attrName + "]");
@@ -167,7 +196,7 @@ public class AttributeDefImpl implements AttributeDef, Cloneable{
         if (_value == null) {
             return null;
         } else if (_value instanceof String) {
-            return this.initDefaultArrayValue(_attrName, _arrayType, (String)_value);
+            return this.initDefaultArrayValue(_attrName, _arrayType, (String) _value);
         } else {
             Type tempType = _arrayType.getElementType();
             if (tempType.getSort() == Type.ARRAY) {
@@ -178,7 +207,7 @@ public class AttributeDefImpl implements AttributeDef, Cloneable{
                 int tempLength = Array.getLength(_value);
                 List tempValueList = new ArrayList(tempLength);
 
-                for(int i = 0; i < tempLength; ++i) {
+                for (int i = 0; i < tempLength; ++i) {
                     Object tempObjValue = Array.get(_value, i);
                     tempValueList.add(this.initDefaultValue(_attrName, tempType, tempObjValue));
                 }
@@ -192,7 +221,7 @@ public class AttributeDefImpl implements AttributeDef, Cloneable{
         if (_value == null) {
             return null;
         } else {
-            switch(_type.getSort()) {
+            switch (_type.getSort()) {
                 case Type.BOOLEAN:
                     return Boolean.parseBoolean(ListParser.stripQuotes(_value)) ? 1 : 0;
                 case Type.CHAR:
@@ -212,7 +241,7 @@ public class AttributeDefImpl implements AttributeDef, Cloneable{
                 case Type.ARRAY:
                     Type tempElementType = _type.getElementType();
                     if (tempElementType.getSort() == Type.BYTE && BinEncoding.which(_value, null) != null) {
-                        return this.initDefaultArrayValue(_attrName, _type, (Object)(new Blob(_value)).toByteArray());
+                        return this.initDefaultArrayValue(_attrName, _type, (Object) (new Blob(_value)).toByteArray());
                     }
 
                     return this.initDefaultArrayValue(_attrName, _type, _value);
@@ -246,8 +275,8 @@ public class AttributeDefImpl implements AttributeDef, Cloneable{
                 List tempDefaultValueList = new ArrayList(tempParsedList.size());
                 Iterator tempItr = tempParsedList.iterator();
 
-                while(tempItr.hasNext()) {
-                    String tempValue = (String)tempItr.next();
+                while (tempItr.hasNext()) {
+                    String tempValue = (String) tempItr.next();
                     tempDefaultValueList.add(this.initDefaultValue(_attrName, tempType, tempValue));
                 }
 

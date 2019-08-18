@@ -33,13 +33,6 @@ public interface AttributeDescriptor {
     TypeDescriptor getType();
 
     /**
-     * Attribute's owner, some bean.
-     *
-     * @return
-     */
-    BeanTypeDescriptor getOwner();
-
-    /**
      * Attribute's annotations.
      *
      * @return
