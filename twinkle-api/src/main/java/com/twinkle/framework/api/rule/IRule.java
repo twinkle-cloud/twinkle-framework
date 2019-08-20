@@ -12,5 +12,5 @@ public interface IRule extends Configurable {
     /**
      * 执行rule
      * */
-    public void applyRule(NormalizedContext _context) throws RuleException;
+    void applyRule(NormalizedContext _context) throws RuleException;
 }

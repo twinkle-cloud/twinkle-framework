@@ -22,6 +22,7 @@ public interface ExceptionCode {
     int LOGIC_CONF_ATTR_NOT_INIT = 0x001101;
     int LOGIC_CONF_ATTR_INIT_INVALID = 0x001102;
     int LOGIC_CONF_ATTR_NOT_ALLOWED = 0x001103;
+    int LOGIC_CONF_ATTR_VALUE_INVALID = 0x001104;
 
     int RULE_ADN_INVALID_URL = 0x010001;
     int RULE_ADN_URL_READ_FAILED = 0x010002;
@@ -40,7 +41,7 @@ public interface ExceptionCode {
 
     int CONNECTOR_MADANTORY_ATTR_MISSED = 0x012000;
 
-    int CONNECTOR_CLASS_MISSED = 0x012001;
+    int COMPONENT_CLASS_MISSED = 0x012001;
     int CONNECTOR_INSTANTIATED_FAILED = 0x012002;
     /**
      * Access level of the class is incorrect.

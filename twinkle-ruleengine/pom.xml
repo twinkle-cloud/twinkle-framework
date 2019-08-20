@@ -25,11 +25,11 @@
         <dependency>
             <groupId>com.twinkle.framework</groupId>
             <artifactId>twinkle-configure</artifactId>
-        </dependency>
+        </dependency><!--
         <dependency>
             <groupId>com.twinkle.framework</groupId>
             <artifactId>twinkle-connector</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.twinkle.framework</groupId>
             <artifactId>twinkle-datacenter</artifactId>

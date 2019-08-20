@@ -20,8 +20,8 @@ import java.io.Serializable;
  */
 public class NormalizedContext implements Serializable, Cloneable{
     private static final long serialVersionUID = 3534496933565226478L;
-    protected Attribute[] attributes_;
-    private NormalizedAttributeType typeInfo_;
+    protected Attribute[] attributes;
+    private NormalizedAttributeType typeInfo;
 
     public NormalizedContext() {
         this("%DefaultNormalizedEventType");
@@ -36,8 +36,8 @@ public class NormalizedContext implements Serializable, Cloneable{
     }
 
     public NormalizedContext(NormalizedAttributeType _neType) {
-        this.typeInfo_ = _neType;
-        if (this.typeInfo_ == null) {
+        this.typeInfo = _neType;
+        if (this.typeInfo == null) {
             throw new IllegalArgumentException("The NormalizedAttributeType is null");
         }
     }
@@ -45,7 +45,7 @@ public class NormalizedContext implements Serializable, Cloneable{
     public NormalizedContext(NormalizedAttributeType _neType, boolean _createFlag) {
         this(_neType);
         if (_createFlag) {
-            int[] tempIndexes = this.typeInfo_.getAttributeIndexes();
+            int[] tempIndexes = this.typeInfo.getAttributeIndexes();
             ContextSchema tempSchema = ContextSchema.getInstance();
 
             for(int i = 0; i < tempIndexes.length; ++i) {
@@ -56,7 +56,7 @@ public class NormalizedContext implements Serializable, Cloneable{
     }
 
     public NormalizedAttributeType getType() {
-        return this.typeInfo_;
+        return this.typeInfo;
     }
 
     /**
@@ -66,8 +66,8 @@ public class NormalizedContext implements Serializable, Cloneable{
      * @return
      */
     public final Attribute getAttribute(int _index) {
-        _index = this.typeInfo_.getNormalizedEventIndex(_index);
-        return this.attributes_ != null && _index < this.attributes_.length && _index >= 0 ? this.attributes_[_index] : null;
+        _index = this.typeInfo.getNormalizedEventIndex(_index);
+        return this.attributes != null && _index < this.attributes.length && _index >= 0 ? this.attributes[_index] : null;
     }
 
     /**
@@ -91,9 +91,9 @@ public class NormalizedContext implements Serializable, Cloneable{
      * @param _index
      */
     public final void setAttribute(Attribute _attr, int _index) {
-        _index = this.typeInfo_.getNormalizedEventIndex(_index);
+        _index = this.typeInfo.getNormalizedEventIndex(_index);
         this.checkSize(_index);
-        this.attributes_[_index] = _attr;
+        this.attributes[_index] = _attr;
     }
 
     /**
@@ -118,12 +118,12 @@ public class NormalizedContext implements Serializable, Cloneable{
      * @param _index
      */
     public final void copyAttribute(Attribute _attr, int _index) {
-        _index = this.typeInfo_.getNormalizedEventIndex(_index);
+        _index = this.typeInfo.getNormalizedEventIndex(_index);
         this.checkSize(_index);
-        if (this.attributes_[_index] == null) {
-            this.attributes_[_index] = (Attribute)_attr.clone();
+        if (this.attributes[_index] == null) {
+            this.attributes[_index] = (Attribute)_attr.clone();
         } else {
-            this.attributes_[_index].setValue(_attr);
+            this.attributes[_index].setValue(_attr);
         }
 
     }
@@ -134,7 +134,7 @@ public class NormalizedContext implements Serializable, Cloneable{
      * @return
      */
     public boolean isEmpty() {
-        return this.attributes_ == null;
+        return this.attributes == null;
     }
 
     /**
@@ -143,12 +143,12 @@ public class NormalizedContext implements Serializable, Cloneable{
      * @return
      */
     public int numAttributesSet() {
-        if (this.attributes_ == null) {
+        if (this.attributes == null) {
             return 0;
         } else {
             int tempCount = 0;
-            for(int i = 0; i < this.attributes_.length; ++i) {
-                if (this.attributes_[i] != null) {
+            for(int i = 0; i < this.attributes.length; ++i) {
+                if (this.attributes[i] != null) {
                     ++tempCount;
                 }
             }
@@ -160,17 +160,17 @@ public class NormalizedContext implements Serializable, Cloneable{
      * Clear all of the attributes.
      */
     public void clear() {
-        this.attributes_ = null;
+        this.attributes = null;
     }
 
     /**
      * Clear the attributes' values.
      */
     public void clearValues() {
-        if (this.attributes_ != null) {
-            for(int i = 0; i < this.attributes_.length; i++) {
-                if (this.attributes_[i] != null) {
-                    this.attributes_[i].setEmptyValue();
+        if (this.attributes != null) {
+            for(int i = 0; i < this.attributes.length; i++) {
+                if (this.attributes[i] != null) {
+                    this.attributes[i].setEmptyValue();
                 }
             }
         }
@@ -187,13 +187,13 @@ public class NormalizedContext implements Serializable, Cloneable{
      * @return
      */
     public String toStringValuesOnly() {
-        if (this.attributes_ == null) {
+        if (this.attributes == null) {
             return "Empty NE";
         } else {
             StringBuffer tempBuffer = new StringBuffer(100);
 
-            for(int i = 0; i < this.attributes_.length; ++i) {
-                tempBuffer.append(toLogString(this.attributes_[i]));
+            for(int i = 0; i < this.attributes.length; ++i) {
+                tempBuffer.append(toLogString(this.attributes[i]));
                 tempBuffer.append(' ');
             }
             return tempBuffer.toString();
@@ -211,20 +211,20 @@ public class NormalizedContext implements Serializable, Cloneable{
     }
 
     public String toStringWithAttrNames(boolean _withAttrNameFlag, boolean var2, boolean var3, boolean var4, String _separator) {
-        if (this.attributes_ == null) {
+        if (this.attributes == null) {
             return "Empty NME";
         } else if (!var2) {
             return "";
         } else {
             StringBuffer tempBuffer = new StringBuffer(300);
-            String[] tempAttributeNameArray = this.typeInfo_.getAttributeNames();
+            String[] tempAttributeNameArray = this.typeInfo.getAttributeNames();
 
-            for(int i = 0; i < this.attributes_.length; ++i) {
-                if (this.attributes_[i] != null || _withAttrNameFlag) {
+            for(int i = 0; i < this.attributes.length; ++i) {
+                if (this.attributes[i] != null || _withAttrNameFlag) {
                     tempBuffer.append(tempAttributeNameArray[i]);
                     tempBuffer.append("=");
-                    tempBuffer.append(toLogString(this.attributes_[i]));
-                    if (i != this.attributes_.length - 1) {
+                    tempBuffer.append(toLogString(this.attributes[i]));
+                    if (i != this.attributes.length - 1) {
                         tempBuffer.append(", ");
                     }
                 }
@@ -256,11 +256,11 @@ public class NormalizedContext implements Serializable, Cloneable{
             throw new Error("Assertion failure");
         }
         //Copy the attributes.
-        if (this.attributes_ != null) {
-            tempNE.attributes_ = new Attribute[this.attributes_.length];
-            for(int i = 0; i < this.attributes_.length; ++i) {
-                if (this.attributes_[i] != null) {
-                    tempNE.attributes_[i] = (Attribute)this.attributes_[i].clone();
+        if (this.attributes != null) {
+            tempNE.attributes = new Attribute[this.attributes.length];
+            for(int i = 0; i < this.attributes.length; ++i) {
+                if (this.attributes[i] != null) {
+                    tempNE.attributes[i] = (Attribute)this.attributes[i].clone();
                 }
             }
         }
@@ -273,18 +273,18 @@ public class NormalizedContext implements Serializable, Cloneable{
      * @param _ne
      */
     public void update(NormalizedContext _ne) {
-        if (_ne.getType().getTypeId() != this.typeInfo_.getTypeId()) {
-            throw new IllegalArgumentException("Can't update an NME with type " + this.typeInfo_.getName() + " with an NME of type " + _ne.typeInfo_.getName());
+        if (_ne.getType().getTypeId() != this.typeInfo.getTypeId()) {
+            throw new IllegalArgumentException("Can't update an NME with type " + this.typeInfo.getName() + " with an NME of type " + _ne.typeInfo.getName());
         } else {
-            if (_ne.attributes_ != null) {
-                this.checkSize(_ne.attributes_.length - 1);
+            if (_ne.attributes != null) {
+                this.checkSize(_ne.attributes.length - 1);
 
-                for(int i = 0; i < _ne.attributes_.length; ++i) {
-                    if (_ne.attributes_[i] != null) {
-                        if (this.attributes_[i] == null) {
-                            this.attributes_[i] = (Attribute)_ne.attributes_[i].clone();
+                for(int i = 0; i < _ne.attributes.length; ++i) {
+                    if (_ne.attributes[i] != null) {
+                        if (this.attributes[i] == null) {
+                            this.attributes[i] = (Attribute)_ne.attributes[i].clone();
                         } else {
-                            this.attributes_[i].setValue(_ne.attributes_[i]);
+                            this.attributes[i].setValue(_ne.attributes[i]);
                         }
                     }
                 }
@@ -299,25 +299,25 @@ public class NormalizedContext implements Serializable, Cloneable{
      * @param _ne
      */
     public void set(NormalizedContext _ne) {
-        if (_ne.getType().getTypeId() != this.typeInfo_.getTypeId()) {
-            this.typeInfo_ = _ne.getType();
-            this.attributes_ = null;
+        if (_ne.getType().getTypeId() != this.typeInfo.getTypeId()) {
+            this.typeInfo = _ne.getType();
+            this.attributes = null;
         }
 
-        if (_ne.attributes_ == null) {
-            this.attributes_ = null;
+        if (_ne.attributes == null) {
+            this.attributes = null;
         } else {
-            if (this.attributes_ == null || this.attributes_.length != _ne.attributes_.length) {
-                this.attributes_ = new Attribute[_ne.attributes_.length];
+            if (this.attributes == null || this.attributes.length != _ne.attributes.length) {
+                this.attributes = new Attribute[_ne.attributes.length];
             }
 
-            for(int i = 0; i < _ne.attributes_.length; ++i) {
-                if (_ne.attributes_[i] == null) {
-                    this.attributes_[i] = null;
-                } else if (this.attributes_[i] == null) {
-                    this.attributes_[i] = (Attribute)_ne.attributes_[i].clone();
+            for(int i = 0; i < _ne.attributes.length; ++i) {
+                if (_ne.attributes[i] == null) {
+                    this.attributes[i] = null;
+                } else if (this.attributes[i] == null) {
+                    this.attributes[i] = (Attribute)_ne.attributes[i].clone();
                 } else {
-                    this.attributes_[i].setValue(_ne.attributes_[i]);
+                    this.attributes[i].setValue(_ne.attributes[i]);
                 }
             }
         }
@@ -329,19 +329,19 @@ public class NormalizedContext implements Serializable, Cloneable{
      * @param _size
      */
     protected final void checkSize(int _size) {
-        if (this.attributes_ == null) {
-            this.attributes_ = new Attribute[this.typeInfo_.getNumAttributes()];
+        if (this.attributes == null) {
+            this.attributes = new Attribute[this.typeInfo.getNumAttributes()];
         }
 
-        if (_size >= this.attributes_.length) {
-            int tempSize = this.typeInfo_.getNumAttributes();
+        if (_size >= this.attributes.length) {
+            int tempSize = this.typeInfo.getNumAttributes();
             if (_size >= tempSize) {
-                throw new IllegalArgumentException("Attempting to access an attribute that isn't specified in this NME of type " + this.typeInfo_.getName());
+                throw new IllegalArgumentException("Attempting to access an attribute that isn't specified in this NME of type " + this.typeInfo.getName());
             }
 
             Attribute[] tempAttributeArray = new Attribute[tempSize];
-            System.arraycopy(this.attributes_, 0, tempAttributeArray, 0, this.attributes_.length);
-            this.attributes_ = tempAttributeArray;
+            System.arraycopy(this.attributes, 0, tempAttributeArray, 0, this.attributes.length);
+            this.attributes = tempAttributeArray;
         }
 
     }
@@ -349,45 +349,45 @@ public class NormalizedContext implements Serializable, Cloneable{
     private void readObject(ObjectInputStream _inputStream) throws IOException, ClassNotFoundException {
         _inputStream.defaultReadObject();
         String var2 = null;
-        if (this.typeInfo_ == null) {
+        if (this.typeInfo == null) {
             var2 = "%DefaultNormalizedEventType";
         } else {
-            var2 = this.typeInfo_.getName();
+            var2 = this.typeInfo.getName();
         }
 
-        ContextSchema var3 = ContextSchema.getInstance();
-        NormalizedAttributeType var4 = this.typeInfo_;
-        this.typeInfo_ = var3.getNormalizedEventType(var2);
-        if (this.typeInfo_ == null) {
+        ContextSchema tempContextSchema = ContextSchema.getInstance();
+        NormalizedAttributeType tempTypeInfo = this.typeInfo;
+        this.typeInfo = tempContextSchema.getNormalizedEventType(var2);
+        if (this.typeInfo == null) {
             throw new IOException("Cannot restore NME of type " + var2 + " since that type isn't defined in the ContextSchema");
         } else {
-            Attribute[] var5 = this.attributes_;
+            Attribute[] var5 = this.attributes;
             if (var5 != null && var5.length != 0) {
                 AttributeInfo var8;
-                if (var4 == null) {
-                    this.attributes_ = null;
+                if (tempTypeInfo == null) {
+                    this.attributes = null;
 
                     for(int i = 0; i < var5.length; ++i) {
-                        Attribute var7 = var5[i];
-                        if (var7 != null) {
-                            var8 = var3.getAttribute(i);
-                            this.typeInfo_.addAttribute(var8);
-                            this.setAttribute(var7, i);
+                        Attribute tempAttr = var5[i];
+                        if (tempAttr != null) {
+                            var8 = tempContextSchema.getAttribute(i);
+                            this.typeInfo.addAttribute(var8);
+                            this.setAttribute(tempAttr, i);
                         }
                     }
-                } else if (this.typeInfo_.isInconsistentSerializedType(var4)) {
-                    this.attributes_ = null;
-                    int[] var11 = var4.getAttributeIndexes();
+                } else if (this.typeInfo.isInconsistentSerializedType(tempTypeInfo)) {
+                    this.attributes = null;
+                    int[] var11 = tempTypeInfo.getAttributeIndexes();
 
                     int i;
                     for(i = 0; i < var11.length; ++i) {
-                        var8 = var3.getAttribute(var11[i]);
-                        this.typeInfo_.addAttribute(var8);
+                        var8 = tempContextSchema.getAttribute(var11[i]);
+                        this.typeInfo.addAttribute(var8);
                     }
 
                     for(i = 0; i < var11.length; ++i) {
                         int var13 = var11[i];
-                        int var9 = var4.getNormalizedEventIndex(var13);
+                        int var9 = tempTypeInfo.getNormalizedEventIndex(var13);
                         Attribute var10 = var5[var9];
                         if (var10 != null) {
                             this.setAttribute(var10, var13);

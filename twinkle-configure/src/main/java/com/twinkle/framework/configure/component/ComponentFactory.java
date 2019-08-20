@@ -2,8 +2,11 @@ package com.twinkle.framework.configure.component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.config.Configurable;
+import com.twinkle.framework.api.constant.ExceptionCode;
+import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.core.datastruct.Bean;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.DigestUtils;
@@ -26,20 +29,26 @@ public class ComponentFactory implements IComponentFactory {
 
     @Override
     public <T extends Configurable> T loadComponent(JSONObject _obj) {
+        if (_obj == null) {
+            return null;
+        }
         String tempClassName = _obj.getString(KEY_CLASS_NAME);
+        if (StringUtils.isBlank(tempClassName)) {
+            throw new ConfigurationException(ExceptionCode.COMPONENT_CLASS_MISSED, "The [" + _obj + "]component class is empty");
+        }
 
         try {
-            ClassLoader tempClassLoader = Thread.currentThread().getContextClassLoader();
+            ClassLoader tempClassLoader = this.getClass().getClassLoader();
             Class tempClass = tempClassLoader.loadClass(tempClassName);
             if (null != tempClass) {
                 String tempMd5Hash = DigestUtils.md5DigestAsHex(_obj.toString().getBytes());
                 Object tempObj = context.getBean(tempMd5Hash);
-                if(tempObj != null) {
+                if (tempObj != null) {
                     log.debug("Found the duplicate bean [{}] -> [{}] had been registered already.",
                             tempMd5Hash, tempClassName);
                     return (T) tempObj;
                 }
-                T tempComponnet = (T)tempClass.newInstance();
+                T tempComponnet = (T) tempClass.newInstance();
                 tempComponnet.configure(_obj);
                 context.registerBean(tempMd5Hash,
                         tempClass, () -> tempComponnet);

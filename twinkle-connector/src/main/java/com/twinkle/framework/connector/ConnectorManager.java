@@ -50,7 +50,7 @@ public class ConnectorManager implements Configurable {
             }
         } catch (ClassNotFoundException ex) {
             log.error("ConnectorManager.configure(): Connector not found.", ex);
-            throw new ConfigurationException(ExceptionCode.CONNECTOR_CLASS_MISSED, "ConnectorManager.configure(): Connector class not found.");
+            throw new ConfigurationException(ExceptionCode.COMPONENT_CLASS_MISSED, "ConnectorManager.configure(): Connector class not found.");
         } catch (InstantiationException ex) {
             log.error("ConnectorManager.configure(): Connector instantiated failed.", ex);
             throw new ConfigurationException(ExceptionCode.CONNECTOR_INSTANTIATED_FAILED, "ConnectorManager.configure(): Connector instantiated failed.");

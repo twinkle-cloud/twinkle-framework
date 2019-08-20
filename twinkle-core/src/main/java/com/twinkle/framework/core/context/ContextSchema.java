@@ -372,8 +372,8 @@ public class ContextSchema {
                 return null;
             }
             tempAttr = tempAttrInfo.newAttributeInstance();
-        } catch (Exception var4) {
-            log.debug("Cannot get new instance for name: {}, exception: {}", _typeName, var4);
+        } catch (Exception e) {
+            log.debug("Cannot get new instance for name: {}, exception: {}", _typeName, e);
         }
 
         return tempAttr;

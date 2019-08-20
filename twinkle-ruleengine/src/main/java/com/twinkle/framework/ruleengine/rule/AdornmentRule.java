@@ -28,12 +28,12 @@ import java.util.StringTokenizer;
 @Slf4j
 public class AdornmentRule extends AbstractRule{
 
-    private AttributeOperation ops_;
+    private AttributeOperation attrOperation;
     /**
      * Will be used by Map Operation,
      * to load the map content from URL. Usually from a local file or web URL.
      */
-    private MapHash map_hash_;
+    private MapHash mapHash;
     public AdornmentRule() {
         super();
         log.info("AdornmentRule.initialized().");
@@ -50,7 +50,7 @@ public class AdornmentRule extends AbstractRule{
             boolean tempUseArrayFlag = _conf.getBooleanValue("MapUseArray");
             boolean tempEnableRefresh = _conf.getBooleanValue("MapRefresh");
             String tempOperator = _conf.getString("MapSeparator");
-            this.map_hash_ = MapHash.createMapHash(tempUrl, tempURLCommnetArray, tempUseArrayFlag, tempEnableRefresh, tempOperator);
+            this.mapHash = MapHash.createMapHash(tempUrl, tempURLCommnetArray, tempUseArrayFlag, tempEnableRefresh, tempOperator);
             this.loadOperations(tempArray.toArray(new String[]{}), _conf);
         }
     }
@@ -74,7 +74,7 @@ public class AdornmentRule extends AbstractRule{
 
             tempOperation.loadOperation(_operations[i]);
             if (tempOperation instanceof MapOperation) {
-                ((MapOperation)tempOperation).setMapHash(this.map_hash_);
+                ((MapOperation)tempOperation).setMapHash(this.mapHash);
             }
             // add the next rule into the pre-rule.
             if (tempPreOperation != null) {
@@ -82,7 +82,7 @@ public class AdornmentRule extends AbstractRule{
             }
 
             if (i == 0) {
-                this.ops_ = tempOperation;
+                this.attrOperation = tempOperation;
             }
         }
 
@@ -92,7 +92,7 @@ public class AdornmentRule extends AbstractRule{
         log.debug("AdornmentRule.applyRule()");
 
         try {
-            this.ops_.applyRule(_context);
+            this.attrOperation.applyRule(_context);
         } catch (RuntimeException e) {
             throw new RuleException(ExceptionCode.RULE_APPLY_ERROR, "Error in applying the rule error.", e);
         }

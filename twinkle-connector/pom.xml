@@ -20,6 +20,10 @@
         </dependency>
         <dependency>
             <groupId>com.twinkle.framework</groupId>
+            <artifactId>twinkle-ruleengine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.twinkle.framework</groupId>
             <artifactId>twinkle-configure</artifactId>
         </dependency>
     </dependencies>
