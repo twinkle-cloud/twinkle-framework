@@ -1,9 +1,9 @@
 package com.twinkle.framework.bootstarter.config;
 
 import com.twinkle.framework.api.data.GeneralResult;
-import com.twinkle.framework.connector.demo.data.HelloRequest;
-import com.twinkle.framework.connector.demo.service.HelloWorldService;
-import com.twinkle.framework.connector.server.classloader.RestControllerClassLoader;
+import com.twinkle.framework.bootstarter.data.HelloRequest;
+import com.twinkle.framework.connector.http.server.classloader.RestControllerClassLoader;
+import com.twinkle.framework.core.context.ContextSchema;
 import com.twinkle.framework.core.datastruct.descriptor.*;
 import com.twinkle.framework.core.datastruct.builder.AttributeDescriptorBuilder;
 import com.twinkle.framework.core.lang.Attribute;
@@ -11,14 +11,12 @@ import com.twinkle.framework.core.lang.AttributeInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.slf4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ClassUtils;
 
 import java.util.ArrayList;
@@ -36,10 +34,11 @@ import java.util.Set;
  * @since JDK 1.8
  */
 @Slf4j
-@Configuration
+//@Configuration
 public class AsmBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegistryPostProcessor {
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
+
         ClassLoader currentLoader = ClassUtils.getDefaultClassLoader();
         RestControllerClassLoader tempLoader = new RestControllerClassLoader(currentLoader, this.getRestClassDescriptor());
         try {
@@ -49,6 +48,7 @@ public class AsmBeanDefinitionRegistryPostProcessor implements BeanDefinitionReg
             BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder
                     .genericBeanDefinition(tempClass);
             BeanDefinition beanDefinition = beanDefinitionBuilder.getRawBeanDefinition();
+
             //注册bean定义
             registry.registerBeanDefinition("hellController2", beanDefinition);
         } catch (ClassNotFoundException e) {
@@ -62,6 +62,17 @@ public class AsmBeanDefinitionRegistryPostProcessor implements BeanDefinitionReg
 //        log.debug("The new obj is:{}", tempObj);
 //        Class<?> tempClass = tempObj.getClass();
 //        log.debug("The new obj Class is:{}", tempClass);
+    }
+
+    private String[][] getAttributeDefineList(){
+        String[] tempAttr1 = new String[]{"userName", "com.twinkle.framework.core.lang.StringAttribute"};
+        String[] tempAttr2 = new String[]{"passWord", "com.twinkle.framework.core.lang.StringAttribute"};
+        String[] tempAttr3 = new String[]{"resultData", "com.twinkle.framework.core.lang.StringAttribute"};
+//        String[] tempAttr4 = new String[]{"", ""};
+//        String[] tempAttr5 = new String[]{"", ""};
+//        String[] tempAttr6 = new String[]{"", ""};
+
+        return new String[][]{tempAttr1,tempAttr2,tempAttr3};//,tempAttr4,tempAttr5,tempAttr6
     }
 
     @Override
@@ -92,21 +103,21 @@ public class AsmBeanDefinitionRegistryPostProcessor implements BeanDefinitionReg
     private List<AttributeDescriptor> getAttributeList(){
         List<AttributeDescriptor> tempList = new ArrayList<>(2);
         Set<String> tempAnnotationList = new HashSet<>();
-        tempAnnotationList.add("@org.springframework.beans.factory.annotation.Autowired");
-        TypeDescriptor tempTypeDescriptor = TypeDescriptorImpl.builder()
-                .className(HelloWorldService.class.getName())
-                .description(Type.getDescriptor(HelloWorldService.class))
-                .name("HelloWorldService").build();
-        AttributeDescriptorImpl tempAttr = AttributeDescriptorImpl.builder()
-                .access(Opcodes.ACC_PRIVATE)
-                .annotations(tempAnnotationList)
-                .isReadOnly(false)
-                .isRequired(true)
-                .name("helloWorldService")
-                .type(tempTypeDescriptor)
+//        tempAnnotationList.add("@org.springframework.beans.factory.annotation.Autowired");
+//        TypeDescriptor tempTypeDescriptor = TypeDescriptorImpl.builder()
 //                .className(HelloWorldService.class.getName())
-                .build();
-        tempList.add(tempAttr);
+//                .description(Type.getDescriptor(HelloWorldService.class))
+//                .name("HelloWorldService").build();
+//        AttributeDescriptorImpl tempAttr = AttributeDescriptorImpl.builder()
+//                .access(Opcodes.ACC_PRIVATE)
+//                .annotations(tempAnnotationList)
+//                .isReadOnly(false)
+//                .isRequired(true)
+//                .name("helloWorldService")
+//                .type(tempTypeDescriptor)
+////                .className(HelloWorldService.class.getName())
+//                .build();
+//        tempList.add(tempAttr);
 
 //        tempAnnotationList = new HashSet<>();
 //        tempTypeDescriptor = TypeDescriptorImpl.builder()
@@ -141,7 +152,7 @@ public class AsmBeanDefinitionRegistryPostProcessor implements BeanDefinitionReg
                 .access(Opcodes.ACC_PUBLIC)
                 .annotations(tempAnnotationList)
                 .name("sayHello")
-                .instructionMethodName("addHelloWorldRuleChain")
+//                .instructionHandler("addHelloWorldRuleChain")
                 .parameterAttrs(this.packMethodParameters())
                 .localParameterAttrs(this.pathMethodLocalParameters())
                 .returnType(tempReturn)

@@ -1,7 +1,9 @@
 package com.twinkle.framework.ruleengine.rule;
 
-import com.twinkle.framework.api.rule.IRule;
+import com.twinkle.framework.api.component.AbstractComponent;
+import com.twinkle.framework.api.component.rule.IRule;
 import com.twinkle.framework.core.context.ContextSchema;
+import lombok.Data;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -12,7 +14,8 @@ import com.twinkle.framework.core.context.ContextSchema;
  * @see
  * @since JDK 1.8
  */
-public abstract class AbstractRule implements IRule {
+@Data
+public abstract class AbstractRule extends AbstractComponent implements IRule {
     /**
      * The Next Rule.
      */
@@ -20,12 +23,13 @@ public abstract class AbstractRule implements IRule {
     /**
      * The Context Schema.
      */
-    protected ContextSchema contextSchema;
+    protected transient ContextSchema contextSchema;
 
     public AbstractRule() {
         contextSchema = ContextSchema.getInstance();
     }
 
+    @Override
     public void addNextRule(IRule _rule) {
         this.nextRule = _rule;
     }

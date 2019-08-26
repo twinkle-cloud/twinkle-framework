@@ -40,7 +40,8 @@ public class MethodDefBuilder {
                 .localParameterAttrs(TypeDefUtil.getAttributes(_descriptor.getLocalParameterAttrs(), _classLoader, _typeDefMap))
                 .returnType(TypeDefBuilder.getTypeDef(_descriptor.getReturnType(), _classLoader, _typeDefMap))
                 .exceptions(TypeDefUtil.getExceptions(_descriptor.getExceptions(), _classLoader, _typeDefMap))
-                .instructionMethodName(_descriptor.getInstructionMethodName())
+                .instructionHandler(_descriptor.getInstructionHandler())
+                .extraInfo(_descriptor.getExtraInfo())
                 .build();
         return tempMethodDef;
     }

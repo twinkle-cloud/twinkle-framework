@@ -1,9 +1,12 @@
 package com.twinkle.framework.bootstarter.controller;
 
 import com.twinkle.framework.api.constant.ResultCode;
+import com.twinkle.framework.api.exception.RuleException;
 import com.twinkle.framework.bootstarter.data.HelloRequest;
 import com.twinkle.framework.bootstarter.service.HelloWorld2Service;
 import com.twinkle.framework.api.data.GeneralResult;
+import com.twinkle.framework.connector.server.AbstractServer;
+import com.twinkle.framework.core.context.model.NormalizedContext;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -25,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @Slf4j
 @Api
-public class HelloController {
+public class HelloController extends AbstractServer {
     @Autowired
     private HttpServletRequest request;
 
@@ -52,12 +55,30 @@ public class HelloController {
         return tempResult;
     }
 
-    public GeneralResult getRequestString(@PathVariable int _a, @PathVariable float _b) {
+
+    @ApiOperation(value = "Test Get")
+    @RequestMapping(value = "authsec/get/{_addressId}", method = RequestMethod.POST)
+    public GeneralResult<String> getRequestString(
+            //@ApiParam(value = "请求体") @RequestBody HelloRequest _request,
+            @RequestParam(value = "_param1", defaultValue = "cxj110") String _testParam1,
+            @RequestParam(value = "_param2") String _testParam2,
+            @ApiParam(value = "_addressId") @PathVariable(value = "_addressId") String _addressId) {
+        log.info("The request is: {} -> {}, {}", _testParam1, _testParam2, _addressId);
+        NormalizedContext tempNc = this.getNormalizedContext();
+        this.decodeParameter(tempNc, 0, _testParam1);
+        this.decodeParameter(tempNc, 1, _testParam2);
+        this.decodeParameter(tempNc, 3, _addressId);
 
         GeneralResult<String> tempResult = new GeneralResult<>();
-        tempResult.setCode(ResultCode.OPERATION_SUCCESS);
-        tempResult.setData("DDDD");
-
-        return null;
+        try {
+            this.invokeRuleChain(tempNc, "TestRuleChain");
+            tempResult.setCode(ResultCode.OPERATION_SUCCESS);
+            tempResult.setData(this.encodeReturnData(tempNc, 4));
+        } catch (RuleException e) {
+            log.error("Encountered error while applying the rule chain[{}]. Exception: {}", "TestRuleChain", e);
+            tempResult.setCode(e.getCode());
+            tempResult.setData(e.getMessage());
+        }
+        return tempResult;
     }
 }

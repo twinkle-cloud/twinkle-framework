@@ -1,5 +1,7 @@
 package com.twinkle.framework.core.datastruct.schema;
 
+import com.alibaba.fastjson.JSONObject;
+import com.twinkle.framework.core.datastruct.handler.MethodInstructionHandler;
 import com.twinkle.framework.core.utils.TypeUtil;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +70,12 @@ public class MethodDefImpl implements MethodDef, Cloneable {
     /**
      * The instructionMethodName for this method.
      */
-    private String instructionMethodName;
+    private MethodInstructionHandler instructionHandler;
+
+    /**
+     * ExtraInfo for this attribute.
+     */
+    private JSONObject extraInfo;
 
     /**
      * Get Method's descriptor.
@@ -129,5 +136,12 @@ public class MethodDefImpl implements MethodDef, Cloneable {
             return "";
         }
         return tempBuilder.toString();
+    }
+
+    @Override
+    public Object getExtraInfoByKey(String _key) {
+        if (this.extraInfo == null)
+            return null;
+        return this.extraInfo.get(_key);
     }
 }

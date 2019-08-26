@@ -63,6 +63,15 @@ public class StringAttribute implements Attribute, Comparable {
     }
 
     @Override
+    public void setValue(Object _value) {
+        if(_value != null) {
+            this.value = _value.toString();
+        } else {
+            this.value = EMPTY_VALUE;
+        }
+    }
+
+    @Override
     public void setValue(Attribute _attr) {
         if (this != _attr) {
             this.setValue(_attr.toString());

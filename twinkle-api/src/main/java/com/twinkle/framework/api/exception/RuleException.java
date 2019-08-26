@@ -1,5 +1,7 @@
 package com.twinkle.framework.api.exception;
 
+import lombok.Data;
+
 /**
  * Function: TODO ADD FUNCTION. <br/>
  * Reason:	 TODO ADD REASON. <br/>
@@ -9,7 +11,8 @@ package com.twinkle.framework.api.exception;
  * @see
  * @since JDK 1.8
  */
-public class RuleException extends Exception {
+@Data
+public class RuleException extends RuntimeException {
     private int code;
     private String message;
 

@@ -88,6 +88,19 @@ public class LongAttribute extends AbstractNumericAttribute implements ILongAttr
     }
 
     @Override
+    public void setValue(Object _value) {
+        if(_value == null) {
+            this.setEmptyValue();
+            return;
+        }
+        if(_value instanceof Attribute) {
+            this.setValue((Attribute)_value);
+            return;
+        }
+        this.setValue(_value.toString());
+    }
+
+    @Override
     public final void setValue(Attribute _attr) {
         if (this != _attr) {
             int var2 = _attr.getPrimitiveType();

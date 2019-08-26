@@ -1,6 +1,5 @@
 package com.twinkle.framework.core.datastruct.converter;
 
-import com.twinkle.framework.core.datastruct.schema.AttributeConverter;
 import com.twinkle.framework.core.datastruct.schema.AttributeDef;
 import com.twinkle.framework.core.utils.TypeDefUtil;
 import lombok.Getter;
@@ -37,8 +36,8 @@ public class StrictAttributeConverter implements AttributeConverter {
         return _attrDefList;
     }
     @Override
-    public void validate(List<AttributeDef> _attrDefineList) {
-        this.validateInternal(_attrDefineList, true);
+    public void validate(List<AttributeDef> _attrDefList) {
+        this.validateInternal(_attrDefList, true);
     }
 
     /**

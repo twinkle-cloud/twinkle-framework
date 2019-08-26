@@ -2,6 +2,7 @@ package com.twinkle.framework.core.datastruct.descriptor;
 
 import lombok.Builder;
 import lombok.Data;
+import org.objectweb.asm.Type;
 
 import java.util.Set;
 
@@ -20,6 +21,17 @@ public class TypeDescriptorImpl implements TypeDescriptor {
     private final String className;
     private final String description;
     private final String name;
+
+    public TypeDescriptorImpl(Class _class) {
+        this.className = _class.getName();
+        this.description = Type.getDescriptor(_class);
+        int tempIndex = this.className.lastIndexOf(".");
+        if (tempIndex > 0) {
+            this.name = this.className.substring(tempIndex + 1);
+        } else {
+            this.name = this.className;
+        }
+    }
 
     private TypeDescriptorImpl(String _className, String _description, String _name) {
         this.className = _className;
@@ -41,6 +53,7 @@ public class TypeDescriptorImpl implements TypeDescriptor {
     public Set<String> getAnnotations() {
         throw new UnsupportedOperationException("TypeDescriptor.getAnnotations not implemented");
     }
+
     @Override
     public String toString() {
         StringBuilder tempBuilder = new StringBuilder();

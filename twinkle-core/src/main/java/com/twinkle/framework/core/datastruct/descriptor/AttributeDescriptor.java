@@ -1,5 +1,7 @@
 package com.twinkle.framework.core.datastruct.descriptor;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.Set;
 
 /**
@@ -59,4 +61,19 @@ public interface AttributeDescriptor {
      * @return
      */
     Object getDefaultValue();
+
+    /**
+     * Get the entire Extra Info.
+     *
+     * @return
+     */
+    JSONObject getExtraInfo();
+
+    /**
+     * Get extra info.
+     *
+     * @param _key
+     * @return
+     */
+    Object getExtraInfoByKey(String _key);
 }

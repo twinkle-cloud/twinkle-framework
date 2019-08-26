@@ -1,5 +1,7 @@
 package com.twinkle.framework.core.datastruct.schema;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.List;
 
 /**
@@ -46,4 +48,19 @@ public interface AttributeDef {
     boolean isConstant();
 
     List<AnnotationDef> getAnnotations();
+
+    /**
+     * Get extra info.
+     *
+     * @return
+     */
+    JSONObject getExtraInfo();
+
+    /**
+     * Get extra info.
+     *
+     * @param _key
+     * @return
+     */
+    Object getExtraInfoByKey(String _key);
 }

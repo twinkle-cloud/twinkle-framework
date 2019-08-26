@@ -26,15 +26,22 @@ public interface BeanTypeDef extends BeanRefTypeDef {
      *
      * @return
      */
-    List<TypeDef> getParents();
+    List<TypeDef> getInterfaceTypeDefs();
+
+    /**
+     * Get Super type define.
+     *
+     * @return
+     */
+    TypeDef getSuperTypeDef();
 
     /**
      * To add parent type for this bean.
      *
-     * @param _parenttype
+     * @param _interfaceType
      * @return
      */
-    TypeDef addParent(Type _parenttype);
+    TypeDef addInterfaceTypeDef(Type _interfaceType);
 
     /**
      * Get the attributes list of this bean.

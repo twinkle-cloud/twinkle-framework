@@ -73,8 +73,21 @@ public class IntegerAttribute extends AbstractNumericAttribute implements IInteg
     }
 
     @Override
-    public void setValue(int var1) {
-        this.value = var1;
+    public void setValue(int _value) {
+        this.value = _value;
+    }
+
+    @Override
+    public void setValue(Object _value) {
+        if(_value == null) {
+            this.setEmptyValue();
+            return;
+        }
+        if(_value instanceof Attribute) {
+            this.setValue((Attribute) _value);
+            return;
+        }
+        this.setValue(_value.toString());
     }
 
     @Override

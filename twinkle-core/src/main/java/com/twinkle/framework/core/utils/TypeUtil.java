@@ -313,6 +313,18 @@ public class TypeUtil {
     }
 
     /**
+     * To get the class's signature with class name.
+     *
+     * @param _className
+     * @return
+     */
+    public static String getDescriptorByClassName(String _className) {
+        StringBuilder tempBuilder = new StringBuilder("L");
+        tempBuilder.append(_className);
+        tempBuilder.append(";");
+        return tempBuilder.toString();
+    }
+    /**
      * To get the getter signature from the given type.
      *
      * @param _type
@@ -640,5 +652,15 @@ public class TypeUtil {
         } else {
             return TypeUtil.getMethodDescriptor(new Class[]{Object[].class, Object[].class}, Boolean.TYPE);
         }
+    }
+
+    /**
+     * Convert the class name to internal class name.
+     *
+     * @param _className
+     * @return
+     */
+    public static String getInternalNameByClassName(String _className) {
+        return _className.replace(".", "/");
     }
 }

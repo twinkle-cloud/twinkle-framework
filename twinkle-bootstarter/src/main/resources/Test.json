@@ -1,0 +1,76 @@
+{
+  "ConnectorManager": {
+    "ClassName": "com.twinkle.framework.connector.ConnectorManager",
+    "ConnectorNames": ["TestConnector"],
+    "Connectors": [
+      {
+        "Name": "TestConnector",
+        "ClassName": "com.twinkle.framework.connector.http.server.RestHttpServerConnector",
+        "Description": "Connector Test1",
+        "EndpointNames": ["testHelloworld"],
+        "Endpoints": [
+          {
+            "Name": "testHelloworld",
+            "ClassName": "com.twinkle.framework.connector.http.server.endpoint.RestHttpEndpoint",
+            "Description": "Demo for hello world.",
+            "RequestType": 1,
+            "URL": "authsec/helloworld/{_addressId}",
+            "RuleChain": "TestRuleChain",
+            "Request": {
+              "ClassName": "com.twinkle.framework.connector.http.endpoint.DefaultHttpRequest",
+              "RequestParameters": [
+                {
+                  "HttpAttr": "_param1",
+                  "NeAttr": "userName",
+                  "DefaultValue": "cxj110"
+                },
+                {
+                  "HttpAttr": "_param2",
+                  "NeAttr": "password"
+                }
+              ],
+              "PathVariables": [
+                {
+                  "HttpAttr": "_addressId",
+                  "NeAttr": "addressId"
+                }
+              ]
+            },
+            "Response": {
+              "ClassName": "com.twinkle.framework.connector.http.endpoint.RestHttpResponse",
+              "ResultData": {
+                "HttpAttr": "tempResult",
+                "NeAttr": "resultData"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "RuleChainManager": {
+    "ClassName": "com.twinkle.framework.ruleengine.RuleChainManager",
+    "RuleChainNames": ["TestRuleChain"],
+    "RuleChains": [
+      {
+        "Name": "TestRuleChain",
+        "ClassName": "com.twinkle.framework.ruleengine.RuleChain",
+        "RuleNames": ["TestDemoRule"],
+        "Rules": [
+          {
+            "Name": "TestDemoRule",
+            "ClassName": "com.twinkle.framework.ruleengine.rule.DemoIRule",
+            "Attribute": "resultData"
+          }
+        ]
+      }
+    ]
+  },
+  "AttributeSet": [
+    ["userName", "com.twinkle.framework.core.lang.StringAttribute", ""],
+    ["password", "com.twinkle.framework.core.lang.StringAttribute", ""],
+    ["age", "com.twinkle.framework.core.lang.IntegerAttribute", ""],
+    ["addressId", "com.twinkle.framework.core.lang.StringAttribute", ""],
+    ["resultData", "com.twinkle.framework.core.lang.StringAttribute", ""]
+  ]
+}

@@ -12,5 +12,6 @@ import com.twinkle.framework.connector.Connector;
  * @since JDK 1.8
  */
 public interface ServerConnector extends Connector {
+
     void registerAsService();
 }

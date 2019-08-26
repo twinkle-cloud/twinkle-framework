@@ -133,7 +133,6 @@ public class TimeAttribute extends IntegerAttribute {
             case OPERATION_SET:
                 this.setValue(_attr);
         }
-
     }
 
     @Override

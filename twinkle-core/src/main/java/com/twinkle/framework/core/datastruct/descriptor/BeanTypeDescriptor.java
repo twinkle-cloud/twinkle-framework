@@ -14,11 +14,18 @@ import java.util.Set;
  */
 public interface BeanTypeDescriptor extends TypeDescriptor {
     /**
+     * get the super class descriptor.
+     *
+     * @return
+     */
+    TypeDescriptor getSuperDescriptor();
+
+    /**
      * Parents' descriptor list.
      *
      * @return
      */
-    Set<BeanTypeDescriptor> getParents();
+    Set<BeanTypeDescriptor> getInterfaceDescriptors();
 
     /**
      * Get attributes list.

@@ -2,6 +2,7 @@ package com.twinkle.framework.core.asm.designer;
 
 import com.twinkle.framework.core.datastruct.Bean;
 import com.twinkle.framework.core.datastruct.Blob;
+import com.twinkle.framework.core.datastruct.converter.AttributeConverter;
 import com.twinkle.framework.core.datastruct.converter.LooseAttributeConverter;
 import com.twinkle.framework.core.datastruct.schema.*;
 import com.twinkle.framework.core.utils.TypeUtil;
@@ -96,16 +97,21 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
 
     @Override
     protected ClassVisitor addClassDeclaration(ClassVisitor _visitor) {
-        return this.addClassDeclaration(_visitor, this.className, TypeUtil.OBJECT_TYPE.getInternalName(), this.beanInterfaces, this.beanTypeDef);
+        String tempSuperName = this.beanTypeDef.getSuperTypeDef().getType().getInternalName();//TypeUtil.OBJECT_TYPE.getInternalName()
+        return this.addClassDeclaration(_visitor, this.className, tempSuperName, this.beanInterfaces, this.beanTypeDef);
     }
 
     protected void addClassDefinition(ClassVisitor _visitor, String _className, List<AttributeDef> _interfaceAttrDefList, BeanTypeDef _beanTypeDef) {
-        this.addClassDefinition(_visitor, _className, TypeUtil.OBJECT_TYPE.getInternalName(), _interfaceAttrDefList, _beanTypeDef);
+        //TypeUtil.OBJECT_TYPE.getInternalName()
+        String tempSuperName = this.beanTypeDef.getSuperTypeDef().getType().getInternalName();//TypeUtil.OBJECT_TYPE.getInternalName()
+        this.addClassDefinition(_visitor, _className, tempSuperName, _interfaceAttrDefList, _beanTypeDef);
     }
 
     @Override
     protected void addClassDefinition(ClassVisitor _visitor) {
-        this.addClassDefinition(_visitor, this.className, TypeUtil.OBJECT_TYPE.getInternalName(), this.beanAttributes, this.beanTypeDef);
+        //TypeUtil.OBJECT_TYPE.getInternalName()
+        String tempSuperName = this.beanTypeDef.getSuperTypeDef().getType().getInternalName();//TypeUtil.OBJECT_TYPE.getInternalName()
+        this.addClassDefinition(_visitor, this.className, tempSuperName, this.beanAttributes, this.beanTypeDef);
     }
 
     protected abstract void addClassDefinition(ClassVisitor _visitor, String _className, String _superName, List<AttributeDef> _attrDefList, BeanTypeDef _beanTypeDef);

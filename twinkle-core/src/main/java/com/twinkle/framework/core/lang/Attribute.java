@@ -25,6 +25,7 @@ public interface Attribute extends Cloneable, Serializable {
     String OPERATION_NAME_MIN = "min";
     String OPERATION_NAME_MAX = "max";
     String OPERATION_NAME_SET = "set";
+    String EXT_INFO_NC_INDEX = "NCIndex";
 
     /**
      * Integer Type.
@@ -74,6 +75,8 @@ public interface Attribute extends Cloneable, Serializable {
     void setEmptyValue();
 
     void setValue(String _value);
+
+    void setValue(Object _value);
 
     void setValue(Attribute _attr);
 

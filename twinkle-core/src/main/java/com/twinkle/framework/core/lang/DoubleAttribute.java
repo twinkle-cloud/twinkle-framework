@@ -60,6 +60,19 @@ public class DoubleAttribute extends AbstractNumericAttribute implements IFloatA
     }
 
     @Override
+    public void setValue(Object _value) {
+        if(_value == null) {
+            this.setEmptyValue();
+            return;
+        }
+        if(_value instanceof Attribute) {
+            this.setValue((Attribute) _value);
+            return;
+        }
+        this.setValue(_value.toString());
+    }
+
+    @Override
     public void setValue(Attribute _attr) {
         if (this != _attr) {
             int tempPrimitiveType = _attr.getPrimitiveType();

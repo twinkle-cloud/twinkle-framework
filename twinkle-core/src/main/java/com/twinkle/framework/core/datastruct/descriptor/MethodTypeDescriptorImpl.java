@@ -1,5 +1,7 @@
 package com.twinkle.framework.core.datastruct.descriptor;
 
+import com.alibaba.fastjson.JSONObject;
+import com.twinkle.framework.core.datastruct.handler.MethodInstructionHandler;
 import lombok.Builder;
 import lombok.Data;
 
@@ -54,7 +56,12 @@ public class MethodTypeDescriptorImpl implements MethodTypeDescriptor {
      * The name of the designer's method that will be used to pack the
      * instructions of this method.
      */
-    private final String instructionMethodName;
+    private final MethodInstructionHandler instructionHandler;
+
+    /**
+     * ExtraInfo for this attribute.
+     */
+    private JSONObject extraInfo;
 
     /**
      * Add annotation to this method.
@@ -102,5 +109,12 @@ public class MethodTypeDescriptorImpl implements MethodTypeDescriptor {
             this.exceptions = new ArrayList<>(2);
         }
         this.exceptions.add(_exception);
+    }
+
+    @Override
+    public Object getExtraInfoByKey(String _key) {
+        if (this.extraInfo == null)
+            return null;
+        return this.extraInfo.get(_key);
     }
 }

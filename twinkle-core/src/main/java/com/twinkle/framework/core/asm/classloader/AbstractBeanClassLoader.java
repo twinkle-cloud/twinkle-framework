@@ -71,7 +71,7 @@ public abstract class AbstractBeanClassLoader extends EnhancedClassLoader {
                             tempInterfaceClassDesigner = this.getImplBuilderDesigner(tempClass, tempInterfaceClass);
                         } else {
                             tempClassName = tempInterfaceClass.getName();
-                            tempInterfaceBeanTypeDef.addParent(TypeDefBuilder.getObjectType(tempClassName));
+                            tempInterfaceBeanTypeDef.addInterfaceTypeDef(TypeDefBuilder.getObjectType(tempClassName));
                             tempInterfaceClassDesigner = this.getClassDesigner(_className, tempInterfaceBeanTypeDef);
                         }
                     } else {

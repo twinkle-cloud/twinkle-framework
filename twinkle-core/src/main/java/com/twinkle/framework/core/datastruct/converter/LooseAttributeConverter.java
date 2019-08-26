@@ -1,6 +1,5 @@
 package com.twinkle.framework.core.datastruct.converter;
 
-import com.twinkle.framework.core.datastruct.schema.AttributeConverter;
 import com.twinkle.framework.core.datastruct.schema.AttributeDef;
 import com.twinkle.framework.core.datastruct.schema.AttributeDefImpl;
 import com.twinkle.framework.core.utils.TypeDefUtil;

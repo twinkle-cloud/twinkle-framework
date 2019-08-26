@@ -5,6 +5,7 @@ import com.twinkle.framework.core.asm.designer.ClassDesigner;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,10 +71,14 @@ public abstract class EnhancedClassLoader extends ClassLoader{
 
         try {
             JavaMemoryFileSystem.instance().addBytecode(_className, tempClassByteArray);
+            if(log.isTraceEnabled()) {
+                URL classPath = Thread.currentThread().getContextClassLoader().getResource("");
+                File tempFile = new File(classPath.getPath());
+                JavaMemoryFileSystem.dump(_className, tempClassByteArray, ".class", tempFile);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         return this.defineClass(_className, tempClassByteArray, 0, tempClassByteArray.length);
     }
 
@@ -81,7 +86,7 @@ public abstract class EnhancedClassLoader extends ClassLoader{
         if (log.isTraceEnabled()) {
             StringWriter tempWriter = (new StringWriter()).append("// class name ").append(_designer.getCanonicalClassName()).append(String.format("%n"));
             byte[] tempByteArray = _designer.toByteArray(false, new PrintWriter(tempWriter));
-            log.trace(tempWriter.toString());
+            log.info(tempWriter.toString());
             return tempByteArray;
         } else {
             return _designer.toByteArray();

@@ -230,9 +230,9 @@ public class JavaMemoryFileSystem {
      * @param _suffix
      * @param _directory
      */
-    void dump(String _className, byte[] _byteArray, String _suffix, File _directory) {
+    public static void dump(String _className, byte[] _byteArray, String _suffix, File _directory) {
         try {
-            OutputStream tempOutputSteam = this.createDumpFile(_className, _suffix, _directory);
+            OutputStream tempOutputSteam = createDumpFile(_className, _suffix, _directory);
             if (tempOutputSteam == null) {
                 return;
             }
@@ -254,7 +254,7 @@ public class JavaMemoryFileSystem {
      * @return
      * @throws FileNotFoundException
      */
-    private OutputStream createDumpFile(String _className, String _suffix, File _directory) throws FileNotFoundException {
+    private static OutputStream createDumpFile(String _className, String _suffix, File _directory) throws FileNotFoundException {
         File tempFile = new File(_directory, _className.replace('.', File.separatorChar) + _suffix);
         File tempDirectory = tempFile.getParentFile();
         if (!tempDirectory.exists()) {

@@ -1,5 +1,8 @@
 package com.twinkle.framework.core.datastruct.schema;
 
+import com.alibaba.fastjson.JSONObject;
+import com.twinkle.framework.core.datastruct.handler.MethodInstructionHandler;
+
 import java.util.List;
 
 /**
@@ -80,5 +83,20 @@ public interface MethodDef {
      *
      * @return
      */
-    String getInstructionMethodName();
+    MethodInstructionHandler getInstructionHandler();
+
+    /**
+     * Get the entire Extra Info.
+     *
+     * @return
+     */
+    JSONObject getExtraInfo();
+
+    /**
+     * Get extra info.
+     *
+     * @param _key
+     * @return
+     */
+    Object getExtraInfoByKey(String _key);
 }

@@ -27,12 +27,12 @@ public class NormalizedContext implements Serializable, Cloneable{
         this("%DefaultNormalizedEventType");
     }
 
-    public NormalizedContext(String var1) {
-        this(ContextSchema.getInstance().getNormalizedEventType(var1));
+    public NormalizedContext(String _neTypeName) {
+        this(ContextSchema.getInstance().getNormalizedEventType(_neTypeName));
     }
 
-    public NormalizedContext(String var1, boolean var2) {
-        this(ContextSchema.getInstance().getNormalizedEventType(var1), var2);
+    public NormalizedContext(String _neTypeName, boolean _createFlag) {
+        this(ContextSchema.getInstance().getNormalizedEventType(_neTypeName), _createFlag);
     }
 
     public NormalizedContext(NormalizedAttributeType _neType) {

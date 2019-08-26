@@ -26,7 +26,7 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public class AdornmentRule extends AbstractRule{
+public class AdornmentRule extends AbstractRule {
 
     private AttributeOperation attrOperation;
     /**
@@ -34,10 +34,12 @@ public class AdornmentRule extends AbstractRule{
      * to load the map content from URL. Usually from a local file or web URL.
      */
     private MapHash mapHash;
+
     public AdornmentRule() {
         super();
         log.info("AdornmentRule.initialized().");
     }
+
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
         JSONArray tempArray = _conf.getJSONArray("AdornOps");
@@ -60,13 +62,13 @@ public class AdornmentRule extends AbstractRule{
         AttributeOperation tempPreOperation = null;
         AttributeOperation tempOperation = null;
 
-        for(int i = 0; i < _operations.length; ++i) {
+        for (int i = 0; i < _operations.length; ++i) {
             StringTokenizer tempTokenizer = new StringTokenizer(_operations[i]);
             String tempToken = tempTokenizer.nextToken();
             tempPreOperation = tempOperation;
 
             try {
-                tempOperation = (AttributeOperation)AdornmentRule.Operation.getOperation(tempToken).newInstance();
+                tempOperation = (AttributeOperation) AdornmentRule.Operation.getOperation(tempToken).newInstance();
                 tempOperation.configure(_conf);
             } catch (Exception e) {
                 throw new ConfigurationException(ExceptionCode.RULE_ADN_OPERATION_INIT_FAILED, "Cannot create instance of operation class for operation-" + _operations[i]);
@@ -74,7 +76,7 @@ public class AdornmentRule extends AbstractRule{
 
             tempOperation.loadOperation(_operations[i]);
             if (tempOperation instanceof MapOperation) {
-                ((MapOperation)tempOperation).setMapHash(this.mapHash);
+                ((MapOperation) tempOperation).setMapHash(this.mapHash);
             }
             // add the next rule into the pre-rule.
             if (tempPreOperation != null) {
@@ -87,6 +89,7 @@ public class AdornmentRule extends AbstractRule{
         }
 
     }
+
     @Override
     public void applyRule(NormalizedContext _context) throws RuleException {
         log.debug("AdornmentRule.applyRule()");
@@ -104,7 +107,7 @@ public class AdornmentRule extends AbstractRule{
 
     public static class Operation {
         private static final Map byName = new HashMap();
-//        public static final AdornmentRule.Operation MIN = new AdornmentRule.Operation("min", MinOperation.class);
+        //        public static final AdornmentRule.Operation MIN = new AdornmentRule.Operation("min", MinOperation.class);
 //        public static final AdornmentRule.Operation MAX = new AdornmentRule.Operation("max", MaxOperation.class);
 //        public static final AdornmentRule.Operation SETNULL = new AdornmentRule.Operation("setifnull", SetIfNullOperation.class);
 //        public static final AdornmentRule.Operation COPYNULL = new AdornmentRule.Operation("copyifnull", CopyIfNullOperation.class);
@@ -138,7 +141,7 @@ public class AdornmentRule extends AbstractRule{
                 if (!Character.isLetter(_operation.charAt(0))) {
                     return MATH_CLASS;
                 } else {
-                    AdornmentRule.Operation tempOperation = (AdornmentRule.Operation)byName.get(_operation);
+                    AdornmentRule.Operation tempOperation = (AdornmentRule.Operation) byName.get(_operation);
                     if (tempOperation != null) {
                         return tempOperation.clazz;
                     } else {

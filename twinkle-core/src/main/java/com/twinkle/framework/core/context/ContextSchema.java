@@ -1,5 +1,6 @@
 package com.twinkle.framework.core.context;
 
+import com.alibaba.fastjson.JSONArray;
 import com.twinkle.framework.core.context.model.NormalizedAttributeType;
 import com.twinkle.framework.core.lang.Attribute;
 import com.twinkle.framework.core.lang.AttributeInfo;
@@ -23,13 +24,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class ContextSchema {
     private int num_types_;
     private static volatile ContextSchema instance;
-    protected Map attributeNameMap;
-    protected List attributeList;
-    protected List typeList;
+    protected Map<String, AttributeInfo> attributeNameMap;
+    protected List<AttributeInfo> attributeList;
+    protected List<Attribute> typeList;
     protected boolean initialized = false;
-    protected Map normalizedAttributeTypeMap = new HashMap();
+    protected Map<String, NormalizedAttributeType> normalizedAttributeTypeMap = new HashMap<>();
     protected int attributeCount = 0;
-    protected NormalizedAttributeType defaultNormalizedAttributeType_;
+    protected NormalizedAttributeType defaultNormalizedAttributeType;
     protected int normalizedAttrubiteTypeCount;
     private ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
     private Lock readLock;
@@ -39,28 +40,28 @@ public class ContextSchema {
     private ContextSchema() {
         this.readLock = this.readWriteLock.readLock();
         this.writeLock = this.readWriteLock.writeLock();
-        this.attributeNameMap = new HashMap();
-        this.attributeList = new ArrayList();
-        this.typeList = new ArrayList();
+        this.attributeNameMap = new HashMap<>();
+        this.attributeList = new ArrayList<>();
+        this.typeList = new ArrayList<>();
         this.num_types_ = 1;
     }
 
-    public void configure(String[][] _attrColumns) throws IllegalArgumentException {
-        if (this.defaultNormalizedAttributeType_ == null) {
-            this.defaultNormalizedAttributeType_ = new NormalizedAttributeType(DEFAULT_NME_TYPE, this.normalizedAttrubiteTypeCount++, _attrColumns.length);
-            this.normalizedAttributeTypeMap.put(DEFAULT_NME_TYPE, this.defaultNormalizedAttributeType_);
+    public void configure(JSONArray _attrColumns) throws IllegalArgumentException {
+        if (this.defaultNormalizedAttributeType == null) {
+            this.defaultNormalizedAttributeType = new NormalizedAttributeType(DEFAULT_NME_TYPE, this.normalizedAttrubiteTypeCount++, _attrColumns.size());
+            this.normalizedAttributeTypeMap.put(DEFAULT_NME_TYPE, this.defaultNormalizedAttributeType);
         }
 
-        for (int i = 0; i < _attrColumns.length; i++) {
-            if (_attrColumns[i][0] == null) {
-                throw new IllegalArgumentException("Attribute name is empty/null in \"" + _attrColumns[i] + "\" value");
+        for (int i = 0; i < _attrColumns.size(); i++) {
+            JSONArray tempArray = _attrColumns.getJSONArray(i);
+            if (tempArray.get(0) == null) {
+                throw new IllegalArgumentException("Attribute name is empty/null in \"" + tempArray + "\" value");
+            }
+            if (tempArray.get(1) == null) {
+                throw new IllegalArgumentException("Attribute type is empty/null in \"" + tempArray + "\" value");
             }
 
-            if (_attrColumns[i][1] == null) {
-                throw new IllegalArgumentException("Attribute type is empty/null in \"" + _attrColumns[i] + "\" value");
-            }
-
-            this.addAttribute(_attrColumns[i][0], _attrColumns[i][1], _attrColumns[i][2]);
+            this.addAttribute(tempArray.getString(0), tempArray.getString(1), tempArray.getString(2));
         }
 
     }
@@ -113,7 +114,7 @@ public class ContextSchema {
         this.addAttribute(_attrName, _attrType, null);
     }
 
-    public void addAttribute(String _attrName, String _attrType, String _descriptor) {
+    public void  addAttribute(String _attrName, String _attrType, String _descriptor) {
         this.writeLock.lock();
         try {
             int tempTypeId;
@@ -209,8 +210,8 @@ public class ContextSchema {
             return null;
         } else {
             AttributeInfo tempAttrInfo = (AttributeInfo) tempObj;
-            if (_createFlag && !this.defaultNormalizedAttributeType_.isMember(tempAttrInfo.getIndex())) {
-                this.defaultNormalizedAttributeType_.addAttribute(tempAttrInfo);
+            if (_createFlag && !this.defaultNormalizedAttributeType.isMember(tempAttrInfo.getIndex())) {
+                this.defaultNormalizedAttributeType.addAttribute(tempAttrInfo);
             }
 
             return tempAttrInfo;
@@ -379,8 +380,8 @@ public class ContextSchema {
         return tempAttr;
     }
 
-    private int getAttributeIndex(String _typeName) throws IllegalArgumentException {
-        AttributeInfo tempAttrInfo = this.getAttribute(_typeName);
+    private int getAttributeIndex(String _attrName) throws IllegalArgumentException {
+        AttributeInfo tempAttrInfo = this.getAttribute(_attrName);
         return tempAttrInfo == null ? -1 : tempAttrInfo.getIndex();
     }
 

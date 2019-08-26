@@ -21,42 +21,28 @@ public class BeanTypeDescriptorImpl implements BeanTypeDescriptor {
     private final String name;
     private final String description;
     private List<AttributeDescriptor> attributes;
-    private final List<String> parentNames;
-    private final Set<BeanTypeDescriptor> parents;
+    private final TypeDescriptor superDescriptor;
+    private final Set<BeanTypeDescriptor> interfaceDescriptors;
     private Set<String> annotations;
-    private final List<BeanTypeDescriptor> interfaces;
 
     public BeanTypeDescriptorImpl(String _className, String _name, String _description, List<AttributeDescriptor> _attributes, Set<String> _annotations) {
-        this(_className, _name, _description, _attributes, Collections.EMPTY_LIST,
-                new HashSet(4), _annotations,
-                Collections.EMPTY_LIST
+        this(_className, _name, _description, _attributes, new HashSet(4), _annotations);
+    }
+
+    public BeanTypeDescriptorImpl(String _className, String _name, String _description, List<AttributeDescriptor> _attributes, Set<BeanTypeDescriptor> _interfaces, Set<String> _annotations) {
+        this(_className, _name, _description, _attributes, new TypeDescriptorImpl(Object.class),
+                _interfaces, _annotations
         );
     }
 
-    public BeanTypeDescriptorImpl(String _className, String _name, String _description, List<AttributeDescriptor> _attributes, Set<String> _annotations, List<BeanTypeDescriptor> _interfaces) {
-        this(_className, _name, _description, _attributes, Collections.EMPTY_LIST,
-                new HashSet(_interfaces.size()), _annotations,
-                _interfaces
-        );
-    }
-
-    public BeanTypeDescriptorImpl(String _className, String _name, String _description, List<AttributeDescriptor> _attributes, List<String> _parentNames, Set<String> _annotations, List<BeanTypeDescriptor> _interfaces) {
-        this(_className, _name, _description, _attributes, _parentNames,
-                new HashSet(_interfaces.size() + _parentNames.size()), _annotations,
-                _interfaces
-        );
-    }
-
-    private BeanTypeDescriptorImpl(String _className, String _name, String _description, List<AttributeDescriptor> _attributes, List<String> _parentNames, Set<BeanTypeDescriptor> _parents, Set<String> _annotations, List<BeanTypeDescriptor> _interfaces) {
+    public BeanTypeDescriptorImpl(String _className, String _name, String _description, List<AttributeDescriptor> _attributes, TypeDescriptor _superClass, Set<BeanTypeDescriptor> _interfaces, Set<String> _annotations) {
         this.className = _className;
         this.name = _name;
         this.description = _description;
         this.attributes = _attributes;
-        this.parentNames = _parentNames;
+        this.superDescriptor = _superClass;
         this.annotations = _annotations;
-        this.parents = _parents == null? Collections.EMPTY_SET : _parents;
-        this.interfaces = _interfaces == null ? Collections.EMPTY_LIST : _interfaces;
-        this.parents.addAll(_interfaces);
+        this.interfaceDescriptors = _interfaces == null ? new HashSet<>(2) : _interfaces;
     }
 
     @Override
@@ -78,14 +64,14 @@ public class BeanTypeDescriptorImpl implements BeanTypeDescriptor {
         return false;
     }
 
-    public void addParents(Collection<BeanTypeDescriptor> _parentDescriptors) {
-        this.parents.addAll(_parentDescriptors);
+    public void addInterfaceDescriptors(Collection<BeanTypeDescriptor> _parentDescriptors) {
+        this.interfaceDescriptors.addAll(_parentDescriptors);
     }
 
     @Override
     public String toString() {
         StringBuilder tempBuilder = new StringBuilder();
-        tempBuilder.append("BeanTypeDescriptorImpl [\n_typeName=").append(this.name).append(", \n_className=").append(this.className).append(", \n_attributes=").append(this.attributes).append(", \n_parents=").append(this.parentNames).append(", \n_description=").append(this.description).append("\n]");
+        tempBuilder.append("BeanTypeDescriptorImpl [\n_typeName=").append(this.name).append(", \n_className=").append(this.className).append(", \n_attributes=").append(this.attributes).append(", \n_interfaces=").append(this.getInterfaceDescriptors()).append(", \n_description=").append(this.description).append("\n]");
         return tempBuilder.toString();
     }
 }

@@ -1,28 +1,28 @@
 package com.twinkle.framework.bootstarter.config;
 
-import com.twinkle.framework.bootstarter.service.HelloWorld2Service;
-import com.twinkle.framework.bootstarter.service.HelloWorld2ServiceImpl;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.twinkle.framework.api.constant.ExceptionCode;
+import com.twinkle.framework.api.exception.ConfigurationException;
+import com.twinkle.framework.configure.component.ComponentFactory;
 import com.twinkle.framework.configure.component.IComponentFactory;
-import com.twinkle.framework.core.asm.classloader.BeanClassLoader;
-import com.twinkle.framework.core.asm.factory.BeanFactoryImpl;
-import com.twinkle.framework.core.datastruct.BeanFactory;
-import com.twinkle.framework.core.datastruct.descriptor.*;
+import com.twinkle.framework.connector.ConnectorManager;
+import com.twinkle.framework.core.context.ContextSchema;
+import com.twinkle.framework.ruleengine.RuleChainManager;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.web.context.support.GenericWebApplicationContext;
+import org.springframework.core.io.ClassPathResource;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.IOException;
 
 /**
  * Twinkle 初始化器
@@ -33,10 +33,11 @@ import java.util.Set;
  * @since JDK 1.8
  */
 @Slf4j
-//@Configuration
-public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor{
-    private final static String KEY_CONNECTOR_MANAGER = "Connectors";
-    private final static String KEY_RULECHAIN_MANAGER = "RuleChains";
+@Configuration
+public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor {
+    private final static String KEY_CONNECTOR_MANAGER = "ConnectorManager";
+    private final static String KEY_RULECHAIN_MANAGER = "RuleChainManager";
+    private final static String KEY_ATTRIBUTE_SET = "AttributeSet";
 
     /**
      * Used to get the logic configuration content from ENV.
@@ -44,11 +45,6 @@ public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor{
     @Autowired
     private Environment env;
 
-    @Autowired
-    private IComponentFactory componentFactory;
-
-    @Autowired
-    private GenericWebApplicationContext genericWebApplicationContext;
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory factory) throws BeansException {
         // TODO Auto-generated method stub
@@ -56,109 +52,34 @@ public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor{
     }
 
     @Override
-    public  void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-        // TODO Auto-generated method stub
-//        String tempConfiguration = this.env.getProperty("");
-//        JSONObject tempObj = JSONObject.parseObject(tempConfiguration);
-//        JSONObject tempConnectorObj = tempObj.getJSONObject(KEY_CONNECTOR_MANAGER);
-//
-//        ConnectorManager tempConnectorManager = componentFactory.loadComponent(tempConnectorObj);
-//
-//        if(tempConnectorManager == null) {
-//            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_CONNECTOR ,"Did not find valid connector obj in the logic configuration.");
-//        }
-//
-//        RuleChainManager tempRuleManager = componentFactory.loadComponent(tempObj.getJSONObject(KEY_RULECHAIN_MANAGER));
-//        if(tempRuleManager == null) {
-//            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_RULECHAIN ,"Did not find valid IRuleChain obj in the logic configuration.");
-//        }
+    public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
+        ClassPathResource classPathResource = new ClassPathResource("Test.json");
+        //String tempConfiguration = this.env.getProperty("");
 
-        ClassLoader currentLoader = Thread.currentThread().getContextClassLoader();
-
-        BeanClassLoader tempLoader = new BeanClassLoader(currentLoader, this.packDescriptors());
-
-        BeanFactory tempBeanFactory = new BeanFactoryImpl(tempLoader);
-//        Object tempObj = tempBeanFactory.newInstance("HelloWorld");
-        Class<?> tempBeanClass = tempBeanFactory.getBeanClass("HelloWorld");
-        log.debug("The new obj is:{}", tempBeanClass);
-
-        //构造bean定义
-        BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder
-                .genericBeanDefinition(tempBeanClass);
-        BeanDefinition beanDefinition = beanDefinitionBuilder.getRawBeanDefinition();
-        //注册bean定义
-        registry.registerBeanDefinition("hellController2", beanDefinition);
-
-        //构造bean定义
-        beanDefinitionBuilder = BeanDefinitionBuilder
-                .genericBeanDefinition(HelloWorld2Service.class, () ->new HelloWorld2ServiceImpl());
-        beanDefinition = beanDefinitionBuilder.getRawBeanDefinition();
-        //注册bean定义
-        registry.registerBeanDefinition("helloWorldService", beanDefinition);
-        log.debug("The new obj is:{}", beanDefinition);
-
-
-    }
-    private <T extends HelloWorld2Service> void registerService(){
-        try{
-            Class<HelloWorld2Service> tempBeanClass = HelloWorld2Service.class;
-
-            HelloWorld2Service tempObj = new HelloWorld2ServiceImpl();
-            genericWebApplicationContext.registerBean("helloWorldService",
-                    HelloWorld2ServiceImpl.class, () -> new HelloWorld2ServiceImpl());
-            log.debug("The new obj is:{}", tempBeanClass);
-        } catch (NoClassDefFoundError ex) {
-            throw new IllegalArgumentException("Cannot resolve dependencies for class: " + ex);
-        } catch (Throwable te) {
-            throw new IllegalArgumentException("Problem loading class:" + te);
+        String tempConfiguration = null;
+        try {
+            tempConfiguration = IOUtils.toString(classPathResource.getInputStream(), "utf-8");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        JSONObject tempObj = JSONObject.parseObject(tempConfiguration);
 
-//        Class<?> tempClass = tempObj.getClass();
-//        log.debug("The new obj Class is:{}", tempBeanClass);
-    }
+        //Initialize the attributes in ContextSchema.
+        JSONArray tempAttrArray = tempObj.getJSONArray(KEY_ATTRIBUTE_SET);
+        ContextSchema tempSchema = ContextSchema.getInstance();
+        tempSchema.configure(tempAttrArray);
 
-    private TypeDescriptors packDescriptors() {
-        List<TypeDescriptor> tempDecriptorList = new ArrayList<>();
-        tempDecriptorList.add(this.packDescriptor());
-        TypeDescriptors tempDescriptors = new TypeDescriptorsImpl(tempDecriptorList);
+        IComponentFactory componentFactory = new ComponentFactory(registry);
 
-        return tempDescriptors;
-    }
-
-    private BeanTypeDescriptor packDescriptor(){
-        Set<String> tempAnnotationSet = new HashSet();
-        tempAnnotationSet.add("@org.springframework.web.bind.annotation.RestController");
-        tempAnnotationSet.add("@lombok.extern.slf4j.Slf4j");
-        tempAnnotationSet.add("@io.swagger.annotations.Api");
-        List<AttributeDescriptor> tempAttrList = new ArrayList<>();
-        Set<String> tempAttr1Set = new HashSet();
-        tempAttr1Set.add("@org.springframework.beans.factory.annotation.Autowired");
-        TypeDescriptor tempAttrType = TypeDescriptorImpl.builder()
-                .className("com.twinkle.framework.bootstarter.service.HelloWorldService")
-                .name("HelloWorldService")
-                .description("").build();
-        AttributeDescriptor tempAttr1 = AttributeDescriptorImpl.builder()
-                .name("tempResult")
-                .annotations(tempAttr1Set)
-                .type(tempAttrType).build();
-        tempAttrList.add(tempAttr1);
-
-        List<BeanTypeDescriptor> tempInterfaceList = new ArrayList<>();
-        BeanTypeDescriptor tempInterfaceType1 = new BeanInterfaceTypeDescriptorImpl("Bean");
-        tempInterfaceList.add(tempInterfaceType1);
-
-//        BeanTypeDescriptor tempObjDescriptor = BeanTypeDescriptorImpl.builder().className("java.lang.Object")
-//                .name("Object").build();
-//        Set<BeanTypeDescriptor> tempParentSet = new HashSet<>();
-//        tempParentSet.add(tempObjDescriptor);
-
-        BeanTypeDescriptor tempDescriptor = BeanTypeDescriptorImpl.builder().className(
-                "com.twinkle.framework.core.datastruct.beans.HelloWorld"
-        ).name("HelloWorld").description("com.twinkle.framework.core.datastruct.beans.HelloWorld")
-                .annotations(tempAnnotationSet)
-                .attributes(tempAttrList)
-//                .parents(tempParentSet)
-                .interfaces(tempInterfaceList).build();
-        return tempDescriptor;
+        //Initialize the connectors' Manager.
+        ConnectorManager tempConnectorManager = componentFactory.loadComponent(tempObj.getJSONObject(KEY_CONNECTOR_MANAGER));
+        if(tempConnectorManager == null) {
+            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_CONNECTOR ,"Did not find valid connector obj in the logic configuration.");
+        }
+        //Initialize the rule Manager.
+        RuleChainManager tempRuleManager = componentFactory.loadComponent(tempObj.getJSONObject(KEY_RULECHAIN_MANAGER));
+        if (tempRuleManager == null) {
+            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_RULECHAIN, "Did not find valid IRuleChain obj in the logic configuration.");
+        }
     }
 }

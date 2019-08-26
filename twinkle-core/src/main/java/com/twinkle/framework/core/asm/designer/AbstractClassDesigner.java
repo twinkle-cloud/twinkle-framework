@@ -31,7 +31,7 @@ public abstract class AbstractClassDesigner implements ClassDesigner {
 
         this.addClassDeclaration(tempVistor);
         this.addClassDefinition(tempVistor);
-        ((ClassVisitor)tempVistor).visitEnd();
+        tempVistor.visitEnd();
         return tempClassWriter;
     }
 

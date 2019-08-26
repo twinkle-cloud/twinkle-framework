@@ -44,7 +44,7 @@ public class BeanInterfaceTypeDescriptorImpl implements BeanTypeDescriptor {
         return Collections.emptySet();
     }
     @Override
-    public Set<BeanTypeDescriptor> getParents() {
+    public Set<BeanTypeDescriptor> getInterfaceDescriptors() {
         return Collections.emptySet();
     }
     @Override
@@ -56,4 +56,8 @@ public class BeanInterfaceTypeDescriptorImpl implements BeanTypeDescriptor {
         return null;
     }
 
+    @Override
+    public TypeDescriptor getSuperDescriptor() {
+        return null;
+    }
 }

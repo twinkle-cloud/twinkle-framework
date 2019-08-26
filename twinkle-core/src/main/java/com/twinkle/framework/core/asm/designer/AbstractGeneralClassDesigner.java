@@ -1,5 +1,6 @@
 package com.twinkle.framework.core.asm.designer;
 
+import com.twinkle.framework.core.datastruct.handler.MethodInstructionHandler;
 import com.twinkle.framework.core.datastruct.schema.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -8,8 +9,6 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,20 +65,9 @@ public abstract class AbstractGeneralClassDesigner extends AbstractGeneralBeanCl
      */
     protected void addMethodsDefinition(ClassVisitor _visitor, String _className, List<MethodDef> _methodDefList) {
         _methodDefList.parallelStream().forEach(item -> {
-            try {
-                Map<String, LocalAttributeIndexInfo> tempIndexMap = new HashMap<>(1 + item.getLocalParameterAttrs().size() + item.getParameterAttrs().size());
-                this.methodAttributeIndexMap.put(item.getName(), tempIndexMap);
-                this.addMethodDefinition(_visitor, _className, item);
-            } catch (IllegalAccessException e) {
-                log.error("Encountered Error while add method: [{}], exception: [{}]", item.getName(), e);
-                throw new RuntimeException(e);
-            } catch (InvocationTargetException e) {
-                log.error("Encountered Error while add method: [{}], exception: [{}]", item.getName(), e);
-                throw new RuntimeException(e);
-            } catch (NoSuchMethodException e) {
-                log.error("The instruction packing method missing for this method: [{}], exception: [{}]", item.getName(), e);
-                throw new RuntimeException(e);
-            }
+            Map<String, LocalAttributeIndexInfo> tempIndexMap = new HashMap<>(1 + item.getLocalParameterAttrs().size() + item.getParameterAttrs().size());
+            this.methodAttributeIndexMap.put(item.getName(), tempIndexMap);
+            this.addMethodDefinition(_visitor, _className, item);
         });
     }
 
@@ -91,30 +79,19 @@ public abstract class AbstractGeneralClassDesigner extends AbstractGeneralBeanCl
      * @param _methodDef
      * @return
      */
-    protected MethodVisitor addMethodDefinition(ClassVisitor _visitor, String _className, MethodDef _methodDef) throws NoSuchMethodException, SecurityException, InvocationTargetException, IllegalAccessException {
+    protected MethodVisitor addMethodDefinition(ClassVisitor _visitor, String _className, MethodDef _methodDef) {
         MethodVisitor tempVisitor = _visitor.visitMethod(Opcodes.ACC_PUBLIC, _methodDef.getName(), _methodDef.getDescriptor(), _methodDef.getSignature(), this.getExceptions(_methodDef.getExceptions()));
         _methodDef.getAnnotations().stream().forEach(item -> this.addMethodAnnotation(tempVisitor, item, AnnotationDef.Kind.METHOD));
         this.addMethodParameter(tempVisitor, _methodDef.getParameterAttrs());
-        tempVisitor.visitCode();
-        // Pack the instruction body of this method.
-        Method tempInstructionMethod = this.getClass().getMethod(_methodDef.getInstructionMethodName(), MethodVisitor.class, String.class, MethodDef.class);
-        tempInstructionMethod.invoke(this, tempVisitor, _className, _methodDef);
 
-        for(AttributeDef tempAttrDef : _methodDef.getLocalParameterAttrs()) {
-            String tempSignature = "";
-            if(tempAttrDef.getType().isGeneric()) {
-                tempSignature = ((GenericTypeDef) tempAttrDef.getType()).getFieldSignature();
-            }
-            LocalAttributeIndexInfo tempIndexInfo = this.methodAttributeIndexMap.get(_methodDef.getName()).get(tempAttrDef.getName());
-            if(tempIndexInfo!= null) {
-                tempVisitor.visitLocalVariable(tempAttrDef.getFieldName(),
-                        tempAttrDef.getType().getType().getDescriptor(),
-                        tempSignature,
-                        tempIndexInfo.getStartLabel(),
-                        tempIndexInfo.getEndLabel(),
-                        tempIndexInfo.getIndex());
-            }
+        // Pack the instruction body of this method.
+        MethodInstructionHandler tempHandler = _methodDef.getInstructionHandler();
+        if(tempHandler == null) {
+            tempVisitor.visitEnd();
+            return tempVisitor;
         }
+        tempVisitor.visitCode();
+        tempHandler.addInstructions(tempVisitor, _className, _methodDef);
         tempVisitor.visitMaxs(AUTO_STACK_SIZE, AUTO_LOCAL_VARS);
         tempVisitor.visitEnd();
         return tempVisitor;
@@ -139,14 +116,14 @@ public abstract class AbstractGeneralClassDesigner extends AbstractGeneralBeanCl
      * @return
      */
     protected MethodVisitor addMethodParameter(MethodVisitor _visitor, List<AttributeDef> _paramList) {
-        if(CollectionUtils.isEmpty(_paramList)) {
+        if (CollectionUtils.isEmpty(_paramList)) {
             return _visitor;
         }
-        for(int i = 0; i<_paramList.size(); i++) {
+        for (int i = 0; i < _paramList.size(); i++) {
             AttributeDef tempDef = _paramList.get(i);
             _visitor.visitParameter(tempDef.getFieldName(), tempDef.getAccess());
             List<AnnotationDef> tempParamAnnotations = tempDef.getAnnotations();
-            for(AnnotationDef tempAnnotation : tempParamAnnotations) {
+            for (AnnotationDef tempAnnotation : tempParamAnnotations) {
                 AnnotationVisitor tempVisitor = _visitor.visitParameterAnnotation(i, tempAnnotation.getType().getDescriptor(), true);
                 this.addAnnotationElements(tempVisitor, tempAnnotation);
                 tempVisitor.visitEnd();

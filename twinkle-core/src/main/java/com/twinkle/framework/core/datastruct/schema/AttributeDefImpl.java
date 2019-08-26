@@ -1,5 +1,6 @@
 package com.twinkle.framework.core.datastruct.schema;
 
+import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.core.datastruct.Blob;
 import com.twinkle.framework.core.datastruct.codec.BinEncoding;
 import com.twinkle.framework.core.datastruct.descriptor.AttributeDescriptor;
@@ -39,6 +40,10 @@ public class AttributeDefImpl implements AttributeDef, Cloneable {
     private transient String setterName;
     private transient String constantName;
     private transient String fieldName;
+    /**
+     * ExtraInfo for this attribute.
+     */
+    private JSONObject extraInfo;
 
     public AttributeDefImpl(String _name, TypeDef _type, int _access, Object _value) {
         this.setName(_name);
@@ -52,6 +57,7 @@ public class AttributeDefImpl implements AttributeDef, Cloneable {
             this.defaultValue = this.initDefaultValue(_name, _type.getType(), _value);
             this.descriptor = null;
             this.annotations = Collections.emptyList();
+            this.extraInfo = new JSONObject();
         }
     }
 
@@ -71,6 +77,7 @@ public class AttributeDefImpl implements AttributeDef, Cloneable {
             this.defaultValue = this.initDefaultValue(_name, _type.getType(), _value);
             this.descriptor = null;
             this.annotations = Collections.emptyList();
+            this.extraInfo = new JSONObject();
         }
     }
 
@@ -89,6 +96,7 @@ public class AttributeDefImpl implements AttributeDef, Cloneable {
             this.required = _attrDesp.isRequired();
             this.defaultValue = this.initDefaultValue(_attrDesp.getName(), _typeDef.getType(), _attrDesp.getDefaultValue());
             this.descriptor = _attrDesp;
+            this.extraInfo = _attrDesp.getExtraInfo();
             if (_annotationDefList == null) {
                 throw new NullPointerException("annotations");
             } else {
@@ -104,6 +112,7 @@ public class AttributeDefImpl implements AttributeDef, Cloneable {
         this.readOnly = _attrDef.isReadOnly();
         this.required = _attrDef.isRequired();
         this.defaultValue = _attrDef.getDefaultValue();
+        this.extraInfo = _attrDef.getExtraInfo();
         if (_attrDef instanceof AttributeDefImpl) {
             this.descriptor = ((AttributeDefImpl) _attrDef).getDescriptor();
         } else {
@@ -283,5 +292,12 @@ public class AttributeDefImpl implements AttributeDef, Cloneable {
                 return tempDefaultValueList.toArray();
             }
         }
+    }
+
+    @Override
+    public Object getExtraInfoByKey(String _key) {
+        if (this.extraInfo == null)
+            return null;
+        return this.extraInfo.get(_key);
     }
 }

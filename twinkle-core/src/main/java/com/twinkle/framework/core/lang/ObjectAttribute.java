@@ -50,6 +50,11 @@ public class ObjectAttribute implements Attribute {
     }
 
     @Override
+    public void setValue(Object _value) {
+        this.value = _value;
+    }
+
+    @Override
     public void setValue(Attribute _attr) {
         if (this != _attr) {
             this.value = ((ObjectAttribute)_attr).getObject();

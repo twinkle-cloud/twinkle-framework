@@ -1,5 +1,6 @@
 package com.twinkle.framework.connector;
 
+import com.twinkle.framework.api.component.IComponent;
 import com.twinkle.framework.api.config.Configurable;
 
 /**
@@ -11,5 +12,5 @@ import com.twinkle.framework.api.config.Configurable;
  * @see
  * @since JDK 1.8
  */
-public interface Connector extends Configurable {
+public interface Connector extends Configurable, IComponent {
 }

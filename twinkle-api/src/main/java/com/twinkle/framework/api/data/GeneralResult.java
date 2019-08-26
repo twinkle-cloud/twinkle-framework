@@ -44,7 +44,12 @@ public class GeneralResult<T> implements Serializable{
         this.desc = desc;
         this.data = data;
     }
-    
-    
+
+    public void setCode(String _code) {
+        this.code = _code;
+    }
+    public void setCode(int _code) {
+        this.code = String.valueOf(_code);
+    }
 }
 

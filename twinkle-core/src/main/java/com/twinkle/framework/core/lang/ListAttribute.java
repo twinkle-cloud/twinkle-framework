@@ -3,10 +3,7 @@ package com.twinkle.framework.core.lang;
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.core.utils.ChangeCharset;
 
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
-import java.util.Random;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -20,7 +17,7 @@ import java.util.StringTokenizer;
 public class ListAttribute implements Attribute {
     private final String DELIMITER = "|";
     private final String NULL_VALUE = "null";
-    protected ArrayList elements_ = new ArrayList(8);
+    protected List elements = new ArrayList(8);
     private int type_ = 110;
     protected Class<?> attrClass_ = null;
 
@@ -137,6 +134,23 @@ public class ListAttribute implements Attribute {
     }
 
     @Override
+    public void setValue(Object _value) {
+        if(_value == null) {
+            this.setEmptyValue();
+            return;
+        }
+        if(_value instanceof Attribute) {
+            this.setValue((Attribute)_value);
+            return;
+        }
+        if(_value instanceof List) {
+            this.elements = (List)_value;
+            return;
+        }
+        this.setValue(_value.toString());
+    }
+
+    @Override
     public void setValue(Attribute _attr) {
         if (this != _attr) {
             if (_attr instanceof ListAttribute) {
@@ -147,7 +161,7 @@ public class ListAttribute implements Attribute {
                 this.attrClass_ = tempAttr.attrClass_;
 
                 for (int i = 0; i < tempSize; i++) {
-                    this.elements_.add(tempAttr.get(i).clone());
+                    this.elements.add(tempAttr.get(i).clone());
                 }
             } else {
                 this.setValue(_attr.toString());
@@ -177,7 +191,7 @@ public class ListAttribute implements Attribute {
     @Override
     public int hashCode() {
         int tempCode = 0;
-        Object[] tempObjArray = this.elements_.toArray();
+        Object[] tempObjArray = this.elements.toArray();
 
         for (int i = 0; i < tempObjArray.length; ++i) {
             tempCode ^= tempObjArray[i].hashCode();
@@ -194,7 +208,7 @@ public class ListAttribute implements Attribute {
             StringBuffer tempBuffer = new StringBuffer(256);
             tempBuffer.append(this.attrClass_.getName());
             tempBuffer.append("|");
-            int tempSize = this.elements_.size();
+            int tempSize = this.elements.size();
             tempBuffer.append(tempSize);
             tempBuffer.append("|");
             String tempItem = null;
@@ -214,16 +228,16 @@ public class ListAttribute implements Attribute {
     @Override
     public int compareTo(Object _obj) {
         ListAttribute tempDestAttr = (ListAttribute) _obj;
-        ArrayList tempDestList = tempDestAttr.elements_;
+        List tempDestList = tempDestAttr.elements;
         int tempDestSize = tempDestList.size();
-        int tempThisSize = this.elements_.size();
+        int tempThisSize = this.elements.size();
         if (tempThisSize < tempDestSize) {
             return -1;
         } else if (tempThisSize > tempDestSize) {
             return 1;
         } else {
             for (int i = 0; i < tempThisSize; ++i) {
-                Attribute tempThisItemAttr = (Attribute) this.elements_.get(i);
+                Attribute tempThisItemAttr = (Attribute) this.elements.get(i);
                 Attribute tempDestItemAttr = (Attribute) tempDestList.get(i);
                 int tempResult = tempThisItemAttr.compareTo(tempDestItemAttr);
                 if (tempResult != 0) {
@@ -253,12 +267,12 @@ public class ListAttribute implements Attribute {
         if (_attr != null) {
             if (this.isEmpty()) {
                 this.attrClass_ = _attr.getClass();
-                this.elements_.add(_index, _attr);
+                this.elements.add(_index, _attr);
             } else {
                 if (!this.attrClass_.equals(_attr.getClass())) {
                     throw new IllegalArgumentException("Attribute of type " + _attr.getClass() + " cannot be added to list of " + this.attrClass_ + " attributes.");
                 }
-                this.elements_.add(_index, _attr);
+                this.elements.add(_index, _attr);
             }
         } else {
             throw new IllegalArgumentException("Attribute cannot be null");
@@ -281,7 +295,7 @@ public class ListAttribute implements Attribute {
      * @return
      */
     public Attribute get(int _index) {
-        return (Attribute) this.elements_.get(_index);
+        return (Attribute) this.elements.get(_index);
     }
 
     /**
@@ -293,39 +307,39 @@ public class ListAttribute implements Attribute {
      */
     public Attribute set(int _index, Attribute _attr) {
         if (_attr != null && this.attrClass_ != null && this.attrClass_.equals(_attr.getClass())) {
-            return (Attribute) this.elements_.set(_index, _attr);
+            return (Attribute) this.elements.set(_index, _attr);
         } else {
             throw new IllegalArgumentException("Attribute of type " + (_attr != null ? _attr.getClass().getName() : "null") + " cannot be set in a list of " + this.attrClass_ + " attributes.");
         }
     }
 
     public boolean isEmpty() {
-        return this.elements_.isEmpty();
+        return this.elements.isEmpty();
     }
 
     public Attribute[] toArray() {
-        Attribute[] var1 = new Attribute[this.elements_.size()];
-        return (Attribute[]) ((Attribute[]) this.elements_.toArray(var1));
+        Attribute[] var1 = new Attribute[this.elements.size()];
+        return (Attribute[]) ((Attribute[]) this.elements.toArray(var1));
     }
 
     public Attribute[] toArray(Attribute[] var1) {
-        return (Attribute[]) ((Attribute[]) this.elements_.toArray(var1));
+        return (Attribute[]) ((Attribute[]) this.elements.toArray(var1));
     }
 
     public int size() {
-        return this.elements_.size();
+        return this.elements.size();
     }
 
     public boolean contains(Attribute var1) {
-        return this.elements_.contains(var1);
+        return this.elements.contains(var1);
     }
 
     public boolean containsAll(Attribute var1) {
-        return var1 instanceof ListAttribute ? this.elements_.containsAll(((ListAttribute) var1).elements_) : false;
+        return var1 instanceof ListAttribute ? this.elements.containsAll(((ListAttribute) var1).elements) : false;
     }
 
     private void clear() {
-        this.elements_.clear();
+        this.elements.clear();
         this.attrClass_ = null;
     }
 
@@ -363,11 +377,11 @@ public class ListAttribute implements Attribute {
 
     @Override
     public Object getObjectValue() {
-        return this.elements_;
+        return this.elements;
     }
 
     @Override
     public JSONObject getJsonObjectValue() {
-        return JSONObject.parseObject(this.elements_.toString());
+        return JSONObject.parseObject(this.elements.toString());
     }
 }
