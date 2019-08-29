@@ -3,7 +3,7 @@ package com.twinkle.framework.core.context.model;
 import com.twinkle.framework.core.context.ContextSchema;
 import com.twinkle.framework.core.lang.Attribute;
 import com.twinkle.framework.core.lang.AttributeInfo;
-import com.twinkle.framework.core.lang.LogAttribute;
+import com.twinkle.framework.core.lang.ILogAttribute;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -243,7 +243,7 @@ public class NormalizedContext implements Serializable, Cloneable{
         if (_attr == null) {
             return null;
         } else {
-            return _attr instanceof LogAttribute ? ((LogAttribute)_attr).toLogString() : _attr.toString();
+            return _attr instanceof ILogAttribute ? ((ILogAttribute)_attr).toLogString() : _attr.toString();
         }
     }
 

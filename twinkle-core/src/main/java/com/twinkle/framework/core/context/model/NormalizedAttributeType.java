@@ -20,79 +20,78 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 @Slf4j
 public class NormalizedAttributeType implements Serializable {
-    private static final long serialVersionUID = -3533688971480842183L;
-    private String name_;
-    private int[] attributeIndexes_;
-    private int[] indexMap_;
-    private transient AttributeInfo[] attributeInfos_;
-    private transient String[] attributeNames_;
-    private transient int typeId_;
-    private transient boolean inconsistentSerializedType_;
-    private transient boolean serializedTypeChecked_;
-    private ReadWriteLock rwLock_;
-    private Lock readLock_;
-    private Lock writeLock_;
+    private static final long serialVersionUID = 7568004364229166443L;
+    private transient boolean inconsistentSerializedType;
+    private transient boolean serializedTypeChecked;
+    private String name;
+    private transient int typeId;
+    private int[] attributeIndexes;
+    private int[] indexMap;
+    private transient AttributeInfo[] attributeInfos;
+    private transient String[] attributeNames;
+    private ReadWriteLock readWriteLock;
+    private Lock readLock;
+    private Lock writeLock;
 
     public NormalizedAttributeType(String _name, int _typeId, int _size) {
         this(_name, _typeId, _size, new AttributeInfo[0]);
     }
 
     public NormalizedAttributeType(String _name, int _typeId, int _size, AttributeInfo[] _attributeInfoArray) {
-        this.inconsistentSerializedType_ = true;
-        this.serializedTypeChecked_ = false;
-        this.rwLock_ = new ReentrantReadWriteLock();
-        this.readLock_ = this.rwLock_.readLock();
-        this.writeLock_ = this.rwLock_.writeLock();
+        this.inconsistentSerializedType = true;
+        this.serializedTypeChecked = false;
+        this.readWriteLock = new ReentrantReadWriteLock();
+        this.readLock = this.readWriteLock.readLock();
+        this.writeLock = this.readWriteLock.writeLock();
         log.debug("NormalizedAttributeType.NormalizedAttributeType({}, {}, {})", _name, _typeId, _size);
-        this.name_ = _name;
-        this.typeId_ = _typeId;
-        this.indexMap_ = new int[_size];
+        this.name = _name;
+        this.typeId = _typeId;
+        this.indexMap = new int[_size];
 
         int i;
-        for(i = 0; i < _size; ++i) {
-            this.indexMap_[i] = -1;
+        for(i = 0; i < _size; i++) {
+            this.indexMap[i] = -1;
         }
 
-        this.attributeInfos_ = _attributeInfoArray;
-        this.attributeNames_ = new String[_attributeInfoArray.length];
-        this.attributeIndexes_ = new int[_attributeInfoArray.length];
+        this.attributeInfos = _attributeInfoArray;
+        this.attributeNames = new String[_attributeInfoArray.length];
+        this.attributeIndexes = new int[_attributeInfoArray.length];
 
-        for(i = 0; i < _attributeInfoArray.length; this.indexMap_[_attributeInfoArray[i].getIndex()] = i++) {
-            this.attributeNames_[i] = _attributeInfoArray[i].getName();
-            this.attributeIndexes_[i] = _attributeInfoArray[i].getIndex();
+        for(i = 0; i < _attributeInfoArray.length; this.indexMap[_attributeInfoArray[i].getIndex()] = i++) {
+            this.attributeNames[i] = _attributeInfoArray[i].getName();
+            this.attributeIndexes[i] = _attributeInfoArray[i].getIndex();
         }
-
     }
 
     public String getName() {
-        return this.name_;
+        return this.name;
     }
 
     public int getTypeId() {
-        return this.typeId_;
+        return this.typeId;
     }
 
     public String[] getAttributeNames() {
-        this.readLock_.lock();
+        this.readLock.lock();
 
         String[] tempAttributeNameArray;
         try {
-            tempAttributeNameArray = this.attributeNames_;
+            tempAttributeNameArray = this.attributeNames;
         } finally {
-            this.readLock_.unlock();
+            this.readLock.unlock();
         }
 
         return tempAttributeNameArray;
     }
 
     public int[] getAttributeIndexes() {
-        this.readLock_.lock();
+        this.readLock.lock();
 
         int[] tempAttributeIndexArray;
         try {
-            tempAttributeIndexArray = this.attributeIndexes_;
+            tempAttributeIndexArray = this.attributeIndexes;
         } finally {
-            this.readLock_.unlock();
+            this.readLock.unlock();
         }
 
         return tempAttributeIndexArray;
@@ -105,18 +104,18 @@ public class NormalizedAttributeType implements Serializable {
      * @return
      */
     public boolean isMember(String _attrName) {
-        this.readLock_.lock();
+        this.readLock.lock();
 
         boolean tempFlag;
         try {
-            for(int i = 0; i < this.attributeNames_.length; ++i) {
-                if (this.attributeNames_[i].equalsIgnoreCase(_attrName)) {
+            for(int i = 0; i < this.attributeNames.length; ++i) {
+                if (this.attributeNames[i].equalsIgnoreCase(_attrName)) {
                     return true;
                 }
             }
             tempFlag = false;
         } finally {
-            this.readLock_.unlock();
+            this.readLock.unlock();
         }
 
         return tempFlag;
@@ -129,13 +128,13 @@ public class NormalizedAttributeType implements Serializable {
      * @return
      */
     public boolean isMember(int _index) {
-        this.readLock_.lock();
+        this.readLock.lock();
 
         boolean tempFlag;
         try {
-            tempFlag = _index < this.indexMap_.length && this.indexMap_[_index] != -1;
+            tempFlag = _index < this.indexMap.length && this.indexMap[_index] != -1;
         } finally {
-            this.readLock_.unlock();
+            this.readLock.unlock();
         }
 
         return tempFlag;
@@ -152,37 +151,37 @@ public class NormalizedAttributeType implements Serializable {
      */
     public void addAttribute(AttributeInfo _attributeInfo) {
         if (!this.isMember(_attributeInfo.getIndex())) {
-            this.writeLock_.lock();
+            this.writeLock.lock();
 
             try {
-                log.debug("Adding attribute {}->{} to type ", _attributeInfo.getName(), _attributeInfo.getIndex(), this.name_);
+                log.debug("Adding attribute {}->{} to type {}", _attributeInfo.getName(), _attributeInfo.getIndex(), this.name);
                 // Add the attribute into the List.
-                AttributeInfo[] tempNewAttributeInfoArray = new AttributeInfo[this.attributeInfos_.length + 1];
-                System.arraycopy(this.attributeInfos_, 0, tempNewAttributeInfoArray, 0, this.attributeInfos_.length);
-                this.attributeInfos_ = tempNewAttributeInfoArray;
-                this.attributeInfos_[this.attributeInfos_.length - 1] = _attributeInfo;
-                String[] tempAttributeNameArray = new String[this.attributeNames_.length + 1];
-                System.arraycopy(this.attributeNames_, 0, tempAttributeNameArray, 0, this.attributeNames_.length);
-                this.attributeNames_ = tempAttributeNameArray;
-                this.attributeNames_[this.attributeNames_.length - 1] = _attributeInfo.getName();
-                int[] tempAttributeIndexArray = new int[this.attributeIndexes_.length + 1];
-                System.arraycopy(this.attributeIndexes_, 0, tempAttributeIndexArray, 0, this.attributeIndexes_.length);
-                this.attributeIndexes_ = tempAttributeIndexArray;
-                this.attributeIndexes_[this.attributeIndexes_.length - 1] = _attributeInfo.getIndex();
-                if (_attributeInfo.getIndex() >= this.indexMap_.length) {
+                AttributeInfo[] tempNewAttributeInfoArray = new AttributeInfo[this.attributeInfos.length + 1];
+                System.arraycopy(this.attributeInfos, 0, tempNewAttributeInfoArray, 0, this.attributeInfos.length);
+                this.attributeInfos = tempNewAttributeInfoArray;
+                this.attributeInfos[this.attributeInfos.length - 1] = _attributeInfo;
+                String[] tempAttributeNameArray = new String[this.attributeNames.length + 1];
+                System.arraycopy(this.attributeNames, 0, tempAttributeNameArray, 0, this.attributeNames.length);
+                this.attributeNames = tempAttributeNameArray;
+                this.attributeNames[this.attributeNames.length - 1] = _attributeInfo.getName();
+                int[] tempAttributeIndexArray = new int[this.attributeIndexes.length + 1];
+                System.arraycopy(this.attributeIndexes, 0, tempAttributeIndexArray, 0, this.attributeIndexes.length);
+                this.attributeIndexes = tempAttributeIndexArray;
+                this.attributeIndexes[this.attributeIndexes.length - 1] = _attributeInfo.getIndex();
+                if (_attributeInfo.getIndex() >= this.indexMap.length) {
                     tempAttributeIndexArray = new int[_attributeInfo.getIndex() + 1];
-                    System.arraycopy(this.indexMap_, 0, tempAttributeIndexArray, 0, this.indexMap_.length);
+                    System.arraycopy(this.indexMap, 0, tempAttributeIndexArray, 0, this.indexMap.length);
                     // Initialize the index value for the gap items.
-                    for(int i = this.indexMap_.length; i < tempAttributeIndexArray.length; i++) {
+                    for(int i = this.indexMap.length; i < tempAttributeIndexArray.length; i++) {
                         tempAttributeIndexArray[i] = -1;
                     }
                     // Get the new Index Array.
-                    this.indexMap_ = tempAttributeIndexArray;
+                    this.indexMap = tempAttributeIndexArray;
                 }
                 //Update the new Item's index into the index array.
-                this.indexMap_[_attributeInfo.getIndex()] = this.attributeNames_.length - 1;
+                this.indexMap[_attributeInfo.getIndex()] = this.attributeNames.length - 1;
             } finally {
-                this.writeLock_.unlock();
+                this.writeLock.unlock();
             }
 
         }
@@ -194,13 +193,13 @@ public class NormalizedAttributeType implements Serializable {
      * @return
      */
     public int getNumAttributes() {
-        this.readLock_.lock();
+        this.readLock.lock();
 
         int tempNum = 0;
         try {
-            tempNum = this.attributeNames_.length;
+            tempNum = this.attributeNames.length;
         } finally {
-            this.readLock_.unlock();
+            this.readLock.unlock();
         }
 
         return tempNum;
@@ -213,36 +212,36 @@ public class NormalizedAttributeType implements Serializable {
      * @return
      */
     boolean isInconsistentSerializedType(NormalizedAttributeType _neType) {
-        this.writeLock_.lock();
+        this.writeLock.lock();
 
         boolean tempFlag;
         try {
-            if (this.serializedTypeChecked_) {
-                return this.inconsistentSerializedType_;
+            if (this.serializedTypeChecked) {
+                return this.inconsistentSerializedType;
             }
 
-            this.serializedTypeChecked_ = true;
-            int[] tempAttributeIndexArray = _neType.attributeIndexes_;
-            int[] tempIndexArray = _neType.indexMap_;
+            this.serializedTypeChecked = true;
+            int[] tempAttributeIndexArray = _neType.attributeIndexes;
+            int[] tempIndexArray = _neType.indexMap;
             if (tempAttributeIndexArray == null) {
-                this.inconsistentSerializedType_ = false;
+                this.inconsistentSerializedType = false;
                 tempFlag = false;
                 return tempFlag;
             }
 
-            if (tempAttributeIndexArray.length > this.attributeIndexes_.length) {
-                this.inconsistentSerializedType_ = true;
+            if (tempAttributeIndexArray.length > this.attributeIndexes.length) {
+                this.inconsistentSerializedType = true;
             } else {
                 int tempIndex = 0;
 
                 while(true) {
                     if (tempIndex >= tempAttributeIndexArray.length) {
-                        this.inconsistentSerializedType_ = false;
+                        this.inconsistentSerializedType = false;
                         break;
                     }
 
-                    if (tempAttributeIndexArray[tempIndex] != this.attributeIndexes_[tempIndex] && tempIndexArray[tempIndex] != this.indexMap_[tempIndex]) {
-                        this.inconsistentSerializedType_ = true;
+                    if (tempAttributeIndexArray[tempIndex] != this.attributeIndexes[tempIndex] && tempIndexArray[tempIndex] != this.indexMap[tempIndex]) {
+                        this.inconsistentSerializedType = true;
                         return true;
                     }
 
@@ -250,9 +249,9 @@ public class NormalizedAttributeType implements Serializable {
                 }
             }
 
-            tempFlag = this.inconsistentSerializedType_;
+            tempFlag = this.inconsistentSerializedType;
         } finally {
-            this.writeLock_.unlock();
+            this.writeLock.unlock();
         }
 
         return tempFlag;
@@ -265,10 +264,10 @@ public class NormalizedAttributeType implements Serializable {
      * @return
      */
     final int getNormalizedEventIndex(int _index) {
-        return this.indexMap_[_index];
+        return this.indexMap[_index];
     }
 
     int[] getIndexMap() {
-        return this.indexMap_;
+        return this.indexMap;
     }
 }

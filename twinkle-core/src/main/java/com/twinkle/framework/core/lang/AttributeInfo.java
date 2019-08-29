@@ -2,6 +2,7 @@ package com.twinkle.framework.core.lang;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.objectweb.asm.Type;
 
 /**
@@ -69,10 +70,18 @@ public class AttributeInfo {
         try {
             this.attributeClass = Class.forName(_className);
         } catch (Exception ex) {
-            log.debug("Cannot get new instance of {}", _className, ex);
+            log.debug("Cannot get new instance of {}, Exception: {} ", _className, ex);
+            throw new RuntimeException("Unsupported NE type: [" + _className + "]");
+        }
+        this.description = Type.getDescriptor(this.attributeClass);
+        if (StringUtils.isNotBlank(_description)) {
+            if(!_description.startsWith(this.description)) {
+               log.warn("The given description [{}] is incorrect, so dismiss it.", _description);
+            } else {
+                this.description = _description;
+            }
         }
 
-        this.description = _description;
     }
 
     /**
@@ -84,7 +93,7 @@ public class AttributeInfo {
         Attribute tempAttr = null;
 
         try {
-            tempAttr = (Attribute)this.attributeClass.newInstance();
+            tempAttr = (Attribute) this.attributeClass.newInstance();
         } catch (Exception ex) {
             log.debug("Cannot get new instance of {}.", this.className, ex);
         }

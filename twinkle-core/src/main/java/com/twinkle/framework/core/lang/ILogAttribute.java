@@ -9,6 +9,11 @@ package com.twinkle.framework.core.lang;
  * @see
  * @since JDK 1.8
  */
-public interface LogAttribute {
+public interface ILogAttribute {
+    /**
+     * Get Log String.
+     *
+     * @return
+     */
     String toLogString();
 }

@@ -1,8 +1,9 @@
 package com.twinkle.framework.core.lang;
 
 import com.alibaba.fastjson.JSONObject;
-import com.twinkle.framework.core.utils.ChangeCharset;
+import com.twinkle.framework.core.utils.CharsetUtil;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -14,11 +15,11 @@ import java.util.*;
  * @see
  * @since JDK 1.8
  */
-public class ListAttribute implements Attribute {
+public class ListAttribute implements IListAttribute, Cloneable, Serializable {
     private final String DELIMITER = "|";
     private final String NULL_VALUE = "null";
-    protected List elements = new ArrayList(8);
-    private int type_ = 110;
+    protected List<Attribute> elements = new ArrayList(8);
+    private int type = 110;
     protected Class<?> attrClass_ = null;
 
     public ListAttribute() {
@@ -28,23 +29,28 @@ public class ListAttribute implements Attribute {
         this.setValue((Attribute) _attr);
     }
 
-    public ListAttribute(String var1) {
-        this.setValue(var1);
+    /**
+     * Build an list instance with "xxxAttribute|aa,bb,cc
+     *
+     * @param _value
+     */
+    public ListAttribute(String _value) {
+        this.setValue(_value);
     }
 
     @Override
     public int getPrimitiveType() {
-        return 2;
+        return LIST_ATTRIBUTE_TYPE;
     }
 
     @Override
     public int getType() {
-        return this.type_;
+        return this.type;
     }
 
     @Override
-    public void setType(int var1) {
-        this.type_ = var1;
+    public void setType(int _type) {
+        this.type = _type;
     }
 
     @Override
@@ -103,7 +109,7 @@ public class ListAttribute implements Attribute {
                                     isDelimiterFlag = false;
                                 }
 
-                                tempToken = ChangeCharset.hexToAscii(tempToken);
+                                tempToken = CharsetUtil.hexToAscii(tempToken);
                                 tempCount++;
                                 //Get the attribute
                                 tempAttr = (Attribute) this.attrClass_.newInstance();
@@ -118,7 +124,7 @@ public class ListAttribute implements Attribute {
                         }
                     } catch (NoSuchElementException e) {
                         while (tempCount < tempTotalItemCount) {
-                            tempToken = ChangeCharset.hexToAscii("");
+                            tempToken = CharsetUtil.hexToAscii("");
                             tempAttr.setEmptyValue();
                             this.add(tempAttr);
                             tempCount++;
@@ -135,16 +141,16 @@ public class ListAttribute implements Attribute {
 
     @Override
     public void setValue(Object _value) {
-        if(_value == null) {
+        if (_value == null) {
             this.setEmptyValue();
             return;
         }
-        if(_value instanceof Attribute) {
-            this.setValue((Attribute)_value);
+        if (_value instanceof Attribute) {
+            this.setValue((Attribute) _value);
             return;
         }
-        if(_value instanceof List) {
-            this.elements = (List)_value;
+        if (_value instanceof List) {
+            this.elements = (List) _value;
             return;
         }
         this.setValue(_value.toString());
@@ -157,11 +163,11 @@ public class ListAttribute implements Attribute {
                 ListAttribute tempAttr = (ListAttribute) _attr;
                 this.clear();
                 int tempSize = tempAttr.size();
-                this.type_ = tempAttr.type_;
+                this.type = tempAttr.type;
                 this.attrClass_ = tempAttr.attrClass_;
 
                 for (int i = 0; i < tempSize; i++) {
-                    this.elements.add(tempAttr.get(i).clone());
+                    this.elements.add((Attribute)tempAttr.get(i).clone());
                 }
             } else {
                 this.setValue(_attr.toString());
@@ -179,8 +185,8 @@ public class ListAttribute implements Attribute {
     }
 
     @Override
-    public int getOperationID(String var1) {
-        return var1.equals("set") ? 5 : -1;
+    public int getOperationID(String _operationName) {
+        return _operationName.equals("set") ? OPERATION_SET : -1;
     }
 
     @Override
@@ -214,12 +220,12 @@ public class ListAttribute implements Attribute {
             String tempItem = null;
 
             for (int i = 0; i < tempSize - 1; ++i) {
-                tempItem = ChangeCharset.asciiToHex(this.get(i).toString());
+                tempItem = CharsetUtil.asciiToHex(this.get(i).toString());
                 tempBuffer.append(tempItem);
                 tempBuffer.append("|");
             }
 
-            tempItem = ChangeCharset.asciiToHex(this.get(tempSize - 1).toString());
+            tempItem = CharsetUtil.asciiToHex(this.get(tempSize - 1).toString());
             tempBuffer.append(tempItem);
             return tempBuffer.toString();
         }
@@ -263,6 +269,7 @@ public class ListAttribute implements Attribute {
      * @param _index
      * @param _attr
      */
+    @Override
     public void add(int _index, Attribute _attr) {
         if (_attr != null) {
             if (this.isEmpty()) {
@@ -294,6 +301,7 @@ public class ListAttribute implements Attribute {
      * @param _index
      * @return
      */
+    @Override
     public Attribute get(int _index) {
         return (Attribute) this.elements.get(_index);
     }
@@ -305,6 +313,7 @@ public class ListAttribute implements Attribute {
      * @param _attr
      * @return
      */
+    @Override
     public Attribute set(int _index, Attribute _attr) {
         if (_attr != null && this.attrClass_ != null && this.attrClass_.equals(_attr.getClass())) {
             return (Attribute) this.elements.set(_index, _attr);
@@ -313,29 +322,44 @@ public class ListAttribute implements Attribute {
         }
     }
 
+    @Override
     public boolean isEmpty() {
         return this.elements.isEmpty();
     }
 
+    @Override
     public Attribute[] toArray() {
-        Attribute[] var1 = new Attribute[this.elements.size()];
-        return (Attribute[]) ((Attribute[]) this.elements.toArray(var1));
+        Attribute[] tempAttrArray = new Attribute[this.elements.size()];
+        return (Attribute[]) ((Attribute[]) this.elements.toArray(tempAttrArray));
     }
 
-    public Attribute[] toArray(Attribute[] var1) {
-        return (Attribute[]) ((Attribute[]) this.elements.toArray(var1));
+    @Override
+    public Attribute[] toArray(Attribute[] _attrArray) {
+        return (Attribute[]) ((Attribute[]) this.elements.toArray(_attrArray));
     }
 
+    @Override
     public int size() {
         return this.elements.size();
     }
 
-    public boolean contains(Attribute var1) {
-        return this.elements.contains(var1);
+    @Override
+    public boolean contains(Attribute _attr) {
+        return this.elements.contains(_attr);
     }
 
-    public boolean containsAll(Attribute var1) {
-        return var1 instanceof ListAttribute ? this.elements.containsAll(((ListAttribute) var1).elements) : false;
+    @Override
+    public boolean containsAll(Collection<? extends IListAttribute> _collection) {
+        for (IListAttribute e : _collection)
+            if (!contains(e))
+                return false;
+        return true;
+    }
+
+    @Override
+    public void addAll(Collection<? extends IListAttribute> _collection) {
+        for (IListAttribute e : _collection)
+            add(e);
     }
 
     private void clear() {
@@ -343,34 +367,34 @@ public class ListAttribute implements Attribute {
         this.attrClass_ = null;
     }
 
-    public static void main(String[] var0) {
+    public static void main(String[] _args) {
         boolean var1 = false;
-        Random var2 = new Random();
-        int var7;
-        if (var0.length != 0) {
-            var7 = Integer.parseInt(var0[0]);
+        Random tempRandom = new Random();
+        int tempValue;
+        if (_args.length != 0) {
+            tempValue = Integer.parseInt(_args[0]);
         } else {
-            var7 = var2.nextInt();
-            var7 = var7 < 0 ? -var7 : var7;
-            var7 %= 20;
+            tempValue = tempRandom.nextInt();
+            tempValue = tempValue < 0 ? -tempValue : tempValue;
+            tempValue %= 20;
         }
 
-        ListAttribute var3 = new ListAttribute();
+        ListAttribute listAttribute = new ListAttribute();
 
-        for (int var4 = 0; var4 < var7; ++var4) {
+        for (int i = 0; i < tempValue; ++i) {
             IntegerAttribute var5 = new IntegerAttribute();
-            var5.setValue(var2.nextInt());
-            String var6 = ChangeCharset.asciiToHex(var5.toString());
-            System.out.println("AttrValue[" + var4 + "] = " + var5.toString());
-            var3.add(var5);
+            var5.setValue(tempRandom.nextInt());
+            String var6 = CharsetUtil.asciiToHex(var5.toString());
+            System.out.println("AttrValue[" + i + "] = " + var5.toString());
+            listAttribute.add(var5);
         }
 
-        String var8 = var3.toString();
+        String var8 = listAttribute.toString();
         System.out.println("List attribute = " + var8);
-        var3.setValue(var8);
+        listAttribute.setValue(var8);
 
-        for (int var9 = 0; var9 < var3.size(); ++var9) {
-            System.out.println("Attribute[" + var9 + "] = " + var3.get(var9));
+        for (int i = 0; i < listAttribute.size(); ++i) {
+            System.out.println("Attribute[" + i + "] = " + listAttribute.get(i));
         }
 
     }

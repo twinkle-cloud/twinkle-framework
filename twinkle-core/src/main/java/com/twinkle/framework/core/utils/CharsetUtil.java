@@ -11,7 +11,7 @@ import java.io.UnsupportedEncodingException;
  * @see
  * @since JDK 1.8
  */
-public class ChangeCharset {
+public class CharsetUtil {
     /**
      * 7位ASCII字符，也叫作ISO646-US、Unicode字符集的基本拉丁块
      */

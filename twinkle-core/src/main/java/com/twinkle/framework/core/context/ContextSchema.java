@@ -5,6 +5,7 @@ import com.twinkle.framework.core.context.model.NormalizedAttributeType;
 import com.twinkle.framework.core.lang.Attribute;
 import com.twinkle.framework.core.lang.AttributeInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -54,16 +55,16 @@ public class ContextSchema {
 
         for (int i = 0; i < _attrColumns.size(); i++) {
             JSONArray tempArray = _attrColumns.getJSONArray(i);
-            if (tempArray.get(0) == null) {
-                throw new IllegalArgumentException("Attribute name is empty/null in \"" + tempArray + "\" value");
+            String tempAttrName = tempArray.getString(0);
+            String tempAttrType = tempArray.getString(1);
+            if (StringUtils.isBlank(tempAttrName)) {
+                throw new IllegalArgumentException("Attribute name is empty/null in \"" + tempArray + "\" value.");
             }
-            if (tempArray.get(1) == null) {
-                throw new IllegalArgumentException("Attribute type is empty/null in \"" + tempArray + "\" value");
+            if (StringUtils.isBlank(tempAttrType)) {
+                throw new IllegalArgumentException("Attribute type is empty/null in \"" + tempArray + "\" value.");
             }
-
-            this.addAttribute(tempArray.getString(0), tempArray.getString(1), tempArray.getString(2));
+            this.addAttribute(tempAttrName, tempAttrType, tempArray.getString(2));
         }
-
     }
 
     public void updateContextSchema(String[][] _attrColumns) throws IllegalArgumentException {
@@ -75,7 +76,6 @@ public class ContextSchema {
         for (int i = 0; i < attrNameList.size(); i++) {
             this.addAttribute(attrNameList.get(i), attrTypeList.get(i), attrDescriptorList.get(i));
         }
-
     }
 
     private void collectNewAttributes(String[][] _attrColumns, List<String> _attrNameList, List<String> _attrTypeList, List<String> _attrDescriptorList) throws IllegalArgumentException {
@@ -114,7 +114,7 @@ public class ContextSchema {
         this.addAttribute(_attrName, _attrType, null);
     }
 
-    public void  addAttribute(String _attrName, String _attrType, String _descriptor) {
+    public void addAttribute(String _attrName, String _attrType, String _descriptor) {
         this.writeLock.lock();
         try {
             int tempTypeId;
@@ -276,17 +276,14 @@ public class ContextSchema {
                     this.it = ContextSchema.this.attributeNameMap.values().iterator();
                     this.numAttrs = ContextSchema.this.attributeList.size();
                 }
-
                 @Override
                 public boolean hasMoreElements() {
                     ContextSchema.this.readLock.lock();
-
                     boolean tempHasMoreFlag;
                     try {
                         if (this.numAttrs != ContextSchema.this.attributeList.size()) {
                             throw new ConcurrentModificationException();
                         }
-
                         tempHasMoreFlag = this.it.hasNext();
                     } finally {
                         ContextSchema.this.readLock.unlock();

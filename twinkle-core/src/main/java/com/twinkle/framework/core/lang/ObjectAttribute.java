@@ -86,11 +86,11 @@ public class ObjectAttribute implements Attribute {
     @Override
     public Object clone() {
         try {
-            Object var1 = super.clone();
-            ((ObjectAttribute)var1).setObject(this.value);
-            return var1;
-        } catch (CloneNotSupportedException var2) {
-            throw new Error("Assertion failure: " + var2);
+            Object tempDestObj = super.clone();
+            ((ObjectAttribute)tempDestObj).setObject(this.value);
+            return tempDestObj;
+        } catch (CloneNotSupportedException e) {
+            throw new Error("Assertion failure: " + e);
         }
     }
     @Override
