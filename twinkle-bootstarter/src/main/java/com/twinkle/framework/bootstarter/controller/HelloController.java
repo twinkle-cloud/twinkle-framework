@@ -62,7 +62,8 @@ public class HelloController extends AbstractServer {
             //@ApiParam(value = "请求体") @RequestBody HelloRequest _request,
             @RequestParam(value = "_param1", defaultValue = "cxj110") String _testParam1,
             @RequestParam(value = "_param2") String _testParam2,
-            @ApiParam(value = "_addressId") @PathVariable(value = "_addressId") String _addressId) {
+            @ApiParam(value = "_addressId") @PathVariable(value = "_addressId") String _addressId,
+            @ApiParam(value = "requestBody") @RequestBody String _requestBody) {
         log.info("The request is: {} -> {}, {}", _testParam1, _testParam2, _addressId);
         NormalizedContext tempNc = this.getNormalizedContext();
         this.decodeParameter(tempNc, 0, _testParam1);

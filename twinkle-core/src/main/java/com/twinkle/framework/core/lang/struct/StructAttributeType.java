@@ -1,6 +1,6 @@
 package com.twinkle.framework.core.lang.struct;
 
-import com.twinkle.framework.core.datastruct.descriptor.AttributeDescriptor;
+import com.twinkle.framework.core.datastruct.descriptor.SAAttributeDescriptor;
 import com.twinkle.framework.core.error.*;
 
 import java.util.Iterator;
@@ -17,27 +17,86 @@ import java.util.Iterator;
 public interface StructAttributeType extends StructType {
     int STRUCT_ID = 67108864;
 
+    /**
+     * Get the name of this struct type.
+     *
+     * @return
+     */
     String getName();
 
+    /**
+     * Get the published status of this struct type.
+     *
+     * @return
+     */
     boolean isPublished();
 
+    /**
+     * Get the namespace of this struct type.
+     *
+     * @return
+     * @throws IllegalStateException
+     */
     String getNamespace() throws IllegalStateException;
 
+    /**
+     * Get the qualified name of this struct type.
+     *
+     * @return
+     * @throws IllegalStateException
+     */
     String getQualifiedName() throws IllegalStateException;
 
+    /**
+     * Get the struct type manager for this struct attribute.
+     *
+     * @return
+     */
     StructTypeManager getTypeManager();
 
+    /**
+     * Get the attribute size of this struct attribute.
+     *
+     * @return
+     */
     int size();
 
-    Iterator getAttributes();
+    /**
+     * Scan the attributes of this struct attribute.
+     *
+     * @return
+     */
+    Iterator<SAAttributeDescriptor> getAttributes();
 
+    /**
+     * Judge the given attribte name existing in the struct attribute or not?
+     *
+     * @param _attrName
+     * @return
+     */
     boolean hasAttribute(String _attrName);
 
-    AttributeDescriptor getAttribute(String _attrName) throws AttributeNotFoundException;
+    /**
+     * Get the attribute descriptor with given attribute name.
+     *
+     * @param _attrName
+     * @return
+     * @throws AttributeNotFoundException
+     */
+    SAAttributeDescriptor getAttribute(String _attrName) throws AttributeNotFoundException;
 
-    void addAttribute(String var1, String var2, boolean var3) throws AttributeAlreadyExistsException, TypeNotFoundException, BadAttributeNameException, NamespaceNotFoundException, StructAttributeTypeNotFoundException, IllegalStateException;
-
-    String toString();
-
-    boolean equals(Object _obj);
+    /**
+     * Add attribute into this struct attribute.
+     *
+     * @param _attrName
+     * @param _attrTypeName
+     * @param _optional
+     * @throws AttributeAlreadyExistsException
+     * @throws TypeNotFoundException
+     * @throws BadAttributeNameException
+     * @throws NamespaceNotFoundException
+     * @throws StructAttributeTypeNotFoundException
+     * @throws IllegalStateException
+     */
+    void addAttribute(String _attrName, String _attrTypeName, boolean _optional) throws AttributeAlreadyExistsException, TypeNotFoundException, BadAttributeNameException, NamespaceNotFoundException, StructAttributeTypeNotFoundException, IllegalStateException;
 }

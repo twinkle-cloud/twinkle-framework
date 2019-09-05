@@ -49,7 +49,7 @@ public final class ArrayType implements StructType {
     private ArrayType(String _name, StructType _type) {
         this.name = _name;
         this.elementType = _type;
-        this.typeID = 16777216 | _type.getID();
+        this.typeID = ARRAY_MASK | _type.getID();
     }
     @Override
     public boolean isPrimitiveType() {
@@ -121,7 +121,6 @@ public final class ArrayType implements StructType {
             } else if (!this.name.equals(tempType.name)) {
                 return false;
             }
-
             return true;
         }
     }

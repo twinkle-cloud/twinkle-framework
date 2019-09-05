@@ -4,7 +4,7 @@ import com.twinkle.framework.core.datastruct.Bean;
 import com.twinkle.framework.core.datastruct.Blob;
 import com.twinkle.framework.core.datastruct.converter.AttributeConverter;
 import com.twinkle.framework.core.datastruct.converter.LooseAttributeConverter;
-import com.twinkle.framework.core.datastruct.schema.*;
+import com.twinkle.framework.core.datastruct.define.*;
 import com.twinkle.framework.core.utils.TypeUtil;
 import lombok.Getter;
 import org.objectweb.asm.*;

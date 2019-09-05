@@ -4,10 +4,8 @@ import com.twinkle.framework.connector.http.server.designer.RestControllerClassD
 import com.twinkle.framework.core.asm.classloader.EnhancedClassLoader;
 import com.twinkle.framework.core.asm.designer.ClassDesigner;
 import com.twinkle.framework.core.datastruct.descriptor.GeneralClassTypeDescriptor;
-import com.twinkle.framework.core.datastruct.schema.*;
+import com.twinkle.framework.core.datastruct.define.*;
 import lombok.extern.slf4j.Slf4j;
-
-import java.io.*;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>

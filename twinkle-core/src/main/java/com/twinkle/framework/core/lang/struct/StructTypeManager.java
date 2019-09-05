@@ -15,17 +15,56 @@ import java.util.Iterator;
  * @since JDK 1.8
  */
 public interface StructTypeManager {
+    /**
+     * Get the Struct types' size in the manager
+     *
+     * @return
+     */
     int size();
 
-    Iterator getTypeNames();
+    Iterator<String> getTypeNames();
 
+    /**
+     * Check the type exists or not in the manager?
+     *
+     * @param _typeName
+     * @return
+     */
     boolean hasTypeName(String _typeName);
 
-    Iterator getUserDefinedTypeNames();
+    /**
+     * Get the user defined type names, with the iterator.
+     *
+     * @return
+     */
+    Iterator<String> getUserDefinedTypeNames();
 
+    /**
+     * Get the struct type with the given type name.
+     *
+     * @param _typeName
+     * @return
+     * @throws TypeNotFoundException
+     */
     StructType getType(String _typeName) throws TypeNotFoundException;
 
-    StructType getType(String _typeName, boolean _createFlag) throws TypeNotFoundException;
+    /**
+     * Get the struct type with the given type name, and the check flag for
+     * checking the alias type or not.
+     *
+     * @param _typeName
+     * @param _checkAliasFlag
+     * @return
+     * @throws TypeNotFoundException
+     */
+    StructType getType(String _typeName, boolean _checkAliasFlag) throws TypeNotFoundException;
 
+    /**
+     * Add the struct type into the manager.
+     *
+     * @param _typeName
+     * @param _type
+     * @throws TypeAlreadyExistsException
+     */
     void addType(String _typeName, StructType _type) throws TypeAlreadyExistsException;
 }

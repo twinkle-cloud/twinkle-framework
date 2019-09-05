@@ -1,7 +1,7 @@
 package com.twinkle.framework.core.asm.designer;
 
 import com.twinkle.framework.core.datastruct.handler.MethodInstructionHandler;
-import com.twinkle.framework.core.datastruct.schema.*;
+import com.twinkle.framework.core.datastruct.define.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.objectweb.asm.AnnotationVisitor;

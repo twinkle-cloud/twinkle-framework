@@ -1,6 +1,6 @@
 package com.twinkle.framework.core.error;
 
-import com.twinkle.framework.core.lang.struct.AttributeRef;
+import com.twinkle.framework.core.lang.ref.AttributeRef;
 import lombok.Getter;
 
 /**

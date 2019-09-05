@@ -1,7 +1,7 @@
 package com.twinkle.framework.core.asm.designer;
 
-import com.twinkle.framework.core.datastruct.schema.AttributeDef;
-import com.twinkle.framework.core.datastruct.schema.BeanTypeDef;
+import com.twinkle.framework.core.datastruct.define.AttributeDef;
+import com.twinkle.framework.core.datastruct.define.BeanTypeDef;
 import com.twinkle.framework.core.utils.TypeUtil;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
@@ -29,6 +29,8 @@ public abstract class AbstractReflectiveBeanClassDesigner extends RecyclableBean
     }
 
     /**
+     * Add switch method body.
+     *
      * @param _visitor
      * @param _className
      * @param _attrDefList
@@ -49,16 +51,16 @@ public abstract class AbstractReflectiveBeanClassDesigner extends RecyclableBean
             int tempLastIndex = 0;
 
             while (tempLastIndex < _attrDefList.size()) {
-                int var11 = Math.min(tempLastIndex + _segmentSize, _attrDefList.size());
-                if (var11 < _attrDefList.size()) {
+                int tempIndex = Math.min(tempLastIndex + _segmentSize, _attrDefList.size());
+                if (tempIndex < _attrDefList.size()) {
                     _visitor.visitVarInsn(Opcodes.ILOAD, _storeIntIndex);
-                    _visitor.visitLdcInsn(getCaseKey(_attrDefList.get(var11)));
+                    _visitor.visitLdcInsn(getCaseKey(_attrDefList.get(tempIndex)));
                     Label tempLabelA = new Label();
                     _visitor.visitJumpInsn(Opcodes.IF_ICMPGE, tempLabelA);
-                    tempLastIndex = this.addSwitchCaseStatement(_visitor, _className, _attrDefList, tempLastIndex, var11 - tempLastIndex, _caseAppender, _defaultCaseAppender, _loadRefObjIndex, _storeIntIndex, _needJumpFlag);
+                    tempLastIndex = this.addSwitchCaseStatement(_visitor, _className, _attrDefList, tempLastIndex, tempIndex - tempLastIndex, _caseAppender, _defaultCaseAppender, _loadRefObjIndex, _storeIntIndex, _needJumpFlag);
                     _visitor.visitLabel(tempLabelA);
                 } else {
-                    tempLastIndex = this.addSwitchCaseStatement(_visitor, _className, _attrDefList, tempLastIndex, var11 - tempLastIndex, _caseAppender, _defaultCaseAppender, _loadRefObjIndex, _storeIntIndex, _needJumpFlag);
+                    tempLastIndex = this.addSwitchCaseStatement(_visitor, _className, _attrDefList, tempLastIndex, tempIndex - tempLastIndex, _caseAppender, _defaultCaseAppender, _loadRefObjIndex, _storeIntIndex, _needJumpFlag);
                 }
             }
 

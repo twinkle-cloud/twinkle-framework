@@ -15,18 +15,62 @@ import java.util.List;
  * @since JDK 1.8
  */
 public interface Serializer<T> {
+    /**
+     * Get format names.
+     *
+     * @return
+     */
     String[] getFormatNames();
 
+    /**
+     * Is binary or not?
+     *
+     * @return
+     */
     boolean isBinary();
 
-    void write(T var1, OutputStream var2) throws IOException;
+    /**
+     * Write the given attr into the output stream.
+     *
+     * @param _attr
+     * @param _outputStream
+     * @throws IOException
+     */
+    void write(T _attr, OutputStream _outputStream) throws IOException;
 
-    T read(InputStream var1) throws IOException;
+    /**
+     * Read T from the given input stream.
+     *
+     * @param _inputStream
+     * @return
+     * @throws IOException
+     */
+    T read(InputStream _inputStream) throws IOException;
 
-    void writeMultiple(T[] var1, OutputStream var2) throws IOException;
+    /**
+     * Write multiple attrs into the output steam.
+     *
+     * @param _attrArray
+     * @param _outputStream
+     * @throws IOException
+     */
+    void writeMultiple(T[] _attrArray, OutputStream _outputStream) throws IOException;
 
-    void writeMultiple(List<T> var1, OutputStream var2) throws IOException;
+    /**
+     * Write multiple attrs into the output stream.
+     *
+     * @param _attrList
+     * @param _outputStream
+     * @throws IOException
+     */
+    void writeMultiple(List<T> _attrList, OutputStream _outputStream) throws IOException;
 
-    List<T> readMultiple(InputStream var1) throws IOException;
-
+    /**
+     * Read multiple attrs from the input stream.
+     *
+     * @param _inputStream
+     * @return
+     * @throws IOException
+     */
+    List<T> readMultiple(InputStream _inputStream) throws IOException;
 }

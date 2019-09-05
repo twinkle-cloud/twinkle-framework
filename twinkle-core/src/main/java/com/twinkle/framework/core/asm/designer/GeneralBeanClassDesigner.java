@@ -3,7 +3,7 @@ package com.twinkle.framework.core.asm.designer;
 import com.twinkle.framework.core.asm.helper.CloneHelper;
 import com.twinkle.framework.core.asm.helper.EqualsHelper;
 import com.twinkle.framework.core.datastruct.Bean;
-import com.twinkle.framework.core.datastruct.schema.*;
+import com.twinkle.framework.core.datastruct.define.*;
 import com.twinkle.framework.core.utils.TypeUtil;
 import lombok.Getter;
 import org.objectweb.asm.*;

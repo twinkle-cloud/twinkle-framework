@@ -5,10 +5,10 @@ import com.twinkle.framework.core.datastruct.builder.TypeDefBuilder;
 import com.twinkle.framework.core.datastruct.descriptor.AttributeDescriptor;
 import com.twinkle.framework.core.datastruct.descriptor.BeanTypeDescriptor;
 import com.twinkle.framework.core.datastruct.descriptor.TypeDescriptor;
-import com.twinkle.framework.core.datastruct.schema.AnnotationDef;
-import com.twinkle.framework.core.datastruct.schema.AttributeDef;
-import com.twinkle.framework.core.datastruct.schema.AttributeDefImpl;
-import com.twinkle.framework.core.datastruct.schema.TypeDef;
+import com.twinkle.framework.core.datastruct.define.AnnotationDef;
+import com.twinkle.framework.core.datastruct.define.AttributeDef;
+import com.twinkle.framework.core.datastruct.define.AttributeDefImpl;
+import com.twinkle.framework.core.datastruct.define.TypeDef;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.*;

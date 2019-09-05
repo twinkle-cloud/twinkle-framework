@@ -8,7 +8,7 @@ import com.twinkle.framework.core.datastruct.builder.TypeDefBuilder;
 import com.twinkle.framework.core.datastruct.descriptor.BeanTypeDescriptor;
 import com.twinkle.framework.core.datastruct.descriptor.EnumTypeDescriptor;
 import com.twinkle.framework.core.datastruct.descriptor.TypeDescriptor;
-import com.twinkle.framework.core.datastruct.schema.*;
+import com.twinkle.framework.core.datastruct.define.*;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package com.twinkle.framework.core.asm.designer;
 
 import com.twinkle.framework.core.datastruct.Bean;
 import com.twinkle.framework.core.datastruct.RecyclableBean;
-import com.twinkle.framework.core.datastruct.schema.*;
+import com.twinkle.framework.core.datastruct.define.*;
 import com.twinkle.framework.core.utils.TypeDefUtil;
 import com.twinkle.framework.core.utils.TypeUtil;
 import org.objectweb.asm.*;

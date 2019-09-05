@@ -10,7 +10,18 @@ package com.twinkle.framework.core.datastruct.serialize;
  * @since JDK 1.8
  */
 public interface BinarySerializer<T> extends Serializer<T> {
-    byte[] write(T var1);
+    /**
+     * Write the given entity to byte array.
+     *
+     * @param _entity
+     * @return
+     */
+    byte[] write(T _entity);
 
-    T read(byte[] var1);
+    /**
+     * Read the given byte array as T entity.
+     * @param _byteArray
+     * @return
+     */
+    T read(byte[] _byteArray);
 }

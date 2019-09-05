@@ -1,6 +1,5 @@
 package com.twinkle.framework.core.datastruct.serialize;
 
-import javax.naming.OperationNotSupportedException;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
@@ -22,14 +21,7 @@ public abstract class TextSerializerBase<T> implements TextSerializer<T> {
 
     public TextSerializerBase() {
     }
-    @Override
-    public void setPrettyPrint(boolean var1) throws OperationNotSupportedException {
-        throw new OperationNotSupportedException("PrettyPrint not supported");
-    }
-    @Override
-    public boolean isPrettyPrint() {
-        return false;
-    }
+
     @Override
     public boolean isBinary() {
         return false;
@@ -39,12 +31,12 @@ public abstract class TextSerializerBase<T> implements TextSerializer<T> {
         return this.charset;
     }
     @Override
-    public void setCharset(Charset var1) {
-        this.charset = (Charset) Objects.requireNonNull(var1);
+    public void setCharset(Charset _charSet) {
+        this.charset = (Charset) Objects.requireNonNull(_charSet);
     }
     @Override
-    public void setCharset(String var1) throws UnsupportedCharsetException {
-        this.setCharset(Charset.forName(var1));
+    public void setCharset(String _str) throws UnsupportedCharsetException {
+        this.setCharset(Charset.forName(_str));
     }
 
     protected Reader reader(InputStream var1) {
@@ -55,27 +47,27 @@ public abstract class TextSerializerBase<T> implements TextSerializer<T> {
         return new OutputStreamWriter(var1, this.charset);
     }
     @Override
-    public void write(T var1, OutputStream var2) throws IOException {
-        this.write(var1, this.writer(var2));
+    public void write(T _attr, OutputStream _outputStream) throws IOException {
+        this.write(_attr, this.writer(_outputStream));
     }
     @Override
-    public T read(InputStream var1) throws IOException {
-        return this.read(this.reader(var1));
+    public T read(InputStream _inputStream) throws IOException {
+        return this.read(this.reader(_inputStream));
     }
     @Override
-    public void writeMultiple(T[] var1, OutputStream var2) throws IOException {
-        this.writeMultiple(Arrays.asList(var1), var2);
+    public void writeMultiple(T[] _attrArray, OutputStream _outputStream) throws IOException {
+        this.writeMultiple(Arrays.asList(_attrArray), _outputStream);
     }
     @Override
-    public void writeMultiple(List<T> var1, OutputStream var2) throws IOException {
-        this.writeMultiple(var1, this.writer(var2));
+    public void writeMultiple(List<T> _attrList, OutputStream _outputStream) throws IOException {
+        this.writeMultiple(_attrList, this.writer(_outputStream));
     }
     @Override
-    public void writeMultiple(T[] var1, Writer var2) throws IOException {
-        this.writeMultiple(Arrays.asList(var1), var2);
+    public void writeMultiple(T[] _attrArray, Writer _writer) throws IOException {
+        this.writeMultiple(Arrays.asList(_attrArray), _writer);
     }
     @Override
-    public List<T> readMultiple(InputStream var1) throws IOException {
-        return this.readMultiple(this.reader(var1));
+    public List<T> readMultiple(InputStream _inputStream) throws IOException {
+        return this.readMultiple(this.reader(_inputStream));
     }
 }

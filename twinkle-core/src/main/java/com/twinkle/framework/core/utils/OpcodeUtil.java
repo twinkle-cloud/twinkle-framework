@@ -1,8 +1,5 @@
 package com.twinkle.framework.core.utils;
 
-import com.twinkle.framework.core.asm.bytecode.insn.NamedLabelNode;
-import com.twinkle.framework.core.asm.bytecode.insn.NamedLineNumberNode;
-import com.twinkle.framework.core.asm.bytecode.insn.ParameterValInsnNode;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 
@@ -352,12 +349,6 @@ public class OpcodeUtil implements Opcodes {
 		insnTypeToCodes.put(AbstractInsnNode.TABLESWITCH_INSN, OpcodeUtil.OPS_TABLESWITCH);
 		insnTypeToCodes.put(AbstractInsnNode.TYPE_INSN, OpcodeUtil.OPS_TYPE);
 		insnTypeToCodes.put(AbstractInsnNode.VAR_INSN, OpcodeUtil.OPS_VAR);
-		// Custom opcodes
-		putType(NamedLabelNode.NAMED_LABEL, AbstractInsnNode.LABEL);
-		putType(NamedLineNumberNode.LINE_EXT, AbstractInsnNode.LINE);
-		putOpcode(NamedLabelNode.NAMED_LABEL, "LABEL");
-		putOpcode(NamedLineNumberNode.LINE_EXT, "LINE");
-		putOpcode(ParameterValInsnNode.PARAM_VAL, "PARAM");
 		//
 		putOpcode(AALOAD, "AALOAD");
 		putOpcode(AASTORE, "AASTORE");

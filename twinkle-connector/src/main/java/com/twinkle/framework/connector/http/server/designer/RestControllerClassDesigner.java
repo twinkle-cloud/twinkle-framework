@@ -1,17 +1,12 @@
 package com.twinkle.framework.connector.http.server.designer;
 
-import com.twinkle.framework.api.constant.ResultCode;
-import com.twinkle.framework.api.data.GeneralResult;
 import com.twinkle.framework.core.asm.designer.AbstractGeneralClassDesigner;
-import com.twinkle.framework.core.asm.designer.LocalAttributeIndexInfo;
 import com.twinkle.framework.core.datastruct.builder.LogAttributeDefBuilder;
-import com.twinkle.framework.core.datastruct.schema.AttributeDef;
-import com.twinkle.framework.core.datastruct.schema.BeanTypeDef;
-import com.twinkle.framework.core.datastruct.schema.GeneralClassTypeDef;
-import com.twinkle.framework.core.datastruct.schema.MethodDef;
+import com.twinkle.framework.core.datastruct.define.AttributeDef;
+import com.twinkle.framework.core.datastruct.define.BeanTypeDef;
+import com.twinkle.framework.core.datastruct.define.GeneralClassTypeDef;
 import lombok.extern.slf4j.Slf4j;
 import org.objectweb.asm.*;
-import org.slf4j.Logger;
 
 import java.util.List;
 

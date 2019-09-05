@@ -18,7 +18,7 @@ import java.io.Serializable;
  * @see
  * @since JDK 1.8
  */
-public class NormalizedContext implements Serializable, Cloneable{
+public class NormalizedContext implements Serializable, Cloneable {
     private static final long serialVersionUID = 3534496933565226478L;
     protected Attribute[] attributes;
     private NormalizedAttributeType typeInfo;
@@ -48,7 +48,7 @@ public class NormalizedContext implements Serializable, Cloneable{
             int[] tempIndexes = this.typeInfo.getAttributeIndexes();
             ContextSchema tempSchema = ContextSchema.getInstance();
 
-            for(int i = 0; i < tempIndexes.length; ++i) {
+            for (int i = 0; i < tempIndexes.length; ++i) {
                 this.setAttribute(tempSchema.newAttributeInstance(tempIndexes[i]), tempIndexes[i]);
             }
         }
@@ -87,6 +87,7 @@ public class NormalizedContext implements Serializable, Cloneable{
 
     /**
      * Update the position[_index]'s Attribute.
+     *
      * @param _attr
      * @param _index
      */
@@ -121,7 +122,7 @@ public class NormalizedContext implements Serializable, Cloneable{
         _index = this.typeInfo.getNormalizedEventIndex(_index);
         this.checkSize(_index);
         if (this.attributes[_index] == null) {
-            this.attributes[_index] = (Attribute)_attr.clone();
+            this.attributes[_index] = (Attribute) _attr.clone();
         } else {
             this.attributes[_index].setValue(_attr);
         }
@@ -147,7 +148,7 @@ public class NormalizedContext implements Serializable, Cloneable{
             return 0;
         } else {
             int tempCount = 0;
-            for(int i = 0; i < this.attributes.length; ++i) {
+            for (int i = 0; i < this.attributes.length; ++i) {
                 if (this.attributes[i] != null) {
                     ++tempCount;
                 }
@@ -168,7 +169,7 @@ public class NormalizedContext implements Serializable, Cloneable{
      */
     public void clearValues() {
         if (this.attributes != null) {
-            for(int i = 0; i < this.attributes.length; i++) {
+            for (int i = 0; i < this.attributes.length; i++) {
                 if (this.attributes[i] != null) {
                     this.attributes[i].setEmptyValue();
                 }
@@ -192,7 +193,7 @@ public class NormalizedContext implements Serializable, Cloneable{
         } else {
             StringBuffer tempBuffer = new StringBuffer(100);
 
-            for(int i = 0; i < this.attributes.length; ++i) {
+            for (int i = 0; i < this.attributes.length; ++i) {
                 tempBuffer.append(toLogString(this.attributes[i]));
                 tempBuffer.append(' ');
             }
@@ -212,30 +213,30 @@ public class NormalizedContext implements Serializable, Cloneable{
 
     public String toStringWithAttrNames(boolean _withAttrNameFlag, boolean var2, boolean var3, boolean var4, String _separator) {
         if (this.attributes == null) {
-            return "Empty NME";
+            return "Empty StructAttribute";
         } else if (!var2) {
             return "";
-        } else {
-            StringBuffer tempBuffer = new StringBuffer(300);
-            String[] tempAttributeNameArray = this.typeInfo.getAttributeNames();
+        }
+        StringBuffer tempBuffer = new StringBuffer(300);
+        String[] tempAttributeNameArray = this.typeInfo.getAttributeNames();
 
-            for(int i = 0; i < this.attributes.length; ++i) {
-                if (this.attributes[i] != null || _withAttrNameFlag) {
-                    tempBuffer.append(tempAttributeNameArray[i]);
-                    tempBuffer.append("=");
-                    tempBuffer.append(toLogString(this.attributes[i]));
-                    if (i != this.attributes.length - 1) {
-                        tempBuffer.append(", ");
-                    }
+        for (int i = 0; i < this.attributes.length; ++i) {
+            if (this.attributes[i] != null || _withAttrNameFlag) {
+                tempBuffer.append(tempAttributeNameArray[i]);
+                tempBuffer.append("=");
+                tempBuffer.append(toLogString(this.attributes[i]));
+                if (i != this.attributes.length - 1) {
+                    tempBuffer.append(", ");
                 }
             }
-
-            return tempBuffer.toString();
         }
+
+        return tempBuffer.toString();
     }
 
     /**
      * To Log String if the attribute is logattribute.
+     *
      * @param _attr
      * @return
      */
@@ -243,7 +244,7 @@ public class NormalizedContext implements Serializable, Cloneable{
         if (_attr == null) {
             return null;
         } else {
-            return _attr instanceof ILogAttribute ? ((ILogAttribute)_attr).toLogString() : _attr.toString();
+            return _attr instanceof ILogAttribute ? ((ILogAttribute) _attr).toLogString() : _attr.toString();
         }
     }
 
@@ -251,16 +252,16 @@ public class NormalizedContext implements Serializable, Cloneable{
     public Object clone() {
         NormalizedContext tempNE = null;
         try {
-            tempNE = (NormalizedContext)super.clone();
+            tempNE = (NormalizedContext) super.clone();
         } catch (CloneNotSupportedException var3) {
             throw new Error("Assertion failure");
         }
         //Copy the attributes.
         if (this.attributes != null) {
             tempNE.attributes = new Attribute[this.attributes.length];
-            for(int i = 0; i < this.attributes.length; ++i) {
+            for (int i = 0; i < this.attributes.length; ++i) {
                 if (this.attributes[i] != null) {
-                    tempNE.attributes[i] = (Attribute)this.attributes[i].clone();
+                    tempNE.attributes[i] = (Attribute) this.attributes[i].clone();
                 }
             }
         }
@@ -270,19 +271,20 @@ public class NormalizedContext implements Serializable, Cloneable{
     /**
      * Update current NE with the given NE.
      * Update the current NE unless the given NE is not null.
+     *
      * @param _ne
      */
     public void update(NormalizedContext _ne) {
         if (_ne.getType().getTypeId() != this.typeInfo.getTypeId()) {
-            throw new IllegalArgumentException("Can't update an NME with type " + this.typeInfo.getName() + " with an NME of type " + _ne.typeInfo.getName());
+            throw new IllegalArgumentException("Can't update a StructAttribute with type " + this.typeInfo.getName() + " with a StructAttribute of type " + _ne.typeInfo.getName());
         } else {
             if (_ne.attributes != null) {
                 this.checkSize(_ne.attributes.length - 1);
 
-                for(int i = 0; i < _ne.attributes.length; ++i) {
+                for (int i = 0; i < _ne.attributes.length; ++i) {
                     if (_ne.attributes[i] != null) {
                         if (this.attributes[i] == null) {
-                            this.attributes[i] = (Attribute)_ne.attributes[i].clone();
+                            this.attributes[i] = (Attribute) _ne.attributes[i].clone();
                         } else {
                             this.attributes[i].setValue(_ne.attributes[i]);
                         }
@@ -311,11 +313,11 @@ public class NormalizedContext implements Serializable, Cloneable{
                 this.attributes = new Attribute[_ne.attributes.length];
             }
 
-            for(int i = 0; i < _ne.attributes.length; ++i) {
+            for (int i = 0; i < _ne.attributes.length; ++i) {
                 if (_ne.attributes[i] == null) {
                     this.attributes[i] = null;
                 } else if (this.attributes[i] == null) {
-                    this.attributes[i] = (Attribute)_ne.attributes[i].clone();
+                    this.attributes[i] = (Attribute) _ne.attributes[i].clone();
                 } else {
                     this.attributes[i].setValue(_ne.attributes[i]);
                 }
@@ -336,7 +338,7 @@ public class NormalizedContext implements Serializable, Cloneable{
         if (_size >= this.attributes.length) {
             int tempSize = this.typeInfo.getNumAttributes();
             if (_size >= tempSize) {
-                throw new IllegalArgumentException("Attempting to access an attribute that isn't specified in this NME of type " + this.typeInfo.getName());
+                throw new IllegalArgumentException("Attempting to access an attribute that isn't specified in this StructAttribute of type " + this.typeInfo.getName());
             }
 
             Attribute[] tempAttributeArray = new Attribute[tempSize];
@@ -348,53 +350,52 @@ public class NormalizedContext implements Serializable, Cloneable{
 
     private void readObject(ObjectInputStream _inputStream) throws IOException, ClassNotFoundException {
         _inputStream.defaultReadObject();
-        String var2 = null;
+        String tempTypeName = null;
         if (this.typeInfo == null) {
-            var2 = "%DefaultNormalizedEventType";
+            tempTypeName = "%DefaultNormalizedEventType";
         } else {
-            var2 = this.typeInfo.getName();
+            tempTypeName = this.typeInfo.getName();
         }
 
         ContextSchema tempContextSchema = ContextSchema.getInstance();
         NormalizedAttributeType tempTypeInfo = this.typeInfo;
-        this.typeInfo = tempContextSchema.getNormalizedEventType(var2);
+        this.typeInfo = tempContextSchema.getNormalizedEventType(tempTypeName);
         if (this.typeInfo == null) {
-            throw new IOException("Cannot restore NME of type " + var2 + " since that type isn't defined in the ContextSchema");
+            throw new IOException("Cannot restore StructAttribute of type " + tempTypeName + " since that type isn't defined in the ContextSchema");
         } else {
-            Attribute[] var5 = this.attributes;
-            if (var5 != null && var5.length != 0) {
-                AttributeInfo var8;
+            Attribute[] tempAttributeArray = this.attributes;
+            if (tempAttributeArray != null && tempAttributeArray.length != 0) {
+                AttributeInfo tempAttrItemInfo;
                 if (tempTypeInfo == null) {
                     this.attributes = null;
 
-                    for(int i = 0; i < var5.length; ++i) {
-                        Attribute tempAttr = var5[i];
+                    for (int i = 0; i < tempAttributeArray.length; ++i) {
+                        Attribute tempAttr = tempAttributeArray[i];
                         if (tempAttr != null) {
-                            var8 = tempContextSchema.getAttribute(i);
-                            this.typeInfo.addAttribute(var8);
+                            tempAttrItemInfo = tempContextSchema.getAttribute(i);
+                            this.typeInfo.addAttribute(tempAttrItemInfo);
                             this.setAttribute(tempAttr, i);
                         }
                     }
                 } else if (this.typeInfo.isInconsistentSerializedType(tempTypeInfo)) {
                     this.attributes = null;
-                    int[] var11 = tempTypeInfo.getAttributeIndexes();
+                    int[] tempAttrIndexArray = tempTypeInfo.getAttributeIndexes();
 
                     int i;
-                    for(i = 0; i < var11.length; ++i) {
-                        var8 = tempContextSchema.getAttribute(var11[i]);
-                        this.typeInfo.addAttribute(var8);
+                    for (i = 0; i < tempAttrIndexArray.length; ++i) {
+                        tempAttrItemInfo = tempContextSchema.getAttribute(tempAttrIndexArray[i]);
+                        this.typeInfo.addAttribute(tempAttrItemInfo);
                     }
 
-                    for(i = 0; i < var11.length; ++i) {
-                        int var13 = var11[i];
-                        int var9 = tempTypeInfo.getNormalizedEventIndex(var13);
-                        Attribute var10 = var5[var9];
-                        if (var10 != null) {
-                            this.setAttribute(var10, var13);
+                    for (i = 0; i < tempAttrIndexArray.length; ++i) {
+                        int tempItemIndex = tempAttrIndexArray[i];
+                        int tempItemNEIndex = tempTypeInfo.getNormalizedEventIndex(tempItemIndex);
+                        Attribute tempAttr = tempAttributeArray[tempItemNEIndex];
+                        if (tempAttr != null) {
+                            this.setAttribute(tempAttr, tempItemIndex);
                         }
                     }
                 }
-
             }
         }
     }

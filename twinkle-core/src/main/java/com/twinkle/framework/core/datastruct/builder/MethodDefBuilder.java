@@ -1,9 +1,9 @@
 package com.twinkle.framework.core.datastruct.builder;
 
 import com.twinkle.framework.core.datastruct.descriptor.MethodTypeDescriptor;
-import com.twinkle.framework.core.datastruct.schema.MethodDef;
-import com.twinkle.framework.core.datastruct.schema.MethodDefImpl;
-import com.twinkle.framework.core.datastruct.schema.TypeDef;
+import com.twinkle.framework.core.datastruct.define.MethodDef;
+import com.twinkle.framework.core.datastruct.define.MethodDefImpl;
+import com.twinkle.framework.core.datastruct.define.TypeDef;
 import com.twinkle.framework.core.utils.TypeDefUtil;
 import org.apache.commons.collections4.CollectionUtils;
 

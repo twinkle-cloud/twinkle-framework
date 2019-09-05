@@ -1,7 +1,7 @@
 package com.twinkle.framework.connector.http.server.handler;
 
 import com.twinkle.framework.core.datastruct.handler.AbstractMethodInstructionHandler;
-import com.twinkle.framework.core.datastruct.schema.MethodDef;
+import com.twinkle.framework.core.datastruct.define.MethodDef;
 import org.objectweb.asm.MethodVisitor;
 
 /**

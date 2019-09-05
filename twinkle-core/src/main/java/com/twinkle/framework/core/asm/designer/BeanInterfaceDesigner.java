@@ -1,8 +1,8 @@
 package com.twinkle.framework.core.asm.designer;
 
 import com.twinkle.framework.core.datastruct.Bean;
-import com.twinkle.framework.core.datastruct.schema.AttributeDef;
-import com.twinkle.framework.core.datastruct.schema.BeanTypeDef;
+import com.twinkle.framework.core.datastruct.define.AttributeDef;
+import com.twinkle.framework.core.datastruct.define.BeanTypeDef;
 import com.twinkle.framework.core.utils.TypeUtil;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;

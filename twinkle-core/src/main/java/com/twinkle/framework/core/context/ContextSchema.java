@@ -36,7 +36,7 @@ public class ContextSchema {
     private ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
     private Lock readLock;
     private Lock writeLock;
-    public static final String DEFAULT_NME_TYPE = "%DefaultNormalizedEventType";
+    public static final String DEFAULT_STRUCT_ATTRIBUTE_TYPE = "%DefaultNormalizedEventType";
 
     private ContextSchema() {
         this.readLock = this.readWriteLock.readLock();
@@ -49,8 +49,8 @@ public class ContextSchema {
 
     public void configure(JSONArray _attrColumns) throws IllegalArgumentException {
         if (this.defaultNormalizedAttributeType == null) {
-            this.defaultNormalizedAttributeType = new NormalizedAttributeType(DEFAULT_NME_TYPE, this.normalizedAttrubiteTypeCount++, _attrColumns.size());
-            this.normalizedAttributeTypeMap.put(DEFAULT_NME_TYPE, this.defaultNormalizedAttributeType);
+            this.defaultNormalizedAttributeType = new NormalizedAttributeType(DEFAULT_STRUCT_ATTRIBUTE_TYPE, this.normalizedAttrubiteTypeCount++, _attrColumns.size());
+            this.normalizedAttributeTypeMap.put(DEFAULT_STRUCT_ATTRIBUTE_TYPE, this.defaultNormalizedAttributeType);
         }
 
         for (int i = 0; i < _attrColumns.size(); i++) {
@@ -385,15 +385,14 @@ public class ContextSchema {
     public int getAttributeIndex(String _attrName, String _tag) throws IllegalArgumentException {
         AttributeInfo tempAttrInfo = this.getAttribute(_attrName);
         if (tempAttrInfo == null) {
-            throw new IllegalArgumentException(_tag + " - Unable to find attribute '" + _attrName + "' in the NE Schema.");
+            throw new IllegalArgumentException(_tag + " - Unable to find attribute '" + _attrName + "' in the Context Schema.");
         } else {
             return tempAttrInfo.getIndex();
         }
     }
 
-    public int[] getAttributeIndexes(String[] _attrNames, String var2) throws IllegalArgumentException {
+    public int[] getAttributeIndexes(String[] _attrNames, String _config) throws IllegalArgumentException {
         this.readLock.lock();
-
         int[] tempAttrIndexes;
         try {
             int[] tempIndexes = new int[_attrNames.length];
@@ -401,7 +400,7 @@ public class ContextSchema {
             for (int i = 0; i < _attrNames.length; i++) {
                 tempIndexes[i] = this.getAttributeIndex(_attrNames[i]);
                 if (tempIndexes[i] == -1) {
-                    throw new IllegalArgumentException(var2 + "the NME attribute '" + _attrNames[i] + "' is not defined in the NME Schema.");
+                    throw new IllegalArgumentException(_config + "the attribute '" + _attrNames[i] + "' is not defined in the Context Schema.");
                 }
             }
 

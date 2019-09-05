@@ -10,7 +10,7 @@ package com.twinkle.framework.core.datastruct.serialize;
  * @since JDK 1.8
  */
 public interface SerializerFactory {
-    <T> Serializer<T> getSerializer(String var1);
+    <T> Serializer<T> getSerializer(String _factoryName);
 
-    <T> Serializer<T> getSerializer(Class<T> var1);
+    <T> Serializer<T> getSerializer(Class<T> _class);
 }

@@ -1,9 +1,9 @@
 package com.twinkle.framework.core.asm.designer;
 
-import com.twinkle.framework.core.datastruct.schema.AnnotationDef;
-import com.twinkle.framework.core.datastruct.schema.AttributeDef;
-import com.twinkle.framework.core.datastruct.schema.BeanTypeDef;
-import com.twinkle.framework.core.datastruct.schema.StaticAttributeValueDef;
+import com.twinkle.framework.core.datastruct.define.AnnotationDef;
+import com.twinkle.framework.core.datastruct.define.AttributeDef;
+import com.twinkle.framework.core.datastruct.define.BeanTypeDef;
+import com.twinkle.framework.core.datastruct.define.StaticAttributeValueDef;
 import com.twinkle.framework.core.utils.TypeUtil;
 import org.objectweb.asm.*;
 

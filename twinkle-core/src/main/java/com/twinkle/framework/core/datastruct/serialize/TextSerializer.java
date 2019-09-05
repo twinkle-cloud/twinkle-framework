@@ -1,6 +1,5 @@
 package com.twinkle.framework.core.datastruct.serialize;
 
-import javax.naming.OperationNotSupportedException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -18,27 +17,86 @@ import java.util.List;
  * @since JDK 1.8
  */
 public interface TextSerializer<T> extends Serializer<T> {
-    void setPrettyPrint(boolean var1) throws OperationNotSupportedException;
-
-    boolean isPrettyPrint();
-
+    /**
+     * Get Serializer charset.
+     *
+     * @return
+     */
     Charset getCharset();
 
-    void setCharset(String var1) throws UnsupportedCharsetException;
+    /**
+     * Update the charset that will be processed.
+     *
+     * @param _str
+     * @throws UnsupportedCharsetException
+     */
+    void setCharset(String _str) throws UnsupportedCharsetException;
 
-    void setCharset(Charset var1);
+    /**
+     * Update the charset that will be processed.
+     *
+     * @param _charSet
+     */
+    void setCharset(Charset _charSet);
 
-    String write(T var1);
+    /**
+     * Write attr.
+     *
+     * @param _attr
+     * @return
+     */
+    String write(T _attr);
 
-    void write(T var1, Writer var2) throws IOException;
+    /**
+     * Write attr into the writer.
+     *
+     * @param _attr
+     * @param _writer
+     * @throws IOException
+     */
+    void write(T _attr, Writer _writer) throws IOException;
 
-    T read(String var1);
+    /**
+     * Read attr from given str.
+     *
+     * @param _str
+     * @return
+     */
+    T read(String _str);
 
-    T read(Reader var1) throws IOException;
+    /**
+     * Read attr from given reader.
+     *
+     * @param _reader
+     * @return
+     * @throws IOException
+     */
+    T read(Reader _reader) throws IOException;
 
-    void writeMultiple(T[] var1, Writer var2) throws IOException;
+    /**
+     * Write multiple attr into the writer.
+     *
+     * @param _attrArray
+     * @param _writer
+     * @throws IOException
+     */
+    void writeMultiple(T[] _attrArray, Writer _writer) throws IOException;
 
-    void writeMultiple(List<T> var1, Writer var2) throws IOException;
+    /**
+     * Write multiple attr into the writer.
+     *
+     * @param _attrList
+     * @param _writer
+     * @throws IOException
+     */
+    void writeMultiple(List<T> _attrList, Writer _writer) throws IOException;
 
-    List<T> readMultiple(Reader var1) throws IOException;
+    /**
+     * Read multiple attrs from reader.
+     *
+     * @param _reader
+     * @return
+     * @throws IOException
+     */
+    List<T> readMultiple(Reader _reader) throws IOException;
 }

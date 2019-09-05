@@ -1,16 +1,10 @@
 package com.twinkle.framework.core.asm.designer;
 
-import com.twinkle.framework.core.datastruct.schema.EnumTypeDef;
+import com.twinkle.framework.core.datastruct.define.EnumTypeDef;
 import com.twinkle.framework.core.utils.TypeUtil;
 import lombok.Getter;
-import org.checkerframework.checker.units.qual.A;
 import org.objectweb.asm.*;
-import org.objectweb.asm.util.CheckClassAdapter;
-import org.objectweb.asm.util.TraceClassVisitor;
 
-import java.io.PrintWriter;
-import java.nio.file.OpenOption;
-import java.util.Iterator;
 import java.util.List;
 
 /**

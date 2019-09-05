@@ -1,6 +1,6 @@
 package com.twinkle.framework.core.datastruct;
 
-import com.twinkle.framework.core.datastruct.schema.HierarchicalName;
+import com.twinkle.framework.core.datastruct.define.HierarchicalName;
 
 import java.text.ParseException;
 import java.util.*;

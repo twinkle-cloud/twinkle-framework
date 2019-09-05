@@ -1,11 +1,10 @@
 package com.twinkle.framework.core.datastruct.builder;
 
-import com.twinkle.framework.core.datastruct.schema.AnnotationDef;
-import com.twinkle.framework.core.datastruct.schema.AnnotationDefImpl;
-import com.twinkle.framework.core.datastruct.schema.AnnotationElementDef;
-import com.twinkle.framework.core.datastruct.schema.AnnotationElementDefImpl;
+import com.twinkle.framework.core.datastruct.define.AnnotationDef;
+import com.twinkle.framework.core.datastruct.define.AnnotationDefImpl;
+import com.twinkle.framework.core.datastruct.define.AnnotationElementDef;
+import com.twinkle.framework.core.datastruct.define.AnnotationElementDefImpl;
 import com.twinkle.framework.core.utils.ListParser;
-import com.twinkle.framework.core.utils.TypeUtil;
 import org.objectweb.asm.Type;
 
 import java.lang.annotation.Annotation;

@@ -6,7 +6,7 @@ import com.twinkle.framework.core.datastruct.descriptor.ArrayTypeDescriptor;
 import com.twinkle.framework.core.datastruct.descriptor.BeanTypeDescriptor;
 import com.twinkle.framework.core.datastruct.descriptor.EnumTypeDescriptor;
 import com.twinkle.framework.core.datastruct.descriptor.TypeDescriptor;
-import com.twinkle.framework.core.datastruct.schema.*;
+import com.twinkle.framework.core.datastruct.define.*;
 import com.twinkle.framework.core.utils.ListParser;
 import org.objectweb.asm.Type;
 
@@ -134,8 +134,8 @@ public class TypeDefBuilder {
         }
     }
 
-    public static Type getObjectType(String var0) {
-        String var1 = EnhancedClassLoader.getInternalNormalizedClassName(var0).replace('.', '/');
+    public static Type getObjectType(String _className) {
+        String var1 = EnhancedClassLoader.getInternalNormalizedClassName(_className).replace('.', '/');
         return Type.getObjectType(var1);
     }
 

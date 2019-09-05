@@ -1,6 +1,6 @@
 package com.twinkle.framework.core.datastruct.converter;
 
-import com.twinkle.framework.core.datastruct.schema.AttributeDef;
+import com.twinkle.framework.core.datastruct.define.AttributeDef;
 import com.twinkle.framework.core.utils.TypeDefUtil;
 import lombok.Getter;
 
