@@ -291,6 +291,7 @@ public class ListAttribute implements IListAttribute, Cloneable, Serializable {
      *
      * @param _attr
      */
+    @Override
     public void add(Attribute _attr) {
         this.add(this.size(), _attr);
     }
@@ -360,6 +361,11 @@ public class ListAttribute implements IListAttribute, Cloneable, Serializable {
     public void addAll(Collection<? extends IListAttribute> _collection) {
         for (IListAttribute e : _collection)
             add(e);
+    }
+
+    @Override
+    public boolean containsAll(Attribute _attr) {
+        return _attr instanceof IListAttribute ? this.elements.containsAll(((ListAttribute)_attr).elements) : false;
     }
 
     private void clear() {

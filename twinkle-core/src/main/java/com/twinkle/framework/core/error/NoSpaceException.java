@@ -18,7 +18,7 @@ public class NoSpaceException extends RuntimeException {
         super(_msg, _exception);
     }
 
-    public NoSpaceException(Throwable _exceptin) {
-        super(_exceptin);
+    public NoSpaceException(Throwable _exception) {
+        super(_exception);
     }
 }

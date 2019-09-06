@@ -4,16 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.component.AbstractComponent;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
+import com.twinkle.framework.asm.descriptor.*;
+import com.twinkle.framework.asm.handler.MethodInstructionHandler;
 import com.twinkle.framework.configure.component.ComponentFactory;
-import com.twinkle.framework.configure.component.IComponentFactory;
-import com.twinkle.framework.core.datastruct.descriptor.*;
-import com.twinkle.framework.core.datastruct.handler.MethodInstructionHandler;
 import com.twinkle.framework.core.lang.MethodAttribute;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.objectweb.asm.Opcodes;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>com.twinkle.framework</groupId>
-            <artifactId>twinkle-core</artifactId>
+            <artifactId>twinkle-struct</artifactId>
             <scope>compile</scope>
         </dependency>
     </dependencies>

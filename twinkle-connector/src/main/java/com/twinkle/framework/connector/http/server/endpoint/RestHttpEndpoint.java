@@ -1,8 +1,8 @@
 package com.twinkle.framework.connector.http.server.endpoint;
 
+import com.twinkle.framework.asm.handler.MethodInstructionHandler;
 import com.twinkle.framework.connector.http.endpoint.AbstractHttpEndpoint;
 import com.twinkle.framework.connector.http.server.handler.DefaultHttpMethodInstructionHandler;
-import com.twinkle.framework.core.datastruct.handler.MethodInstructionHandler;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>

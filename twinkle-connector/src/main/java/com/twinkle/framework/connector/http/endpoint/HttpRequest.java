@@ -1,7 +1,7 @@
 package com.twinkle.framework.connector.http.endpoint;
 
+import com.twinkle.framework.asm.descriptor.AttributeDescriptor;
 import com.twinkle.framework.connector.endpoint.Request;
-import com.twinkle.framework.core.datastruct.descriptor.AttributeDescriptor;
 
 import java.util.List;
 

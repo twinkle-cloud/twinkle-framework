@@ -2,7 +2,7 @@ package com.twinkle.framework.configure.component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.config.Configurable;
-import com.twinkle.framework.core.datastruct.Bean;
+import com.twinkle.framework.asm.Bean;
 import org.springframework.beans.factory.config.BeanDefinition;
 
 /**

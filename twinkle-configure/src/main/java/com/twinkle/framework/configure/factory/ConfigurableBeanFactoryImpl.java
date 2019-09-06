@@ -1,8 +1,8 @@
 package com.twinkle.framework.configure.factory;
 
 import com.alibaba.fastjson.JSONObject;
-import com.twinkle.framework.core.asm.classloader.BeanClassLoader;
-import com.twinkle.framework.core.asm.factory.BeanFactoryImpl;
+import com.twinkle.framework.asm.classloader.BeanClassLoader;
+import com.twinkle.framework.asm.factory.BeanFactoryImpl;
 
 import javax.naming.ConfigurationException;
 

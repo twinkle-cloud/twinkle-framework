@@ -5,7 +5,7 @@ import com.twinkle.framework.api.component.IComponent;
 import com.twinkle.framework.api.config.Configurable;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
-import com.twinkle.framework.core.datastruct.Bean;
+import com.twinkle.framework.asm.Bean;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;

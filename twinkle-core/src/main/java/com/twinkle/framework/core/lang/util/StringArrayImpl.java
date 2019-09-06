@@ -10,11 +10,11 @@ package com.twinkle.framework.core.lang.util;
  * @since JDK 1.8
  */
 public final class StringArrayImpl extends ObjectArrayImpl<String> implements MutableObjectArray<String>, MutableStringArray {
-    protected StringArrayImpl(int _size) {
+    public StringArrayImpl(int _size) {
         super(_size);
     }
 
-    protected StringArrayImpl(String[] _array, int _size) {
+    public StringArrayImpl(String[] _array, int _size) {
         super(_array, _size);
     }
 

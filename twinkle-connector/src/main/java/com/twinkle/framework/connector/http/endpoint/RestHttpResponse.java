@@ -2,9 +2,8 @@ package com.twinkle.framework.connector.http.endpoint;
 
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.exception.ConfigurationException;
-import com.twinkle.framework.core.datastruct.descriptor.TypeDescriptor;
-import com.twinkle.framework.core.datastruct.descriptor.TypeDescriptorImpl;
-import com.twinkle.framework.core.lang.AttributeInfo;
+import com.twinkle.framework.asm.descriptor.TypeDescriptor;
+import com.twinkle.framework.asm.descriptor.TypeDescriptorImpl;
 
 import java.util.Map;
 

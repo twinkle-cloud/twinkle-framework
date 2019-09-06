@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.connector.data.HttpAttrNEAttrMapItem;
-import com.twinkle.framework.connector.http.endpoint.HttpHandler;
 import com.twinkle.framework.core.context.ContextSchema;
 import com.twinkle.framework.core.lang.AttributeInfo;
 import lombok.Data;

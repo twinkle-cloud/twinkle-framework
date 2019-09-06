@@ -2,17 +2,16 @@ package com.twinkle.framework.connector.http.endpoint;
 
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.exception.ConfigurationException;
-import com.twinkle.framework.core.datastruct.converter.JavaAttributeConverter;
-import com.twinkle.framework.core.datastruct.descriptor.AttributeDescriptor;
-import com.twinkle.framework.core.datastruct.descriptor.AttributeDescriptorImpl;
-import com.twinkle.framework.core.datastruct.descriptor.TypeDescriptor;
-import com.twinkle.framework.core.datastruct.descriptor.TypeDescriptorImpl;
+import com.twinkle.framework.asm.descriptor.AttributeDescriptor;
+import com.twinkle.framework.asm.descriptor.AttributeDescriptorImpl;
+import com.twinkle.framework.asm.descriptor.TypeDescriptor;
+import com.twinkle.framework.asm.descriptor.TypeDescriptorImpl;
+import com.twinkle.framework.core.converter.JavaAttributeConverter;
 import com.twinkle.framework.core.lang.Attribute;
-import com.twinkle.framework.core.lang.AttributeInfo;
 import com.twinkle.framework.core.lang.JavaAttributeInfo;
-import jdk.internal.org.objectweb.asm.Opcodes;
-import jdk.internal.org.objectweb.asm.Type;
 import org.apache.commons.collections4.MapUtils;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import java.util.ArrayList;
 import java.util.Collections;

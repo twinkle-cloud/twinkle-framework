@@ -83,10 +83,19 @@ public interface IListAttribute extends Attribute {
      * Contains the given attribute (list) or not?
      * If the Attribute is list attribute, then check all of the elements of the list.
      *
-     * @param _attr
+     * @param _collection
      * @return
      */
     boolean containsAll(Collection<? extends IListAttribute> _collection);
+
+    /**
+     * Contains the given attribute (list) or not?
+     * If the Attribute is list attribute, then check all of the elements of the list.
+     *
+     * @param _attr
+     * @return
+     */
+    boolean containsAll(Attribute _attr);
 
     /**
      * The list's size.

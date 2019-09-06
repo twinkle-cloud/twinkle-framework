@@ -1,7 +1,7 @@
 package com.twinkle.framework.connector.endpoint;
 
 import com.twinkle.framework.api.config.Configurable;
-import com.twinkle.framework.core.datastruct.descriptor.TypeDescriptor;
+import com.twinkle.framework.asm.descriptor.TypeDescriptor;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
