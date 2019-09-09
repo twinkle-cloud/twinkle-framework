@@ -4,11 +4,19 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
+import com.twinkle.framework.bootstarter.service.impl.StructAttributeManager;
 import com.twinkle.framework.configure.component.ComponentFactory;
 import com.twinkle.framework.configure.component.IComponentFactory;
 import com.twinkle.framework.connector.ConnectorManager;
 import com.twinkle.framework.core.context.ContextSchema;
 import com.twinkle.framework.ruleengine.RuleChainManager;
+import com.twinkle.framework.struct.asm.define.StructAttributeBeanTypeDef;
+import com.twinkle.framework.struct.asm.define.StructAttributeBeanTypeDefImpl;
+import com.twinkle.framework.struct.context.StructAttributeSchema;
+import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
+import com.twinkle.framework.struct.factory.StructAttributeFactoryCenter;
+import com.twinkle.framework.struct.factory.StructAttributeFactoryCenterImpl;
+import com.twinkle.framework.struct.type.StructAttributeType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.BeansException;
@@ -16,8 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
@@ -37,6 +43,7 @@ import java.io.IOException;
 public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor {
     private final static String KEY_CONNECTOR_MANAGER = "ConnectorManager";
     private final static String KEY_RULECHAIN_MANAGER = "RuleChainManager";
+    private final static String KEY_STRUCT_ATTRIBUTE_MANAGER = "StructAttributeManager";
     private final static String KEY_ATTRIBUTE_SET = "AttributeSet";
 
     /**
@@ -71,10 +78,32 @@ public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor {
 
         IComponentFactory componentFactory = new ComponentFactory(registry);
 
+        //Initialize the Struct Attribute' Manager.
+        StructAttributeManager tempStructAttributeManager = componentFactory.loadComponent(tempObj.getJSONObject(KEY_STRUCT_ATTRIBUTE_MANAGER));
+        if (tempStructAttributeManager == null) {
+            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_CONNECTOR, "Did not find valid connector obj in the logic configuration.");
+        }
+        StructAttributeSchema tempStructSchema = StructAttributeSchemaManager.getStructAttributeSchema();
+        StructAttributeFactoryCenter tempCenter = new StructAttributeFactoryCenterImpl(
+                tempStructSchema, this.getClass().getClassLoader()
+        );
+        StructAttributeSchemaManager.registerStructAttributeImpl(tempCenter);
+
+        StructAttributeType tempType = tempStructSchema.getStructAttributeType("TestDemo", "TestRequest");
+//        try {
+//            StructAttributeBeanTypeDef tempTypeDef = new StructAttributeBeanTypeDefImpl(tempType, this.getClass().getClassLoader());
+//
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        tempCenter.getStructAttributeFactory().newStructAttribute(tempType);
+        tempCenter.getStructAttributeFactory().loadGeneralBeanClass(tempType);
+
+
         //Initialize the connectors' Manager.
         ConnectorManager tempConnectorManager = componentFactory.loadComponent(tempObj.getJSONObject(KEY_CONNECTOR_MANAGER));
-        if(tempConnectorManager == null) {
-            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_CONNECTOR ,"Did not find valid connector obj in the logic configuration.");
+        if (tempConnectorManager == null) {
+            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_CONNECTOR, "Did not find valid connector obj in the logic configuration.");
         }
         //Initialize the rule Manager.
         RuleChainManager tempRuleManager = componentFactory.loadComponent(tempObj.getJSONObject(KEY_RULECHAIN_MANAGER));

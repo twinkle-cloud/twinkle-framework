@@ -5,7 +5,10 @@ import com.twinkle.framework.asm.define.AttributeDef;
 import com.twinkle.framework.asm.define.BeanTypeDef;
 import com.twinkle.framework.asm.define.StaticAttributeValueDef;
 import com.twinkle.framework.asm.utils.TypeUtil;
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import java.lang.reflect.Modifier;
 import java.util.List;
@@ -31,7 +34,7 @@ public abstract class AbstractGeneralBeanClassDesigner extends AbstractBeanClass
      * @param _attrDefList
      */
     protected void addFields(ClassVisitor _visitor, List<AttributeDef> _attrDefList) {
-        _attrDefList.parallelStream().filter(item -> !Modifier.isStatic(item.getAccess())).forEach(item -> this.addField(_visitor, item));
+        _attrDefList.stream().filter(item -> !Modifier.isStatic(item.getAccess())).forEach(item -> this.addField(_visitor, item));
     }
 
     /**
@@ -42,13 +45,13 @@ public abstract class AbstractGeneralBeanClassDesigner extends AbstractBeanClass
      * @param _attrDefList
      */
     protected void addGetterSetterMethodsDefinition(ClassVisitor _visitor, String _className, List<AttributeDef> _attrDefList) {
-        _attrDefList.parallelStream().forEach(item -> {
-            this.addGetterDefinition(_visitor, _className, item);
-            this.addSetterDefinition(_visitor, _className, item);
-            if (item.getDefaultValue() != null) {
-                this.addDefaultGetterDefinition(_visitor, _className, item);
+        for (AttributeDef tempDef : _attrDefList) {
+            this.addGetterDefinition(_visitor, _className, tempDef);
+            this.addSetterDefinition(_visitor, _className, tempDef);
+            if (tempDef.getDefaultValue() != null) {
+                this.addDefaultGetterDefinition(_visitor, _className, tempDef);
             }
-        });
+        }
     }
 
     /**
@@ -65,8 +68,8 @@ public abstract class AbstractGeneralBeanClassDesigner extends AbstractBeanClass
         } else {
             tempFieldSignature = null;
         }
-        FieldVisitor tempVisitor = _visitor.visitField(_attrDef.getAccess(), _attrDef.getFieldName(), TypeUtil.getFieldDescriptor(_attrDef.getType().getType()), tempFieldSignature, (Object) null);
-        _attrDef.getAnnotations().parallelStream().forEach(item -> this.addFieldAnnotation(tempVisitor, item));
+        FieldVisitor tempVisitor = _visitor.visitField(_attrDef.getAccess(), _attrDef.getFieldName(), TypeUtil.getFieldDescriptor(_attrDef.getType().getType()), tempFieldSignature, null);
+        _attrDef.getAnnotations().stream().forEach(item -> this.addFieldAnnotation(tempVisitor, item));
 
         tempVisitor.visitEnd();
         return tempVisitor;
@@ -118,6 +121,7 @@ public abstract class AbstractGeneralBeanClassDesigner extends AbstractBeanClass
             _visitor.visitFieldInsn(Opcodes.PUTFIELD, _className, _attrDef.getFieldName(), TypeUtil.getFieldDescriptor(_attrDef.getType().getType()));
         }
     }
+
     /**
      * Add get method to this class.
      *
@@ -182,6 +186,7 @@ public abstract class AbstractGeneralBeanClassDesigner extends AbstractBeanClass
         tempVisitor.visitEnd();
         return tempVisitor;
     }
+
     /**
      * Add default geeter definition.
      *

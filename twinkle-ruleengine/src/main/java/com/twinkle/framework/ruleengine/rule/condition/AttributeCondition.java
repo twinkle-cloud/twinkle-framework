@@ -182,7 +182,7 @@ public class AttributeCondition extends AbstractCondition {
         StringTokenizer tempST = new StringTokenizer(_conditionLine, ",");
         boolean tempConstantFlag = false;
         if (tempST.countTokens() < 3) {
-            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_EPXRESSION, _conditionLine + " - Malformed Condition should of the form <AttributeName>,<Operation>,<Value>");
+            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_EXPRESSION, _conditionLine + " - Malformed Condition should of the form <AttributeName>,<Operation>,<Value>");
         } else {
             String tempOp1Token = tempST.nextToken();
             String tempOperationToken = tempST.nextToken();
@@ -253,7 +253,7 @@ public class AttributeCondition extends AbstractCondition {
             if (this.operation >= OP_STARTS & this.operation <= OP_NOT_CONTAINS & tempOp1PrimitiveType != Attribute.STRING_TYPE) {
                 String tempExpMsg = _conditionLine + " - Cannot support operation (" + tempOperationToken;
                 tempExpMsg = tempExpMsg + ") on numeric attribute";
-                throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_EPXRESSION, tempExpMsg);
+                throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_EXPRESSION, tempExpMsg);
             } else {
                 AttributeInfo tempOp2Attr = this.contextSchema.getAttribute(tempOp2Token);
                 String tempStr;

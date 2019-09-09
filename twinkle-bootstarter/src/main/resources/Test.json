@@ -1,13 +1,17 @@
 {
   "ConnectorManager": {
     "ClassName": "com.twinkle.framework.connector.ConnectorManager",
-    "ConnectorNames": ["TestConnector"],
+    "ConnectorNames": [
+      "TestConnector"
+    ],
     "Connectors": [
       {
         "Name": "TestConnector",
         "ClassName": "com.twinkle.framework.connector.http.server.RestHttpServerConnector",
         "Description": "Connector Test1",
-        "EndpointNames": ["testHelloworld"],
+        "EndpointNames": [
+          "testHelloworld"
+        ],
         "Endpoints": [
           {
             "Name": "testHelloworld",
@@ -50,12 +54,16 @@
   },
   "RuleChainManager": {
     "ClassName": "com.twinkle.framework.ruleengine.RuleChainManager",
-    "RuleChainNames": ["TestRuleChain"],
+    "RuleChainNames": [
+      "TestRuleChain"
+    ],
     "RuleChains": [
       {
         "Name": "TestRuleChain",
         "ClassName": "com.twinkle.framework.ruleengine.RuleChain",
-        "RuleNames": ["TestDemoRule"],
+        "RuleNames": [
+          "TestDemoRule"
+        ],
         "Rules": [
           {
             "Name": "TestDemoRule",
@@ -67,10 +75,78 @@
     ]
   },
   "AttributeSet": [
-    ["userName", "com.twinkle.framework.core.lang.StringAttribute", ""],
-    ["password", "com.twinkle.framework.core.lang.StringAttribute", ""],
-    ["age", "com.twinkle.framework.core.lang.IntegerAttribute", ""],
-    ["addressId", "com.twinkle.framework.core.lang.StringAttribute", ""],
-    ["resultData", "com.twinkle.framework.core.lang.StringAttribute", ""]
-  ]
+    [
+      "userName",
+      "com.twinkle.framework.core.lang.StringAttribute",
+      ""
+    ],
+    [
+      "password",
+      "com.twinkle.framework.core.lang.StringAttribute",
+      ""
+    ],
+    [
+      "age",
+      "com.twinkle.framework.core.lang.IntegerAttribute",
+      ""
+    ],
+    [
+      "addressId",
+      "com.twinkle.framework.core.lang.StringAttribute",
+      ""
+    ],
+    [
+      "resultData",
+      "com.twinkle.framework.core.lang.StringAttribute",
+      ""
+    ]
+  ],
+  "StructAttributeManager": {
+    "ClassName": "com.twinkle.framework.bootstarter.service.impl.StructAttributeManager",
+    "NameSpaceNames": [
+      "TestDemo"
+    ],
+    "NameSpaces": [
+      {
+        "NameSpace": "TestDemo",
+        "Types": [
+          {
+            "TypeName": "TestRequest",
+            "Attributes": [
+              {
+                "Name": "name",
+                "Type": "string",
+                "Optional": "false"
+              },
+              {
+                "Name": "age",
+                "Type": "int",
+                "Optional": "false"
+              },
+              {
+                "Name": "title",
+                "Type": "TestDemo:title",
+                "Optional": "false"
+              }
+            ]
+          },
+          {
+            "TypeName": "title",
+            "Attributes": [
+              {
+                "Name": "dept",
+                "Type": "string",
+                "Optional": "false"
+              },
+              {
+                "Name": "position",
+                "Type": "string",
+                "Optional": "false"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -2,7 +2,6 @@ package com.twinkle.framework.asm.factory;
 
 import com.twinkle.framework.asm.classloader.BeanClassLoader;
 import com.twinkle.framework.asm.Bean;
-import com.twinkle.framework.asm.BeanFactory;
 import com.twinkle.framework.asm.descriptor.TypeDescriptors;
 
 /**

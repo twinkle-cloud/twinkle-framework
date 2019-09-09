@@ -31,10 +31,10 @@ public class RecyclableBeanInterfaceDesigner extends BeanInterfaceDesigner {
     @Override
     protected void addMethodsDeclaration(ClassVisitor _visitor, List<AttributeDef> _attrDefList) {
         super.addMethodsDeclaration(_visitor, _attrDefList);
-        _attrDefList.stream().parallel().forEach(item ->{
-            this.addFlagGetterDeclaration(_visitor, item);
-            this.addFlagSetterDeclaration(_visitor, item);
-        });
+        for(AttributeDef tempDef : _attrDefList) {
+            this.addFlagGetterDeclaration(_visitor, tempDef);
+            this.addFlagSetterDeclaration(_visitor, tempDef);
+        }
     }
 
     /**

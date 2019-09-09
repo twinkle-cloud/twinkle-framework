@@ -24,14 +24,17 @@ public class BeanInterfaceDesigner extends AbstractBeanClassDesigner {
     public BeanInterfaceDesigner(String _className, BeanTypeDef _beanTypeDef) {
         super(_className, _beanTypeDef);
     }
+
     @Override
     protected String[] getDefaultInterfaces() {
         return new String[]{Bean.class.getName(), Cloneable.class.getName()};
     }
+
     @Override
     protected int initAccessFlags() {
         return this.getInterfaceAccessFlags();
     }
+
     @Override
     protected void addClassDefinition(ClassVisitor _visitor, String _className, String _superName, List<AttributeDef> _attrDefList, BeanTypeDef _beanTypeDef) {
         this.addMethodsDeclaration(_visitor, _attrDefList);
@@ -39,7 +42,7 @@ public class BeanInterfaceDesigner extends AbstractBeanClassDesigner {
 
     /**
      * Interface: public interface XXXX{}.
-     *
+     * <p>
      * JVM by default: The access should to be: public abstract interface.
      *
      * @return
@@ -55,19 +58,18 @@ public class BeanInterfaceDesigner extends AbstractBeanClassDesigner {
      * @param _attrDefList
      */
     protected void addMethodsDeclaration(ClassVisitor _visitor, List<AttributeDef> _attrDefList) {
-        _attrDefList.stream().parallel().forEach(item -> {
-            this.addGetterDeclaration(_visitor, item);
-            this.addSetterDeclaration(_visitor, item);
-            if (item.getDefaultValue() != null) {
-                this.addDefaultGetterDeclaration(_visitor, item);
+        for (AttributeDef tempDef : _attrDefList) {
+            this.addGetterDeclaration(_visitor, tempDef);
+            this.addSetterDeclaration(_visitor, tempDef);
+            if (tempDef.getDefaultValue() != null) {
+                this.addDefaultGetterDeclaration(_visitor, tempDef);
             }
-        });
-        this.addCloneDeclaration(_visitor);
+        }
     }
 
     /**
      * Add default getter method.
-     *
+     * <p>
      * public xxx getAAADefault();
      *
      * @param _visitor
@@ -82,13 +84,14 @@ public class BeanInterfaceDesigner extends AbstractBeanClassDesigner {
             tempSignature = null;
         }
 
-        MethodVisitor tempVisistor = _visitor.visitMethod(Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT, TypeUtil.getDefaultGetterName(_attrDef), TypeUtil.getGetterSignature(_attrDef.getType().getType()), tempSignature, null);
-        tempVisistor.visitEnd();
-        return tempVisistor;
+        MethodVisitor tempVisitor = _visitor.visitMethod(Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT, TypeUtil.getDefaultGetterName(_attrDef), TypeUtil.getGetterSignature(_attrDef.getType().getType()), tempSignature, null);
+        tempVisitor.visitEnd();
+        return tempVisitor;
     }
 
     /**
      * public xxx getAAA();
+     *
      * @param _visitor
      * @param _attrDef
      * @return

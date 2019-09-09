@@ -10,6 +10,9 @@ package com.twinkle.framework.api.exception;
  * @since JDK 1.8
  */
 public class ConfigurationException extends RuntimeException {
+    /**
+     * The exception code, refer to ExceptionCode.
+     */
     private int code;
 
     public ConfigurationException(){
@@ -18,5 +21,8 @@ public class ConfigurationException extends RuntimeException {
 
     public ConfigurationException(int _code, String _msg) {
         super(_msg);
+    }
+    public ConfigurationException(int _code, String _msg, Throwable _e) {
+        super(_msg, _e);
     }
 }

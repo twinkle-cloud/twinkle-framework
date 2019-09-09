@@ -2,6 +2,7 @@ package com.twinkle.framework.bootstarter.controller;
 
 import com.twinkle.framework.api.constant.ResultCode;
 import com.twinkle.framework.api.exception.RuleException;
+import com.twinkle.framework.bootstarter.data.HelloDemo;
 import com.twinkle.framework.bootstarter.data.HelloRequest;
 import com.twinkle.framework.bootstarter.service.HelloWorld2Service;
 import com.twinkle.framework.api.data.GeneralResult;
@@ -38,7 +39,7 @@ public class HelloController extends AbstractServer {
     @ApiOperation(value = "获取用户Token")
     @RequestMapping(value = "authsec/token/{_userName}", method = RequestMethod.POST)
     public GeneralResult<String> createAuthenticationToken(
-            @ApiParam(value = "请求体") @RequestBody HelloRequest _request,
+            @ApiParam(value = "请求体") @RequestBody HelloDemo _request,
             @ApiParam(value = "UserName") @PathVariable(value = "_userName") String _userName,
             @RequestParam(value = "_testParam", defaultValue = "DDDFF") String _testParam) throws Exception {
         log.info("The request body is AA");
@@ -47,7 +48,7 @@ public class HelloController extends AbstractServer {
 
         log.info("The _testParam = [{}].", _testParam);
         log.info("The request _testParam = [{}].", request.getParameter("_testParam"));
-        String tempContent = this.helloWorldService.sayHello(_request.getUserName());
+        String tempContent = this.helloWorldService.sayHello(_request.getName());
 
         GeneralResult<String> tempResult = new GeneralResult<>();
         tempResult.setCode(ResultCode.OPERATION_SUCCESS);

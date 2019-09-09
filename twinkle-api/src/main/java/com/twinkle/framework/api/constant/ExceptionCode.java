@@ -18,7 +18,7 @@ public interface ExceptionCode {
     int LOGIC_CONF_INVALID_RULECHAIN = 0x001005;
     int LOGIC_CONF_DUPLICATE_CONNECTOR_NAME = 0x001006;
     int LOGIC_CONF_DUPLICATE_COMPONENT_FOUND = 0x001007;
-    int LOGIC_CONF_INVALID_EPXRESSION = 0x001010;
+    int LOGIC_CONF_INVALID_EXPRESSION = 0x001010;
     int LOGIC_CONF_REQUIRED_ATTR_MISSED = 0x001011;
 
     int LOGIC_CONF_ATTR_MISSED_IN_SCHEMA = 0x001100;
@@ -26,6 +26,38 @@ public interface ExceptionCode {
     int LOGIC_CONF_ATTR_INIT_INVALID = 0x001102;
     int LOGIC_CONF_ATTR_NOT_ALLOWED = 0x001103;
     int LOGIC_CONF_ATTR_VALUE_INVALID = 0x001104;
+    /**
+     * The attributes parameters missed for the Struct Attribute type.
+     */
+    int LOGIC_CONF_SA_TYPE_ATTR_MISSED = 0x001105;
+    /**
+     * Circular path found the Struct Attribute's build path.
+     */
+    int LOGIC_CONF_SA_TYPE_ATTR_CIRCULAR_PATH_FOUND = 0x001106;
+    /**
+     * Add struct attribute type into the type schema failed.
+     */
+    int LOGIC_CONF_SA_TYPE_ADD_FAILED = 0x001107;
+    /**
+     * Required attr field missed.
+     */
+    int LOGIC_CONF_SA_TYPE_ATTR_FIELD_MISSED = 0x001108;
+    /**
+     * Struct attribute's field type missed.
+     */
+    int LOGIC_CONF_ATTR_SA_TYPE_MISSED = 0x001109;
+    /**
+     * The attribute name is invalid.
+     */
+    int LOGIC_CONF_SA_NAME_INVALID = 0x00110a;
+    /**
+     * Struct attribute type is not found in the schema.
+     */
+    int LOGIC_CONF_SA_TYPE_NOT_FOUND = 0x00110b;
+    /**
+     * Struct attribute's namespace is not found in the schema.
+     */
+    int LOGIC_CONF_SA_NAMESPACE_NOT_FOUND = 0x00110c;
 
     int RULE_ADN_INVALID_URL = 0x010001;
     int RULE_ADN_URL_READ_FAILED = 0x010002;

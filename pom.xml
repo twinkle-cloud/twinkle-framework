@@ -274,9 +274,10 @@
     <modules>
         <module>twinkle-asm</module>
         <module>twinkle-core</module>
-        <module>twinkle-struct</module>
+        <module>twinkle-core-struct</module>
         <module>twinkle-api</module>
         <module>twinkle-configure</module>
+        <module>twinkle-struct</module>
         <module>twinkle-datacenter</module>
         <module>twinkle-ruleengine</module>
         <module>twinkle-connector</module>

@@ -98,21 +98,32 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
 
     @Override
     protected ClassVisitor addClassDeclaration(ClassVisitor _visitor) {
-        String tempSuperName = this.beanTypeDef.getSuperTypeDef().getType().getInternalName();//TypeUtil.OBJECT_TYPE.getInternalName()
-        return this.addClassDeclaration(_visitor, this.className, tempSuperName, this.beanInterfaces, this.beanTypeDef);
+        return this.addClassDeclaration(_visitor, this.className, getSuperName(), this.beanInterfaces, this.beanTypeDef);
     }
 
     protected void addClassDefinition(ClassVisitor _visitor, String _className, List<AttributeDef> _interfaceAttrDefList, BeanTypeDef _beanTypeDef) {
-        //TypeUtil.OBJECT_TYPE.getInternalName()
-        String tempSuperName = this.beanTypeDef.getSuperTypeDef().getType().getInternalName();//TypeUtil.OBJECT_TYPE.getInternalName()
-        this.addClassDefinition(_visitor, _className, tempSuperName, _interfaceAttrDefList, _beanTypeDef);
+        this.addClassDefinition(_visitor, _className, this.getSuperName(), _interfaceAttrDefList, _beanTypeDef);
+    }
+
+    /**
+     * Get super class's internal name.
+     *
+     * @return
+     */
+    private String getSuperName() {
+        String tempSuperName;
+        if(this.beanTypeDef.getSuperTypeDef() == null) {
+            tempSuperName = TypeUtil.OBJECT_TYPE.getInternalName();
+        } else {
+            //TypeUtil.OBJECT_TYPE.getInternalName()
+            tempSuperName = this.beanTypeDef.getSuperTypeDef().getType().getInternalName();
+        }
+        return tempSuperName;
     }
 
     @Override
     protected void addClassDefinition(ClassVisitor _visitor) {
-        //TypeUtil.OBJECT_TYPE.getInternalName()
-        String tempSuperName = this.beanTypeDef.getSuperTypeDef().getType().getInternalName();//TypeUtil.OBJECT_TYPE.getInternalName()
-        this.addClassDefinition(_visitor, this.className, tempSuperName, this.beanAttributes, this.beanTypeDef);
+        this.addClassDefinition(_visitor, this.className, getSuperName(), this.beanAttributes, this.beanTypeDef);
     }
 
     protected abstract void addClassDefinition(ClassVisitor _visitor, String _className, String _superName, List<AttributeDef> _attrDefList, BeanTypeDef _beanTypeDef);

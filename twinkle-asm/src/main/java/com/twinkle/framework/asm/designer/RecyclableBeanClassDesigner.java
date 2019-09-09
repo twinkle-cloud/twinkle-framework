@@ -41,7 +41,9 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
     @Override
     protected void addFields(ClassVisitor _visitor, List<AttributeDef> _attrDefList) {
         super.addFields(_visitor, _attrDefList);
-        _attrDefList.parallelStream().forEach(item -> this.addFlagField(_visitor, item));
+        for (AttributeDef tempDef : _attrDefList) {
+            this.addFlagField(_visitor, tempDef);
+        }
     }
 
     protected FieldVisitor addFlagField(ClassVisitor _visitor, AttributeDef _attrDef) {
@@ -53,11 +55,10 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
     @Override
     protected void addGetterSetterMethodsDefinition(ClassVisitor _visitor, String _className, List<AttributeDef> _attrDefList) {
         super.addGetterSetterMethodsDefinition(_visitor, _className, _attrDefList);
-
-        _attrDefList.parallelStream().forEach(item -> {
-            this.addFlagGetterDefinition(_visitor, _className, item);
-            this.addFlagSetterDefinition(_visitor, _className, item);
-        });
+        for (AttributeDef tempDef : _attrDefList) {
+            this.addFlagGetterDefinition(_visitor, _className, tempDef);
+            this.addFlagSetterDefinition(_visitor, _className, tempDef);
+        }
 
         this.addClearAllDefinition(_visitor, _className, _attrDefList);
         this.addHashCodeDefinition(_visitor, _className);
@@ -402,11 +403,12 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
 
     /**
      * Get the attribute list will be used to generate hashCode in hashCode() method.
-     *
+     * <p>
      * If the Bean has the @Key annotation, then all of the attributes will be
      * considered as hashcode attribute, except some attribute annotated with Key and value = false.
-     *
+     * <p>
      * If the Bean does not have @key annotation, will scan the Attributes who have the @Key annotation and value = true.
+     *
      * @return
      */
     private List<AttributeDef> getAttributesForHashCode() {
