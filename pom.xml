@@ -74,7 +74,7 @@
             </dependency>
             <dependency>
                 <groupId>com.twinkle.framework</groupId>
-                <artifactId>twinkle-struct</artifactId>
+                <artifactId>twinkle-core-struct</artifactId>
                 <scope>compile</scope>
                 <version>${twinkleframework.version}</version>
                 <type>jar</type>
@@ -89,6 +89,13 @@
             <dependency>
                 <groupId>com.twinkle.framework</groupId>
                 <artifactId>twinkle-configure</artifactId>
+                <version>${twinkleframework.version}</version>
+                <scope>compile</scope>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>com.twinkle.framework</groupId>
+                <artifactId>twinkle-struct</artifactId>
                 <version>${twinkleframework.version}</version>
                 <scope>compile</scope>
                 <type>jar</type>

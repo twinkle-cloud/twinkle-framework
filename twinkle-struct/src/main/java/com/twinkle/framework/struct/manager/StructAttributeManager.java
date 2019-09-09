@@ -1,4 +1,4 @@
-package com.twinkle.framework.bootstarter.service.impl;
+package com.twinkle.framework.struct.manager;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;

@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>twinkle-struct</artifactId>
     <packaging>jar</packaging>
-    <name>Twinkle Framework - Struct Attribute Library</name>
-    <description>Twinkle Framework - Struct Attribute Library.</description>
+    <name>Twinkle Framework - Struct Attribute Manager Library</name>
+    <description>Twinkle Framework - Struct Attribute Manager Library.</description>
 
     <parent>
         <groupId>com.twinkle.framework</groupId>
@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>com.twinkle.framework</groupId>
-            <artifactId>twinkle-core</artifactId>
+            <artifactId>twinkle-api</artifactId>
         </dependency>
     </dependencies>
 
