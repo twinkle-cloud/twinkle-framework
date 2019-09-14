@@ -16,8 +16,8 @@ public class JsonIntrospectionSerializerFactory implements SerializerFactory {
     public JsonIntrospectionSerializerFactory() {
     }
     @Override
-    public <T> Serializer<T> getSerializer(String _factoryName) {
-        return (Serializer<T>) (_factoryName == null ? new JsonIntrospectionSerializer() : new JsonIntrospectionSerializer(_factoryName));
+    public <T> Serializer<T> getSerializer(String _rootType) {
+        return (Serializer<T>) (_rootType == null ? new JsonIntrospectionSerializer() : new JsonIntrospectionSerializer(_rootType));
     }
     @Override
     public <T> Serializer<T> getSerializer(Class<T> _class) {

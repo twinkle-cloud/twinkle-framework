@@ -31,7 +31,7 @@ public abstract class AbstractStructAttribute implements StructAttribute, Clonea
         if (_attrName == null) {
             throw new BadAttributeNameException("Attribute name is NULL");
         } else {
-            return (AttributeRef) (!this.hasAttribute(_attrName) ? CompositeAttributeRefFactory.getCompositeAttributeRef(this.getType(), _attrName) : this._getAttributeRef(_attrName));
+            return (!this.hasAttribute(_attrName) ? CompositeAttributeRefFactory.getCompositeAttributeRef(this.getType(), _attrName) : this._getAttributeRef(_attrName));
         }
     }
 

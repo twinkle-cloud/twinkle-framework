@@ -1,7 +1,7 @@
 package com.twinkle.framework.connector.data;
 
 import com.twinkle.framework.api.exception.ConfigurationException;
-import com.twinkle.framework.core.context.ContextSchema;
+import com.twinkle.framework.core.context.PrimitiveAttributeSchema;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -19,7 +19,7 @@ public class HttpHeaderToNE {
      */
     private final String attributeName;
     /**
-     * NE attribute's index in ContextSchema.
+     * NE attribute's index in PrimitiveAttributeSchema.
      */
     private final int attributeIndex;
     /**
@@ -45,7 +45,7 @@ public class HttpHeaderToNE {
         }
 
         if (tempAttrName != null && tempAttrName.trim().length() != 0) {
-            this.attributeIndex = ContextSchema.getInstance().getAttributeIndex(tempAttrName, _expression);
+            this.attributeIndex = PrimitiveAttributeSchema.getInstance().getAttributeIndex(tempAttrName, _expression);
         } else {
             this.attributeIndex = -1;
         }

@@ -45,10 +45,10 @@ public abstract class AttributeOperation extends AbstractRule {
         Attribute tempDestAttr = _context.getAttribute(_index);
         if (tempDestAttr == null) {
             if (!_context.getType().isMember(_index)) {
-                AttributeInfo tempNewAttr = this.contextSchema.getAttribute(_index);
+                AttributeInfo tempNewAttr = this.primitiveAttributeSchema.getAttribute(_index);
                 _context.getType().addAttribute(tempNewAttr);
             }
-            tempDestAttr = this.contextSchema.newAttributeInstance(_index);
+            tempDestAttr = this.primitiveAttributeSchema.newAttributeInstance(_index);
             tempDestAttr.setValue(_attr);
             _context.setAttribute(tempDestAttr, _index);
             return true;

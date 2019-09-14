@@ -21,18 +21,18 @@ import java.io.PrintWriter;
  * @since JDK 1.8
  */
 public abstract class AbstractGeneratorClassDesigner implements ClassDesigner {
-    public static final String BASE_SERIALIZERS_PACKAGE = "com.twinkle.framework.core.datastruct.transform.json.";
+    public static final String BASE_SERIALIZERS_PACKAGE = "com.twinkle.framework.struct.datastruct.transform.json.";
     protected BeanTypeDescriptor typeDescriptor;
     protected SerializerClassLoader classLoader;
-    protected Class targetSuperclass;
+    protected Class<?> targetSuperclass;
     protected String targetClassName;
     protected String targetInternalClassName;
 
-    public AbstractGeneratorClassDesigner(BeanTypeDescriptor var1, SerializerClassLoader var2, Class var3) {
-        this.typeDescriptor = var1;
-        this.classLoader = var2;
-        this.targetSuperclass = var3;
-        this.targetClassName = this.getClassName(var1);
+    public AbstractGeneratorClassDesigner(BeanTypeDescriptor _descriptor, SerializerClassLoader _classLoader, Class<?> _superClass) {
+        this.typeDescriptor = _descriptor;
+        this.classLoader = _classLoader;
+        this.targetSuperclass = _superClass;
+        this.targetClassName = this.getClassName(_descriptor);
         this.targetInternalClassName = ClassDesignerUtil.getInternalName(this.targetClassName);
     }
 
@@ -74,7 +74,7 @@ public abstract class AbstractGeneratorClassDesigner implements ClassDesigner {
     }
 
     protected void generateConstructor(ClassVisitor _visitor) {
-        MethodVisitor var2 = _visitor.visitMethod(1, "<init>", ClassDesignerUtil.getMethodSignature(Void.TYPE, new Class[0]), null, null);
+        MethodVisitor var2 = _visitor.visitMethod(Opcodes.ACC_PUBLIC, "<init>", ClassDesignerUtil.getMethodSignature(Void.TYPE, new Class[0]), null, null);
         var2.visitCode();
         var2.visitVarInsn(Opcodes.ALOAD, 0);
         var2.visitInsn(Opcodes.ICONST_0);

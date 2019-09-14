@@ -2,8 +2,7 @@ package com.twinkle.framework.ruleengine.rule;
 
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.exception.ConfigurationException;
-import com.twinkle.framework.api.component.rule.IRule;
-import com.twinkle.framework.core.context.ContextSchema;
+import com.twinkle.framework.core.context.PrimitiveAttributeSchema;
 import com.twinkle.framework.core.context.model.NormalizedContext;
 import com.twinkle.framework.core.lang.Attribute;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +22,7 @@ public class DemoIRule extends AbstractRule {
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
         String tempName = _conf.getString("Attribute");
-        this.attrIndex1 = this.contextSchema.getAttributeIndex(tempName, _conf.toJSONString());
+        this.attrIndex1 = this.primitiveAttributeSchema.getAttributeIndex(tempName, _conf.toJSONString());
     }
 
     @Override
@@ -31,7 +30,7 @@ public class DemoIRule extends AbstractRule {
         log.info("Going to apply Demo rule.");
         Attribute tempAttr = _context.getAttribute(this.attrIndex1);
         if(tempAttr == null) {
-            tempAttr = ContextSchema.getInstance().newAttributeInstance(this.attrIndex1);
+            tempAttr = PrimitiveAttributeSchema.getInstance().newAttributeInstance(this.attrIndex1);
         }
         tempAttr.setValue("Rule Test.");
         _context.setAttribute(tempAttr, this.attrIndex1);

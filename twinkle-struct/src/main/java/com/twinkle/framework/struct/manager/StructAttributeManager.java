@@ -2,21 +2,33 @@ package com.twinkle.framework.struct.manager;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.twinkle.framework.api.component.AbstractComponent;
 import com.twinkle.framework.api.config.Configurable;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
+import com.twinkle.framework.core.context.PrimitiveAttributeSchema;
+import com.twinkle.framework.core.lang.ObjectAttribute;
+import com.twinkle.framework.struct.asm.define.StructAttributeBeanTypeDef;
+import com.twinkle.framework.struct.asm.define.StructAttributeBeanTypeDefImpl;
 import com.twinkle.framework.struct.context.StructAttributeSchema;
 import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
 import com.twinkle.framework.struct.error.*;
+import com.twinkle.framework.struct.factory.StructAttributeFactory;
+import com.twinkle.framework.struct.factory.StructAttributeFactoryCenter;
+import com.twinkle.framework.struct.factory.StructAttributeFactoryCenterImpl;
+import com.twinkle.framework.struct.serialize.FastJSONStructAttributeSerializer;
+import com.twinkle.framework.struct.type.StructAttribute;
 import com.twinkle.framework.struct.type.StructAttributeType;
 import com.twinkle.framework.struct.type.StructType;
 import com.twinkle.framework.struct.type.StructTypeManager;
 import com.twinkle.framework.struct.utils.StructAttributeNameValidator;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -31,8 +43,13 @@ import java.util.Vector;
  */
 @Slf4j
 public class StructAttributeManager extends AbstractComponent implements Configurable {
-    public static String NS_SEPERATOR = ":";
+    public static String NS_SEPARATOR = ":";
     private JSONArray structAttributeArray;
+    /**
+     * Struct Attribute's name list.
+     */
+    @Getter
+    private List<String> structAttributeList;
 
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
@@ -42,9 +59,10 @@ public class StructAttributeManager extends AbstractComponent implements Configu
         JSONArray tempStructAttributeNameArray = _conf.getJSONArray("NameSpaceNames");
         this.structAttributeArray = _conf.getJSONArray("NameSpaces");
         if (CollectionUtils.isEmpty(this.structAttributeArray) || CollectionUtils.isEmpty(tempStructAttributeNameArray)) {
+            this.structAttributeList = new ArrayList<>(0);
             return;
         }
-
+        this.structAttributeList = new ArrayList<>(32);
         for (int i = 0; i < tempStructAttributeNameArray.size(); i++) {
             String tempNameSpaceName = tempStructAttributeNameArray.getString(i);
             for (int j = 0; j < this.structAttributeArray.size(); j++) {
@@ -65,6 +83,18 @@ public class StructAttributeManager extends AbstractComponent implements Configu
                 }
             }
         }
+        this.registerIntoSchemaManager();
+    }
+
+    /**
+     * Register the StructAttributeSchema into the schema manager.
+     */
+    private void registerIntoSchemaManager() {
+        StructAttributeSchema tempStructSchema = StructAttributeSchemaManager.getStructAttributeSchema();
+        StructAttributeFactoryCenter tempCenter = new StructAttributeFactoryCenterImpl(
+                tempStructSchema, this.getClass().getClassLoader()
+        );
+        StructAttributeSchemaManager.registerStructAttributeImpl(tempCenter);
     }
 
     /**
@@ -151,7 +181,7 @@ public class StructAttributeManager extends AbstractComponent implements Configu
         if (tempAttributeArray.isEmpty()) {
             throw new ConfigurationException(ExceptionCode.LOGIC_CONF_SA_TYPE_ATTR_MISSED, "Type [" + _typeName + "] does not have attributes.");
         }
-        int tempTypeIndex = _typeList.indexOf(_namespace + NS_SEPERATOR + _typeName);
+        int tempTypeIndex = _typeList.indexOf(_namespace + NS_SEPARATOR + _typeName);
         if (tempTypeIndex != -1) {
             StringBuffer tempBuff = new StringBuffer((String) _typeList.get(tempTypeIndex));
             for (int i = tempTypeIndex + 1; i < _typeList.size(); i++) {
@@ -160,10 +190,10 @@ public class StructAttributeManager extends AbstractComponent implements Configu
             }
 
             tempBuff.append("=>");
-            tempBuff.append(_namespace + NS_SEPERATOR + _typeName);
+            tempBuff.append(_namespace + NS_SEPARATOR + _typeName);
             throw new ConfigurationException(ExceptionCode.LOGIC_CONF_SA_TYPE_ATTR_CIRCULAR_PATH_FOUND, "Circular path is detected: " + tempBuff.toString());
         }
-        _typeList.add(_namespace + NS_SEPERATOR + _typeName);
+        _typeList.add(_namespace + NS_SEPARATOR + _typeName);
         StructTypeManager tempTypeManager = null;
         StructAttributeType tempStructAttributeType = null;
 
@@ -176,13 +206,13 @@ public class StructAttributeManager extends AbstractComponent implements Configu
         for (int i = 0; i < tempAttributeArray.size(); i++) {
             JSONObject tempAttrObj = tempAttributeArray.getJSONObject(i);
             if (tempAttrObj.isEmpty()) {
-                throw new ConfigurationException(ExceptionCode.LOGIC_CONF_SA_TYPE_ATTR_FIELD_MISSED, "Bad Configuration Format for " + _namespace + NS_SEPERATOR + _typeName);
+                throw new ConfigurationException(ExceptionCode.LOGIC_CONF_SA_TYPE_ATTR_FIELD_MISSED, "Bad Configuration Format for " + _namespace + NS_SEPARATOR + _typeName);
             }
             String tempAttrName = tempAttrObj.getString("Name");
             String tempAttrType = tempAttrObj.getString("Type");
             String tempAttrOptional = tempAttrObj.getString("Optional");
-            if(StringUtils.isBlank(tempAttrName) || StringUtils.isBlank(tempAttrType)) {
-                throw new ConfigurationException(ExceptionCode.LOGIC_CONF_SA_TYPE_ATTR_FIELD_MISSED, "Bad Configuration Format for " + _namespace + NS_SEPERATOR + _typeName);
+            if (StringUtils.isBlank(tempAttrName) || StringUtils.isBlank(tempAttrType)) {
+                throw new ConfigurationException(ExceptionCode.LOGIC_CONF_SA_TYPE_ATTR_FIELD_MISSED, "Bad Configuration Format for " + _namespace + NS_SEPARATOR + _typeName);
             }
             boolean isOptional = false;
             if (!StringUtils.isBlank(tempAttrOptional)) {
@@ -197,15 +227,15 @@ public class StructAttributeManager extends AbstractComponent implements Configu
 
                 boolean isStruct = tempAttrStructType == null || tempAttrStructType.isStructType();
                 if (isStruct) {
-                    int tempNSIndex = tempAttrType.indexOf(NS_SEPERATOR);
+                    int tempNSIndex = tempAttrType.indexOf(NS_SEPARATOR);
                     if (tempNSIndex == -1) {
-                        tempAttrType = _namespace + NS_SEPERATOR + tempAttrType;
+                        tempAttrType = _namespace + NS_SEPARATOR + tempAttrType;
                     }
                 }
 
                 if (tempAttrStructType == null) {
-                    String tempAttrNameSpace = tempAttrType.split(NS_SEPERATOR)[0];
-                    String tempAttrNameOfNS = tempAttrType.split(NS_SEPERATOR)[1];
+                    String tempAttrNameSpace = tempAttrType.split(NS_SEPARATOR)[0];
+                    String tempAttrNameOfNS = tempAttrType.split(NS_SEPARATOR)[1];
                     int tempArrayFlag = tempAttrNameOfNS.indexOf("[]");
                     if (tempArrayFlag != -1) {
                         tempAttrNameOfNS = tempAttrNameOfNS.substring(0, tempArrayFlag);
@@ -236,9 +266,30 @@ public class StructAttributeManager extends AbstractComponent implements Configu
 
         try {
             _schema.addStructAttributeType(tempStructAttributeType);
+            PrimitiveAttributeSchema.getInstance().addAttribute(tempStructAttributeType.getQualifiedName(), ObjectAttribute.class.getName());
+            this.structAttributeList.add(tempStructAttributeType.getQualifiedName());
         } catch (StructAttributeTypeAlreadyExistsException e) {
         } catch (NamespaceNotFoundException e) {
         }
         _typeList.remove(_typeList.size() - 1);
+    }
+
+    /**
+     * Add FastJSON Serializer support for Struct Attributes.
+     */
+    public final void addFastJsonSerializerSupport() {
+        StructAttributeSchema tempStructSchema = StructAttributeSchemaManager.getStructAttributeSchema();
+        StructAttributeFactory tempFactory = StructAttributeSchemaManager.getStructAttributeFactory();
+        for (String tempItem : this.structAttributeList) {
+            StructAttributeType tempType = tempStructSchema.getStructAttributeType(tempItem);
+            try {
+                StructAttributeBeanTypeDef tempTypeDef = new StructAttributeBeanTypeDefImpl(tempType, this.getClass().getClassLoader());
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            StructAttribute tempAttr = tempFactory.newStructAttribute(tempType);
+            SerializeConfig.getGlobalInstance().put(tempAttr.getClass(), new FastJSONStructAttributeSerializer());
+        }
     }
 }

@@ -5,13 +5,14 @@ import com.twinkle.framework.asm.RecyclableBean;
 import com.twinkle.framework.asm.SimpleReflectiveBean;
 import com.twinkle.framework.asm.converter.AttributeConverter;
 import com.twinkle.framework.asm.converter.LooseAttributeConverter;
-import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
 import com.twinkle.framework.asm.define.AttributeDef;
 import com.twinkle.framework.asm.define.BeanTypeDef;
 import com.twinkle.framework.asm.designer.ClassInitializer;
 import com.twinkle.framework.asm.designer.SimpleReflectiveBeanClassDesigner;
 import com.twinkle.framework.asm.utils.ClassDesignerUtil;
+import com.twinkle.framework.asm.utils.TypeUtil;
 import com.twinkle.framework.struct.asm.define.StructAttributeBeanTypeDef;
+import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
 import com.twinkle.framework.struct.error.AttributeNotFoundException;
 import com.twinkle.framework.struct.error.StructAttributeCopyException;
 import com.twinkle.framework.struct.ref.AttributeRef;
@@ -21,7 +22,6 @@ import com.twinkle.framework.struct.type.ArrayType;
 import com.twinkle.framework.struct.type.StructAttribute;
 import com.twinkle.framework.struct.type.StructAttributeType;
 import com.twinkle.framework.struct.type.StructType;
-import com.twinkle.framework.asm.utils.TypeUtil;
 import com.twinkle.framework.struct.utils.StructTypeUtil;
 import org.objectweb.asm.*;
 
@@ -29,11 +29,14 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Function: This class designer is used to build the StructAttribute.
- *  the built struct attribute always extends @AbstractStructAttribute.<br/>
+ * the built struct attribute always extends @AbstractStructAttribute.<br/>
  * Reason:	 TODO ADD REASON. <br/>
  * Date:     9/1/19 7:35 PM<br/>
  *
@@ -119,8 +122,8 @@ public final class StructAttributeClassDesigner extends SimpleReflectiveBeanClas
     }
 
     @Override
-    protected ClassVisitor addClassDeclaration(ClassVisitor _visitor, String _className, List<String> _interfaceList, BeanTypeDef _beanTypeDef) {
-        return this.addClassDeclaration(_visitor, _className, this.superClassName, _interfaceList, _beanTypeDef);
+    protected String getSuperName() {
+        return this.superClassName;
     }
 
     @Override
@@ -163,6 +166,7 @@ public final class StructAttributeClassDesigner extends SimpleReflectiveBeanClas
         tempVisitor.visitEnd();
         return tempVisitor;
     }
+
     @Override
     protected void addGetterSetterMethodsDefinition(ClassVisitor _visitor, String _className, List<AttributeDef> _attrDefList) {
         super.addGetterSetterMethodsDefinition(_visitor, _className, _attrDefList);
@@ -189,7 +193,7 @@ public final class StructAttributeClassDesigner extends SimpleReflectiveBeanClas
         tempVisitor.visitCode();
         tempVisitor.visitVarInsn(Opcodes.ALOAD, 0);
         tempVisitor.visitFieldInsn(Opcodes.PUTSTATIC, _className, getStructAttributeTypeFieldName(), STRUCTATTRIBUTETYPE_TYPE.getDescriptor());
-        for(AttributeDef tempDef : _attrDefList) {
+        for (AttributeDef tempDef : _attrDefList) {
             String tempAttrName = tempDef.getName();
             Type tempObjType = Type.getObjectType(_className);
             tempVisitor.visitTypeInsn(Opcodes.NEW, getFieldRefImpl().getInternalName());
@@ -414,7 +418,7 @@ public final class StructAttributeClassDesigner extends SimpleReflectiveBeanClas
         tempVisitor.visitTypeInsn(Opcodes.INSTANCEOF, _className);
         tempVisitor.visitJumpInsn(Opcodes.IFEQ, tempLabelA);
 
-        for(AttributeDef tempItem : _attrList) {
+        for (AttributeDef tempItem : _attrList) {
             Label tempLabelC = new Label();
             Label tempLabelD = new Label();
             tempVisitor.visitVarInsn(Opcodes.ALOAD, 0);
@@ -434,7 +438,7 @@ public final class StructAttributeClassDesigner extends SimpleReflectiveBeanClas
         tempVisitor.visitJumpInsn(Opcodes.GOTO, tempLabelB);
         tempVisitor.visitLabel(tempLabelA);
 
-        for(AttributeDef tempItem : _attrList) {
+        for (AttributeDef tempItem : _attrList) {
             Type tempItemType = tempItem.getType().getType();
             SAAttributeDescriptor tempAttrDescriptor = this.getSAAttribute(tempItem.getName());
             tempVisitor.visitVarInsn(Opcodes.ALOAD, 1);

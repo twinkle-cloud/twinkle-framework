@@ -36,7 +36,7 @@ public class SerializerGeneratorClassDesigner extends AbstractGeneratorClassDesi
     }
     @Override
     protected void generateInit(ClassVisitor _visitor) {
-        MethodVisitor tempVisitor = _visitor.visitMethod(4, "initSerializers", ClassDesignerUtil.getMethodSignature(Void.TYPE, new Class[0]), (String)null, (String[])null);
+        MethodVisitor tempVisitor = _visitor.visitMethod(Opcodes.ACC_PROTECTED, "initSerializers", ClassDesignerUtil.getMethodSignature(Void.TYPE, new Class[0]), (String)null, (String[])null);
         tempVisitor.visitCode();
         Iterator<AttributeDescriptor> tempItr = this.typeDescriptor.getAttributes().iterator();
 

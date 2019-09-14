@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.connector.data.HttpAttrNEAttrMapItem;
-import com.twinkle.framework.core.context.ContextSchema;
+import com.twinkle.framework.core.context.PrimitiveAttributeSchema;
 import com.twinkle.framework.core.lang.AttributeInfo;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -58,10 +58,10 @@ public abstract class AbstractHttpHandler implements HttpHandler {
         if(_obj == null || _obj.isEmpty()) {
             return null;
         }
-        AttributeInfo tempAttrInfo = ContextSchema.getInstance().getAttribute(_obj.getString("NeAttr"));
+        AttributeInfo tempAttrInfo = PrimitiveAttributeSchema.getInstance().getAttribute(_obj.getString("NeAttr"));
         if (tempAttrInfo == null) {
-            log.error("The attribute[{}] does not exist in ContextSchema.", _obj.toString());
-            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_ATTR_MISSED_IN_SCHEMA, "The attribute[" + _obj.getString("NeAttr") + "] does not exist in ContextSchema.");
+            log.error("The attribute[{}] does not exist in PrimitiveAttributeSchema.", _obj.toString());
+            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_ATTR_MISSED_IN_SCHEMA, "The attribute[" + _obj.getString("NeAttr") + "] does not exist in PrimitiveAttributeSchema.");
         }
         String tempValueStr = _obj.getString("DefaultValue");
         if (StringUtils.isBlank(tempValueStr)) {

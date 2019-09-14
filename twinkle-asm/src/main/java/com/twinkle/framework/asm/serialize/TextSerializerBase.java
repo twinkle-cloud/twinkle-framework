@@ -39,12 +39,12 @@ public abstract class TextSerializerBase<T> implements TextSerializer<T> {
         this.setCharset(Charset.forName(_str));
     }
 
-    protected Reader reader(InputStream var1) {
-        return new InputStreamReader(var1, this.charset);
+    protected Reader reader(InputStream _inputStream) {
+        return new InputStreamReader(_inputStream, this.charset);
     }
 
-    protected Writer writer(OutputStream var1) {
-        return new OutputStreamWriter(var1, this.charset);
+    protected Writer writer(OutputStream _outputStream) {
+        return new OutputStreamWriter(_outputStream, this.charset);
     }
     @Override
     public void write(T _attr, OutputStream _outputStream) throws IOException {

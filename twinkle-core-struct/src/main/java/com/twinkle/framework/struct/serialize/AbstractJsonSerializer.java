@@ -94,14 +94,14 @@ public abstract class AbstractJsonSerializer extends TextSerializerBase<StructAt
     }
     @Override
     public StructAttribute read(Reader _reader) throws IOException {
-        JSONReader var2 = this.getJSONReader(_reader);
-        StructAttribute var3 = this.read(var2);
-        var2.close();
-        return var3;
+        JSONReader tempReader = this.getJSONReader(_reader);
+        StructAttribute tempAttr = this.read(tempReader);
+        tempReader.close();
+        return tempAttr;
     }
 
-    protected StructAttribute read(JSONReader var1) throws IOException {
-        return this.deserializer.deserialize(var1);
+    protected StructAttribute read(JSONReader _reader) throws IOException {
+        return this.deserializer.deserialize(_reader);
     }
     @Override
     public List<StructAttribute> readMultiple(Reader _reader) throws IOException {

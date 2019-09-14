@@ -102,7 +102,7 @@
     ]
   ],
   "StructAttributeManager": {
-    "ClassName": "com.twinkle.framework.bootstarter.service.impl.StructAttributeManager",
+    "ClassName": "com.twinkle.framework.struct.manager.StructAttributeManager",
     "NameSpaceNames": [
       "TestDemo"
     ],
@@ -124,8 +124,8 @@
                 "Optional": "false"
               },
               {
-                "Name": "title",
-                "Type": "TestDemo:title",
+                "Name": "titles",
+                "Type": "TestDemo:title[]",
                 "Optional": "false"
               }
             ]

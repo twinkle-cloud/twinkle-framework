@@ -38,6 +38,13 @@ public abstract class AbstractSerializer {
         }
     }
 
+    /**
+     * Output struct attribute to JSON writer.
+     *
+     * @param _attr
+     * @param _writer
+     * @throws IOException
+     */
     protected abstract void writeStructAttribute(StructAttribute _attr, JSONWriter _writer) throws IOException;
 
     protected void writeTrailer(JSONWriter _writer) throws IOException {

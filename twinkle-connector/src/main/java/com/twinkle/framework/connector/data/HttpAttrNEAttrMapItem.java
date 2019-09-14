@@ -31,7 +31,7 @@ public class HttpAttrNEAttrMapItem {
     @NonNull
     private String neAttr;
     /**
-     * NE Attribute Index in the ContextSchema.
+     * NE Attribute Index in the PrimitiveAttributeSchema.
      */
     private int neAttrIndex;
     /**

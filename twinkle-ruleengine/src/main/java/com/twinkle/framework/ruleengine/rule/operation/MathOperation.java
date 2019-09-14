@@ -80,14 +80,14 @@ public class MathOperation extends AttributeOperation {
                 tempResultParam = TreeMarker.extractAttributeName(tempResultParam);
             }
 
-            int tempDestAttrIndex = this.contextSchema.getAttributeIndex(tempResultParam, _operation);
+            int tempDestAttrIndex = this.primitiveAttributeSchema.getAttributeIndex(tempResultParam, _operation);
             if (tempDestAttrIndex == -1) {
                 throw new ConfigurationException(ExceptionCode.LOGIC_CONF_ATTR_MISSED_IN_SCHEMA, tempResultParam + " in MathOperation " + _operation + " should be defined in Context Shema.");
             } else {
-                AttributeInfo tempAttrInfo = this.contextSchema.getAttribute(tempFirstParam);
+                AttributeInfo tempAttrInfo = this.primitiveAttributeSchema.getAttribute(tempFirstParam);
                 if (tempAttrInfo == null && TreeMarker.isTreeAttribute(tempFirstParam)) {
                     tempFirstParam = TreeMarker.extractAttributeName(tempFirstParam);
-                    tempAttrInfo = this.contextSchema.getAttribute(tempFirstParam);
+                    tempAttrInfo = this.primitiveAttributeSchema.getAttribute(tempFirstParam);
                     this.isSrc1Tree_ = true;
                 }
 
@@ -96,7 +96,7 @@ public class MathOperation extends AttributeOperation {
                     tempOp1AttrIndex = tempAttrInfo.getIndex();
                 } else {
                     tempOp1AttrIndex = -1;
-                    this.mathConstOp1 = this.contextSchema.newAttributeInstance(tempDestAttrIndex);
+                    this.mathConstOp1 = this.primitiveAttributeSchema.newAttributeInstance(tempDestAttrIndex);
 
                     try {
                         this.mathConstOp1.setValue(tempFirstParam);
@@ -105,10 +105,10 @@ public class MathOperation extends AttributeOperation {
                     }
                 }
 
-                tempAttrInfo = this.contextSchema.getAttribute(tempSecondParam);
+                tempAttrInfo = this.primitiveAttributeSchema.getAttribute(tempSecondParam);
                 if (tempAttrInfo == null && TreeMarker.isTreeAttribute(tempSecondParam)) {
                     tempSecondParam = TreeMarker.extractAttributeName(tempSecondParam);
-                    tempAttrInfo = this.contextSchema.getAttribute(tempSecondParam);
+                    tempAttrInfo = this.primitiveAttributeSchema.getAttribute(tempSecondParam);
                     this.isSrc2Tree_ = true;
                 }
 
@@ -117,7 +117,7 @@ public class MathOperation extends AttributeOperation {
                     tempOp2AttrIndex = tempAttrInfo.getIndex();
                 } else {
                     tempOp2AttrIndex = -1;
-                    this.mathConstOp2 = this.contextSchema.newAttributeInstance(tempDestAttrIndex);
+                    this.mathConstOp2 = this.primitiveAttributeSchema.newAttributeInstance(tempDestAttrIndex);
 
                     try {
                         this.mathConstOp2.setValue(tempSecondParam);
@@ -152,7 +152,7 @@ public class MathOperation extends AttributeOperation {
             if (this.mathOp1AttrIndex != -1) {
                 tempOp1Attr = (INumericAttribute)_context.getAttribute(this.mathOp1AttrIndex);
                 if (tempOp1Attr == null) {
-                    throw new RuleException(ExceptionCode.LOGIC_CONF_ATTR_NOT_INIT, "NC attribute " + this.contextSchema.getAttribute(this.mathOp1AttrIndex).getName() + " not set");
+                    throw new RuleException(ExceptionCode.LOGIC_CONF_ATTR_NOT_INIT, "NC attribute " + this.primitiveAttributeSchema.getAttribute(this.mathOp1AttrIndex).getName() + " not set");
                 }
             } else {
                 tempOp1Attr = (INumericAttribute)this.mathConstOp1;
@@ -162,7 +162,7 @@ public class MathOperation extends AttributeOperation {
             if (this.mathOp2AttrIndex != -1) {
                 tempOp2Attr = (INumericAttribute)_context.getAttribute(this.mathOp2AttrIndex);
                 if (tempOp2Attr == null) {
-                    throw new RuleException(ExceptionCode.LOGIC_CONF_ATTR_NOT_INIT, "NC attribute " + this.contextSchema.getAttribute(this.mathOp2AttrIndex).getName() + " not set");
+                    throw new RuleException(ExceptionCode.LOGIC_CONF_ATTR_NOT_INIT, "NC attribute " + this.primitiveAttributeSchema.getAttribute(this.mathOp2AttrIndex).getName() + " not set");
                 }
             } else {
                 tempOp2Attr = (INumericAttribute)this.mathConstOp2;
@@ -170,11 +170,11 @@ public class MathOperation extends AttributeOperation {
 
             if (tempDestAttr == null) {
                 if (!_context.getType().isMember(this.mathDestAttrIndex)) {
-                    AttributeInfo tempDestAttrInfo = this.contextSchema.getAttribute(this.mathDestAttrIndex);
+                    AttributeInfo tempDestAttrInfo = this.primitiveAttributeSchema.getAttribute(this.mathDestAttrIndex);
                     _context.getType().addAttribute(tempDestAttrInfo);
                 }
 
-                tempDestAttr = (INumericAttribute)this.contextSchema.newAttributeInstance(this.mathDestAttrIndex);
+                tempDestAttr = (INumericAttribute)this.primitiveAttributeSchema.newAttributeInstance(this.mathDestAttrIndex);
                 _context.setAttribute(tempDestAttr, this.mathDestAttrIndex);
             }
 
@@ -240,11 +240,11 @@ public class MathOperation extends AttributeOperation {
     }
 
     protected boolean checkNumeric() {
-        return (this.mathOp1AttrIndex == -1 || this.contextSchema.newAttributeInstance(this.mathOp1AttrIndex) instanceof INumericAttribute) && (this.mathOp2AttrIndex == -1 || this.contextSchema.newAttributeInstance(this.mathOp2AttrIndex) instanceof INumericAttribute) && (this.mathOp1AttrIndex != -1 || this.mathConstOp1 instanceof INumericAttribute) && (this.mathOp2AttrIndex != -1 || this.mathConstOp2 instanceof INumericAttribute) && this.contextSchema.newAttributeInstance(this.mathDestAttrIndex) instanceof INumericAttribute;
+        return (this.mathOp1AttrIndex == -1 || this.primitiveAttributeSchema.newAttributeInstance(this.mathOp1AttrIndex) instanceof INumericAttribute) && (this.mathOp2AttrIndex == -1 || this.primitiveAttributeSchema.newAttributeInstance(this.mathOp2AttrIndex) instanceof INumericAttribute) && (this.mathOp1AttrIndex != -1 || this.mathConstOp1 instanceof INumericAttribute) && (this.mathOp2AttrIndex != -1 || this.mathConstOp2 instanceof INumericAttribute) && this.primitiveAttributeSchema.newAttributeInstance(this.mathDestAttrIndex) instanceof INumericAttribute;
     }
 
     private boolean checkScalar() {
-        return (this.mathOp1AttrIndex == -1 || this.contextSchema.newAttributeInstance(this.mathOp1AttrIndex) instanceof IScalarAttribute) && (this.mathOp2AttrIndex == -1 || this.contextSchema.newAttributeInstance(this.mathOp2AttrIndex) instanceof IScalarAttribute) && (this.mathOp1AttrIndex != -1 || this.mathConstOp1 instanceof INumericAttribute) && (this.mathOp2AttrIndex != -1 || this.mathConstOp2 instanceof INumericAttribute) && this.contextSchema.newAttributeInstance(this.mathDestAttrIndex) instanceof IScalarAttribute;
+        return (this.mathOp1AttrIndex == -1 || this.primitiveAttributeSchema.newAttributeInstance(this.mathOp1AttrIndex) instanceof IScalarAttribute) && (this.mathOp2AttrIndex == -1 || this.primitiveAttributeSchema.newAttributeInstance(this.mathOp2AttrIndex) instanceof IScalarAttribute) && (this.mathOp1AttrIndex != -1 || this.mathConstOp1 instanceof INumericAttribute) && (this.mathOp2AttrIndex != -1 || this.mathConstOp2 instanceof INumericAttribute) && this.primitiveAttributeSchema.newAttributeInstance(this.mathDestAttrIndex) instanceof IScalarAttribute;
     }
     
     protected boolean calculate(INumericAttribute _destAttr, INumericAttribute _op1Attr, INumericAttribute _op2Attr) throws RuleException {
@@ -304,7 +304,7 @@ public class MathOperation extends AttributeOperation {
         }
 
         if (tempDstAttr == null) {
-            tempDstAttr = this.contextSchema.newAttributeInstance(this.mathDestAttrIndex);
+            tempDstAttr = this.primitiveAttributeSchema.newAttributeInstance(this.mathDestAttrIndex);
             _context.setAttribute(tempDstAttr, this.mathDestAttrIndex);
         }
 

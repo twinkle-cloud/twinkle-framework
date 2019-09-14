@@ -149,6 +149,9 @@ public abstract class AbstractStructAttributeFactory implements StructAttributeF
         this.beanStructAttributeSchema = _schema;
     }
 
+    protected BeanStructAttributeSchema getBeanStructAttributeSchema(){
+        return this.beanStructAttributeSchema;
+    }
     /**
      * Build the Struct Attribute
      *

@@ -31,10 +31,10 @@ public class IntrospectionSerializer extends AbstractSerializer {
         } else {
             StructAttributeType _tempSAType = _attr.getType();
             _writer.startObject();
-            Iterator<SAAttributeDescriptor> tempAttrDesriptorItr = _tempSAType.getAttributes();
+            Iterator<SAAttributeDescriptor> tempAttrDescriptorItr = _tempSAType.getAttributes();
 
-            while (tempAttrDesriptorItr.hasNext()) {
-                this.serializeAttribute(_attr, _attr.getAttributeRef((tempAttrDesriptorItr.next()).getName()), _writer);
+            while (tempAttrDescriptorItr.hasNext()) {
+                this.serializeAttribute(_attr, _attr.getAttributeRef((tempAttrDescriptorItr.next()).getName()), _writer);
             }
 
             _writer.endObject();

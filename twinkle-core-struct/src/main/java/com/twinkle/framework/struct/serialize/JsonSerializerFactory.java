@@ -41,13 +41,13 @@ public class JsonSerializerFactory implements SerializerFactory {
     }
 
     @Override
-    public <T> Serializer<T> getSerializer(String var1) {
+    public <T> Serializer<T> getSerializer(String _rootType) {
         this.init();
-        return (Serializer<T>) this.structAttributeSchemaFactory.generateSerializers(this.structAttributeSchema, Objects.requireNonNull(var1, "Root type could not be null"), this.beanFactory, this.structAttributeFactory.getArrayAllocator());
+        return (Serializer<T>) this.structAttributeSchemaFactory.generateSerializers(this.structAttributeSchema, Objects.requireNonNull(_rootType, "Root type could not be null"), this.beanFactory, this.structAttributeFactory.getArrayAllocator());
     }
 
     @Override
-    public <T> Serializer<T> getSerializer(Class<T> var1) {
+    public <T> Serializer<T> getSerializer(Class<T> _class) {
         throw new RuntimeException("Method JsonSerializerFactory.getSerializer() not implemented");
     }
 }

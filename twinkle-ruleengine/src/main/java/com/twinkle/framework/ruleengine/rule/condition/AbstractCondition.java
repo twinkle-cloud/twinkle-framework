@@ -1,6 +1,6 @@
 package com.twinkle.framework.ruleengine.rule.condition;
 
-import com.twinkle.framework.core.context.ContextSchema;
+import com.twinkle.framework.core.context.PrimitiveAttributeSchema;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -15,9 +15,9 @@ public abstract class AbstractCondition implements ICondition {
     /**
      * The Context Schema.
      */
-    protected ContextSchema contextSchema;
+    protected PrimitiveAttributeSchema primitiveAttributeSchema;
 
     public AbstractCondition() {
-        this.contextSchema = ContextSchema.getInstance();
+        this.primitiveAttributeSchema = PrimitiveAttributeSchema.getInstance();
     }
 }

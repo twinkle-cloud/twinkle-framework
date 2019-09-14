@@ -3,6 +3,7 @@ package com.twinkle.framework.struct.utils;
 import com.twinkle.framework.core.lang.util.*;
 import com.twinkle.framework.struct.type.*;
 import com.twinkle.framework.struct.util.StructAttributeArray;
+import org.apache.commons.lang3.StringUtils;
 import org.objectweb.asm.Type;
 
 import java.util.HashMap;
@@ -169,5 +170,28 @@ public class StructTypeUtil {
     public static Type mapStructAttributeType(Type _saType) {
         Type tempJavaType = SA_ARRAY_TO_JAVA.get(_saType);
         return tempJavaType != null ? tempJavaType : _saType;
+    }
+
+    /**
+     * Get the qualified name with the given class name.
+     *
+     * @param _className
+     * @return
+     */
+    public static String getQualifiedName(String _className){
+        if(StringUtils.isBlank(_className)) {
+            return "";
+        }
+        int tempNameIndex = _className.lastIndexOf(".");
+        if(tempNameIndex <= 0){
+            return _className;
+        }
+        int tempNamespaceIndex = _className.substring(0, tempNameIndex).lastIndexOf(".");
+        String tempClassName = _className;
+        if(tempNamespaceIndex > 0) {
+            tempClassName = _className.substring(tempNamespaceIndex + 1);
+            return tempClassName.replace(".", ":");
+        }
+        return tempClassName;
     }
 }

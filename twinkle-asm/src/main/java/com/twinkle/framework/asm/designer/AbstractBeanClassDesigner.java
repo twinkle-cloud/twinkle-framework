@@ -77,9 +77,9 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
         return new String[]{Bean.class.getName()};
     }
 
-    protected ClassVisitor addClassDeclaration(ClassVisitor _visitor, String _className, List<String> _interfaceList, BeanTypeDef _beanTypeDef) {
-        return this.addClassDeclaration(_visitor, _className, TypeUtil.OBJECT_TYPE.getInternalName(), _interfaceList, _beanTypeDef);
-    }
+//    protected ClassVisitor addClassDeclaration(ClassVisitor _visitor, String _className, List<String> _interfaceList, BeanTypeDef _beanTypeDef) {
+//        return this.addClassDeclaration(_visitor, _className, TypeUtil.OBJECT_TYPE.getInternalName(), _interfaceList, _beanTypeDef);
+//    }
 
     /**
      * Visit the header of the class.
@@ -110,7 +110,7 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
      *
      * @return
      */
-    private String getSuperName() {
+    protected String getSuperName() {
         String tempSuperName;
         if(this.beanTypeDef.getSuperTypeDef() == null) {
             tempSuperName = TypeUtil.OBJECT_TYPE.getInternalName();

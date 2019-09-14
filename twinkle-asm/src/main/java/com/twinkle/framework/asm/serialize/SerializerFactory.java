@@ -10,7 +10,7 @@ package com.twinkle.framework.asm.serialize;
  * @since JDK 1.8
  */
 public interface SerializerFactory {
-    <T> Serializer<T> getSerializer(String _factoryName);
+    <T> Serializer<T> getSerializer(String _rootType);
 
     <T> Serializer<T> getSerializer(Class<T> _class);
 }

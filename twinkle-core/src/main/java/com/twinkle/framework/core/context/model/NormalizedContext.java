@@ -1,6 +1,6 @@
 package com.twinkle.framework.core.context.model;
 
-import com.twinkle.framework.core.context.ContextSchema;
+import com.twinkle.framework.core.context.PrimitiveAttributeSchema;
 import com.twinkle.framework.core.lang.Attribute;
 import com.twinkle.framework.core.lang.AttributeInfo;
 import com.twinkle.framework.core.lang.ILogAttribute;
@@ -28,11 +28,11 @@ public class NormalizedContext implements Serializable, Cloneable {
     }
 
     public NormalizedContext(String _neTypeName) {
-        this(ContextSchema.getInstance().getNormalizedEventType(_neTypeName));
+        this(PrimitiveAttributeSchema.getInstance().getNormalizedEventType(_neTypeName));
     }
 
     public NormalizedContext(String _neTypeName, boolean _createFlag) {
-        this(ContextSchema.getInstance().getNormalizedEventType(_neTypeName), _createFlag);
+        this(PrimitiveAttributeSchema.getInstance().getNormalizedEventType(_neTypeName), _createFlag);
     }
 
     public NormalizedContext(NormalizedAttributeType _neType) {
@@ -46,7 +46,7 @@ public class NormalizedContext implements Serializable, Cloneable {
         this(_neType);
         if (_createFlag) {
             int[] tempIndexes = this.typeInfo.getAttributeIndexes();
-            ContextSchema tempSchema = ContextSchema.getInstance();
+            PrimitiveAttributeSchema tempSchema = PrimitiveAttributeSchema.getInstance();
 
             for (int i = 0; i < tempIndexes.length; ++i) {
                 this.setAttribute(tempSchema.newAttributeInstance(tempIndexes[i]), tempIndexes[i]);
@@ -77,9 +77,9 @@ public class NormalizedContext implements Serializable, Cloneable {
      * @return
      */
     public final Attribute getAttribute(String _attrName) {
-        AttributeInfo tempAttributeInfo = ContextSchema.getInstance().getAttribute(_attrName);
+        AttributeInfo tempAttributeInfo = PrimitiveAttributeSchema.getInstance().getAttribute(_attrName);
         if (tempAttributeInfo == null) {
-            throw new IllegalArgumentException(_attrName + " not in ContextSchema");
+            throw new IllegalArgumentException(_attrName + " not in PrimitiveAttributeSchema");
         } else {
             return this.getAttribute(tempAttributeInfo.getIndex());
         }
@@ -104,9 +104,9 @@ public class NormalizedContext implements Serializable, Cloneable {
      * @param _attrName
      */
     public final void setAttribute(Attribute _attr, String _attrName) {
-        AttributeInfo tempAttrInfo = ContextSchema.getInstance().getAttribute(_attrName);
+        AttributeInfo tempAttrInfo = PrimitiveAttributeSchema.getInstance().getAttribute(_attrName);
         if (tempAttrInfo == null) {
-            throw new IllegalArgumentException(_attrName + " not in ContextSchema");
+            throw new IllegalArgumentException(_attrName + " not in PrimitiveAttributeSchema");
         } else {
             this.setAttribute(_attr, tempAttrInfo.getIndex());
         }
@@ -357,11 +357,11 @@ public class NormalizedContext implements Serializable, Cloneable {
             tempTypeName = this.typeInfo.getName();
         }
 
-        ContextSchema tempContextSchema = ContextSchema.getInstance();
+        PrimitiveAttributeSchema tempPASchema = PrimitiveAttributeSchema.getInstance();
         NormalizedAttributeType tempTypeInfo = this.typeInfo;
-        this.typeInfo = tempContextSchema.getNormalizedEventType(tempTypeName);
+        this.typeInfo = tempPASchema.getNormalizedEventType(tempTypeName);
         if (this.typeInfo == null) {
-            throw new IOException("Cannot restore StructAttribute of type " + tempTypeName + " since that type isn't defined in the ContextSchema");
+            throw new IOException("Cannot restore StructAttribute of type " + tempTypeName + " since that type isn't defined in the PrimitiveAttributeSchema");
         } else {
             Attribute[] tempAttributeArray = this.attributes;
             if (tempAttributeArray != null && tempAttributeArray.length != 0) {
@@ -372,7 +372,7 @@ public class NormalizedContext implements Serializable, Cloneable {
                     for (int i = 0; i < tempAttributeArray.length; ++i) {
                         Attribute tempAttr = tempAttributeArray[i];
                         if (tempAttr != null) {
-                            tempAttrItemInfo = tempContextSchema.getAttribute(i);
+                            tempAttrItemInfo = tempPASchema.getAttribute(i);
                             this.typeInfo.addAttribute(tempAttrItemInfo);
                             this.setAttribute(tempAttr, i);
                         }
@@ -383,7 +383,7 @@ public class NormalizedContext implements Serializable, Cloneable {
 
                     int i;
                     for (i = 0; i < tempAttrIndexArray.length; ++i) {
-                        tempAttrItemInfo = tempContextSchema.getAttribute(tempAttrIndexArray[i]);
+                        tempAttrItemInfo = tempPASchema.getAttribute(tempAttrIndexArray[i]);
                         this.typeInfo.addAttribute(tempAttrItemInfo);
                     }
 

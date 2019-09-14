@@ -2,20 +2,32 @@ package com.twinkle.framework.bootstarter.controller;
 
 import com.twinkle.framework.api.constant.ResultCode;
 import com.twinkle.framework.api.exception.RuleException;
+import com.twinkle.framework.asm.serialize.Serializer;
+import com.twinkle.framework.asm.serialize.SerializerFactory;
 import com.twinkle.framework.bootstarter.data.HelloDemo;
 import com.twinkle.framework.bootstarter.data.HelloRequest;
+import com.twinkle.framework.bootstarter.data.HelloResponse;
+import com.twinkle.framework.bootstarter.data.Title;
 import com.twinkle.framework.bootstarter.service.HelloWorld2Service;
 import com.twinkle.framework.api.data.GeneralResult;
 import com.twinkle.framework.connector.server.AbstractServer;
 import com.twinkle.framework.core.context.model.NormalizedContext;
+import com.twinkle.framework.struct.serialize.JsonIntrospectionSerializerFactory;
+import com.twinkle.framework.struct.serialize.JsonSerializer;
+import com.twinkle.framework.struct.type.StructAttribute;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -38,8 +50,8 @@ public class HelloController extends AbstractServer {
 
     @ApiOperation(value = "获取用户Token")
     @RequestMapping(value = "authsec/token/{_userName}", method = RequestMethod.POST)
-    public GeneralResult<String> createAuthenticationToken(
-            @ApiParam(value = "请求体") @RequestBody HelloDemo _request,
+    public GeneralResult<Object> createAuthenticationToken(
+            @ApiParam(value = "请求体") @RequestBody HelloRequest _request,
             @ApiParam(value = "UserName") @PathVariable(value = "_userName") String _userName,
             @RequestParam(value = "_testParam", defaultValue = "DDDFF") String _testParam) throws Exception {
         log.info("The request body is AA");
@@ -48,14 +60,38 @@ public class HelloController extends AbstractServer {
 
         log.info("The _testParam = [{}].", _testParam);
         log.info("The request _testParam = [{}].", request.getParameter("_testParam"));
-        String tempContent = this.helloWorldService.sayHello(_request.getName());
+        String tempContent = this.helloWorldService.sayHello(_request.getUserName());
 
-        GeneralResult<String> tempResult = new GeneralResult<>();
+        GeneralResult<Object> tempResult = new GeneralResult<>();
+        HelloResponse tempResponse = new HelloResponse();
+        tempResponse.setName("CXJ110");
+        Title tempTitle = new Title();
+        tempTitle.setDept("GG");
+        tempTitle.setPosition("HH");
+        List<Title> tempTitles = new ArrayList<>();
+        tempTitles.add(tempTitle);
+        tempResponse.setTitles(tempTitles);
         tempResult.setCode(ResultCode.OPERATION_SUCCESS);
-        tempResult.setData(tempContent);
+        tempResult.setData(testAttribute());
         return tempResult;
     }
 
+    private StructAttribute testAttribute(){
+        ClassPathResource classPathResource = new ClassPathResource("TestAttr.json");
+
+        String tempConfiguration = null;
+        try {
+            tempConfiguration = IOUtils.toString(classPathResource.getInputStream(), "utf-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        SerializerFactory tempFactory = new JsonIntrospectionSerializerFactory();
+        Serializer tempSerializer = tempFactory.getSerializer("TestDemo:TestRequest");
+        JsonSerializer tempJsonSerializer = (JsonSerializer)tempSerializer;
+        StructAttribute tempAttribute  = tempJsonSerializer.read(tempConfiguration);
+        log.info("The attribute is: {}", tempAttribute);
+        return tempAttribute;
+    }
 
     @ApiOperation(value = "Test Get")
     @RequestMapping(value = "authsec/get/{_addressId}", method = RequestMethod.POST)

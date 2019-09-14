@@ -25,14 +25,12 @@ public class StructAttributeNameValidator {
             char tempFirstChar = _attrName.charAt(0);
             if (!Character.isLetter(_attrName.charAt(0)) && tempFirstChar != '_' && tempFirstChar != '$') {
                 throw new BadAttributeNameException("Name should start with a letter: [a - z, A - Z, _, $]: " + _attrName);
-            } else {
-                for(int i = 1; i < tempLength; ++i) {
-                    tempFirstChar = _attrName.charAt(i);
-                    if (!Character.isLetterOrDigit(tempFirstChar) && tempFirstChar != '_' && tempFirstChar != '$') {
-                        throw new BadAttributeNameException("Name cannot contain characters other than [a -z, A - Z, 0 - 9, _, $]: " + _attrName);
-                    }
+            }
+            for (int i = 1; i < tempLength; ++i) {
+                tempFirstChar = _attrName.charAt(i);
+                if (!Character.isLetterOrDigit(tempFirstChar) && tempFirstChar != '_' && tempFirstChar != '$') {
+                    throw new BadAttributeNameException("Name cannot contain characters other than [a -z, A - Z, 0 - 9, _, $]: " + _attrName);
                 }
-
             }
         } catch (IndexOutOfBoundsException e) {
             throw new BadAttributeNameException("IndexOutOfBoundsException while processing struct attribute name: " + _attrName, e);

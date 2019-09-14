@@ -103,7 +103,7 @@ public interface StructAttributeSchema {
     boolean hasStructAttributeType(String _namespace, String _structTypeName);
 
     /**
-     * Get the struct type with the given struct type name.
+     * Get the struct type with the given struct type name(QualifiedName).
      *
      * @param _structTypeName
      * @return

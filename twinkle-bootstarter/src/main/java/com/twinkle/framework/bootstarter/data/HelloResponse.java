@@ -7,15 +7,14 @@ import java.util.List;
 /**
  * Function: TODO ADD FUNCTION. <br/>
  * Reason:	 TODO ADD REASON. <br/>
- * Date:     2019-06-17 17:49<br/>
+ * Date:     9/14/19 4:19 PM<br/>
  *
  * @author chenxj
  * @see
  * @since JDK 1.8
  */
 @Data
-public class HelloRequest {
-    private String userName;
-    private String password;
+public class HelloResponse {
+    private String name;
     private List<Title> titles;
 }

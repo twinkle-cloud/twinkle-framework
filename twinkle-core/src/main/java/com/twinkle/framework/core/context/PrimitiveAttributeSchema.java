@@ -22,34 +22,34 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @since JDK 1.8
  */
 @Slf4j
-public class ContextSchema {
-    private int num_types_;
-    private static volatile ContextSchema instance;
+public class PrimitiveAttributeSchema {
+    protected boolean initialized = false;
+    private int numTypes;
+    protected int attributeCount = 0;
+    protected int normalizedAttributeTypeCount;
+    private static volatile PrimitiveAttributeSchema instance;
     protected Map<String, AttributeInfo> attributeNameMap;
     protected List<AttributeInfo> attributeList;
     protected List<Attribute> typeList;
-    protected boolean initialized = false;
     protected Map<String, NormalizedAttributeType> normalizedAttributeTypeMap = new HashMap<>();
-    protected int attributeCount = 0;
     protected NormalizedAttributeType defaultNormalizedAttributeType;
-    protected int normalizedAttrubiteTypeCount;
     private ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
     private Lock readLock;
     private Lock writeLock;
     public static final String DEFAULT_STRUCT_ATTRIBUTE_TYPE = "%DefaultNormalizedEventType";
 
-    private ContextSchema() {
+    private PrimitiveAttributeSchema() {
         this.readLock = this.readWriteLock.readLock();
         this.writeLock = this.readWriteLock.writeLock();
         this.attributeNameMap = new HashMap<>();
         this.attributeList = new ArrayList<>();
         this.typeList = new ArrayList<>();
-        this.num_types_ = 1;
+        this.numTypes = 1;
     }
 
     public void configure(JSONArray _attrColumns) throws IllegalArgumentException {
         if (this.defaultNormalizedAttributeType == null) {
-            this.defaultNormalizedAttributeType = new NormalizedAttributeType(DEFAULT_STRUCT_ATTRIBUTE_TYPE, this.normalizedAttrubiteTypeCount++, _attrColumns.size());
+            this.defaultNormalizedAttributeType = new NormalizedAttributeType(DEFAULT_STRUCT_ATTRIBUTE_TYPE, this.normalizedAttributeTypeCount++, _attrColumns.size());
             this.normalizedAttributeTypeMap.put(DEFAULT_STRUCT_ATTRIBUTE_TYPE, this.defaultNormalizedAttributeType);
         }
 
@@ -67,7 +67,7 @@ public class ContextSchema {
         }
     }
 
-    public void updateContextSchema(String[][] _attrColumns) throws IllegalArgumentException {
+    public void updatePrimitiveAttributeSchema(String[][] _attrColumns) throws IllegalArgumentException {
         List<String> attrNameList = new ArrayList();
         List<String> attrTypeList = new ArrayList();
         List<String> attrDescriptorList = new ArrayList();
@@ -83,7 +83,7 @@ public class ContextSchema {
         try {
             for (int i = 0; i < _attrColumns.length; i++) {
                 if (_attrColumns[i][0] == null && _attrColumns[i][1] == null) {
-                    throw new IllegalArgumentException("Null/Empty Values in ContextSchema are not allowed, ignore it.");
+                    throw new IllegalArgumentException("Null/Empty Values in PrimitiveAttributeSchema are not allowed, ignore it.");
                 }
 
                 if (!this.attributeNameMap.containsKey(_attrColumns[i][0])) {
@@ -110,10 +110,23 @@ public class ContextSchema {
         return tempInitFlag;
     }
 
+    /**
+     * Add attribute into the schema.
+     *
+     * @param _attrName
+     * @param _attrType
+     */
     public void addAttribute(String _attrName, String _attrType) {
         this.addAttribute(_attrName, _attrType, null);
     }
 
+    /**
+     * Add attribute into the schema with attribute descriptor.
+     *
+     * @param _attrName
+     * @param _attrType
+     * @param _descriptor
+     */
     public void addAttribute(String _attrName, String _attrType, String _descriptor) {
         this.writeLock.lock();
         try {
@@ -129,7 +142,7 @@ public class ContextSchema {
                 if (tempPrimitiveType == -1) {
                 }
             } catch (ClassNotFoundException ex) {
-                log.warn("ContextSchema-Attribute Class not found for [{}]", new Object[]{_attrName, _attrType});
+                log.warn("PrimitiveAttributeSchema-Attribute Class not found for [{}]", new Object[]{_attrName, _attrType});
                 return;
             }
 
@@ -143,7 +156,7 @@ public class ContextSchema {
                 log.debug("Attribute[{}] already exists in the context schema.", _attrName);
                 this.initialized = true;
             } else {
-                log.info("ContextSchema-Going to add new attr.", new Object[]{_attrName, tempAttrInfo.getClassName(), _attrType});
+                log.info("PrimitiveAttributeSchema-Going to add new attr.", new Object[]{_attrName, tempAttrInfo.getClassName(), _attrType});
                 tempAttrInfo = new AttributeInfo(tempTypeId, tempPrimitiveType, _attrName, tempAttrInfo.getIndex(), _attrType, _descriptor);
                 this.attributeNameMap.put(_attrName.toLowerCase(), tempAttrInfo);
                 this.attributeList.set(tempAttrInfo.getIndex(), tempAttrInfo);
@@ -165,14 +178,14 @@ public class ContextSchema {
             Attribute tempAttr;
             try {
                 tempAttr = (Attribute) Class.forName(_typeClass).newInstance();
-                tempAttr.setType(this.num_types_);
+                tempAttr.setType(this.numTypes);
             } catch (Throwable ex) {
-                log.warn("ContextSchemaMsg- Add Type[] failed.", _typeClass);
+                log.warn("PrimitiveAttributeSchemaMsg- Add Type[] failed.", _typeClass);
                 return -1;
             }
             this.typeList.add(tempAttr);
-            this.num_types_++;
-            return this.num_types_ - 1;
+            this.numTypes++;
+            return this.numTypes - 1;
         } finally {
             this.writeLock.unlock();
         }
@@ -273,20 +286,20 @@ public class ContextSchema {
                 private int numAttrs;
 
                 {
-                    this.it = ContextSchema.this.attributeNameMap.values().iterator();
-                    this.numAttrs = ContextSchema.this.attributeList.size();
+                    this.it = PrimitiveAttributeSchema.this.attributeNameMap.values().iterator();
+                    this.numAttrs = PrimitiveAttributeSchema.this.attributeList.size();
                 }
                 @Override
                 public boolean hasMoreElements() {
-                    ContextSchema.this.readLock.lock();
+                    PrimitiveAttributeSchema.this.readLock.lock();
                     boolean tempHasMoreFlag;
                     try {
-                        if (this.numAttrs != ContextSchema.this.attributeList.size()) {
+                        if (this.numAttrs != PrimitiveAttributeSchema.this.attributeList.size()) {
                             throw new ConcurrentModificationException();
                         }
                         tempHasMoreFlag = this.it.hasNext();
                     } finally {
-                        ContextSchema.this.readLock.unlock();
+                        PrimitiveAttributeSchema.this.readLock.unlock();
                     }
 
                     return tempHasMoreFlag;
@@ -294,15 +307,15 @@ public class ContextSchema {
 
                 @Override
                 public Object nextElement() {
-                    ContextSchema.this.readLock.lock();
+                    PrimitiveAttributeSchema.this.readLock.lock();
                     Object tempNextObj;
                     try {
-                        if (this.numAttrs != ContextSchema.this.attributeList.size()) {
+                        if (this.numAttrs != PrimitiveAttributeSchema.this.attributeList.size()) {
                             throw new ConcurrentModificationException();
                         }
                         tempNextObj = this.it.next();
                     } finally {
-                        ContextSchema.this.readLock.unlock();
+                        PrimitiveAttributeSchema.this.readLock.unlock();
                     }
                     return tempNextObj;
                 }
@@ -349,7 +362,7 @@ public class ContextSchema {
         try {
             AttributeInfo tempAttrInfo = this.getAttribute(_index);
             if (tempAttrInfo == null) {
-                log.warn("ContextSchemaMsg- Did not get [{}]'s attribute info.", _index);
+                log.warn("PrimitiveAttributeSchemaMsg- Did not get [{}]'s attribute info.", _index);
                 return null;
             }
 
@@ -366,7 +379,7 @@ public class ContextSchema {
         try {
             AttributeInfo tempAttrInfo = this.getAttribute(_typeName);
             if (tempAttrInfo == null) {
-                log.error("ContextSchemaMsg-Did not get [{}]'s attribute.", _typeName);
+                log.error("PrimitiveAttributeSchemaMsg-Did not get [{}]'s attribute.", _typeName);
                 return null;
             }
             tempAttr = tempAttrInfo.newAttributeInstance();
@@ -412,9 +425,9 @@ public class ContextSchema {
         return tempAttrIndexes;
     }
 
-    public static ContextSchema getInstance() {
+    public static PrimitiveAttributeSchema getInstance() {
         if (instance == null) {
-            instance = new ContextSchema();
+            instance = new PrimitiveAttributeSchema();
         }
 
         return instance;
@@ -459,7 +472,7 @@ public class ContextSchema {
 
             NormalizedAttributeType tempType = (NormalizedAttributeType) this.normalizedAttributeTypeMap.get(_neTypeName);
             if (tempType == null) {
-                tempType = new NormalizedAttributeType(_neTypeName, this.normalizedAttrubiteTypeCount++, this.attributeNameMap.size());
+                tempType = new NormalizedAttributeType(_neTypeName, this.normalizedAttributeTypeCount++, this.attributeNameMap.size());
                 this.normalizedAttributeTypeMap.put(_neTypeName, tempType);
                 tempNEType = tempType;
                 return tempNEType;

@@ -332,6 +332,7 @@ public interface StructAttribute extends Cloneable {
      * @throws AttributeNotFoundException
      * @throws AttributeTypeMismatchException
      * @throws AttributeNotSetException
+     * @throws ClassCastException
      */
     void setArray(AttributeRef _attrRef, Array _value) throws AttributeNotFoundException, AttributeTypeMismatchException, AttributeNotSetException, ClassCastException;
 }

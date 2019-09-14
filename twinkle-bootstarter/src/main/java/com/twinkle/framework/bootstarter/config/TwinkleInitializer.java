@@ -2,18 +2,26 @@ package com.twinkle.framework.bootstarter.config;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
+import com.twinkle.framework.asm.serialize.Serializer;
+import com.twinkle.framework.asm.serialize.SerializerFactory;
 import com.twinkle.framework.struct.manager.StructAttributeManager;
 import com.twinkle.framework.configure.component.ComponentFactory;
 import com.twinkle.framework.configure.component.IComponentFactory;
 import com.twinkle.framework.connector.ConnectorManager;
-import com.twinkle.framework.core.context.ContextSchema;
+import com.twinkle.framework.core.context.PrimitiveAttributeSchema;
 import com.twinkle.framework.ruleengine.RuleChainManager;
 import com.twinkle.framework.struct.context.StructAttributeSchema;
 import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
 import com.twinkle.framework.struct.factory.StructAttributeFactoryCenter;
 import com.twinkle.framework.struct.factory.StructAttributeFactoryCenterImpl;
+import com.twinkle.framework.struct.serialize.FastJSONStructAttributeSerializer;
+import com.twinkle.framework.struct.serialize.JsonIntrospectionSerializerFactory;
+import com.twinkle.framework.struct.serialize.JsonSerializer;
+import com.twinkle.framework.struct.serialize.JsonSerializerFactory;
+import com.twinkle.framework.struct.type.StructAttribute;
 import com.twinkle.framework.struct.type.StructAttributeType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -69,9 +77,9 @@ public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor {
         }
         JSONObject tempObj = JSONObject.parseObject(tempConfiguration);
 
-        //Initialize the attributes in ContextSchema.
+        //Initialize the attributes in PrimitiveAttributeSchema.
         JSONArray tempAttrArray = tempObj.getJSONArray(KEY_ATTRIBUTE_SET);
-        ContextSchema tempSchema = ContextSchema.getInstance();
+        PrimitiveAttributeSchema tempSchema = PrimitiveAttributeSchema.getInstance();
         tempSchema.configure(tempAttrArray);
 
         IComponentFactory componentFactory = new ComponentFactory(registry);
@@ -81,22 +89,8 @@ public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor {
         if (tempStructAttributeManager == null) {
             throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_CONNECTOR, "Did not find valid connector obj in the logic configuration.");
         }
-        StructAttributeSchema tempStructSchema = StructAttributeSchemaManager.getStructAttributeSchema();
-        StructAttributeFactoryCenter tempCenter = new StructAttributeFactoryCenterImpl(
-                tempStructSchema, this.getClass().getClassLoader()
-        );
-        StructAttributeSchemaManager.registerStructAttributeImpl(tempCenter);
-
-        StructAttributeType tempType = tempStructSchema.getStructAttributeType("TestDemo", "TestRequest");
-//        try {
-//            StructAttributeBeanTypeDef tempTypeDef = new StructAttributeBeanTypeDefImpl(tempType, this.getClass().getClassLoader());
-//
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        tempCenter.getStructAttributeFactory().newStructAttribute(tempType);
-        tempCenter.getStructAttributeFactory().loadGeneralBeanClass(tempType);
-
+        //Add FastJSON HTTP message serializer support.
+        tempStructAttributeManager.addFastJsonSerializerSupport();
 
         //Initialize the connectors' Manager.
         ConnectorManager tempConnectorManager = componentFactory.loadComponent(tempObj.getJSONObject(KEY_CONNECTOR_MANAGER));

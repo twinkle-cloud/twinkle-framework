@@ -7,14 +7,17 @@ import com.twinkle.framework.asm.serialize.SerializerFactory;
 import com.twinkle.framework.struct.asm.builder.StructAttributeImplBuilder;
 import com.twinkle.framework.struct.asm.classloader.StructAttributeClassLoader;
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
+import com.twinkle.framework.struct.error.NamespaceNotFoundException;
 import com.twinkle.framework.struct.error.StructAttributeException;
 import com.twinkle.framework.struct.error.StructAttributeInstantiationException;
+import com.twinkle.framework.struct.error.StructAttributeTypeNotFoundException;
 import com.twinkle.framework.struct.resolver.StructAttributeTypeResolver;
 import com.twinkle.framework.struct.serialize.SerializerFactoryRegistry;
 import com.twinkle.framework.struct.type.ArrayType;
 import com.twinkle.framework.struct.type.StructAttribute;
 import com.twinkle.framework.struct.type.StructAttributeType;
 import com.twinkle.framework.struct.type.StructType;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -31,6 +34,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @see
  * @since JDK 1.8
  */
+@Slf4j
 public class StructAttributeFactoryImpl extends AbstractStructAttributeFactory implements BeanFactory {
     private final Lock readLock;
     private final Lock writeLock;
@@ -144,21 +148,21 @@ public class StructAttributeFactoryImpl extends AbstractStructAttributeFactory i
 
     @Override
     public Class<?> loadGeneralBeanClass(StructAttributeType _saType) throws StructAttributeException {
-        String tempName = this.getGeneralClassLoader().getStructAttributeGeneralClassName(_saType.getQualifiedName());
         try {
             Iterator<SAAttributeDescriptor> tempAttrItr = _saType.getAttributes();
-            while(tempAttrItr.hasNext()) {
+            while (tempAttrItr.hasNext()) {
                 SAAttributeDescriptor tempDescriptor = tempAttrItr.next();
-                if(tempDescriptor.getType() instanceof StructAttributeType) {
-                    loadGeneralBeanClass(((StructAttributeType)tempDescriptor.getType()).getQualifiedName());
+                if (tempDescriptor.getType() instanceof StructAttributeType) {
+                    loadGeneralBeanClass(((StructAttributeType) tempDescriptor.getType()).getQualifiedName());
                 } else if (tempDescriptor.getType() instanceof ArrayType) {
-                    ArrayType tempArrayType = (ArrayType)tempDescriptor.getType();
+                    ArrayType tempArrayType = (ArrayType) tempDescriptor.getType();
                     StructType tempItemType = tempArrayType.getElementType();
-                    if(tempItemType instanceof StructAttributeType) {
+                    if (tempItemType instanceof StructAttributeType) {
                         loadGeneralBeanClass(((StructAttributeType) tempItemType).getQualifiedName());
                     }
                 }
             }
+            String tempName = this.getGeneralClassLoader().getStructAttributeGeneralClassName(_saType.getQualifiedName());
             return this.getGeneralClassLoader().loadClass(tempName);
         } catch (ClassNotFoundException e) {
             throw new StructAttributeInstantiationException(e);
@@ -167,12 +171,15 @@ public class StructAttributeFactoryImpl extends AbstractStructAttributeFactory i
 
     @Override
     public Class<?> loadGeneralBeanClass(String _typeName) throws StructAttributeException {
-        String tempName = this.getGeneralClassLoader().getStructAttributeGeneralClassName(_typeName);
         try {
-            return this.getGeneralClassLoader().loadClass(tempName);
-        } catch (ClassNotFoundException e) {
+            StructAttributeType tempAttributeType = this.getBeanStructAttributeSchema().getStructAttributeType(_typeName);
+            return this.loadGeneralBeanClass(tempAttributeType);
+        } catch (StructAttributeInstantiationException e) {
             throw new StructAttributeInstantiationException(e);
+        } catch (NamespaceNotFoundException | StructAttributeTypeNotFoundException e) {
+            log.info("Did not find the type [{}] in StructAttributeSchema.", _typeName);
         }
+        throw new StructAttributeException("Load Struct Attribute type failed.");
     }
 
     /**

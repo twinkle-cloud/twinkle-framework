@@ -1,0 +1,14 @@
+{
+  "name": "陈学进",
+  "age": 33,
+  "titles": [
+    {
+      "dept": "AA",
+      "position": "BB"
+    },
+    {
+      "dept": "CC",
+      "position": "DD"
+    }
+  ]
+}

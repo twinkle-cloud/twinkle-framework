@@ -120,7 +120,6 @@ public class DefaultStructAttributeType implements BeanStructAttributeType, Clon
         } finally {
             this.writeLock.unlock();
         }
-
     }
 
     /**
@@ -135,7 +134,6 @@ public class DefaultStructAttributeType implements BeanStructAttributeType, Clon
         } finally {
             this.writeLock.unlock();
         }
-
     }
 
     /**
@@ -162,13 +160,11 @@ public class DefaultStructAttributeType implements BeanStructAttributeType, Clon
         } finally {
             this.writeLock.unlock();
         }
-
     }
 
     @Override
     public Object clone() {
         this.readLock.lock();
-
         DefaultStructAttributeType tempCloneType;
         try {
             DefaultStructAttributeType tempType;
@@ -184,7 +180,6 @@ public class DefaultStructAttributeType implements BeanStructAttributeType, Clon
         } finally {
             this.readLock.unlock();
         }
-
         return tempCloneType;
     }
 

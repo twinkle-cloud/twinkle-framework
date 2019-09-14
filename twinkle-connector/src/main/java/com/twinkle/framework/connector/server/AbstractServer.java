@@ -3,7 +3,7 @@ package com.twinkle.framework.connector.server;
 import com.twinkle.framework.api.exception.RuleException;
 import com.twinkle.framework.api.component.rule.IRuleChain;
 import com.twinkle.framework.api.component.rule.IRuleChainManager;
-import com.twinkle.framework.core.context.ContextSchema;
+import com.twinkle.framework.core.context.PrimitiveAttributeSchema;
 import com.twinkle.framework.core.context.model.NormalizedContext;
 import com.twinkle.framework.core.lang.Attribute;
 import lombok.extern.slf4j.Slf4j;
@@ -61,12 +61,12 @@ public abstract class AbstractServer {
      */
     protected void decodeParameter(NormalizedContext _context, int _neIndex, Object _value){
         if(_neIndex < 0) {
-            log.warn("The NE [{}] does not exists in ContextSchema.", _neIndex);
+            log.warn("The NE [{}] does not exists in PrimitiveAttributeSchema.", _neIndex);
             return;
         }
         Attribute tempAttr = _context.getAttribute(_neIndex);
         if(tempAttr == null) {
-            tempAttr = ContextSchema.getInstance().newAttributeInstance(_neIndex);
+            tempAttr = PrimitiveAttributeSchema.getInstance().newAttributeInstance(_neIndex);
         }
         tempAttr.setValue(_value);
         _context.setAttribute(tempAttr, _neIndex);
@@ -83,7 +83,7 @@ public abstract class AbstractServer {
      */
     protected <T> T encodeReturnData(NormalizedContext _context, int _neIndex) {
         if(_neIndex < 0) {
-            log.warn("The NE [{}] does not exists in ContextSchema.", _neIndex);
+            log.warn("The NE [{}] does not exists in PrimitiveAttributeSchema.", _neIndex);
             return null;
         }
         Attribute tempAttr = _context.getAttribute(_neIndex);

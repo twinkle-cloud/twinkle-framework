@@ -198,7 +198,7 @@ public class AttributeCondition extends AbstractCondition {
             tempOp1Token = tempOp1Token.trim();
             tempOperationToken = tempOperationToken.trim();
 
-            this.attrIndex1 = this.contextSchema.getAttributeIndex(tempOp1Token, _conditionLine);
+            this.attrIndex1 = this.primitiveAttributeSchema.getAttributeIndex(tempOp1Token, _conditionLine);
             //Get the Operation Type by operation name.
             if (tempOperationToken.equals(S_O_EQUALS)) {
                 this.operation = OP_EQUALS;
@@ -249,13 +249,13 @@ public class AttributeCondition extends AbstractCondition {
                 this.operation = OP_NOT_CONTAINS_ALL;
             }
 
-            int tempOp1PrimitiveType = this.contextSchema.getAttribute(tempOp1Token).getPrimitiveType();
+            int tempOp1PrimitiveType = this.primitiveAttributeSchema.getAttribute(tempOp1Token).getPrimitiveType();
             if (this.operation >= OP_STARTS & this.operation <= OP_NOT_CONTAINS & tempOp1PrimitiveType != Attribute.STRING_TYPE) {
                 String tempExpMsg = _conditionLine + " - Cannot support operation (" + tempOperationToken;
                 tempExpMsg = tempExpMsg + ") on numeric attribute";
                 throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_EXPRESSION, tempExpMsg);
             } else {
-                AttributeInfo tempOp2Attr = this.contextSchema.getAttribute(tempOp2Token);
+                AttributeInfo tempOp2Attr = this.primitiveAttributeSchema.getAttribute(tempOp2Token);
                 String tempStr;
                 if (tempOp2Attr != null && !tempConstantFlag) {
                     if (tempOp2Attr.getPrimitiveType() != tempOp1PrimitiveType) {
@@ -306,9 +306,9 @@ public class AttributeCondition extends AbstractCondition {
 
                         tempMinValue = tempMinValue.trim();
                         tempMaxValue = tempMaxValue.trim();
-                        this.value[i] = this.contextSchema.newAttributeInstance(this.attrIndex1);
+                        this.value[i] = this.primitiveAttributeSchema.newAttributeInstance(this.attrIndex1);
                         this.value[i].setValue(tempMinValue);
-                        this.value[i + 1] = this.contextSchema.newAttributeInstance(this.attrIndex1);
+                        this.value[i + 1] = this.primitiveAttributeSchema.newAttributeInstance(this.attrIndex1);
                         this.value[i + 1].setValue(tempMaxValue);
                     }
                 } else if (tempOp2Token.equals("null") && (this.operation == OP_IS_NULL || this.operation == OP_IS_NOT_NULL)) {
@@ -320,7 +320,7 @@ public class AttributeCondition extends AbstractCondition {
                     }
 
                     this.value = new Attribute[1];
-                    this.value[0] = this.contextSchema.newAttributeInstance(this.attrIndex1);
+                    this.value[0] = this.primitiveAttributeSchema.newAttributeInstance(this.attrIndex1);
                     if (this.value[0] instanceof INumericAttribute) {
                         tempOp2Token = tempOp2Token.trim();
                     }
@@ -329,9 +329,9 @@ public class AttributeCondition extends AbstractCondition {
                 }
 
                 if ((this.operation == OP_CONTAINS_ALL || this.operation == OP_NOT_CONTAINS_ALL)
-                        && (!(this.contextSchema.getAttribute(this.attrIndex1).newAttributeInstance() instanceof ListAttribute)
+                        && (!(this.primitiveAttributeSchema.getAttribute(this.attrIndex1).newAttributeInstance() instanceof ListAttribute)
                         || this.attrIndex2 == -1
-                        || !(this.contextSchema.getAttribute(this.attrIndex2).newAttributeInstance() instanceof ListAttribute))) {
+                        || !(this.primitiveAttributeSchema.getAttribute(this.attrIndex2).newAttributeInstance() instanceof ListAttribute))) {
                     throw new ConfigurationException(ExceptionCode.LOGIC_CONF_ATTR_NOT_ALLOWED, "Operation (" + tempOperationToken + ") is supported for ListAttribute arguments only");
                 }
             }

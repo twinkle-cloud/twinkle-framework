@@ -44,7 +44,7 @@ public class MapOperation extends AttributeOperation {
 
         Attribute tempDstAttr = _context.getAttribute(this.dstIndex);
         if (tempDstAttr == null) {
-            tempDstAttr = this.contextSchema.newAttributeInstance(this.dstIndex);
+            tempDstAttr = this.primitiveAttributeSchema.newAttributeInstance(this.dstIndex);
             _context.setAttribute(tempDstAttr, this.dstIndex);
         }
 
@@ -91,14 +91,14 @@ public class MapOperation extends AttributeOperation {
                     tempToken = TreeMarker.extractAttributeName(tempToken);
                 }
 
-                this.srcIndex = this.contextSchema.getAttributeIndex(tempToken, _operation);
+                this.srcIndex = this.primitiveAttributeSchema.getAttributeIndex(tempToken, _operation);
                 tempToken = tempST.nextToken();
                 if (TreeMarker.isTreeAttribute(tempToken)) {
                     this.isDstTree = true;
                     tempToken = TreeMarker.extractAttributeName(tempToken);
                 }
 
-                this.dstIndex = this.contextSchema.getAttributeIndex(tempToken, _operation);
+                this.dstIndex = this.primitiveAttributeSchema.getAttributeIndex(tempToken, _operation);
                 if (tempST.hasMoreTokens()) {
                     this.defaultValue = tempST.nextToken();
                 } else {

@@ -2,7 +2,7 @@ package com.twinkle.framework.ruleengine.rule;
 
 import com.twinkle.framework.api.component.AbstractComponent;
 import com.twinkle.framework.api.component.rule.IRule;
-import com.twinkle.framework.core.context.ContextSchema;
+import com.twinkle.framework.core.context.PrimitiveAttributeSchema;
 import lombok.Data;
 
 /**
@@ -23,10 +23,10 @@ public abstract class AbstractRule extends AbstractComponent implements IRule {
     /**
      * The Context Schema.
      */
-    protected transient ContextSchema contextSchema;
+    protected transient PrimitiveAttributeSchema primitiveAttributeSchema;
 
     public AbstractRule() {
-        contextSchema = ContextSchema.getInstance();
+        primitiveAttributeSchema = PrimitiveAttributeSchema.getInstance();
     }
 
     @Override

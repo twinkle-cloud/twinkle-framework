@@ -81,7 +81,7 @@ public class StructAttributeSchemaFactory {
                 JsonSchemaSerializer tempSerializer = new JsonSchemaSerializer(_qualifiedName, tempSerializerInstance, tempDeserializerInstance);
                 return tempSerializer;
             } else {
-                throw new RuntimeException("Type: '" + _qualifiedName + "' not found in NMESchema");
+                throw new RuntimeException("Type: '" + _qualifiedName + "' not found in Struct Attribute Schema");
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

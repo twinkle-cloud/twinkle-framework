@@ -1,6 +1,6 @@
 package com.twinkle.framework.core.context.model;
 
-import com.twinkle.framework.core.context.ContextSchema;
+import com.twinkle.framework.core.context.PrimitiveAttributeSchema;
 import com.twinkle.framework.core.lang.AttributeInfo;
 import lombok.extern.slf4j.Slf4j;
 
@@ -141,7 +141,7 @@ public class NormalizedAttributeType implements Serializable {
     }
 
     public void addAttribute(String _attrName) {
-        this.addAttribute(ContextSchema.getInstance().getAttribute(_attrName));
+        this.addAttribute(PrimitiveAttributeSchema.getInstance().getAttribute(_attrName));
     }
 
     /**
