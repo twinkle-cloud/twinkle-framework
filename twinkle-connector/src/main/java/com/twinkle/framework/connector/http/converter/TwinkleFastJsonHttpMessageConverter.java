@@ -16,7 +16,7 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.IdentityHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -29,11 +29,12 @@ import java.util.Map;
  * @since JDK 1.8
  */
 public class TwinkleFastJsonHttpMessageConverter extends FastJsonHttpMessageConverter {
+    private final static String STRUCT_ATTRIBUTE_PACKAGE = "";
     private Map<String, JsonSerializer> serializerMap;
 
     public TwinkleFastJsonHttpMessageConverter() {
         super();
-        this.serializerMap = new IdentityHashMap<>(16);
+        this.serializerMap = new HashMap<>(32);
     }
 
     @Override
@@ -41,24 +42,26 @@ public class TwinkleFastJsonHttpMessageConverter extends FastJsonHttpMessageConv
                        Class<?> contextClass,
                        HttpInputMessage inputMessage
     ) throws IOException, HttpMessageNotReadableException {
-        if (contextClass.isAssignableFrom(StructAttribute.class)) {
-            String tempClass = contextClass.getName();
-            String tempRootType = StructTypeUtil.getQualifiedName(tempClass);
+        Type tempType = this.getType(type, contextClass);
+        if(tempType instanceof Class) {
+        if (StructAttribute.class.isAssignableFrom((Class)tempType)) {
+            String tempClassName = type.getTypeName();
+            String tempRootType = StructTypeUtil.getQualifiedName(tempClassName);
             if (StringUtils.isBlank(tempRootType)) {
                 return super.read(type, contextClass, inputMessage);
             }
+
             JsonSerializer tempJsonSerializer = this.serializerMap.get(tempRootType);
             if (tempJsonSerializer == null) {
-                return super.read(type, contextClass, inputMessage);
+                SerializerFactory tempFactory = new JsonIntrospectionSerializerFactory();
+                Serializer tempSerializer = tempFactory.getSerializer(tempRootType);
+                tempJsonSerializer = (JsonSerializer) tempSerializer;
+                this.serializerMap.put(tempRootType, tempJsonSerializer);
             }
-
-            SerializerFactory tempFactory = new JsonIntrospectionSerializerFactory();
-            Serializer tempSerializer = tempFactory.getSerializer(tempRootType);
-            tempJsonSerializer = (JsonSerializer) tempSerializer;
 
             StructAttribute tempAttribute = tempJsonSerializer.read(inputMessage.getBody());
             return tempAttribute;
-        }
+        }}
         return super.read(type, contextClass, inputMessage);
     }
 

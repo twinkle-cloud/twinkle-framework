@@ -2,6 +2,7 @@ package com.twinkle.framework.asm.utils;
 
 import com.twinkle.framework.asm.Bean;
 import com.twinkle.framework.asm.annotation.Key;
+import com.twinkle.framework.asm.builder.AnnotationDefBuilder;
 import com.twinkle.framework.asm.constants.AsmConstant;
 import com.twinkle.framework.asm.define.*;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +10,9 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Utilities for handling ASM's Type.
@@ -628,5 +631,23 @@ public class TypeUtil {
      */
     public static String getInternalNameByClassName(String _className) {
         return _className.replace(".", "/");
+    }
+
+    /**
+     * For flag attribute, need set swagger ignore
+     * @param _fieldName
+     * @return
+     */
+    public static List<AnnotationDef> getHideFieldAnnotationList(String _fieldName) {
+        List<AnnotationDef> tempDefList = new ArrayList<>(1);
+
+        try {
+            AnnotationDef tempDefine = AnnotationDefBuilder.getAnnotationDef("@io.swagger.annotations.ApiModelProperty(hidden = true)", AnnotationDef.class.getClassLoader());
+            tempDefList.add(tempDefine);
+        } catch (ClassNotFoundException e) {
+            log.warn("Failed to build the Flag field [{}]'s annotation list.", _fieldName);
+        }
+
+        return tempDefList;
     }
 }

@@ -4,7 +4,6 @@ import com.twinkle.framework.api.constant.ResultCode;
 import com.twinkle.framework.api.exception.RuleException;
 import com.twinkle.framework.asm.serialize.Serializer;
 import com.twinkle.framework.asm.serialize.SerializerFactory;
-import com.twinkle.framework.bootstarter.data.HelloDemo;
 import com.twinkle.framework.bootstarter.data.HelloRequest;
 import com.twinkle.framework.bootstarter.data.HelloResponse;
 import com.twinkle.framework.bootstarter.data.Title;

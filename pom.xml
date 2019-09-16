@@ -45,7 +45,7 @@
         <hibernatevalidator.version>6.0.13.Final</hibernatevalidator.version>
         <validationapi.version>2.0.1.Final</validationapi.version>
         <springfox.version>2.9.2</springfox.version>
-        <fastjson.version>1.2.58</fastjson.version>
+        <fastjson.version>1.2.60</fastjson.version>
     </properties>
 
     <dependencyManagement>

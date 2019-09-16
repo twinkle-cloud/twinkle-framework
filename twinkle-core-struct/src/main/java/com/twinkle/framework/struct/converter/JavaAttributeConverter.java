@@ -1,8 +1,10 @@
-package com.twinkle.framework.core.converter;
+package com.twinkle.framework.struct.converter;
 
 import com.twinkle.framework.core.lang.Attribute;
 import com.twinkle.framework.core.lang.AttributeInfo;
 import com.twinkle.framework.core.lang.JavaAttributeInfo;
+import com.twinkle.framework.struct.utils.StructAttributeUtil;
+import com.twinkle.framework.struct.type.StructAttribute;
 import org.objectweb.asm.Type;
 
 /**
@@ -15,6 +17,12 @@ import org.objectweb.asm.Type;
  * @since JDK 1.8
  */
 public class JavaAttributeConverter {
+    /**
+     * Convert AttributeInfo to Java Attribute Info.
+     *
+     * @param _attrInfo
+     * @return
+     */
     public static JavaAttributeInfo convertToJavaAttribute(AttributeInfo _attrInfo) {
         JavaAttributeInfo tempInfo = new JavaAttributeInfo();
         tempInfo.setPrimitiveType(_attrInfo.getPrimitiveType());
@@ -52,9 +60,16 @@ public class JavaAttributeConverter {
                 break;
             case Attribute.OBJECT_TYPE:
                 tempInfo.setName(_attrInfo.getName());
-                tempInfo.setClassName(_attrInfo.getClassName());
-                tempInfo.setAttributeClass(_attrInfo.getAttributeClass());
-                tempInfo.setDescription(_attrInfo.getDescription());
+                if(_attrInfo.getName().indexOf(":") > 0) {
+                    StructAttribute tempAttr = StructAttributeUtil.newStructAttribute(_attrInfo.getName());
+                    tempInfo.setClassName(tempAttr.getClass().getName());
+                    tempInfo.setAttributeClass(tempAttr.getClass());
+                    tempInfo.setDescription(Type.getDescriptor(tempAttr.getClass()));
+                } else {
+                    tempInfo.setClassName(_attrInfo.getClassName());
+                    tempInfo.setAttributeClass(_attrInfo.getAttributeClass());
+                    tempInfo.setDescription(_attrInfo.getDescription());
+                }
                 break;
             default:
                 throw new RuntimeException("Encountered unsupported attribute type [{" + _attrInfo + "}].");

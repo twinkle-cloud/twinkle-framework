@@ -63,6 +63,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
             log.error("The attribute[{}] does not exist in PrimitiveAttributeSchema.", _obj.toString());
             throw new ConfigurationException(ExceptionCode.LOGIC_CONF_ATTR_MISSED_IN_SCHEMA, "The attribute[" + _obj.getString("NeAttr") + "] does not exist in PrimitiveAttributeSchema.");
         }
+
         String tempValueStr = _obj.getString("DefaultValue");
         if (StringUtils.isBlank(tempValueStr)) {
             tempValueStr = null;
@@ -118,7 +119,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
 
 
     @Data
-    protected class AttributeNode {
+    protected static class AttributeNode {
         private String attrName;
         private HttpAttrNEAttrMapItem attrNEAttrMapItem;
         private Set<String> annotations;

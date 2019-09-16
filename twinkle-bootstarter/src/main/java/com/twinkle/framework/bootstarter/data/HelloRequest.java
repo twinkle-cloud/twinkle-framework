@@ -1,5 +1,6 @@
 package com.twinkle.framework.bootstarter.data;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @Data
 public class HelloRequest {
     private String userName;
+    @ApiModelProperty(hidden = true)
     private String password;
     private List<Title> titles;
 }

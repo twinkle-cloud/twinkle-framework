@@ -62,10 +62,18 @@ public class AttributeDefImpl implements AttributeDef, Cloneable {
     }
 
     public AttributeDefImpl(String _name, TypeDef _type, boolean _isReadOnly, boolean _isRequired, Object _value) {
-        this(_name, _type, Opcodes.ACC_PRIVATE, _isReadOnly, _isRequired, _value);
+        this(_name, _type, Collections.EMPTY_LIST, Opcodes.ACC_PRIVATE, _isReadOnly, _isRequired, _value);
+    }
+
+    public AttributeDefImpl(String _name, TypeDef _type, List<AnnotationDef> _annotationDefList, boolean _isReadOnly, boolean _isRequired, Object _value) {
+        this(_name, _type, _annotationDefList, Opcodes.ACC_PRIVATE, _isReadOnly, _isRequired, _value);
     }
 
     public AttributeDefImpl(String _name, TypeDef _type, int _access, boolean _isReadOnly, boolean _isRequired, Object _value) {
+        this(_name, _type, Collections.EMPTY_LIST, _access, _isReadOnly, _isRequired, _value);
+    }
+
+    public AttributeDefImpl(String _name, TypeDef _type, List<AnnotationDef> _annotationDefList, int _access, boolean _isReadOnly, boolean _isRequired, Object _value) {
         this.setName(_name);
         if (_type == null) {
             throw new NullPointerException("type");
@@ -76,13 +84,13 @@ public class AttributeDefImpl implements AttributeDef, Cloneable {
             this.required = _isRequired;
             this.defaultValue = this.initDefaultValue(_name, _type.getType(), _value);
             this.descriptor = null;
-            this.annotations = Collections.emptyList();
+            this.annotations = _annotationDefList;
             this.extraInfo = new JSONObject();
         }
     }
 
     public AttributeDefImpl(String _name, TypeDef _typeDef) {
-        this(_name, _typeDef, Opcodes.ACC_PRIVATE, false, false, null);
+        this(_name, _typeDef, Collections.EMPTY_LIST, Opcodes.ACC_PRIVATE, false, false, null);
     }
 
     public AttributeDefImpl(AttributeDescriptor _attrDesp, TypeDef _typeDef, List<AnnotationDef> _annotationDefList) {
@@ -97,11 +105,7 @@ public class AttributeDefImpl implements AttributeDef, Cloneable {
             this.defaultValue = this.initDefaultValue(_attrDesp.getName(), _typeDef.getType(), _attrDesp.getDefaultValue());
             this.descriptor = _attrDesp;
             this.extraInfo = _attrDesp.getExtraInfo();
-            if (_annotationDefList == null) {
-                throw new NullPointerException("annotations");
-            } else {
-                this.annotations = _annotationDefList;
-            }
+            this.annotations = _annotationDefList;
         }
     }
 

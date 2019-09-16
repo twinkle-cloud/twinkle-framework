@@ -75,7 +75,7 @@ public class RestHttpServerConnector extends AbstractComponent implements Server
         RestControllerClassLoader tempLoader = new RestControllerClassLoader(currentLoader, tempDescriptor);
         try {
             Class<?> tempClass = tempLoader.loadClass(tempDescriptor.getClassName());
-            log.debug("The class is : []" + tempClass);
+            log.debug("The class is : [{}].", tempClass);
 
             BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder
                     .genericBeanDefinition(tempClass);

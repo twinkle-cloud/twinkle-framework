@@ -2,6 +2,7 @@ package com.twinkle.framework.asm.designer;
 
 import com.twinkle.framework.asm.Bean;
 import com.twinkle.framework.asm.RecyclableBean;
+import com.twinkle.framework.asm.define.AnnotationDef;
 import com.twinkle.framework.asm.define.AttributeDef;
 import com.twinkle.framework.asm.define.BeanTypeDef;
 import com.twinkle.framework.asm.utils.TypeUtil;
@@ -47,6 +48,8 @@ public class RecyclableBeanInterfaceDesigner extends BeanInterfaceDesigner {
      */
     protected MethodVisitor addFlagGetterDeclaration(ClassVisitor _visitor, AttributeDef _attrDef) {
         MethodVisitor tempVisitor = _visitor.visitMethod(Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT, TypeUtil.getFlagGetterName(_attrDef), TypeUtil.getFlagGetterDescriptor(), null, null);
+        List<AnnotationDef> tempAnnotationDef = TypeUtil.getHideFieldAnnotationList(_attrDef.getFieldName());
+        tempAnnotationDef.forEach(item -> this.addMethodAnnotation(tempVisitor, item, AnnotationDef.Kind.METHOD));
         tempVisitor.visitEnd();
         return tempVisitor;
     }

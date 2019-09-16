@@ -48,6 +48,8 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
 
     protected FieldVisitor addFlagField(ClassVisitor _visitor, AttributeDef _attrDef) {
         FieldVisitor tempVisitor = _visitor.visitField(Opcodes.ACC_PRIVATE, ClassDesignerUtil.getFlagFieldName(_attrDef.getName()), TypeUtil.getFieldDescriptor(Type.BOOLEAN_TYPE), null, null);
+        List<AnnotationDef> tempList = TypeUtil.getHideFieldAnnotationList(_attrDef.getFieldName());
+        tempList.stream().forEach(item -> this.addFieldAnnotation(tempVisitor, item));
         tempVisitor.visitEnd();
         return tempVisitor;
     }

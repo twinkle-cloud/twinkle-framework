@@ -9,14 +9,12 @@ import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.core.context.PrimitiveAttributeSchema;
 import com.twinkle.framework.core.lang.ObjectAttribute;
-import com.twinkle.framework.struct.asm.define.StructAttributeBeanTypeDef;
-import com.twinkle.framework.struct.asm.define.StructAttributeBeanTypeDefImpl;
 import com.twinkle.framework.struct.context.StructAttributeSchema;
 import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
 import com.twinkle.framework.struct.error.*;
-import com.twinkle.framework.struct.factory.StructAttributeFactory;
 import com.twinkle.framework.struct.factory.StructAttributeFactoryCenter;
 import com.twinkle.framework.struct.factory.StructAttributeFactoryCenterImpl;
+import com.twinkle.framework.struct.utils.StructAttributeUtil;
 import com.twinkle.framework.struct.serialize.FastJSONStructAttributeSerializer;
 import com.twinkle.framework.struct.type.StructAttribute;
 import com.twinkle.framework.struct.type.StructAttributeType;
@@ -278,17 +276,8 @@ public class StructAttributeManager extends AbstractComponent implements Configu
      * Add FastJSON Serializer support for Struct Attributes.
      */
     public final void addFastJsonSerializerSupport() {
-        StructAttributeSchema tempStructSchema = StructAttributeSchemaManager.getStructAttributeSchema();
-        StructAttributeFactory tempFactory = StructAttributeSchemaManager.getStructAttributeFactory();
         for (String tempItem : this.structAttributeList) {
-            StructAttributeType tempType = tempStructSchema.getStructAttributeType(tempItem);
-            try {
-                StructAttributeBeanTypeDef tempTypeDef = new StructAttributeBeanTypeDefImpl(tempType, this.getClass().getClassLoader());
-
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-            StructAttribute tempAttr = tempFactory.newStructAttribute(tempType);
+            StructAttribute tempAttr = StructAttributeUtil.newStructAttribute(tempItem);
             SerializeConfig.getGlobalInstance().put(tempAttr.getClass(), new FastJSONStructAttributeSerializer());
         }
     }

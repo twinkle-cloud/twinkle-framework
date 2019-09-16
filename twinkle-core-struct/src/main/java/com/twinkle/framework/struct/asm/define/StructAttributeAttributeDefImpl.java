@@ -23,6 +23,10 @@ public class StructAttributeAttributeDefImpl extends AttributeDefImpl {
         super(_name, _type, _isReadOnly, _isRequired, _value);
     }
 
+    public StructAttributeAttributeDefImpl(String _name, TypeDef _type, List<AnnotationDef> _annotationDefList, boolean _isReadOnly, boolean _isRequired, Object _value) {
+        super(_name, _type, _annotationDefList, _isReadOnly, _isRequired, _value);
+    }
+
     public StructAttributeAttributeDefImpl(AttributeDescriptor _attrDesp, TypeDef _type, List<AnnotationDef> _annotationDefList) {
         super(_attrDesp, _type, _annotationDefList);
     }

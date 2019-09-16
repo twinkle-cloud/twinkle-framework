@@ -221,14 +221,13 @@ public class PrimitiveAttributeSchema {
 
         if (tempObj == null) {
             return null;
-        } else {
-            AttributeInfo tempAttrInfo = (AttributeInfo) tempObj;
-            if (_createFlag && !this.defaultNormalizedAttributeType.isMember(tempAttrInfo.getIndex())) {
-                this.defaultNormalizedAttributeType.addAttribute(tempAttrInfo);
-            }
-
-            return tempAttrInfo;
         }
+        AttributeInfo tempAttrInfo = (AttributeInfo) tempObj;
+        if (_createFlag && !this.defaultNormalizedAttributeType.isMember(tempAttrInfo.getIndex())) {
+            this.defaultNormalizedAttributeType.addAttribute(tempAttrInfo);
+        }
+
+        return tempAttrInfo;
     }
 
     /**
@@ -289,6 +288,7 @@ public class PrimitiveAttributeSchema {
                     this.it = PrimitiveAttributeSchema.this.attributeNameMap.values().iterator();
                     this.numAttrs = PrimitiveAttributeSchema.this.attributeList.size();
                 }
+
                 @Override
                 public boolean hasMoreElements() {
                     PrimitiveAttributeSchema.this.readLock.lock();
@@ -365,7 +365,6 @@ public class PrimitiveAttributeSchema {
                 log.warn("PrimitiveAttributeSchemaMsg- Did not get [{}]'s attribute info.", _index);
                 return null;
             }
-
             tempAttr = tempAttrInfo.newAttributeInstance();
         } catch (Exception ex) {
             log.debug("Cannot get new instance for index: {}, exception: {}", _index, ex);

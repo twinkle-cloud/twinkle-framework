@@ -2,27 +2,14 @@ package com.twinkle.framework.bootstarter.config;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
-import com.twinkle.framework.asm.serialize.Serializer;
-import com.twinkle.framework.asm.serialize.SerializerFactory;
-import com.twinkle.framework.struct.manager.StructAttributeManager;
 import com.twinkle.framework.configure.component.ComponentFactory;
 import com.twinkle.framework.configure.component.IComponentFactory;
 import com.twinkle.framework.connector.ConnectorManager;
 import com.twinkle.framework.core.context.PrimitiveAttributeSchema;
 import com.twinkle.framework.ruleengine.RuleChainManager;
-import com.twinkle.framework.struct.context.StructAttributeSchema;
-import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
-import com.twinkle.framework.struct.factory.StructAttributeFactoryCenter;
-import com.twinkle.framework.struct.factory.StructAttributeFactoryCenterImpl;
-import com.twinkle.framework.struct.serialize.FastJSONStructAttributeSerializer;
-import com.twinkle.framework.struct.serialize.JsonIntrospectionSerializerFactory;
-import com.twinkle.framework.struct.serialize.JsonSerializer;
-import com.twinkle.framework.struct.serialize.JsonSerializerFactory;
-import com.twinkle.framework.struct.type.StructAttribute;
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.manager.StructAttributeManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.BeansException;
@@ -67,7 +54,6 @@ public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor {
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
         ClassPathResource classPathResource = new ClassPathResource("Test.json");
-        //String tempConfiguration = this.env.getProperty("");
 
         String tempConfiguration = null;
         try {
@@ -75,6 +61,7 @@ public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         JSONObject tempObj = JSONObject.parseObject(tempConfiguration);
 
         //Initialize the attributes in PrimitiveAttributeSchema.

@@ -5,6 +5,7 @@ import com.twinkle.framework.asm.RecyclableBean;
 import com.twinkle.framework.asm.SimpleReflectiveBean;
 import com.twinkle.framework.asm.converter.AttributeConverter;
 import com.twinkle.framework.asm.converter.LooseAttributeConverter;
+import com.twinkle.framework.asm.define.AnnotationDef;
 import com.twinkle.framework.asm.define.AttributeDef;
 import com.twinkle.framework.asm.define.BeanTypeDef;
 import com.twinkle.framework.asm.designer.ClassInitializer;
@@ -342,6 +343,9 @@ public final class StructAttributeClassDesigner extends SimpleReflectiveBeanClas
         tempVisitor.visitFieldInsn(Opcodes.GETSTATIC, _className, getStructAttributeTypeFieldName(), TypeUtil.getFieldDescriptor(STRUCTATTRIBUTETYPE_TYPE));
         tempVisitor.visitInsn(Opcodes.ARETURN);
         tempVisitor.visitMaxs(AUTO_STACK_SIZE, AUTO_LOCAL_VARS);
+        List<AnnotationDef> tempAnnotationDef = TypeUtil.getHideFieldAnnotationList("type");
+        tempAnnotationDef.forEach(item -> this.addMethodAnnotation(tempVisitor, item, AnnotationDef.Kind.METHOD));
+
         tempVisitor.visitEnd();
         return tempVisitor;
     }

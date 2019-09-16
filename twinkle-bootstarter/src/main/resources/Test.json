@@ -17,7 +17,7 @@
             "Name": "testHelloworld",
             "ClassName": "com.twinkle.framework.connector.http.server.endpoint.RestHttpEndpoint",
             "Description": "Demo for hello world.",
-            "RequestType": 1,
+            "RequestType": 3,
             "URL": "authsec/helloworld/{_addressId}",
             "RuleChain": "TestRuleChain",
             "Request": {
@@ -27,10 +27,6 @@
                   "HttpAttr": "_param1",
                   "NeAttr": "userName",
                   "DefaultValue": "cxj110"
-                },
-                {
-                  "HttpAttr": "_param2",
-                  "NeAttr": "password"
                 }
               ],
               "PathVariables": [
@@ -38,7 +34,11 @@
                   "HttpAttr": "_addressId",
                   "NeAttr": "addressId"
                 }
-              ]
+              ],
+              "RequestBody": {
+                "HttpAttr": "_request",
+                "NeAttr": "TestDemo:TestRequest"
+              }
             },
             "Response": {
               "ClassName": "com.twinkle.framework.connector.http.endpoint.RestHttpResponse",

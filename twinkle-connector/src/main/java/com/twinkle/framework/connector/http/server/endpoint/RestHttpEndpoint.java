@@ -14,6 +14,7 @@ import com.twinkle.framework.connector.http.server.handler.DefaultHttpMethodInst
  * @since JDK 1.8
  */
 public class RestHttpEndpoint extends AbstractHttpEndpoint {
+    @Override
     protected MethodInstructionHandler getInstructionHandler(){
         return new DefaultHttpMethodInstructionHandler();
     }

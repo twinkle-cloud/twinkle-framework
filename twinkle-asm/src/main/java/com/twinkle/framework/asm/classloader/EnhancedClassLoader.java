@@ -21,7 +21,20 @@ import java.util.Map;
 @Slf4j
 public abstract class EnhancedClassLoader extends ClassLoader{
     private final boolean initialize;
-    private static final Map<String, ClassDescriptor> _primitives = new HashMap();
+    private static final Map<String, ClassDescriptor> PRIMITIVES = new HashMap<>(9);
+    private static final Map<String, Class<?>> BUILT_CLASS_MAP = new HashMap<>(128);
+
+    static {
+        PRIMITIVES.put("void", new ClassDescriptor(Void.TYPE, "V"));
+        PRIMITIVES.put("boolean", new ClassDescriptor(Boolean.TYPE, "Z"));
+        PRIMITIVES.put("char", new ClassDescriptor(Character.TYPE, "C"));
+        PRIMITIVES.put("byte", new ClassDescriptor(Byte.TYPE, "B"));
+        PRIMITIVES.put("short", new ClassDescriptor(Short.TYPE, "S"));
+        PRIMITIVES.put("int", new ClassDescriptor(Integer.TYPE, "I"));
+        PRIMITIVES.put("float", new ClassDescriptor(Float.TYPE, "F"));
+        PRIMITIVES.put("long", new ClassDescriptor(Long.TYPE, "J"));
+        PRIMITIVES.put("double", new ClassDescriptor(Double.TYPE, "D"));
+    }
 
     protected EnhancedClassLoader(boolean _isInitialize, ClassLoader _parentLoader) {
         super(_parentLoader);
@@ -39,12 +52,15 @@ public abstract class EnhancedClassLoader extends ClassLoader{
 
     @Override
     protected Class<?> findClass(String _className) throws ClassNotFoundException {
-        if (_primitives.containsKey(_className)) {
+        if (PRIMITIVES.containsKey(_className)) {
             return getPrimitiveClass(_className, null);
-        } else {
-            String internalClassName = getInternalNormalizedClassName(_className);
-            return internalClassName.startsWith("[") ? Class.forName(internalClassName, this.initialize, this) : super.findClass(_className);
         }
+        Class<?> tempClass = BUILT_CLASS_MAP.get(_className);
+        if (tempClass != null) {
+            return tempClass;
+        }
+        String internalClassName = getInternalNormalizedClassName(_className);
+        return internalClassName.startsWith("[") ? Class.forName(internalClassName, this.initialize, this) : super.findClass(_className);
     }
 
     @Override
@@ -71,7 +87,11 @@ public abstract class EnhancedClassLoader extends ClassLoader{
 
         try {
             JavaMemoryFileSystem.instance().addBytecode(_className, tempClassByteArray);
-            if(log.isTraceEnabled()) {
+            //Please be careful to enable the dump class file.
+            //Because the AppClassLoader will scan the path and
+            //load the class file again, then will cause some components
+            //reflection method failed.
+            if(log.isInfoEnabled()) {
                 URL classPath = Thread.currentThread().getContextClassLoader().getResource("");
                 File tempFile = new File(classPath.getPath());
                 JavaMemoryFileSystem.dump(_className, tempClassByteArray, ".class", tempFile);
@@ -79,7 +99,10 @@ public abstract class EnhancedClassLoader extends ClassLoader{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return this.defineClass(_className, tempClassByteArray, 0, tempClassByteArray.length);
+        Class<?> tempDefinedClass = this.defineClass(_className, tempClassByteArray, 0, tempClassByteArray.length);
+        //Add the new class into the built class map.
+        BUILT_CLASS_MAP.put(_className, tempDefinedClass);
+        return tempDefinedClass;
     }
 
     protected byte[] designClass(ClassDesigner _designer) {
@@ -110,7 +133,7 @@ public abstract class EnhancedClassLoader extends ClassLoader{
                 tempBuilder.append("[");
             } while(_className.endsWith("[]"));
 
-            EnhancedClassLoader.ClassDescriptor tempDescriptor = (EnhancedClassLoader.ClassDescriptor)_primitives.get(_className);
+            ClassDescriptor tempDescriptor = PRIMITIVES.get(_className);
             if (tempDescriptor != null) {
                 tempBuilder.append(tempDescriptor.code);
             } else {
@@ -138,7 +161,7 @@ public abstract class EnhancedClassLoader extends ClassLoader{
                 tempBuffer.append("[");
             }
 
-            EnhancedClassLoader.ClassDescriptor tempDesinger = _primitives.get(_className);
+            ClassDescriptor tempDesinger = PRIMITIVES.get(_className);
             if (tempDesinger != null) {
                 tempBuffer.append(tempDesinger.code);
             } else {
@@ -150,7 +173,7 @@ public abstract class EnhancedClassLoader extends ClassLoader{
     }
 
     public static String getNormalizedArrayElementClassName(String _className) {
-        EnhancedClassLoader.ClassDescriptor tempDescriptor = _primitives.get(_className);
+        ClassDescriptor tempDescriptor = PRIMITIVES.get(_className);
         return tempDescriptor != null ? tempDescriptor.code : getInternalNormalizedArrayElementClassName(_className);
     }
 
@@ -159,25 +182,13 @@ public abstract class EnhancedClassLoader extends ClassLoader{
     }
 
     private static Class getPrimitiveClass(String _className, ClassLoader _classLoader) throws ClassNotFoundException {
-        EnhancedClassLoader.ClassDescriptor tempDescriptor = _primitives.get(_className);
+        ClassDescriptor tempDescriptor = PRIMITIVES.get(_className);
         if (_classLoader != null) {
             String tempClassName = "[" + tempDescriptor.code;
             return _classLoader.loadClass(tempClassName).getComponentType();
         } else {
             return tempDescriptor.descriptorClass;
         }
-    }
-
-    static {
-        _primitives.put("void", new EnhancedClassLoader.ClassDescriptor(Void.TYPE, "V"));
-        _primitives.put("boolean", new EnhancedClassLoader.ClassDescriptor(Boolean.TYPE, "Z"));
-        _primitives.put("char", new EnhancedClassLoader.ClassDescriptor(Character.TYPE, "C"));
-        _primitives.put("byte", new EnhancedClassLoader.ClassDescriptor(Byte.TYPE, "B"));
-        _primitives.put("short", new EnhancedClassLoader.ClassDescriptor(Short.TYPE, "S"));
-        _primitives.put("int", new EnhancedClassLoader.ClassDescriptor(Integer.TYPE, "I"));
-        _primitives.put("float", new EnhancedClassLoader.ClassDescriptor(Float.TYPE, "F"));
-        _primitives.put("long", new EnhancedClassLoader.ClassDescriptor(Long.TYPE, "J"));
-        _primitives.put("double", new EnhancedClassLoader.ClassDescriptor(Double.TYPE, "D"));
     }
 
     private static class ClassDescriptor {

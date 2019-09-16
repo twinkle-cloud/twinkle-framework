@@ -6,7 +6,6 @@ import com.twinkle.framework.asm.converter.AttributeConverter;
 import com.twinkle.framework.asm.converter.LooseAttributeConverter;
 import com.twinkle.framework.asm.define.*;
 import com.twinkle.framework.asm.utils.TypeUtil;
-import com.twinkle.framework.asm.define.StaticAttributeValueDef;
 import lombok.Getter;
 import org.objectweb.asm.*;
 
@@ -53,7 +52,7 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
     }
 
     /**
-     * Initialize the attribute converter.
+     * Initialize the attribute com.twinkle.framework.struct.converter.
      * Use the @LooseAttributeConverter by default.
      *
      * @param _className
@@ -112,7 +111,7 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
      */
     protected String getSuperName() {
         String tempSuperName;
-        if(this.beanTypeDef.getSuperTypeDef() == null) {
+        if (this.beanTypeDef.getSuperTypeDef() == null) {
             tempSuperName = TypeUtil.OBJECT_TYPE.getInternalName();
         } else {
             //TypeUtil.OBJECT_TYPE.getInternalName()
@@ -143,11 +142,11 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
                 Type tempElementType = tempType.getElementType();
                 AnnotationVisitor tempAnnotationVisitor = _visitor.visitArray(item.getName());
 
-                for(int i = 0; i < Array.getLength(tempValue); i++) {
+                for (int i = 0; i < Array.getLength(tempValue); i++) {
                     Object tempItemValueObj = Array.get(tempValue, i);
                     if (tempItemValueObj instanceof AnnotationDef) {
                         AnnotationVisitor tempAnnotationVisitor2 = tempAnnotationVisitor.visitAnnotation(null, tempElementType.getDescriptor());
-                        this.addAnnotationElements(tempAnnotationVisitor2, (AnnotationDef)tempItemValueObj);
+                        this.addAnnotationElements(tempAnnotationVisitor2, (AnnotationDef) tempItemValueObj);
                         tempAnnotationVisitor2.visitEnd();
                     } else if (tempItemValueObj instanceof String[]) {
                         String[] typeValue = (String[]) tempItemValueObj;
@@ -159,7 +158,7 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
                 tempAnnotationVisitor.visitEnd();
             } else if (tempValue instanceof AnnotationDef) {
                 AnnotationVisitor tempAnnotationVisitor = _visitor.visitAnnotation(null, tempType.getDescriptor());
-                this.addAnnotationElements(tempAnnotationVisitor, (AnnotationDef)tempValue);
+                this.addAnnotationElements(tempAnnotationVisitor, (AnnotationDef) tempValue);
                 tempAnnotationVisitor.visitEnd();
             } else if (tempValue instanceof String[]) {
                 String[] typeValue = (String[]) tempValue;
@@ -179,14 +178,14 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
      * @return
      */
     protected AnnotationVisitor addFieldAnnotation(FieldVisitor _visitor, AnnotationDef _annotationDef) {
-        if (_annotationDef.getKind() != AnnotationDef.Kind.GETTER && _annotationDef.getKind() != AnnotationDef.Kind.SETTER) {
-            AnnotationVisitor tempVisitor = _visitor.visitAnnotation(_annotationDef.getType().getDescriptor(), true);
-            this.addAnnotationElements(tempVisitor, _annotationDef);
-            tempVisitor.visitEnd();
-            return tempVisitor;
-        } else {
-            return null;
-        }
+        // if (_annotationDef.getKind() != AnnotationDef.Kind.GETTER && _annotationDef.getKind() != AnnotationDef.Kind.SETTER) {
+        AnnotationVisitor tempVisitor = _visitor.visitAnnotation(_annotationDef.getType().getDescriptor(), true);
+        this.addAnnotationElements(tempVisitor, _annotationDef);
+        tempVisitor.visitEnd();
+        return tempVisitor;
+        //} else {
+        //   return null;
+        //}
     }
 
     /**
@@ -213,10 +212,10 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
      */
     protected AnnotationVisitor addMethodAnnotation(MethodVisitor _visitor, AnnotationDef _annotationDef, AnnotationDef.Kind _kind) {
 //        if (_annotationDef.getKind() == _kind) {
-            AnnotationVisitor tempVisitor = _visitor.visitAnnotation(_annotationDef.getType().getDescriptor(), true);
-            this.addAnnotationElements(tempVisitor, _annotationDef);
-            tempVisitor.visitEnd();
-            return tempVisitor;
+        AnnotationVisitor tempVisitor = _visitor.visitAnnotation(_annotationDef.getType().getDescriptor(), true);
+        this.addAnnotationElements(tempVisitor, _annotationDef);
+        tempVisitor.visitEnd();
+        return tempVisitor;
 //        } else {
 //            return null;
 //        }
@@ -312,7 +311,7 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
                     tempVisitor.visitTypeInsn(Opcodes.ANEWARRAY, tempElementType.getInternalName());
                 }
 
-                for(int i = 0; i < tempValueListSize; ++i) {
+                for (int i = 0; i < tempValueListSize; ++i) {
                     tempVisitor.visitInsn(Opcodes.DUP);
                     tempVisitor.visitLdcInsn(i);
                     Object tempItemValue = Array.get(tempDefaultValue, i);
@@ -364,7 +363,7 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
             Type tempAttrType = _attrDef.getType().getType();
             Class tempValueClass = tempValueObj.getClass();
             if (_attrDef.getType().isEnum()) {
-                EnumTypeDef tempEnumType = (EnumTypeDef)_attrDef.getType();
+                EnumTypeDef tempEnumType = (EnumTypeDef) _attrDef.getType();
                 List<String> tempEnumNameList = tempEnumType.getEnumNames();
                 if (!tempEnumNameList.contains(tempValueObj)) {
                     throw new IllegalArgumentException("Name specified by default [" + tempValueObj + "] does not belong to the enumeration " + tempEnumType.getName() + tempEnumNameList.toString());

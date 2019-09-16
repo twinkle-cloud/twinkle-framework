@@ -19,8 +19,10 @@ import java.util.Map;
  * @since JDK 1.8
  */
 public class StructTypeUtil {
+    public final static String STRUCT_ATTRIBUTE_IMPL_SUFFIX = "Impl";
     public static final Type STRUCT_ATTRIBUTE_TYPE = Type.getType(StructAttribute.class);
     private static Map<Type, Type> SA_ARRAY_TO_JAVA = new HashMap<>(9);
+
     static {
         SA_ARRAY_TO_JAVA.put(Type.getType(BooleanArray.class), Type.getType(boolean[].class));
         SA_ARRAY_TO_JAVA.put(Type.getType(CharArray.class), Type.getType(char[].class));
@@ -32,6 +34,7 @@ public class StructTypeUtil {
         SA_ARRAY_TO_JAVA.put(Type.getType(DoubleArray.class), Type.getType(double[].class));
         SA_ARRAY_TO_JAVA.put(Type.getType(StringArray.class), Type.getType(String[].class));
     }
+
     /**
      * Get the given struct type's class type.
      *
@@ -106,7 +109,7 @@ public class StructTypeUtil {
      */
     public static Class getMappedTypeClass(StructType _type) throws ClassNotFoundException {
         if (_type.isPrimitiveType()) {
-            switch(_type.getID()) {
+            switch (_type.getID()) {
                 case PrimitiveType.BYTE_ID:
                     return Byte.TYPE;
                 case PrimitiveType.SHORT_ID:
@@ -134,7 +137,7 @@ public class StructTypeUtil {
             }
 
             if (_type.isArrayType()) {
-                switch(((ArrayType)_type).getElementType().getID()) {
+                switch (((ArrayType) _type).getElementType().getID()) {
                     case PrimitiveType.BYTE_ID:
                         return byte[].class;
                     case PrimitiveType.SHORT_ID:
@@ -178,18 +181,21 @@ public class StructTypeUtil {
      * @param _className
      * @return
      */
-    public static String getQualifiedName(String _className){
-        if(StringUtils.isBlank(_className)) {
+    public static String getQualifiedName(String _className) {
+        if (StringUtils.isBlank(_className)) {
             return "";
         }
         int tempNameIndex = _className.lastIndexOf(".");
-        if(tempNameIndex <= 0){
+        if (tempNameIndex <= 0) {
             return _className;
         }
         int tempNamespaceIndex = _className.substring(0, tempNameIndex).lastIndexOf(".");
         String tempClassName = _className;
-        if(tempNamespaceIndex > 0) {
-            tempClassName = _className.substring(tempNamespaceIndex + 1);
+        if (_className.endsWith(STRUCT_ATTRIBUTE_IMPL_SUFFIX)) {
+            tempClassName = _className.substring(0, _className.indexOf(STRUCT_ATTRIBUTE_IMPL_SUFFIX));
+        }
+        if (tempNamespaceIndex > 0) {
+            tempClassName = tempClassName.substring(tempNamespaceIndex + 1);
             return tempClassName.replace(".", ":");
         }
         return tempClassName;

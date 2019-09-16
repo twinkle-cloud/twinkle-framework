@@ -123,15 +123,40 @@ public class StructAttributeGeneralBeanTypeDefImpl extends BeanRefTypeDefImpl im
                 tempAnnotationList = this.initAnnotations(tempAttributeDescriptor.getAnnotations(), _classLoader);
             } else {
                 tempAttributeDescriptor = null;
-                tempAnnotationList = Collections.emptyList();
+                tempAnnotationList = new ArrayList<>();
             }
 
             StructType tempStructType = tempSADescriptor.getType();
             TypeDef tempTypeDef = getAttributeTypeDef(tempStructType, _parentMap);
+            if (tempStructType.isArrayType()) {
+                Set<String> tempAnnotationSet = new HashSet<>(1);
+                StringBuilder tempBuilder = new StringBuilder("@io.swagger.annotations.ApiModelProperty(name=\"");
+                tempBuilder.append(tempSADescriptor.getName());
+                tempBuilder.append("\", dataType=\"[L");
+                if(tempTypeDef.isGeneric()) {
+                    Type[] tempGenericTypes = ((GenericTypeDef)tempTypeDef).getTypeParameters();
+                    if(tempGenericTypes != null) {
+//                        tempBuilder.append("<");
+                        for(int i = 0; i< tempGenericTypes.length; i++) {
+                            if(i>0) {
+                                tempBuilder.append(",");
+                            }
+                            tempBuilder.append(tempGenericTypes[i].getClassName());
+                        }
+                        tempBuilder.append(";");
+//                        tempBuilder.append(">");
+                    }
+                }
+                tempBuilder.append("\")");
+
+                tempAnnotationSet.add(tempBuilder.toString());
+                tempAnnotationList.addAll(this.initAnnotations(tempAnnotationSet, this.getClass().getClassLoader()));
+            }
+
             if (tempBeanTypeDescriptor != null) {
                 tempResultList.add(new StructAttributeAttributeDefImpl(tempAttributeDescriptor, tempTypeDef, tempAnnotationList));
             } else {
-                tempResultList.add(new StructAttributeAttributeDefImpl(tempSADescriptor.getName(), tempTypeDef, false, !tempSADescriptor.isOptional(), null));
+                tempResultList.add(new StructAttributeAttributeDefImpl(tempSADescriptor.getName(), tempTypeDef, tempAnnotationList, false, !tempSADescriptor.isOptional(), null));
             }
         }
 
