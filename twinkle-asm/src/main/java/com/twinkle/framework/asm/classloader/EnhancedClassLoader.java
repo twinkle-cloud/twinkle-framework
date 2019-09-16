@@ -91,7 +91,7 @@ public abstract class EnhancedClassLoader extends ClassLoader{
             //Because the AppClassLoader will scan the path and
             //load the class file again, then will cause some components
             //reflection method failed.
-            if(log.isInfoEnabled()) {
+            if(log.isTraceEnabled()) {
                 URL classPath = Thread.currentThread().getContextClassLoader().getResource("");
                 File tempFile = new File(classPath.getPath());
                 JavaMemoryFileSystem.dump(_className, tempClassByteArray, ".class", tempFile);
