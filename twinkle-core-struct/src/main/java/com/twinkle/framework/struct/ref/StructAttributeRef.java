@@ -259,7 +259,7 @@ public interface StructAttributeRef extends AttributeRef {
     void setStruct(StructAttribute _attr, StructAttribute _value) throws AttributeNotFoundException, AttributeTypeMismatchException, AttributeNotSetException;
 
     /**
-     * Get short value from the given attribute.
+     * Get Array value from the given attribute.
      *
      * @param _attr
      * @return

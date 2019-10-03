@@ -4,7 +4,7 @@ import com.twinkle.framework.struct.error.NamespaceAlreadyExistsException;
 import com.twinkle.framework.struct.error.NamespaceNotFoundException;
 import com.twinkle.framework.struct.error.StructAttributeTypeAlreadyExistsException;
 import com.twinkle.framework.struct.error.StructAttributeTypeNotFoundException;
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.StructType;
 import com.twinkle.framework.struct.type.StructTypeManager;
 
 import java.util.Iterator;
@@ -80,7 +80,7 @@ public interface StructAttributeSchema {
      * @return
      * @throws NamespaceNotFoundException
      */
-    Iterator<StructAttributeType> getStructAttributeTypes(String _namespace) throws NamespaceNotFoundException;
+    Iterator<StructType> getStructAttributeTypes(String _namespace) throws NamespaceNotFoundException;
 
     /**
      * Get some struct attribute with given namespace name and struct type name.
@@ -91,7 +91,7 @@ public interface StructAttributeSchema {
      * @throws NamespaceNotFoundException
      * @throws StructAttributeTypeNotFoundException
      */
-    StructAttributeType getStructAttributeType(String _namespace, String _structTypeName) throws NamespaceNotFoundException, StructAttributeTypeNotFoundException;
+    StructType getStructAttributeType(String _namespace, String _structTypeName) throws NamespaceNotFoundException, StructAttributeTypeNotFoundException;
 
     /**
      * Check the struct type existing or not under the given namespace?
@@ -110,7 +110,7 @@ public interface StructAttributeSchema {
      * @throws NamespaceNotFoundException
      * @throws StructAttributeTypeNotFoundException
      */
-    StructAttributeType getStructAttributeType(String _structTypeName) throws NamespaceNotFoundException, StructAttributeTypeNotFoundException;
+    StructType getStructAttributeType(String _structTypeName) throws NamespaceNotFoundException, StructAttributeTypeNotFoundException;
 
     /**
      * Check the struct type existing or not in this schema?
@@ -129,7 +129,7 @@ public interface StructAttributeSchema {
      * @return
      * @throws NamespaceNotFoundException
      */
-    StructAttributeType newStructAttributeType(String _namespace, String _structTypeName) throws NamespaceNotFoundException;
+    StructType newStructAttributeType(String _namespace, String _structTypeName) throws NamespaceNotFoundException;
 
     /**
      * Add some packed struct attribute type.
@@ -138,5 +138,5 @@ public interface StructAttributeSchema {
      * @throws NamespaceNotFoundException
      * @throws StructAttributeTypeAlreadyExistsException
      */
-    void addStructAttributeType(StructAttributeType _structType) throws NamespaceNotFoundException, StructAttributeTypeAlreadyExistsException;
+    void addStructAttributeType(StructType _structType) throws NamespaceNotFoundException, StructAttributeTypeAlreadyExistsException;
 }

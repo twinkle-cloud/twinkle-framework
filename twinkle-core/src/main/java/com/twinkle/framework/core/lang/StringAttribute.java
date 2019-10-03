@@ -1,7 +1,5 @@
 package com.twinkle.framework.core.lang;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -96,14 +94,14 @@ public class StringAttribute implements Attribute, Comparable {
     }
 
     @Override
-    public void aggregate(int _operation, Attribute _attr) {
+    public void aggregate(Operation _operation, Attribute _attr) {
         switch(_operation) {
-            case OPERATION_ADD:
+            case ADD:
                 if (_attr != null) {
                     this.value = this.value + _attr.toString();
                 }
                 break;
-            case OPERATION_SET:
+            case SET:
                 if (_attr == null) {
                     this.value = EMPTY_VALUE;
                 } else {
@@ -112,15 +110,6 @@ public class StringAttribute implements Attribute, Comparable {
         }
         if (this.value == null) {
             this.value = EMPTY_VALUE;
-        }
-    }
-
-    @Override
-    public int getOperationID(String _operationName) {
-        if (_operationName.equals(OPERATION_NAME_SET)) {
-            return OPERATION_SET;
-        } else {
-            return _operationName.equals(OPERATION_NAME_ADD) ? 1 : -1;
         }
     }
 
@@ -146,10 +135,5 @@ public class StringAttribute implements Attribute, Comparable {
     @Override
     public Object getObjectValue() {
         return this.value;
-    }
-
-    @Override
-    public JSONObject getJsonObjectValue() {
-        return JSON.parseObject(this.value);
     }
 }

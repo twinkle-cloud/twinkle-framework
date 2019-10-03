@@ -1,5 +1,8 @@
 package com.twinkle.framework.struct.type;
 
+import com.twinkle.framework.core.type.PrimitiveType;
+import com.twinkle.framework.core.type.StringType;
+import com.twinkle.framework.core.type.AttributeType;
 import com.twinkle.framework.struct.error.TypeAlreadyExistsException;
 import com.twinkle.framework.struct.error.TypeNotFoundException;
 import com.twinkle.framework.core.lang.util.ImmutableIterator;
@@ -19,8 +22,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class DefaultStructTypeManager implements StructTypeManager {
     private static final DefaultStructTypeManager INTERNAL_TYPE_MGR = new DefaultStructTypeManager();
-    private final Map<String, StructType> primitiveTypeMap;
-    private final Map<String, StructType> typeMap;
+    private final Map<String, AttributeType> primitiveTypeMap;
+    private final Map<String, AttributeType> typeMap;
     protected final Lock readLock;
     protected final Lock writeLock;
     private DefaultStructTypeManager parentTypeManager;
@@ -48,8 +51,8 @@ public class DefaultStructTypeManager implements StructTypeManager {
         return INTERNAL_TYPE_MGR;
     }
 
-    protected static Map<String, StructType> getDefaultPrimitives() {
-        Map<String, StructType> tempPrimitiveTypeMap = new HashMap();
+    protected static Map<String, AttributeType> getDefaultPrimitives() {
+        Map<String, AttributeType> tempPrimitiveTypeMap = new HashMap();
         tempPrimitiveTypeMap.put("byte", PrimitiveType.BYTE);
         tempPrimitiveTypeMap.put("short", PrimitiveType.SHORT);
         tempPrimitiveTypeMap.put("int", PrimitiveType.INT);
@@ -71,8 +74,8 @@ public class DefaultStructTypeManager implements StructTypeManager {
         return tempPrimitiveTypeMap;
     }
 
-    protected static Map<String, StructType> getDefaultAliases() {
-        Map<String, StructType> tempAliasMap = new HashMap();
+    protected static Map<String, AttributeType> getDefaultAliases() {
+        Map<String, AttributeType> tempAliasMap = new HashMap();
         tempAliasMap.put("TextString", new AliasStructType("TextString", ArrayType.CHAR_ARRAY));
         tempAliasMap.put("ASCIIString", new AliasStructType("ASCIIString", ArrayType.BYTE_ARRAY));
         tempAliasMap.put("Time", new AliasStructType("Time", PrimitiveType.INT));
@@ -194,16 +197,16 @@ public class DefaultStructTypeManager implements StructTypeManager {
         return tempIterator;
     }
     @Override
-    public StructType getType(String _typeName) throws TypeNotFoundException {
+    public AttributeType getType(String _typeName) throws TypeNotFoundException {
         return this.getType(_typeName, true);
     }
     @Override
-    public StructType getType(String _typeName, boolean _checkAliasFlag) throws TypeNotFoundException {
+    public AttributeType getType(String _typeName, boolean _checkAliasFlag) throws TypeNotFoundException {
         this.readLock.lock();
 
-        StructType tempResultType;
+        AttributeType tempResultType;
         try {
-            StructType tempType = this.typeMap.get(_typeName);
+            AttributeType tempType = this.typeMap.get(_typeName);
             if (tempType == null) {
                 if (this.parentTypeManager == null) {
                     throw new TypeNotFoundException(_typeName);
@@ -224,14 +227,14 @@ public class DefaultStructTypeManager implements StructTypeManager {
         return tempResultType;
     }
     @Override
-    public void addType(String _typeName, StructType _type) throws TypeAlreadyExistsException {
+    public void addType(String _typeName, AttributeType _type) throws TypeAlreadyExistsException {
         this.writeLock.lock();
         try {
             if (this.typeMap.containsKey(_typeName)) {
                 throw new TypeAlreadyExistsException(_typeName);
             }
 
-            StructType tempStructType = _type;
+            AttributeType tempStructType = _type;
             if (!_typeName.equals(_type.getName())) {
                 tempStructType = new AliasStructType(_typeName, _type);
             }

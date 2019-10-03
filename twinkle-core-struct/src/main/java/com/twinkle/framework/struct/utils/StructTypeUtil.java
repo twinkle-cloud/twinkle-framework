@@ -1,6 +1,9 @@
 package com.twinkle.framework.struct.utils;
 
+import com.twinkle.framework.core.type.PrimitiveType;
 import com.twinkle.framework.core.lang.util.*;
+import com.twinkle.framework.core.type.StringType;
+import com.twinkle.framework.core.type.AttributeType;
 import com.twinkle.framework.struct.type.*;
 import com.twinkle.framework.struct.util.StructAttributeArray;
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +45,7 @@ public class StructTypeUtil {
      * @return
      * @throws ClassNotFoundException
      */
-    public static Class<?> getTypeClass(StructType _type) throws ClassNotFoundException {
+    public static Class<?> getTypeClass(AttributeType _type) throws ClassNotFoundException {
         if (_type.isPrimitiveType()) {
             switch (_type.getID()) {
                 case PrimitiveType.BYTE_ID:
@@ -91,7 +94,7 @@ public class StructTypeUtil {
                         return DoubleArray.class;
                     case StringType.STRING_ID:
                         return StringArray.class;
-                    case StructAttributeType.STRUCT_ID:
+                    case StructType.STRUCT_ID:
                         return StructAttributeArray.class;
                 }
             }
@@ -107,7 +110,7 @@ public class StructTypeUtil {
      * @return
      * @throws ClassNotFoundException
      */
-    public static Class getMappedTypeClass(StructType _type) throws ClassNotFoundException {
+    public static Class getMappedTypeClass(AttributeType _type) throws ClassNotFoundException {
         if (_type.isPrimitiveType()) {
             switch (_type.getID()) {
                 case PrimitiveType.BYTE_ID:
@@ -156,7 +159,7 @@ public class StructTypeUtil {
                         return double[].class;
                     case StringType.STRING_ID:
                         return String[].class;
-                    case StructAttributeType.STRUCT_ID:
+                    case StructType.STRUCT_ID:
                         throw new UnsupportedOperationException("Cannot map type " + _type.getName() + " to any Java primitive or array type");
                 }
             }

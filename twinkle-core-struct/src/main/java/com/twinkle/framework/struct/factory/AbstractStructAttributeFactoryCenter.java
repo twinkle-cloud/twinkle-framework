@@ -5,7 +5,7 @@ import com.twinkle.framework.struct.error.AttributeNotFoundException;
 import com.twinkle.framework.struct.error.AttributeTypeMismatchException;
 import com.twinkle.framework.struct.error.BadAttributeNameException;
 import com.twinkle.framework.struct.ref.AttributeRef;
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.StructType;
 import com.twinkle.framework.struct.util.ArrayAllocator;
 
 /**
@@ -27,7 +27,7 @@ public abstract class AbstractStructAttributeFactoryCenter implements StructAttr
         return this.getStructAttributeFactory().getArrayAllocator();
     }
 
-    public AttributeRef getAttributeRef(StructAttributeType _saType, String _className) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
+    public AttributeRef getAttributeRef(StructType _saType, String _className) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
         return this.getStructAttributeFactory().getAttributeRef(_saType, _className);
     }
 

@@ -3,7 +3,7 @@ package com.twinkle.framework.struct.factory;
 import com.twinkle.framework.struct.asm.classloader.StructAttributeGeneralClassLoader;
 import com.twinkle.framework.struct.error.*;
 import com.twinkle.framework.struct.type.StructAttribute;
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.StructType;
 import com.twinkle.framework.struct.asm.classloader.StructAttributeClassLoader;
 import com.twinkle.framework.struct.context.BeanStructAttributeSchema;
 import com.twinkle.framework.struct.context.StructAttributeSchema;
@@ -82,7 +82,7 @@ public abstract class AbstractStructAttributeFactory implements StructAttributeF
     }
 
     @Override
-    public abstract StructAttribute newStructAttribute(StructAttributeType _saType) throws StructAttributeException;
+    public abstract StructAttribute newStructAttribute(StructType _saType) throws StructAttributeException;
 
     /**
      * Get the Attribute ref with given Struct Attribute type, and class name.
@@ -94,14 +94,14 @@ public abstract class AbstractStructAttributeFactory implements StructAttributeF
      * @throws AttributeTypeMismatchException
      * @throws BadAttributeNameException
      */
-    public AttributeRef _getAttributeRef(StructAttributeType _saType, String _className) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
+    public AttributeRef _getAttributeRef(StructType _saType, String _className) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
         String tempQualifiedName = _saType.getQualifiedName();
         StructAttributeImplBuilder tempBuilder = this.getStructAttributeImplBuilder(tempQualifiedName);
         return tempBuilder.getAttributeReference(_className);
     }
 
     @Override
-    public AttributeRef getAttributeRef(StructAttributeType _saType, String _className) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
+    public AttributeRef getAttributeRef(StructType _saType, String _className) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
         if (_className == null) {
             throw new BadAttributeNameException("Attribute name is NULL");
         }
@@ -109,12 +109,12 @@ public abstract class AbstractStructAttributeFactory implements StructAttributeF
     }
 
     @Override
-    public AttributeRef getCompositeAttributeRef(StructAttributeType _saType, String _compositeName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
+    public AttributeRef getCompositeAttributeRef(StructType _saType, String _compositeName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
         return CompositeAttributeRefFactory.getCompositeAttributeRef(this, _saType, _compositeName);
     }
 
     @Override
-    public DynamicAttributeRef getDynamicAttributeRef(StructAttributeType _saType, String _compositeName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
+    public DynamicAttributeRef getDynamicAttributeRef(StructType _saType, String _compositeName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
         return CompositeAttributeRefFactory.getDynamicAttributeRef(this, _saType, _compositeName);
     }
 

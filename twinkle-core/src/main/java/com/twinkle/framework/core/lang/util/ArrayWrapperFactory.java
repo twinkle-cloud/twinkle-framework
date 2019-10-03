@@ -10,11 +10,35 @@ package com.twinkle.framework.core.lang.util;
  * @since JDK 1.8
  */
 public interface ArrayWrapperFactory<A> {
-    ArrayWrapper<A> wrap(A var1, int var2);
+    /**
+     * Build an array wrapper with given Java array and size.
+     *
+     * @param _array
+     * @param _size
+     * @return
+     */
+    ArrayWrapper<A> wrap(A _array, int _size);
 
-    ArrayWrapper<A> newArrayWrapper(int var1);
+    /**
+     * Build an array wrapper with given size.
+     *
+     * @param _size
+     * @return
+     */
+    ArrayWrapper<A> newArrayWrapper(int _size);
 
-    A newArray(int var1);
+    /**
+     * Build a new array with given size.
+     *
+     * @param _size
+     * @return
+     */
+    A newArray(int _size);
 
+    /**
+     * Get Array's Class.
+     *
+     * @return
+     */
     Class<A> getArrayClass();
 }

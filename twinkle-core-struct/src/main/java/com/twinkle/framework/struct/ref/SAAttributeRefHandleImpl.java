@@ -1,5 +1,8 @@
 package com.twinkle.framework.struct.ref;
 
+import com.twinkle.framework.core.type.PrimitiveType;
+import com.twinkle.framework.core.type.StringType;
+import com.twinkle.framework.core.type.AttributeType;
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
 import com.twinkle.framework.core.lang.util.Array;
 import com.twinkle.framework.struct.error.*;
@@ -31,7 +34,7 @@ public class SAAttributeRefHandleImpl extends AbstractAttributeRef {
     public SAAttributeRefHandleImpl(SAAttributeDescriptor _attrDescriptor, Class _class, String _methodName, String _getFlagMethodName) {
         super(_attrDescriptor);
         String tempSetterName = setterName(_methodName);
-        StructType tempAttrDesType = _attrDescriptor.getType();
+        AttributeType tempAttrDesType = _attrDescriptor.getType();
         Class<?> tempReturnTypeClass;
         Method tempMethod;
         MethodType tempMethodType;
@@ -498,7 +501,7 @@ public class SAAttributeRefHandleImpl extends AbstractAttributeRef {
             return;
         }
 
-        StructType tempStructType = this.getType();
+        AttributeType tempStructType = this.getType();
         try {
             if (tempStructType.isStructType()) {
                 StructAttribute tempAttr = this.getStruct(_srcAttr);
@@ -507,7 +510,7 @@ public class SAAttributeRefHandleImpl extends AbstractAttributeRef {
                 Array tempSrcArray = this.getArray(_srcAttr);
                 Array tempCloneSrcArray = (Array) tempSrcArray.clone();
                 this.setArray(_destAttr, tempCloneSrcArray);
-                StructType tempElementType = ((ArrayType) tempStructType).getElementType();
+                AttributeType tempElementType = ((ArrayType) tempStructType).getElementType();
                 if (tempElementType.isStructType()) {
                     StructAttributeArray tempSrcSAArray = (StructAttributeArray) tempSrcArray;
                     StructAttributeArray tempCloneSrcSAArray = (StructAttributeArray) tempCloneSrcArray;

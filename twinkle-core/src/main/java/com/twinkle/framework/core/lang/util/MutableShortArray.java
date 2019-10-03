@@ -65,6 +65,7 @@ public interface MutableShortArray extends ShortArray, MutableArray, ArrayWrappe
      * @return
      * @throws UnsupportedOperationException
      */
+    @Override
     short[] array() throws UnsupportedOperationException;
 
     /**

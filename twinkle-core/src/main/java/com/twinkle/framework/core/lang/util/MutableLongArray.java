@@ -65,6 +65,7 @@ public interface MutableLongArray extends LongArray, MutableArray, ArrayWrapper<
      * @return
      * @throws UnsupportedOperationException
      */
+    @Override
     long[] array() throws UnsupportedOperationException;
 
     /**

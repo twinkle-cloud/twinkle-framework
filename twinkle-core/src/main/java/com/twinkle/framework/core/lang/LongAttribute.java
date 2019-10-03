@@ -1,8 +1,5 @@
 package com.twinkle.framework.core.lang;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
 /**
  * Function: TODO ADD FUNCTION. <br/>
  * Reason:	 TODO ADD REASON. <br/>
@@ -155,26 +152,26 @@ public class LongAttribute extends AbstractNumericAttribute implements ILongAttr
     }
 
     @Override
-    public final boolean add(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getLong() + _var2.getLong();
+    public final boolean add(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getLong() + _attr2.getLong();
         return true;
     }
 
     @Override
-    public final boolean subtract(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getLong() - _var2.getLong();
+    public final boolean subtract(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getLong() - _attr2.getLong();
         return true;
     }
 
     @Override
-    public final boolean multiply(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getLong() * _var2.getLong();
+    public final boolean multiply(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getLong() * _attr2.getLong();
         return true;
     }
 
     @Override
-    public final boolean divide(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getLong() / _var2.getLong();
+    public final boolean divide(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getLong() / _attr2.getLong();
         return true;
     }
 
@@ -197,8 +194,8 @@ public class LongAttribute extends AbstractNumericAttribute implements ILongAttr
     }
 
     @Override
-    public final boolean mod(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getLong() % _var2.getLong();
+    public final boolean mod(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getLong() % _attr2.getLong();
         return true;
     }
 
@@ -279,10 +276,4 @@ public class LongAttribute extends AbstractNumericAttribute implements ILongAttr
     public Object getObjectValue() {
         return this.value;
     }
-
-    @Override
-    public JSONObject getJsonObjectValue() {
-        return JSON.parseObject("" + this.value);
-    }
-
 }

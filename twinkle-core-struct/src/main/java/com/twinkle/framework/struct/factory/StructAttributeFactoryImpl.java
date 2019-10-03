@@ -15,8 +15,8 @@ import com.twinkle.framework.struct.resolver.StructAttributeTypeResolver;
 import com.twinkle.framework.struct.serialize.SerializerFactoryRegistry;
 import com.twinkle.framework.struct.type.ArrayType;
 import com.twinkle.framework.struct.type.StructAttribute;
-import com.twinkle.framework.struct.type.StructAttributeType;
 import com.twinkle.framework.struct.type.StructType;
+import com.twinkle.framework.core.type.AttributeType;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Iterator;
@@ -59,7 +59,7 @@ public class StructAttributeFactoryImpl extends AbstractStructAttributeFactory i
     }
 
     @Override
-    public StructAttribute newStructAttribute(StructAttributeType _saType) throws StructAttributeException {
+    public StructAttribute newStructAttribute(StructType _saType) throws StructAttributeException {
         String tempName = _saType.getQualifiedName();
         StructAttributeImplBuilder tempBuilder = this.getStructAttributeImplBuilder(tempName);
         return (StructAttribute) tempBuilder.newInstance();
@@ -147,18 +147,18 @@ public class StructAttributeFactoryImpl extends AbstractStructAttributeFactory i
     }
 
     @Override
-    public Class<?> loadGeneralBeanClass(StructAttributeType _saType) throws StructAttributeException {
+    public Class<?> loadGeneralBeanClass(StructType _saType) throws StructAttributeException {
         try {
             Iterator<SAAttributeDescriptor> tempAttrItr = _saType.getAttributes();
             while (tempAttrItr.hasNext()) {
                 SAAttributeDescriptor tempDescriptor = tempAttrItr.next();
-                if (tempDescriptor.getType() instanceof StructAttributeType) {
-                    loadGeneralBeanClass(((StructAttributeType) tempDescriptor.getType()).getQualifiedName());
+                if (tempDescriptor.getType() instanceof StructType) {
+                    loadGeneralBeanClass(((StructType) tempDescriptor.getType()).getQualifiedName());
                 } else if (tempDescriptor.getType() instanceof ArrayType) {
                     ArrayType tempArrayType = (ArrayType) tempDescriptor.getType();
-                    StructType tempItemType = tempArrayType.getElementType();
-                    if (tempItemType instanceof StructAttributeType) {
-                        loadGeneralBeanClass(((StructAttributeType) tempItemType).getQualifiedName());
+                    AttributeType tempItemType = tempArrayType.getElementType();
+                    if (tempItemType instanceof StructType) {
+                        loadGeneralBeanClass(((StructType) tempItemType).getQualifiedName());
                     }
                 }
             }
@@ -172,7 +172,7 @@ public class StructAttributeFactoryImpl extends AbstractStructAttributeFactory i
     @Override
     public Class<?> loadGeneralBeanClass(String _typeName) throws StructAttributeException {
         try {
-            StructAttributeType tempAttributeType = this.getBeanStructAttributeSchema().getStructAttributeType(_typeName);
+            StructType tempAttributeType = this.getBeanStructAttributeSchema().getStructAttributeType(_typeName);
             return this.loadGeneralBeanClass(tempAttributeType);
         } catch (StructAttributeInstantiationException e) {
             throw new StructAttributeInstantiationException(e);

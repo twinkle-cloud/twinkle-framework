@@ -65,6 +65,7 @@ public interface MutableIntegerArray extends IntegerArray, MutableArray, ArrayWr
      * @return
      * @throws UnsupportedOperationException
      */
+    @Override
     int[] array() throws UnsupportedOperationException;
 
     /**

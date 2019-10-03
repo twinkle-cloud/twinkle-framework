@@ -1,6 +1,6 @@
 package com.twinkle.framework.struct.asm.descriptor;
 
-import com.twinkle.framework.struct.type.StructType;
+import com.twinkle.framework.core.type.AttributeType;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -23,7 +23,7 @@ public interface SAAttributeDescriptor {
      *
      * @return
      */
-    StructType getType();
+    AttributeType getType();
 
     /**
      * Get the struct attribute type's name.

@@ -1,7 +1,7 @@
 package com.twinkle.framework.struct.asm.classloader;
 
 import com.twinkle.framework.struct.resolver.StructAttributeTypeResolver;
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.StructType;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -26,7 +26,7 @@ public final class StructAttributeClassLoader extends AbstractStructAttributeCla
         this.typeResolver = _resolver;
     }
     @Override
-    protected StructAttributeType getStructAttributeType(String _attrName) {
+    protected StructType getStructAttributeType(String _attrName) {
         return this.typeResolver.getStructAttributeType(_attrName);
     }
 }

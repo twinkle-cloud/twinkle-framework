@@ -34,37 +34,22 @@ public abstract class AbstractNumericAttribute implements INumericAttribute {
     public abstract void max(Attribute _attr);
 
     @Override
-    public void aggregate(int _operation, Attribute _attr) {
+    public void aggregate(Operation _operation, Attribute _attr) {
         switch(_operation) {
-            case OPERATION_ADD:
+            case ADD:
                 this.add(_attr);
                 break;
-            case OPERATION_SUBTRACT:
+            case SUBTRACT:
                 this.subtract(_attr);
                 break;
-            case OPERATION_MIN:
+            case MIN:
                 this.min(_attr);
                 break;
-            case OPERATION_MAX:
+            case MAX:
                 this.max(_attr);
                 break;
-            case OPERATION_SET:
+            case SET:
                 this.setValue(_attr);
-        }
-    }
-
-    @Override
-    public int getOperationID(String _operationName) {
-        if (_operationName.equals(OPERATION_NAME_ADD)) {
-            return OPERATION_ADD;
-        } else if (_operationName.equals(OPERATION_NAME_SUBTRACT)) {
-            return OPERATION_SUBTRACT;
-        } else if (_operationName.equals(OPERATION_NAME_MIN)) {
-            return OPERATION_MIN;
-        } else if (_operationName.equals(OPERATION_NAME_MAX)) {
-            return OPERATION_MAX;
-        } else {
-            return _operationName.equals(OPERATION_NAME_SET) ? OPERATION_SET : -1;
         }
     }
 

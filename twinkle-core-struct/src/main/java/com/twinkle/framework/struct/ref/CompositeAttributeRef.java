@@ -2,7 +2,7 @@ package com.twinkle.framework.struct.ref;
 
 import com.twinkle.framework.struct.error.AttributeNotSetException;
 import com.twinkle.framework.struct.type.StructAttribute;
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.StructType;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -25,7 +25,7 @@ public interface CompositeAttributeRef extends AttributeRef {
      * Get the tail node type.
      * @return
      */
-    StructAttributeType getTailType();
+    StructType getTailType();
 
     /**
      * Get the tail attribute ref.

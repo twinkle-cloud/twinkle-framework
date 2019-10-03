@@ -1,8 +1,5 @@
 package com.twinkle.framework.core.lang;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
 /**
  * Function: TODO ADD FUNCTION. <br/>
  * Reason:	 TODO ADD REASON. <br/>
@@ -142,32 +139,32 @@ public class DoubleAttribute extends AbstractNumericAttribute implements IFloatA
     }
 
     @Override
-    public boolean add(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getDouble() + _var2.getDouble();
+    public boolean add(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getDouble() + _attr2.getDouble();
         return true;
     }
 
     @Override
-    public boolean subtract(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getDouble() - _var2.getDouble();
+    public boolean subtract(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getDouble() - _attr2.getDouble();
         return true;
     }
 
     @Override
-    public boolean multiply(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getDouble() * _var2.getDouble();
+    public boolean multiply(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getDouble() * _attr2.getDouble();
         return true;
     }
 
     @Override
-    public boolean divide(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getDouble() / _var2.getDouble();
+    public boolean divide(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getDouble() / _attr2.getDouble();
         return true;
     }
 
     @Override
-    public boolean mod(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getDouble() % _var2.getDouble();
+    public boolean mod(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getDouble() % _attr2.getDouble();
         return true;
     }
 
@@ -198,10 +195,5 @@ public class DoubleAttribute extends AbstractNumericAttribute implements IFloatA
     @Override
     public Object getObjectValue() {
         return this.value;
-    }
-
-    @Override
-    public JSONObject getJsonObjectValue() {
-        return JSON.parseObject("" + this.value);
     }
 }

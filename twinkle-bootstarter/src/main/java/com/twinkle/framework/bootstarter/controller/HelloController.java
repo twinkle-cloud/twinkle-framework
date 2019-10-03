@@ -50,7 +50,7 @@ public class HelloController extends AbstractServer {
     @ApiOperation(value = "获取用户Token")
     @RequestMapping(value = "authsec/token/{_userName}", method = RequestMethod.POST)
     public GeneralResult<Object> createAuthenticationToken(
-            @ApiParam(value = "请求体") @RequestBody HelloRequest _request,
+            @ApiParam(value = "请求体") @RequestBody List<HelloRequest> _request,
             @ApiParam(value = "UserName") @PathVariable(value = "_userName") String _userName,
             @RequestParam(value = "_testParam", defaultValue = "DDDFF") String _testParam) throws Exception {
         log.info("The request body is AA");
@@ -58,8 +58,8 @@ public class HelloController extends AbstractServer {
         log.info("The request body is: {} -> {}", _request, _userName);
 
         log.info("The _testParam = [{}].", _testParam);
-        log.info("The request _testParam = [{}].", request.getParameter("_testParam"));
-        String tempContent = this.helloWorldService.sayHello(_request.getUserName());
+//        log.info("The request _testParam = [{}].", request.getParameter("_testParam"));
+        String tempContent = this.helloWorldService.sayHello("DDFFSS");
 
         GeneralResult<Object> tempResult = new GeneralResult<>();
         HelloResponse tempResponse = new HelloResponse();

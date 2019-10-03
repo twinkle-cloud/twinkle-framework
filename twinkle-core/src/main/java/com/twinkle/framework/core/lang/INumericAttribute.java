@@ -12,22 +12,28 @@ package com.twinkle.framework.core.lang;
 public interface INumericAttribute extends Attribute {
     /**
      * Get integer value of this attribute.
+     *
      * @return
      */
     int getInt();
+
     /**
      * Get Long value of this attribute.
+     *
      * @return
      */
     long getLong();
+
     /**
      * Get Float value of this attribute.
+     *
      * @return
      */
     float getFloat();
 
     /**
      * Get Double value of this attribute.
+     *
      * @return
      */
     double getDouble();
@@ -35,18 +41,48 @@ public interface INumericAttribute extends Attribute {
     /**
      * Add the value
      *
-     * @param _var1
-     * @param _var2
+     * @param _attr1
+     * @param _attr2
      * @return
      */
-    boolean add(INumericAttribute _var1, INumericAttribute _var2);
+    boolean add(INumericAttribute _attr1, INumericAttribute _attr2);
 
-    boolean subtract(INumericAttribute _var1, INumericAttribute _var2);
+    /**
+     * Subtract the attr1 with attr2, and update the value with the result.
+     * value = attr1 - attr2
+     *
+     * @param _attr1
+     * @param _attr2
+     * @return always to be true.
+     */
+    boolean subtract(INumericAttribute _attr1, INumericAttribute _attr2);
 
-    boolean multiply(INumericAttribute _var1, INumericAttribute _var2);
-
-    boolean divide(INumericAttribute _var1, INumericAttribute _var2);
-
-    boolean mod(INumericAttribute _var1, INumericAttribute _var2);
+    /**
+     * Multiply the attr1 with attr2, and update the value with the result.
+     * value = attr1 * attr2
+     *
+     * @param _attr1
+     * @param _attr2
+     * @return always to be true.
+     */
+    boolean multiply(INumericAttribute _attr1, INumericAttribute _attr2);
+    /**
+     * Divide the attr1 with attr2, and update the value with the result.
+     * value = attr1 / attr2
+     *
+     * @param _attr1
+     * @param _attr2
+     * @return always to be true.
+     */
+    boolean divide(INumericAttribute _attr1, INumericAttribute _attr2);
+    /**
+     * Mode the attr1 with attr2, and update the value with the result.
+     * value = attr1 % attr2
+     *
+     * @param _attr1
+     * @param _attr2
+     * @return always to be true.
+     */
+    boolean mod(INumericAttribute _attr1, INumericAttribute _attr2);
 
 }

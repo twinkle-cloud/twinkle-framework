@@ -68,6 +68,7 @@ public interface IListAttribute extends Attribute {
      *
      * @param _index
      * @param _attr
+     * @return
      */
     Attribute set(int _index, Attribute _attr);
 

@@ -5,9 +5,9 @@ import com.twinkle.framework.asm.descriptor.TypeDescriptors;
 import com.twinkle.framework.core.lang.util.ImmutableIterator;
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
 import com.twinkle.framework.struct.error.*;
-import com.twinkle.framework.struct.type.DefaultStructAttributeType;
+import com.twinkle.framework.struct.type.DefaultStructType;
 import com.twinkle.framework.struct.type.DefaultStructTypeManager;
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.StructType;
 import com.twinkle.framework.struct.type.StructTypeManager;
 import lombok.Getter;
 
@@ -57,8 +57,8 @@ public class DefaultStructAttributeSchema implements BeanStructAttributeSchema {
         return new Namespace();
     }
 
-    protected DefaultStructAttributeType createNewStructAttributeType(String _attrName, BeanTypeDescriptor _descriptor) {
-        return new DefaultStructAttributeType(_attrName, _descriptor);
+    protected DefaultStructType createNewStructAttributeType(String _attrName, BeanTypeDescriptor _descriptor) {
+        return new DefaultStructType(_attrName, _descriptor);
     }
 
     @Override
@@ -197,10 +197,10 @@ public class DefaultStructAttributeSchema implements BeanStructAttributeSchema {
     }
 
     @Override
-    public Iterator<StructAttributeType> getStructAttributeTypes(String _namespace) throws NamespaceNotFoundException {
+    public Iterator<StructType> getStructAttributeTypes(String _namespace) throws NamespaceNotFoundException {
         this.readLock.lock();
 
-        ImmutableIterator<StructAttributeType> tempItr;
+        ImmutableIterator<StructType> tempItr;
         try {
             if (!this.namespaceMap.containsKey(_namespace)) {
                 throw new NamespaceNotFoundException(_namespace);
@@ -235,15 +235,15 @@ public class DefaultStructAttributeSchema implements BeanStructAttributeSchema {
     }
 
     @Override
-    public StructAttributeType getStructAttributeType(String _namespace, String _structTypeName) throws NamespaceNotFoundException, StructAttributeTypeNotFoundException {
+    public StructType getStructAttributeType(String _namespace, String _structTypeName) throws NamespaceNotFoundException, StructAttributeTypeNotFoundException {
         this.readLock.lock();
 
-        StructAttributeType tempResultType;
+        StructType tempResultType;
         try {
             if (!this.namespaceMap.containsKey(_namespace)) {
                 throw new NamespaceNotFoundException(_namespace);
             }
-            StructAttributeType tempSAType2 = (this.namespaceMap.get(_namespace)).getStructAttributeTypes().get(_structTypeName);
+            StructType tempSAType2 = (this.namespaceMap.get(_namespace)).getStructAttributeTypes().get(_structTypeName);
             if (tempSAType2 == null) {
                 throw new StructAttributeTypeNotFoundException(_namespace, _structTypeName);
             }
@@ -256,7 +256,7 @@ public class DefaultStructAttributeSchema implements BeanStructAttributeSchema {
     }
 
     @Override
-    public StructAttributeType getStructAttributeType(String _structTypeName) throws NamespaceNotFoundException, StructAttributeTypeNotFoundException {
+    public StructType getStructAttributeType(String _structTypeName) throws NamespaceNotFoundException, StructAttributeTypeNotFoundException {
         StringTokenizer tempTokenizer = new StringTokenizer(_structTypeName, ":");
         if (tempTokenizer.countTokens() != 2) {
             throw new StructAttributeTypeNotFoundException(_structTypeName, "");
@@ -274,16 +274,16 @@ public class DefaultStructAttributeSchema implements BeanStructAttributeSchema {
      * @return
      * @throws NamespaceNotFoundException
      */
-    public StructAttributeType newStructAttributeType(String _namespace, String _attrName, BeanTypeDescriptor _descriptor) throws NamespaceNotFoundException {
+    public StructType newStructAttributeType(String _namespace, String _attrName, BeanTypeDescriptor _descriptor) throws NamespaceNotFoundException {
         this.readLock.lock();
 
-        DefaultStructAttributeType tempResultAttrType;
+        DefaultStructType tempResultAttrType;
         try {
             if (!this.namespaceMap.containsKey(_namespace)) {
                 throw new NamespaceNotFoundException(_namespace);
             }
 
-            DefaultStructAttributeType tempSAType = this.createNewStructAttributeType(_attrName, _descriptor);
+            DefaultStructType tempSAType = this.createNewStructAttributeType(_attrName, _descriptor);
             tempSAType.setNamespace(_namespace);
             Namespace tempNamespace = this.namespaceMap.get(_namespace);
             StructTypeManager tempTypeManager = tempNamespace.getTypeManager();
@@ -296,13 +296,13 @@ public class DefaultStructAttributeSchema implements BeanStructAttributeSchema {
     }
 
     @Override
-    public StructAttributeType newStructAttributeType(String _namespace, String _structTypeName) throws NamespaceNotFoundException {
+    public StructType newStructAttributeType(String _namespace, String _structTypeName) throws NamespaceNotFoundException {
         return this.newStructAttributeType(_namespace, _structTypeName, null);
     }
 
     @Override
-    public void addStructAttributeType(StructAttributeType _structType) throws NamespaceNotFoundException, StructAttributeTypeAlreadyExistsException {
-        DefaultStructAttributeType tempSAType = (DefaultStructAttributeType) _structType;
+    public void addStructAttributeType(StructType _structType) throws NamespaceNotFoundException, StructAttributeTypeAlreadyExistsException {
+        DefaultStructType tempSAType = (DefaultStructType) _structType;
         StructTypeManager tempTypeManager = _structType.getTypeManager();
         String tempNamespace = _structType.getNamespace();
         this.writeLock.lock();
@@ -358,7 +358,7 @@ public class DefaultStructAttributeSchema implements BeanStructAttributeSchema {
                     throw new NamespaceNotFoundException(tempNamespaceName);
                 }
 
-                StructAttributeType tempSAType = tempNamespace.getStructAttributeTypes().get(tempStructTypeName);
+                StructType tempSAType = tempNamespace.getStructAttributeTypes().get(tempStructTypeName);
                 if (tempSAType == null) {
                     throw new StructAttributeTypeNotFoundException(tempNamespaceName, tempStructTypeName);
                 }
@@ -393,7 +393,7 @@ public class DefaultStructAttributeSchema implements BeanStructAttributeSchema {
                 tempBuilder.append(" {");
                 tempBuilder.append(tempLineSeparator);
 
-                Iterator<StructAttributeType> tempSATypeItr;
+                Iterator<StructType> tempSATypeItr;
                 try {
                     tempSATypeItr = this.getStructAttributeTypes(tempResultStr);
                 } catch (NamespaceNotFoundException e) {
@@ -401,7 +401,7 @@ public class DefaultStructAttributeSchema implements BeanStructAttributeSchema {
                 }
 
                 while (tempSATypeItr.hasNext()) {
-                    StructAttributeType tempSAType = tempSATypeItr.next();
+                    StructType tempSAType = tempSATypeItr.next();
                     tempBuilder.append(temp4Spaces);
                     tempBuilder.append(tempSAType.getName());
                     tempBuilder.append(" {");
@@ -438,6 +438,6 @@ public class DefaultStructAttributeSchema implements BeanStructAttributeSchema {
     @Getter
     static class Namespace {
         private StructTypeManager typeManager = new DefaultStructTypeManager();
-        private Map<String, StructAttributeType> structAttributeTypes = new HashMap<>();
+        private Map<String, StructType> structAttributeTypes = new HashMap<>();
     }
 }

@@ -1,7 +1,7 @@
 package com.twinkle.framework.struct.error;
 
 import com.twinkle.framework.struct.ref.AttributeRef;
-import com.twinkle.framework.struct.type.StructType;
+import com.twinkle.framework.core.type.AttributeType;
 import lombok.Getter;
 
 /**
@@ -19,20 +19,20 @@ public final class AttributeTypeMismatchException extends StructAttributeExcepti
     private String actualTypeName = null;
     private String requestedTypeName = null;
 
-    public AttributeTypeMismatchException(AttributeRef _attributeRef, StructType _actualType, StructType _requiredType) {
+    public AttributeTypeMismatchException(AttributeRef _attributeRef, AttributeType _actualType, AttributeType _requiredType) {
         super("The actual type of attribute " + _attributeRef + " is " + _actualType + " and is used as " + _requiredType);
         this.attrName = _attributeRef != null ? _attributeRef.getName() : null;
         this.actualTypeName = _actualType != null ? _actualType.getName() : null;
         this.requestedTypeName = _requiredType != null ? _requiredType.getName() : null;
     }
 
-    public AttributeTypeMismatchException(AttributeRef _attributeRef, StructType _actualType) {
+    public AttributeTypeMismatchException(AttributeRef _attributeRef, AttributeType _actualType) {
         super("The actual type of attribute " + _attributeRef + " is " + _actualType + " and is used as an array type.");
         this.attrName = _attributeRef != null ? _attributeRef.getName() : null;
         this.actualTypeName = _actualType != null ? _actualType.getName() : null;
     }
 
-    public AttributeTypeMismatchException(AttributeRef _attributeRef, StructType _actualType, StructType _requiredType, Throwable var4) {
+    public AttributeTypeMismatchException(AttributeRef _attributeRef, AttributeType _actualType, AttributeType _requiredType, Throwable var4) {
         super("The actual type of attribute " + _attributeRef + " is " + _actualType + " and is used as " + _requiredType, var4);
         this.attrName = _attributeRef != null ? _attributeRef.getName() : null;
         this.actualTypeName = _actualType != null ? _actualType.getName() : null;

@@ -9,7 +9,7 @@ import com.twinkle.framework.struct.asm.define.StructAttributeBeanTypeDef;
 import com.twinkle.framework.struct.asm.define.StructAttributeBeanTypeDefImpl;
 import com.twinkle.framework.struct.error.StructAttributeException;
 import com.twinkle.framework.struct.type.AbstractStructAttribute;
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.StructType;
 import com.twinkle.framework.struct.asm.designer.StructAttributeClassDesigner;
 import com.twinkle.framework.struct.asm.designer.StructAttributeImplBuilderDesigner;
 import com.twinkle.framework.struct.asm.designer.StructAttributeInterfaceDesigner;
@@ -40,7 +40,7 @@ public abstract class AbstractStructAttributeClassLoader extends EnhancedClassLo
     protected Class<?> findClass(String _className) throws ClassNotFoundException {
         if (_className != null && _className.startsWith(PACKAGE_PREFIX)) {
             String tempInterfaceName = this.getInterfaceName(_className);
-            StructAttributeType tempStructAttrType = null;
+            StructType tempStructAttrType = null;
 
             try {
                 tempStructAttrType = this.getStructAttributeType(StructAttributeBeanTypeDefImpl.getStructAttributeQualifiedTypeName(tempInterfaceName));
@@ -84,9 +84,9 @@ public abstract class AbstractStructAttributeClassLoader extends EnhancedClassLo
         return super.findClass(_className);
     }
 
-    protected abstract StructAttributeType getStructAttributeType(String _attrName);
+    protected abstract StructType getStructAttributeType(String _attrName);
 
-    protected StructAttributeBeanTypeDef createStructAttributeBeanTypeDef(StructAttributeType _attrType) throws ClassNotFoundException {
+    protected StructAttributeBeanTypeDef createStructAttributeBeanTypeDef(StructType _attrType) throws ClassNotFoundException {
         return new StructAttributeBeanTypeDefImpl(_attrType, this);
     }
 

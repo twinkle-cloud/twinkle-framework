@@ -1,6 +1,6 @@
 package com.twinkle.framework.core.lang;
 
-import com.alibaba.fastjson.JSONObject;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
@@ -14,17 +14,6 @@ import java.io.Serializable;
  * @since JDK 1.8
  */
 public interface Attribute extends Cloneable, Serializable {
-
-    int OPERATION_ADD = 1;
-    int OPERATION_SUBTRACT = 2;
-    int OPERATION_MIN = 3;
-    int OPERATION_MAX = 4;
-    int OPERATION_SET = 5;
-    String OPERATION_NAME_ADD = "add";
-    String OPERATION_NAME_SUBTRACT = "subtract";
-    String OPERATION_NAME_MIN = "min";
-    String OPERATION_NAME_MAX = "max";
-    String OPERATION_NAME_SET = "set";
     String EXT_INFO_NC_INDEX = "NCIndex";
 
     /**
@@ -59,38 +48,94 @@ public interface Attribute extends Cloneable, Serializable {
      * Object Type.
      */
     int OBJECT_TYPE = 8;
-    /**
-     * Json Object Type.
-     */
-    int JSON_TYPE = 9;
 
     int LIST_ATTRIBUTE_TYPE = 110;
 
+    /**
+     * Get the attribute's primitive type.
+     *
+     * @return
+     */
+    @ApiModelProperty(hidden = true)
     int getPrimitiveType();
 
+    /**
+     * Get the attribute's type.
+     *
+     * @return
+     */
+    @ApiModelProperty(hidden = true)
     int getType();
 
+    /**
+     * Update the attribute's type.
+     *
+     * @param _type
+     */
     void setType(int _type);
 
+    /**
+     * Update the value to be empty.
+     */
     void setEmptyValue();
 
+    /**
+     * Update the value with given String.
+     * The String should be able converted to the destination value.
+     *
+     * @param _value
+     */
     void setValue(String _value);
 
+    /**
+     * Update the value with given Object.
+     *
+     * @param _value
+     */
     void setValue(Object _value);
 
+    /**
+     * Copy the given attribute value to current instance.
+     *
+     * @param _attr
+     */
     void setValue(Attribute _attr);
 
-    void aggregate(int _operation, Attribute _attr);
+    /**
+     * Do the operation.
+     *
+     * @param _operation
+     * @param _attr
+     */
+    void aggregate(Operation _operation, Attribute _attr);
 
-    int getOperationID(String _operationName);
-
+    /**
+     * Clone the current instance.
+     * @return
+     */
     Object clone();
 
+    /**
+     * Override the toString() method.
+     *
+     * @return
+     */
+    @Override
     String toString();
 
+    /**
+     * Compare with the given object.
+     *
+     * @param _obj
+     * @return
+     */
     int compareTo(Object _obj);
 
+    /**
+     * Get the value as Object.
+     *
+     * @return
+     */
+    @ApiModelProperty(hidden = true)
     Object getObjectValue();
-
-    JSONObject getJsonObjectValue();
 }

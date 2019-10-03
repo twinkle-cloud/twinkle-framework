@@ -65,6 +65,7 @@ public interface MutableDoubleArray extends DoubleArray, MutableArray, ArrayWrap
      * @return
      * @throws UnsupportedOperationException
      */
+    @Override
     double[] array() throws UnsupportedOperationException;
 
     /**

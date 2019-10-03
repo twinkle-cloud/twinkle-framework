@@ -65,6 +65,7 @@ public interface MutableBooleanArray extends BooleanArray, MutableArray, ArrayWr
      * @return
      * @throws UnsupportedOperationException
      */
+    @Override
     boolean[] array() throws UnsupportedOperationException;
 
     /**

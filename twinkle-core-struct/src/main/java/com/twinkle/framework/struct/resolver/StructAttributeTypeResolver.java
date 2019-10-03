@@ -1,6 +1,6 @@
 package com.twinkle.framework.struct.resolver;
 
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.StructType;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -19,7 +19,7 @@ public interface StructAttributeTypeResolver {
      * @param _structTypeName
      * @return
      */
-    StructAttributeType getStructAttributeType(String _namespace, String _structTypeName);
+    StructType getStructAttributeType(String _namespace, String _structTypeName);
 
     /**
      * Get the struct type with the given struct type name.
@@ -27,5 +27,5 @@ public interface StructAttributeTypeResolver {
      * @param _structTypeName
      * @return
      */
-    StructAttributeType getStructAttributeType(String _structTypeName);
+    StructType getStructAttributeType(String _structTypeName);
 }

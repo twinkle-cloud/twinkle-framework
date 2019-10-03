@@ -1,7 +1,7 @@
 package com.twinkle.framework.struct.resolver;
 
 import com.twinkle.framework.struct.context.StructAttributeSchema;
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.StructType;
 import lombok.Getter;
 
 /**
@@ -22,12 +22,12 @@ public class DefaultStructAttributeTypeResolver implements StructAttributeTypeRe
     }
 
     @Override
-    public StructAttributeType getStructAttributeType(String _namespace, String _structTypeName) {
+    public StructType getStructAttributeType(String _namespace, String _structTypeName) {
         return this.saSchema.getStructAttributeType(_namespace, _structTypeName);
     }
 
     @Override
-    public StructAttributeType getStructAttributeType(String _structTypeName) {
+    public StructType getStructAttributeType(String _structTypeName) {
         return this.saSchema.getStructAttributeType(_structTypeName);
     }
 }

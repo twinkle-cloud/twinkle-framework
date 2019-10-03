@@ -4,7 +4,7 @@ import com.twinkle.framework.struct.context.StructAttributeSchema;
 import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
 import com.twinkle.framework.struct.factory.StructAttributeFactory;
 import com.twinkle.framework.struct.type.StructAttribute;
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.StructType;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -25,7 +25,7 @@ public class StructAttributeUtil {
     public static StructAttribute newStructAttribute(String _qualifiedName) {
         StructAttributeSchema tempStructSchema = StructAttributeSchemaManager.getStructAttributeSchema();
         StructAttributeFactory tempFactory = StructAttributeSchemaManager.getStructAttributeFactory();
-        StructAttributeType tempType = tempStructSchema.getStructAttributeType(_qualifiedName);
+        StructType tempType = tempStructSchema.getStructAttributeType(_qualifiedName);
         return tempFactory.newStructAttribute(tempType);
     }
 }

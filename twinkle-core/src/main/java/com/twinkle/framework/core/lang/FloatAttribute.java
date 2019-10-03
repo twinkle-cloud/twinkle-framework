@@ -1,7 +1,5 @@
 package com.twinkle.framework.core.lang;
 
-import com.alibaba.fastjson.JSONObject;
-
 /**
  * Function: TODO ADD FUNCTION. <br/>
  * Reason:	 TODO ADD REASON. <br/>
@@ -133,32 +131,32 @@ public class FloatAttribute extends AbstractNumericAttribute implements IFloatAt
     }
 
     @Override
-    public boolean add(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getFloat() + _var2.getFloat();
+    public boolean add(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getFloat() + _attr2.getFloat();
         return true;
     }
 
     @Override
-    public boolean subtract(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getFloat() - _var2.getFloat();
+    public boolean subtract(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getFloat() - _attr2.getFloat();
         return true;
     }
 
     @Override
-    public boolean multiply(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getFloat() * _var2.getFloat();
+    public boolean multiply(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getFloat() * _attr2.getFloat();
         return true;
     }
 
     @Override
-    public boolean divide(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getFloat() / _var2.getFloat();
+    public boolean divide(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getFloat() / _attr2.getFloat();
         return true;
     }
 
     @Override
-    public boolean mod(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getFloat() % _var2.getFloat();
+    public boolean mod(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getFloat() % _attr2.getFloat();
         return true;
     }
 
@@ -179,11 +177,6 @@ public class FloatAttribute extends AbstractNumericAttribute implements IFloatAt
     @Override
     public Object getObjectValue() {
         return this.value;
-    }
-
-    @Override
-    public JSONObject getJsonObjectValue() {
-        return JSONObject.parseObject("" + this.value);
     }
 
     public static void main(String[] var0) {

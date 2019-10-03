@@ -1,6 +1,9 @@
 package com.twinkle.framework.struct.serialize;
 
 import com.alibaba.fastjson.JSONReader;
+import com.twinkle.framework.core.type.PrimitiveType;
+import com.twinkle.framework.core.type.StringType;
+import com.twinkle.framework.core.type.AttributeType;
 import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
 import com.twinkle.framework.struct.context.StructAttributeSchema;
 import com.twinkle.framework.struct.error.StructAttributeException;
@@ -42,12 +45,12 @@ public class IntrospectionDeserializer extends AbstractDeserializer {
             while(_reader.hasNext()) {
                 String tempName = _reader.readString();
                 AttributeRef tempAttrRef = tempAttr.getAttributeRef(tempName);
-                StructType tempStructType = tempAttrRef.getType();
+                AttributeType tempStructType = tempAttrRef.getType();
                 if (!tempStructType.isPrimitiveType() && !tempStructType.isStringType()) {
                     if (tempStructType.isArrayType()) {
                         this.deserializeArrayAttribute(tempAttr, tempAttrRef, tempStructType, _reader);
                     } else if (tempStructType.isStructType()) {
-                        tempAttr.setStruct(tempAttrRef, this.readStructAttribute(_reader, ((StructAttributeType)tempStructType).getQualifiedName()));
+                        tempAttr.setStruct(tempAttrRef, this.readStructAttribute(_reader, ((StructType)tempStructType).getQualifiedName()));
                     } else {
                         throw new RuntimeException("Unexpected type: " + tempStructType);
                     }
@@ -69,7 +72,7 @@ public class IntrospectionDeserializer extends AbstractDeserializer {
      * @param _reader
      * @throws IOException
      */
-    private void deserializeArrayAttribute(StructAttribute _attr, AttributeRef _attrRef, StructType _type, JSONReader _reader) throws IOException {
+    private void deserializeArrayAttribute(StructAttribute _attr, AttributeRef _attrRef, AttributeType _type, JSONReader _reader) throws IOException {
         _reader.startArray();
         if (_type == ArrayType.BYTE_ARRAY) {
             MutableByteArray tempArray = this.arrayAllocator.newByteArray(DEFAULT_CAPACITY);
@@ -127,7 +130,7 @@ public class IntrospectionDeserializer extends AbstractDeserializer {
             _attr.setArray(_attrRef, tempArray);
         } else if (_type.isArrayType()) {
             ArrayType tempArrayType = (ArrayType)_type;
-            String tempElementName = ((StructAttributeType)tempArrayType.getElementType()).getQualifiedName();
+            String tempElementName = ((StructType)tempArrayType.getElementType()).getQualifiedName();
             MutableStructAttributeArray tempArray = this.arrayAllocator.newStructAttributeArray(DEFAULT_CAPACITY);
             while(_reader.hasNext()) {
                 tempArray.add(this.readStructAttribute(_reader, tempElementName));
@@ -148,7 +151,7 @@ public class IntrospectionDeserializer extends AbstractDeserializer {
      * @param _reader
      * @throws IOException
      */
-    private void deserializePrimitiveAttribute(StructAttribute _attr, AttributeRef _attrRef, StructType _type, JSONReader _reader) throws IOException {
+    private void deserializePrimitiveAttribute(StructAttribute _attr, AttributeRef _attrRef, AttributeType _type, JSONReader _reader) throws IOException {
         if (_type == PrimitiveType.BYTE) {
             _attr.setByte(_attrRef, (_reader.readInteger()).byteValue());
         } else if (_type == PrimitiveType.SHORT) {
@@ -176,7 +179,7 @@ public class IntrospectionDeserializer extends AbstractDeserializer {
         return this.createStructAttribute(this.structAttributeSchema.getStructAttributeType(_attrName));
     }
 
-    protected StructAttribute createStructAttribute(StructAttributeType _attrType) throws StructAttributeException {
+    protected StructAttribute createStructAttribute(StructType _attrType) throws StructAttributeException {
         return this.structAttributeFactory.newStructAttribute(_attrType);
     }
 }

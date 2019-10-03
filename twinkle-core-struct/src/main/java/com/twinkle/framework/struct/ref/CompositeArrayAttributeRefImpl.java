@@ -7,7 +7,7 @@ import com.twinkle.framework.struct.error.BadAttributeNameException;
 import com.twinkle.framework.struct.type.ArrayType;
 import com.twinkle.framework.struct.type.StructAttribute;
 import com.twinkle.framework.struct.factory.StructAttributeFactory;
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.StructType;
 
 import java.text.ParseException;
 
@@ -22,11 +22,11 @@ import java.text.ParseException;
  */
 public class CompositeArrayAttributeRefImpl extends CompositeAttributeRefImpl implements ArrayAttributeRef, Cloneable {
 
-    public CompositeArrayAttributeRefImpl(StructAttributeType _saType, String _compositeName) throws BadAttributeNameException, AttributeNotFoundException, ParseException {
+    public CompositeArrayAttributeRefImpl(StructType _saType, String _compositeName) throws BadAttributeNameException, AttributeNotFoundException, ParseException {
         this(_saType, (new CompositeName(_compositeName)).head(), StructAttributeSchemaManager.getStructAttributeFactory());
     }
 
-    protected CompositeArrayAttributeRefImpl(StructAttributeType _saType, CompositeName _compositeName, StructAttributeFactory _factory) throws BadAttributeNameException, AttributeNotFoundException {
+    protected CompositeArrayAttributeRefImpl(StructType _saType, CompositeName _compositeName, StructAttributeFactory _factory) throws BadAttributeNameException, AttributeNotFoundException {
         super(_saType, _compositeName, _factory);
         AttributeRef tempAttrRef = this.getTailAttributeRef();
         if (!(tempAttrRef instanceof ArrayAttributeRef)) {
@@ -34,7 +34,7 @@ public class CompositeArrayAttributeRefImpl extends CompositeAttributeRefImpl im
         }
     }
 
-    protected CompositeArrayAttributeRefImpl(StructAttributeType _saType, String _compositeName, StructAttributeFactory _factory) throws BadAttributeNameException, AttributeNotFoundException, ParseException {
+    protected CompositeArrayAttributeRefImpl(StructType _saType, String _compositeName, StructAttributeFactory _factory) throws BadAttributeNameException, AttributeNotFoundException, ParseException {
         this(_saType, (new CompositeName(_compositeName)).head(), _factory);
     }
 

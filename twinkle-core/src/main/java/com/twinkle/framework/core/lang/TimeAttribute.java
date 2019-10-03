@@ -57,7 +57,7 @@ public class TimeAttribute extends IntegerAttribute {
         return type;
     }
 
-    public final long getMillisecs() {
+    public final long getMilliseconds() {
         return (long)this.value * 1000L;
     }
 
@@ -122,27 +122,16 @@ public class TimeAttribute extends IntegerAttribute {
     }
 
     @Override
-    public void aggregate(int _operation, Attribute _attr) {
+    public void aggregate(Operation _operation, Attribute _attr) {
         switch(_operation) {
-            case OPERATION_MIN:
+            case MIN:
                 this.min(_attr);
                 break;
-            case OPERATION_MAX:
+            case MAX:
                 this.max(_attr);
                 break;
-            case OPERATION_SET:
+            case SET:
                 this.setValue(_attr);
-        }
-    }
-
-    @Override
-    public int getOperationID(String _operationName) {
-        if (_operationName.equals(OPERATION_NAME_MIN)) {
-            return OPERATION_MIN;
-        } else if (_operationName.equals(OPERATION_NAME_MAX)) {
-            return OPERATION_MAX;
-        } else {
-            return _operationName.equals(OPERATION_NAME_SET) ? OPERATION_SET : -1;
         }
     }
 
@@ -157,7 +146,7 @@ public class TimeAttribute extends IntegerAttribute {
     }
 
     public String formatTime(String _pattern) {
-        return formatTime(this.getMillisecs(), _pattern);
+        return formatTime(this.getMilliseconds(), _pattern);
     }
 
     public static String formatTime(long _milliSeconds) {

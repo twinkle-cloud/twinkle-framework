@@ -1,7 +1,7 @@
 package com.twinkle.framework.struct.asm.define;
 
 import com.twinkle.framework.asm.define.BeanTypeDef;
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.StructType;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -18,5 +18,5 @@ public interface StructAttributeBeanTypeDef extends BeanTypeDef {
      *
      * @return
      */
-    StructAttributeType getStructAttributeType();
+    StructType getStructType();
 }

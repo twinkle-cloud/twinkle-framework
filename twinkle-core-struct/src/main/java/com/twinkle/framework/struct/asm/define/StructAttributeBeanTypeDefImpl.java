@@ -4,8 +4,8 @@ import com.twinkle.framework.asm.builder.TypeDefBuilder;
 import com.twinkle.framework.asm.define.BeanRefTypeDefImpl;
 import com.twinkle.framework.asm.define.TypeDef;
 import com.twinkle.framework.asm.descriptor.BeanTypeDescriptor;
-import com.twinkle.framework.struct.type.BeanStructAttributeType;
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.BeanStructType;
+import com.twinkle.framework.struct.type.StructType;
 import org.objectweb.asm.Type;
 
 import java.util.ArrayList;
@@ -27,11 +27,11 @@ public class StructAttributeBeanTypeDefImpl extends StructAttributeGeneralBeanTy
     private static final String IMPL_SUFFIX = "Impl";
     private static final String IMPL_IMPL_BUILDER_SUFFIX = "Impl$ImplBuilder";
 
-    public StructAttributeBeanTypeDefImpl(StructAttributeType _saType, ClassLoader _classLoader) throws ClassNotFoundException {
+    public StructAttributeBeanTypeDefImpl(StructType _saType, ClassLoader _classLoader) throws ClassNotFoundException {
         this(_saType, _classLoader, new HashMap<>());
     }
 
-    public StructAttributeBeanTypeDefImpl(StructAttributeType _saType, ClassLoader _classLoader, Map<String, TypeDef> _parentMap) throws ClassNotFoundException {
+    public StructAttributeBeanTypeDefImpl(StructType _saType, ClassLoader _classLoader, Map<String, TypeDef> _parentMap) throws ClassNotFoundException {
         super(_saType, getType(_saType), _classLoader, _parentMap);
     }
 
@@ -49,10 +49,10 @@ public class StructAttributeBeanTypeDefImpl extends StructAttributeGeneralBeanTy
      * @throws ClassNotFoundException
      */
     @Override
-    protected List<TypeDef> initBeanParents(StructAttributeType _saType, ClassLoader _classLoader, Map<String, TypeDef> _parentMap) throws ClassNotFoundException {
+    protected List<TypeDef> initBeanParents(StructType _saType, ClassLoader _classLoader, Map<String, TypeDef> _parentMap) throws ClassNotFoundException {
         BeanTypeDescriptor tempBeanTypeDescriptor = null;
-        if (_saType instanceof BeanStructAttributeType) {
-            tempBeanTypeDescriptor = ((BeanStructAttributeType) _saType).getTypeDescriptor();
+        if (_saType instanceof BeanStructType) {
+            tempBeanTypeDescriptor = ((BeanStructType) _saType).getTypeDescriptor();
         }
         if (tempBeanTypeDescriptor != null) {
             List<TypeDef> tempResultList = new ArrayList(tempBeanTypeDescriptor.getInterfaceDescriptors().size());
@@ -72,10 +72,10 @@ public class StructAttributeBeanTypeDefImpl extends StructAttributeGeneralBeanTy
     }
 
     public BeanTypeDescriptor getDescriptor() {
-        return this.structAttributeType instanceof BeanStructAttributeType ? ((BeanStructAttributeType) this.structAttributeType).getTypeDescriptor() : null;
+        return this.structType instanceof BeanStructType ? ((BeanStructType) this.structType).getTypeDescriptor() : null;
     }
 
-    public static Type getType(StructAttributeType _saType) {
+    public static Type getType(StructType _saType) {
         String tempInterfaceName = getStructAttributeInterfaceName(_saType.getQualifiedName());
         return TypeDefBuilder.getObjectType(tempInterfaceName);
     }

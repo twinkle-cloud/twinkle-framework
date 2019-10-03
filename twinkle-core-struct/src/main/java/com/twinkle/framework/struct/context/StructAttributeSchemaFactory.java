@@ -10,8 +10,8 @@ import com.twinkle.framework.struct.serialize.AbstractSchemaBasedDeSerializer;
 import com.twinkle.framework.struct.serialize.AbstractSchemaBasedSerializer;
 import com.twinkle.framework.struct.serialize.JsonSchemaSerializer;
 import com.twinkle.framework.struct.serialize.JsonSerializer;
-import com.twinkle.framework.struct.type.BeanStructAttributeType;
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.BeanStructType;
+import com.twinkle.framework.struct.type.StructType;
 import com.twinkle.framework.struct.util.ArrayAllocator;
 
 import java.util.Iterator;
@@ -56,11 +56,11 @@ public class StructAttributeSchemaFactory {
             Class tempDeserializerClass = null;
             while(tempNameSpaceItr.hasNext()) {
                 String tempNameSpace = tempNameSpaceItr.next();
-                Iterator<StructAttributeType> tempSATypeItr = _schema.getStructAttributeTypes(tempNameSpace);
+                Iterator<StructType> tempSATypeItr = _schema.getStructAttributeTypes(tempNameSpace);
                 while(tempSATypeItr.hasNext()) {
-                    StructAttributeType tempSAType = tempSATypeItr.next();
-                    if (tempSAType instanceof BeanStructAttributeType) {
-                        BeanTypeDescriptor tempDescriptor = ((BeanStructAttributeType)tempSAType).getTypeDescriptor();
+                    StructType tempSAType = tempSATypeItr.next();
+                    if (tempSAType instanceof BeanStructType) {
+                        BeanTypeDescriptor tempDescriptor = ((BeanStructType)tempSAType).getTypeDescriptor();
                         if (tempDescriptor != null) {
                             //Build the serializer and deserializer class for all.
                             Class tempItemSerializerClass = this.defineClass(new SerializerGeneratorClassDesigner(tempDescriptor, this.classLoader));

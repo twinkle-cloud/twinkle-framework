@@ -1,5 +1,6 @@
 package com.twinkle.framework.struct.type;
 
+import com.twinkle.framework.core.type.AttributeType;
 import com.twinkle.framework.struct.error.TypeAlreadyExistsException;
 import com.twinkle.framework.struct.error.TypeNotFoundException;
 
@@ -28,7 +29,7 @@ public class DefaultMutableStructTypeManager extends DefaultStructTypeManager {
      * @throws TypeAlreadyExistsException
      */
     public void renameType(String _oldName, String _newName) throws TypeNotFoundException, TypeAlreadyExistsException {
-        StructType tempType = this.getType(_oldName);
+        AttributeType tempType = this.getType(_oldName);
         this.addType(_newName, tempType);
         this.removeType(_oldName);
     }

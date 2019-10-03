@@ -1,5 +1,7 @@
 package com.twinkle.framework.struct.ref;
 
+import com.twinkle.framework.core.type.PrimitiveType;
+import com.twinkle.framework.core.type.AttributeType;
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptorImpl;
 import com.twinkle.framework.struct.error.AttributeNotFoundException;
@@ -32,7 +34,7 @@ public class ArrayAttributeRefImpl extends AbstractAttributeRef implements Array
     private int index;
     private final StructAttributeRef attributeRef;
     private final ArrayType arrayType;
-    private final StructType elementType;
+    private final AttributeType elementType;
     private final StructAttributeFactory factory;
 
     protected ArrayAttributeRefImpl(StructAttributeRef _attrRef, int _attrIndex, StructAttributeFactory _saFactory) {
@@ -131,7 +133,7 @@ public class ArrayAttributeRefImpl extends AbstractAttributeRef implements Array
 
     protected void ensureSize(StructAttributeArray _array, int _size) {
         if (_size >= _array.length()) {
-            StructAttribute tempAttr = this.factory.newStructAttribute((StructAttributeType) this.elementType);
+            StructAttribute tempAttr = this.factory.newStructAttribute((StructType) this.elementType);
             ((MutableStructAttributeArray) _array).length(_size + 1, tempAttr);
         }
 
@@ -144,7 +146,7 @@ public class ArrayAttributeRefImpl extends AbstractAttributeRef implements Array
      * @param _size
      */
     protected void ensureSize(Array _array, int _size) {
-        StructType tempType = this.elementType;
+        AttributeType tempType = this.elementType;
         if (tempType.isStructType()) {
             this.ensureSize((StructAttributeArray) _array, _size);
         } else if (tempType.isStringType()) {
@@ -214,7 +216,7 @@ public class ArrayAttributeRefImpl extends AbstractAttributeRef implements Array
             Array tempArray = this.attributeRef.getArray(_attr);
             int tempIndex = this.index;
             if (tempIndex < tempArray.length()) {
-                StructType tempElementType = this.elementType;
+                AttributeType tempElementType = this.elementType;
                 if (tempElementType.isStructType()) {
                     StructAttribute tempAttr = ((StructAttributeArray) tempArray).get(tempIndex);
                     if (tempAttr != null) {
@@ -262,7 +264,7 @@ public class ArrayAttributeRefImpl extends AbstractAttributeRef implements Array
             Array tempArray = this.attributeRef.getArray(_attr);
             int tempIndex = this.index;
             if (tempIndex < tempArray.length()) {
-                StructType tempElementType = this.elementType;
+                AttributeType tempElementType = this.elementType;
                 if (tempElementType.isStructType()) {
                     return ((StructAttributeArray) tempArray).get(tempIndex) != null;
                 }

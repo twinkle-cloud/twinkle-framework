@@ -1,5 +1,9 @@
 package com.twinkle.framework.struct.type;
 
+import com.twinkle.framework.core.type.PrimitiveType;
+import com.twinkle.framework.core.type.StringType;
+import com.twinkle.framework.core.type.AttributeType;
+
 /**
  * Function: TODO ADD FUNCTION. <br/>
  * Reason:	 TODO ADD REASON. <br/>
@@ -9,7 +13,7 @@ package com.twinkle.framework.struct.type;
  * @see
  * @since JDK 1.8
  */
-public final class ArrayType implements StructType {
+public final class ArrayType implements AttributeType {
     private static final int ARRAY_MASK = 16777216;
     public static final int BYTE_ARRAY_ID = 16777217;
     public static final ArrayType BYTE_ARRAY;
@@ -32,7 +36,7 @@ public final class ArrayType implements StructType {
     public static final int STRUCT_ARRAY_ID = 83886080;
     private int typeID = 0;
     private String name = null;
-    private StructType elementType = null;
+    private AttributeType elementType = null;
 
     static {
         BYTE_ARRAY = new ArrayType("byte[]", PrimitiveType.BYTE);
@@ -46,7 +50,7 @@ public final class ArrayType implements StructType {
         STRING_ARRAY = new ArrayType("string[]", StringType.STRING);
     }
 
-    private ArrayType(String _name, StructType _type) {
+    private ArrayType(String _name, AttributeType _type) {
         this.name = _name;
         this.elementType = _type;
         this.typeID = ARRAY_MASK | _type.getID();
@@ -76,7 +80,7 @@ public final class ArrayType implements StructType {
         return this.name;
     }
 
-    public StructType getElementType() {
+    public AttributeType getElementType() {
         return this.elementType;
     }
     @Override
@@ -84,8 +88,8 @@ public final class ArrayType implements StructType {
         return this.name;
     }
 
-    public static ArrayType getStructAttributeTypeArray(String _name, StructAttributeType _structAttributeType) {
-        return new ArrayType(_name, _structAttributeType);
+    public static ArrayType getStructAttributeTypeArray(String _name, StructType _structType) {
+        return new ArrayType(_name, _structType);
     }
 
     @Override

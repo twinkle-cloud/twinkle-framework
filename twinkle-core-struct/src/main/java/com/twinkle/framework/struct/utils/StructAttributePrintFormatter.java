@@ -1,6 +1,8 @@
 package com.twinkle.framework.struct.utils;
 
+import com.twinkle.framework.core.type.PrimitiveType;
 import com.twinkle.framework.core.lang.util.Array;
+import com.twinkle.framework.core.type.AttributeType;
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
 import com.twinkle.framework.struct.error.StructAttributeException;
 import com.twinkle.framework.struct.ref.AttributeRef;
@@ -52,7 +54,7 @@ public class StructAttributePrintFormatter {
         if (!_attr.isAttributeSet(_attrRef)) {
             return _builder;
         } else {
-            StructType tempStructType = _attrRef.getType();
+            AttributeType tempStructType = _attrRef.getType();
             _builder.append(var3);
             _builder.append(_attrRef.getName());
             _builder.append("  ");
@@ -125,7 +127,7 @@ public class StructAttributePrintFormatter {
     }
 
     public static StringBuilder append(StructAttribute _attr, StringBuilder _builder, String var2, String _separator) {
-        StructAttributeType tempAttrType = _attr.getType();
+        StructType tempAttrType = _attr.getType();
 
         try {
             String var5 = var2 + "  ";

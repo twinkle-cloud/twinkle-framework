@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONReader;
 import com.alibaba.fastjson.JSONWriter;
 import com.twinkle.framework.asm.serialize.TextSerializerBase;
 import com.twinkle.framework.struct.type.StructAttribute;
-import com.twinkle.framework.struct.type.StructType;
+import com.twinkle.framework.core.type.AttributeType;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -118,7 +118,7 @@ public abstract class AbstractJsonSerializer extends TextSerializerBase<StructAt
         return tempList;
     }
 
-    protected static void unexpectedType(StructType _type) {
+    protected static void unexpectedType(AttributeType _type) {
         throw new RuntimeException("Unexpected type: " + _type);
     }
 }

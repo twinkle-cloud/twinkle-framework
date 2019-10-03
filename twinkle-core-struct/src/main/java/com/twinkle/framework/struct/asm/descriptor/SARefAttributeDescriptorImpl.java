@@ -1,7 +1,7 @@
 package com.twinkle.framework.struct.asm.descriptor;
 
-import com.twinkle.framework.struct.type.StructAttributeType;
 import com.twinkle.framework.struct.type.StructType;
+import com.twinkle.framework.core.type.AttributeType;
 import lombok.Getter;
 
 /**
@@ -22,13 +22,13 @@ public class SARefAttributeDescriptorImpl implements SAAttributeDescriptor, Clon
     /**
      * StructAttribute's attribute type.
      */
-    private final StructType type;
+    private final AttributeType type;
     /**
      * StructAttribute's attribute is required or not.
      */
     private final boolean optional;
 
-    protected SARefAttributeDescriptorImpl(String _name, StructType _type, boolean _optional) {
+    protected SARefAttributeDescriptorImpl(String _name, AttributeType _type, boolean _optional) {
         this.name = _name;
         this.type = _type;
         this.optional = _optional;
@@ -42,8 +42,8 @@ public class SARefAttributeDescriptorImpl implements SAAttributeDescriptor, Clon
 
     @Override
     public String getTypeName() {
-        StructType tempType = this.type;
-        return tempType.isStructType() ? ((StructAttributeType) tempType).getQualifiedName() : tempType.getName();
+        AttributeType tempType = this.type;
+        return tempType.isStructType() ? ((StructType) tempType).getQualifiedName() : tempType.getName();
     }
 
     @Override

@@ -1,8 +1,5 @@
 package com.twinkle.framework.core.lang;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
 /**
  * Function: TODO ADD FUNCTION. <br/>
  * Reason:	 TODO ADD REASON. <br/>
@@ -185,26 +182,26 @@ public class IntegerAttribute extends AbstractNumericAttribute implements IInteg
     }
 
     @Override
-    public final boolean add(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getInt() + _var2.getInt();
+    public final boolean add(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getInt() + _attr2.getInt();
         return true;
     }
 
     @Override
-    public final boolean subtract(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getInt() - _var2.getInt();
+    public final boolean subtract(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getInt() - _attr2.getInt();
         return true;
     }
 
     @Override
-    public final boolean multiply(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getInt() * _var2.getInt();
+    public final boolean multiply(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getInt() * _attr2.getInt();
         return true;
     }
 
     @Override
-    public final boolean divide(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getInt() / _var2.getInt();
+    public final boolean divide(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getInt() / _attr2.getInt();
         return true;
     }
 
@@ -227,8 +224,8 @@ public class IntegerAttribute extends AbstractNumericAttribute implements IInteg
     }
 
     @Override
-    public final boolean mod(INumericAttribute _var1, INumericAttribute _var2) {
-        this.value = _var1.getInt() % _var2.getInt();
+    public final boolean mod(INumericAttribute _attr1, INumericAttribute _attr2) {
+        this.value = _attr1.getInt() % _attr2.getInt();
         return true;
     }
 
@@ -328,10 +325,5 @@ public class IntegerAttribute extends AbstractNumericAttribute implements IInteg
     @Override
     public Object getObjectValue() {
         return this.value;
-    }
-
-    @Override
-    public JSONObject getJsonObjectValue() {
-        return JSON.parseObject("" + this.value);
     }
 }

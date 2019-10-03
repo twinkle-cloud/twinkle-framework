@@ -65,6 +65,7 @@ public interface MutableObjectArray<E> extends ObjectArray<E>, MutableArray, Arr
      * @return
      * @throws UnsupportedOperationException
      */
+    @Override
     E[] array() throws UnsupportedOperationException;
 
     /**

@@ -6,7 +6,7 @@ import com.twinkle.framework.struct.error.AttributeTypeMismatchException;
 import com.twinkle.framework.struct.error.BadAttributeNameException;
 import com.twinkle.framework.struct.factory.StructAttributeFactory;
 import com.twinkle.framework.struct.factory.StructAttributeFactoryImpl;
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.StructType;
 
 import java.text.ParseException;
 
@@ -33,7 +33,7 @@ public class CompositeAttributeRefFactory {
      * @throws AttributeTypeMismatchException
      * @throws BadAttributeNameException
      */
-    public static AttributeRef getCompositeAttributeRef(StructAttributeType _saType, String _compositeName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
+    public static AttributeRef getCompositeAttributeRef(StructType _saType, String _compositeName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
         return getCompositeAttributeRef(StructAttributeSchemaManager.getStructAttributeFactory(), _saType, _compositeName);
     }
 
@@ -48,7 +48,7 @@ public class CompositeAttributeRefFactory {
      * @throws AttributeTypeMismatchException
      * @throws BadAttributeNameException
      */
-    public static AttributeRef getCompositeAttributeRef(StructAttributeFactory _factory, StructAttributeType _saType, String _compositeName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
+    public static AttributeRef getCompositeAttributeRef(StructAttributeFactory _factory, StructType _saType, String _compositeName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
         CompositeName tempName;
         try {
             tempName = new CompositeName(_compositeName);
@@ -74,7 +74,7 @@ public class CompositeAttributeRefFactory {
      * @throws AttributeTypeMismatchException
      * @throws BadAttributeNameException
      */
-    public static DynamicAttributeRef getDynamicAttributeRef(StructAttributeFactory _factory, StructAttributeType _saType, String _compositeName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
+    public static DynamicAttributeRef getDynamicAttributeRef(StructAttributeFactory _factory, StructType _saType, String _compositeName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
         try {
             return new DynamicAttributeRefImpl(_saType, _compositeName, _factory);
         } catch (ParseException e) {
@@ -82,7 +82,7 @@ public class CompositeAttributeRefFactory {
         }
     }
 
-    public static DynamicAttributeRef getDynamicAttributeRef(StructAttributeType _saType, String _compositeName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
+    public static DynamicAttributeRef getDynamicAttributeRef(StructType _saType, String _compositeName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
         return getDynamicAttributeRef(StructAttributeSchemaManager.getStructAttributeFactory(), _saType, _compositeName);
     }
     /**
@@ -96,7 +96,7 @@ public class CompositeAttributeRefFactory {
      * @throws AttributeTypeMismatchException
      * @throws BadAttributeNameException
      */
-    protected static AttributeRef getCompositeAttributeRef(StructAttributeFactory _saFactory, StructAttributeType _attrType, CompositeName _compositeName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
+    protected static AttributeRef getCompositeAttributeRef(StructAttributeFactory _saFactory, StructType _attrType, CompositeName _compositeName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
         CompositeName tempHeadName = _compositeName.head();
         if (tempHeadName.isTail()) {
             int tempHeadIndex = tempHeadName.index();

@@ -21,7 +21,7 @@ public interface StructAttribute extends Cloneable {
      * @return
      */
     @ApiModelProperty(hidden = true)
-    StructAttributeType getType();
+    StructType getType();
 
     /**
      * The attribute with name exists or not?

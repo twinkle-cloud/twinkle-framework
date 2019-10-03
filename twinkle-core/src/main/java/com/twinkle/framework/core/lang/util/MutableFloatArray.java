@@ -65,6 +65,7 @@ public interface MutableFloatArray extends FloatArray, MutableArray, ArrayWrappe
      * @return
      * @throws UnsupportedOperationException
      */
+    @Override
     float[] array() throws UnsupportedOperationException;
 
     /**

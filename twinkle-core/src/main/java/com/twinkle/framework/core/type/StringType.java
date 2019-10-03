@@ -1,4 +1,4 @@
-package com.twinkle.framework.struct.type;
+package com.twinkle.framework.core.type;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -9,7 +9,7 @@ package com.twinkle.framework.struct.type;
  * @see
  * @since JDK 1.8
  */
-public final class StringType implements StructType {
+public final class StringType implements AttributeType {
     public static final int STRING_ID = 33554432;
     public static final StringType STRING = new StringType();
     private static final String STRING_NAME = "string";

@@ -346,7 +346,7 @@ public class PrimitiveAttributeSchema {
         try {
             for (int i = 0; i < this.typeList.size(); i++) {
                 if (Class.forName(_typeName).isInstance(this.typeList.get(i))) {
-                    int tempPrimitiveType = ((Attribute) this.typeList.get(i)).getPrimitiveType();
+                    int tempPrimitiveType = (this.typeList.get(i)).getPrimitiveType();
                     return tempPrimitiveType;
                 }
             }

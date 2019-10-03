@@ -7,8 +7,8 @@ import com.twinkle.framework.struct.error.NamespaceNotFoundException;
 import com.twinkle.framework.struct.error.StructAttributeTypeNotFoundException;
 import com.twinkle.framework.struct.error.TypeNotFoundException;
 import com.twinkle.framework.struct.type.ArrayType;
-import com.twinkle.framework.struct.type.StructAttributeType;
 import com.twinkle.framework.struct.type.StructType;
+import com.twinkle.framework.core.type.AttributeType;
 import com.twinkle.framework.struct.type.StructTypeManager;
 import com.twinkle.framework.struct.utils.StructAttributeNameValidator;
 import lombok.Getter;
@@ -27,7 +27,7 @@ public class DefaultSAAttributeDescriptorImpl implements SAAttributeDescriptor {
     protected String name;
     protected String typeName;
     protected boolean optional = false;
-    protected StructType type;
+    protected AttributeType type;
     protected StructAttributeSchema structAttributeSchema;
 
     public DefaultSAAttributeDescriptorImpl(String _name, String _typeName, StructTypeManager _typeManager, boolean _optional) throws TypeNotFoundException, StructAttributeTypeNotFoundException, BadAttributeNameException, NamespaceNotFoundException {
@@ -50,7 +50,7 @@ public class DefaultSAAttributeDescriptorImpl implements SAAttributeDescriptor {
         } catch (TypeNotFoundException e) {
             if (_typeName.endsWith("[]")) {
                 tempTypeName = _typeName.substring(0, _typeName.length() - 2);
-                StructAttributeType tempType = this.structAttributeSchema.getStructAttributeType(tempTypeName);
+                StructType tempType = this.structAttributeSchema.getStructAttributeType(tempTypeName);
                 this.type = ArrayType.getStructAttributeTypeArray(_typeName, tempType);
             } else {
                 this.type = this.structAttributeSchema.getStructAttributeType(_typeName);

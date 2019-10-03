@@ -3,8 +3,11 @@ package com.twinkle.framework.struct.converter;
 import com.twinkle.framework.core.lang.Attribute;
 import com.twinkle.framework.core.lang.AttributeInfo;
 import com.twinkle.framework.core.lang.JavaAttributeInfo;
-import com.twinkle.framework.struct.utils.StructAttributeUtil;
+import com.twinkle.framework.struct.ref.AttributeRef;
 import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.utils.StructAttributeUtil;
+import com.twinkle.framework.struct.utils.StructTypeUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.objectweb.asm.Type;
 
 /**
@@ -23,7 +26,7 @@ public class JavaAttributeConverter {
      * @param _attrInfo
      * @return
      */
-    public static JavaAttributeInfo convertToJavaAttribute(AttributeInfo _attrInfo) {
+    public static JavaAttributeInfo convertToJavaAttribute(AttributeInfo _attrInfo) throws ClassNotFoundException {
         JavaAttributeInfo tempInfo = new JavaAttributeInfo();
         tempInfo.setPrimitiveType(_attrInfo.getPrimitiveType());
         switch (_attrInfo.getPrimitiveType()) {
@@ -60,11 +63,18 @@ public class JavaAttributeConverter {
                 break;
             case Attribute.OBJECT_TYPE:
                 tempInfo.setName(_attrInfo.getName());
-                if(_attrInfo.getName().indexOf(":") > 0) {
-                    StructAttribute tempAttr = StructAttributeUtil.newStructAttribute(_attrInfo.getName());
-                    tempInfo.setClassName(tempAttr.getClass().getName());
-                    tempInfo.setAttributeClass(tempAttr.getClass());
-                    tempInfo.setDescription(Type.getDescriptor(tempAttr.getClass()));
+                if (_attrInfo.getName().indexOf(":") > 0) {
+//                    String tempAttrTypeName = _attrInfo.getName();
+//                    int tempDotIndex = _attrInfo.getName().indexOf(".");
+//                    if (tempDotIndex > 0) {
+//                        tempAttrTypeName = tempAttrTypeName.substring(0, tempDotIndex);
+//                    }
+//                    StructAttribute tempAttr = StructAttributeUtil.newStructAttribute(tempAttrTypeName);
+////                    tempAttr.getAttributeRef()
+                    Class<?> tempAttrClass = getStructAttributeClass(_attrInfo.getName());
+                    tempInfo.setClassName(tempAttrClass.getName());
+                    tempInfo.setAttributeClass(tempAttrClass);
+                    tempInfo.setDescription(Type.getDescriptor(tempAttrClass));
                 } else {
                     tempInfo.setClassName(_attrInfo.getClassName());
                     tempInfo.setAttributeClass(_attrInfo.getAttributeClass());
@@ -75,5 +85,35 @@ public class JavaAttributeConverter {
                 throw new RuntimeException("Encountered unsupported attribute type [{" + _attrInfo + "}].");
         }
         return tempInfo;
+    }
+
+    /**
+     * Get the Struct Attribute class with given type name.
+     *
+     * @param _typeName
+     * @return
+     * @throws ClassNotFoundException
+     */
+    private static Class<?> getStructAttributeClass(String _typeName) throws ClassNotFoundException {
+        String tempAttrTypeName = _typeName;
+        String tempAttrItemName = "";
+        int tempDotIndex = _typeName.indexOf(".");
+        if (tempDotIndex > 0) {
+            tempAttrItemName = tempAttrTypeName.substring(tempDotIndex + 1);
+            tempAttrTypeName = tempAttrTypeName.substring(0, tempDotIndex);
+        }
+        StructAttribute tempAttr = null;
+        if (_typeName.indexOf(":") > 0) {
+            tempAttr = StructAttributeUtil.newStructAttribute(tempAttrTypeName);
+        }
+        if(StringUtils.isNotBlank(tempAttrItemName)) {
+            AttributeRef tempRef = tempAttr.getAttributeRef(tempAttrItemName);
+            if (!tempRef.getType().isStructType()) {
+                return StructTypeUtil.getTypeClass(tempRef.getType());
+            }
+            StructAttribute tempSubAttr = tempAttr.getStruct(tempRef);
+            return tempSubAttr.getClass();
+        }
+        return tempAttr.getClass();
     }
 }

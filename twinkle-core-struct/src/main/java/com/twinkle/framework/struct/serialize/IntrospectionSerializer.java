@@ -1,6 +1,9 @@
 package com.twinkle.framework.struct.serialize;
 
 import com.alibaba.fastjson.JSONWriter;
+import com.twinkle.framework.core.type.PrimitiveType;
+import com.twinkle.framework.core.type.StringType;
+import com.twinkle.framework.core.type.AttributeType;
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
 import com.twinkle.framework.struct.ref.AttributeRef;
 import com.twinkle.framework.core.lang.util.*;
@@ -29,7 +32,7 @@ public class IntrospectionSerializer extends AbstractSerializer {
         if (_attr == null) {
             _writer.writeValue(null);
         } else {
-            StructAttributeType _tempSAType = _attr.getType();
+            StructType _tempSAType = _attr.getType();
             _writer.startObject();
             Iterator<SAAttributeDescriptor> tempAttrDescriptorItr = _tempSAType.getAttributes();
 
@@ -52,7 +55,7 @@ public class IntrospectionSerializer extends AbstractSerializer {
     private void serializeAttribute(StructAttribute _attr, AttributeRef _attrRef, JSONWriter _writer) throws IOException {
         if (_attr.isAttributeSet(_attrRef)) {
             _writer.writeKey(_attrRef.getName());
-            StructType _tempType = _attrRef.getType();
+            AttributeType _tempType = _attrRef.getType();
             if (!_tempType.isPrimitiveType() && !_tempType.isStringType()) {
                 if (_tempType.isArrayType()) {
                     this.serializeArrayAttribute(_attr, _attrRef, _tempType, _writer);
@@ -76,7 +79,7 @@ public class IntrospectionSerializer extends AbstractSerializer {
      * @param _writer
      * @throws IOException
      */
-    private void serializePrimitiveAttribute(StructAttribute _attr, AttributeRef _attrRef, StructType _structType, JSONWriter _writer) throws IOException {
+    private void serializePrimitiveAttribute(StructAttribute _attr, AttributeRef _attrRef, AttributeType _structType, JSONWriter _writer) throws IOException {
         if (_structType == PrimitiveType.BYTE) {
             _writer.writeValue((long) _attr.getByte(_attrRef));
         } else if (_structType == PrimitiveType.SHORT) {
@@ -110,7 +113,7 @@ public class IntrospectionSerializer extends AbstractSerializer {
      * @param _writer
      * @throws IOException
      */
-    private void serializeArrayAttribute(StructAttribute _attr, AttributeRef _attrRef, StructType _structType, JSONWriter _writer) throws IOException {
+    private void serializeArrayAttribute(StructAttribute _attr, AttributeRef _attrRef, AttributeType _structType, JSONWriter _writer) throws IOException {
         _writer.startArray();
         if (_structType == ArrayType.BYTE_ARRAY) {
             ByteArray tempArray = (ByteArray) _attr.getArray(_attrRef);

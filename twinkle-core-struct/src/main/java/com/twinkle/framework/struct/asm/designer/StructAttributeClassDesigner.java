@@ -21,8 +21,8 @@ import com.twinkle.framework.struct.ref.SAAttributeRefHandleImpl;
 import com.twinkle.framework.struct.ref.StructAttributeRef;
 import com.twinkle.framework.struct.type.ArrayType;
 import com.twinkle.framework.struct.type.StructAttribute;
-import com.twinkle.framework.struct.type.StructAttributeType;
 import com.twinkle.framework.struct.type.StructType;
+import com.twinkle.framework.core.type.AttributeType;
 import com.twinkle.framework.struct.utils.StructTypeUtil;
 import org.objectweb.asm.*;
 
@@ -59,12 +59,12 @@ public final class StructAttributeClassDesigner extends SimpleReflectiveBeanClas
     protected static final Type ATTR_REF_IMPL;
     protected static final Set<String> RESERVED_NAMES;
     private final String superClassName;
-    private final StructAttributeType structAttributeType;
+    private final StructType structType;
 
     static {
-        INIT_METHOD_SIGNATURE = TypeUtil.getMethodDescriptor(new Class[]{StructAttributeType.class}, Void.TYPE);
+        INIT_METHOD_SIGNATURE = TypeUtil.getMethodDescriptor(new Class[]{StructType.class}, Void.TYPE);
         STRUCTATTRIBUTE_TYPE = Type.getType(StructAttribute.class);
-        STRUCTATTRIBUTETYPE_TYPE = Type.getType(StructAttributeType.class);
+        STRUCTATTRIBUTETYPE_TYPE = Type.getType(StructType.class);
         ATTR_REF_TYPE = Type.getType(AttributeRef.class);
         ATTR_REF_IMPL_TYPE = Type.getType(StructAttributeRef.class);
         ATTR_REF_IMPL = Type.getType(SAAttributeRefHandleImpl.class);
@@ -74,11 +74,11 @@ public final class StructAttributeClassDesigner extends SimpleReflectiveBeanClas
     public StructAttributeClassDesigner(String _className, String _superClassName, StructAttributeBeanTypeDef _typeDef) {
         super(_className, _typeDef);
         this.superClassName = this.toInternalName(_superClassName);
-        this.structAttributeType = _typeDef.getStructAttributeType();
+        this.structType = _typeDef.getStructType();
     }
 
-    protected StructAttributeType getStructAttributeType() {
-        return this.structAttributeType;
+    protected StructType getStructType() {
+        return this.structType;
     }
 
     /**
@@ -88,7 +88,7 @@ public final class StructAttributeClassDesigner extends SimpleReflectiveBeanClas
      * @return
      */
     protected SAAttributeDescriptor getSAAttribute(String _attrName) {
-        return this.getStructAttributeType().getAttribute(_attrName);
+        return this.getStructType().getAttribute(_attrName);
     }
 
     @Override
@@ -100,10 +100,10 @@ public final class StructAttributeClassDesigner extends SimpleReflectiveBeanClas
     public void initClass(Class _class) {
         Method tempMethod = null;
         try {
-            tempMethod = _class.getDeclaredMethod(INIT_METHOD_NAME, StructAttributeType.class);
+            tempMethod = _class.getDeclaredMethod(INIT_METHOD_NAME, StructType.class);
             tempMethod.setAccessible(true);
             MethodHandle tempMethodHandle = _methodLookup.unreflect(tempMethod);
-            tempMethodHandle.invokeExact(this.structAttributeType);
+            tempMethodHandle.invokeExact(this.structType);
         } catch (NoSuchMethodException | IllegalAccessException e) {
             throw new RuntimeException(e);
         } catch (Throwable throwable) {
@@ -218,7 +218,7 @@ public final class StructAttributeClassDesigner extends SimpleReflectiveBeanClas
     @Override
     protected boolean isMutableDefaultInterface(AttributeDef _attrDef) {
         SAAttributeDescriptor tempDescriptor = this.getSAAttribute(_attrDef.getName());
-        StructType tempStructType = tempDescriptor.getType();
+        AttributeType tempStructType = tempDescriptor.getType();
         return tempStructType.isArrayType();
     }
 
@@ -227,12 +227,12 @@ public final class StructAttributeClassDesigner extends SimpleReflectiveBeanClas
         Object tempDefaultValue = _attrDef.getDefaultValue();
         if (tempDefaultValue != null) {
             SAAttributeDescriptor tempAttrDescriptor = this.getSAAttribute(_attrDef.getName());
-            StructType tempAttrStructType = tempAttrDescriptor.getType();
+            AttributeType tempAttrStructType = tempAttrDescriptor.getType();
             Type tempAttrType = _attrDef.getType().getType();
             Type tempMappedJavaType = StructTypeUtil.mapStructAttributeType(_attrDef.getType().getType());
             boolean isArrayFlag = tempMappedJavaType.getSort() == Type.ARRAY;
             if (tempAttrStructType.isArrayType() && isArrayFlag) {
-                StructType tempElementType = ((ArrayType) tempAttrStructType).getElementType();
+                AttributeType tempElementType = ((ArrayType) tempAttrStructType).getElementType();
                 Type tempMappedElementJavaType = tempMappedJavaType.getElementType();
                 int tempDefaultValueLength = Array.getLength(tempDefaultValue);
                 _visitor.visitLdcInsn(tempDefaultValueLength);
@@ -490,11 +490,11 @@ public final class StructAttributeClassDesigner extends SimpleReflectiveBeanClas
         return "structAttributeType";
     }
 
-    protected String getSAAttributeGetterName(StructType _type) {
+    protected String getSAAttributeGetterName(AttributeType _type) {
         return "get" + getStructAttributeTypeName(_type);
     }
 
-    protected String getSAAttributeSetterName(StructType _type) {
+    protected String getSAAttributeSetterName(AttributeType _type) {
         return "set" + getStructAttributeTypeName(_type);
     }
 
@@ -504,7 +504,7 @@ public final class StructAttributeClassDesigner extends SimpleReflectiveBeanClas
      * @param _type
      * @return
      */
-    protected static String getStructAttributeTypeName(StructType _type) {
+    protected static String getStructAttributeTypeName(AttributeType _type) {
         if (_type.isStructType()) {
             return "Struct";
         } else if (_type.isArrayType()) {

@@ -6,10 +6,10 @@ import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptorImpl;
 import com.twinkle.framework.core.lang.util.Array;
 import com.twinkle.framework.struct.error.*;
 import com.twinkle.framework.struct.factory.StructAttributeFactory;
-import com.twinkle.framework.struct.type.PrimitiveType;
+import com.twinkle.framework.core.type.PrimitiveType;
 import com.twinkle.framework.struct.type.StructAttribute;
-import com.twinkle.framework.struct.type.StructAttributeType;
 import com.twinkle.framework.struct.type.StructType;
+import com.twinkle.framework.core.type.AttributeType;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -33,11 +33,11 @@ public class DynamicAttributeRefImpl implements DynamicAttributeRef {
     private SAAttributeDescriptor attributeDescriptor;
     protected DynamicComponent tailDynamicComponent;
 
-    public DynamicAttributeRefImpl(StructAttributeType _saType, String _compositeName) throws BadAttributeNameException, AttributeNotFoundException, ParseException {
+    public DynamicAttributeRefImpl(StructType _saType, String _compositeName) throws BadAttributeNameException, AttributeNotFoundException, ParseException {
         this(_saType, _compositeName, StructAttributeSchemaManager.getStructAttributeFactory());
     }
 
-    protected DynamicAttributeRefImpl(StructAttributeType _saType, String _compositeName, StructAttributeFactory _factory) throws BadAttributeNameException, AttributeNotFoundException, ParseException {
+    protected DynamicAttributeRefImpl(StructType _saType, String _compositeName, StructAttributeFactory _factory) throws BadAttributeNameException, AttributeNotFoundException, ParseException {
         this.compositeName = _compositeName;
         CompositeName tempCN = new CompositeName(_compositeName);
         List<CompositeName> tempSubCNList = tempCN.splitByNonNumeric();
@@ -47,9 +47,9 @@ public class DynamicAttributeRefImpl implements DynamicAttributeRef {
 
         for (Iterator tempItr = tempSubCNList.iterator(); tempItr.hasNext(); tempAttrRef = tempDynamicComponent.attrRef) {
             CompositeName tempItemCN = (CompositeName) tempItr.next();
-            StructAttributeType tempSAType;
+            StructType tempSAType;
             if (tempAttrRef != null) {
-                tempSAType = (StructAttributeType) tempAttrRef.getType();
+                tempSAType = (StructType) tempAttrRef.getType();
             } else {
                 tempSAType = _saType;
             }
@@ -85,7 +85,7 @@ public class DynamicAttributeRefImpl implements DynamicAttributeRef {
     }
 
     @Override
-    public StructType getType() {
+    public AttributeType getType() {
         return this.attributeDescriptor.getType();
     }
 
@@ -205,7 +205,7 @@ public class DynamicAttributeRefImpl implements DynamicAttributeRef {
                     tempAttr = tempAttrRef.getStruct(tempAttr);
                 } else {
                     StructAttributeFactory tempFactory = StructAttributeSchemaManager.getStructAttributeFactory();
-                    StructAttribute tempNewAttr = tempFactory.newStructAttribute((StructAttributeType) tempAttrRef.getType());
+                    StructAttribute tempNewAttr = tempFactory.newStructAttribute((StructType) tempAttrRef.getType());
                     tempAttr.setStruct(tempAttrRef, tempNewAttr);
                     tempAttr = tempNewAttr;
                 }
@@ -220,7 +220,7 @@ public class DynamicAttributeRefImpl implements DynamicAttributeRef {
         }
 
         @Override
-        public StructType getType() {
+        public AttributeType getType() {
             return this.dynamicAttributeRef.getType();
         }
 

@@ -10,7 +10,16 @@ package com.twinkle.framework.core.lang.util;
  * @since JDK 1.8
  */
 public interface ArrayWrapper<A> extends Cloneable {
+    /**
+     * Get array's length.
+     *
+     * @return
+     */
     int length();
 
+    /**
+     * Get the wrapper array.
+     * @return
+     */
     A array();
 }

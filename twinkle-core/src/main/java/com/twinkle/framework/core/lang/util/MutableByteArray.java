@@ -65,6 +65,7 @@ public interface MutableByteArray extends ByteArray, MutableArray, ArrayWrapper<
      * @return
      * @throws UnsupportedOperationException
      */
+    @Override
     byte[] array() throws UnsupportedOperationException;
 
     /**

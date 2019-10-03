@@ -58,6 +58,10 @@ public abstract class AbstractHttpHandler implements HttpHandler {
         if(_obj == null || _obj.isEmpty()) {
             return null;
         }
+//        String tempNeAttrName = _obj.getString("NeAttr");
+//        if(tempNeAttrName.indexOf(":") > 0) {
+//            tempNeAttrName.indexOf(":")
+//        }
         AttributeInfo tempAttrInfo = PrimitiveAttributeSchema.getInstance().getAttribute(_obj.getString("NeAttr"));
         if (tempAttrInfo == null) {
             log.error("The attribute[{}] does not exist in PrimitiveAttributeSchema.", _obj.toString());

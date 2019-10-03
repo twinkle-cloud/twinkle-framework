@@ -4,8 +4,8 @@ import com.twinkle.framework.struct.error.BadAttributeNameException;
 import com.twinkle.framework.struct.factory.StructAttributeFactoryImpl;
 import com.twinkle.framework.struct.type.ArrayType;
 import com.twinkle.framework.struct.factory.StructAttributeFactory;
-import com.twinkle.framework.struct.type.StructAttributeType;
 import com.twinkle.framework.struct.type.StructType;
+import com.twinkle.framework.core.type.AttributeType;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -18,13 +18,13 @@ import com.twinkle.framework.struct.type.StructType;
  */
 public class StructAttributeHierarchy implements Cloneable {
     private CompositeName compositeName;
-    private final StructAttributeType parentType;
+    private final StructType parentType;
     private final StructAttributeRef thisRef;
     private final StructAttributeHierarchy head;
     private final StructAttributeHierarchy previous;
     private final StructAttributeHierarchy next;
 
-    private StructAttributeHierarchy(StructAttributeHierarchy _previous, StructAttributeType _parentType, CompositeName _compositeName, StructAttributeFactory _factory) {
+    private StructAttributeHierarchy(StructAttributeHierarchy _previous, StructType _parentType, CompositeName _compositeName, StructAttributeFactory _factory) {
         this.compositeName = _compositeName;
         this.parentType = _parentType;
         this.previous = _previous;
@@ -36,24 +36,24 @@ public class StructAttributeHierarchy implements Cloneable {
 
         String tempName = _compositeName.name();
         this.thisRef = (StructAttributeRef)((StructAttributeFactoryImpl)_factory)._getAttributeRef(_parentType, tempName);
-        StructType tempStructType = this.thisRef.getType();
+        AttributeType tempStructType = this.thisRef.getType();
         if (_compositeName.isTail()) {
             this.next = null;
         } else {
-            StructAttributeType tempSAType;
+            StructType tempSAType;
             if (tempStructType.isArrayType()) {
-                tempSAType = (StructAttributeType)((ArrayType)tempStructType).getElementType();
+                tempSAType = (StructType)((ArrayType)tempStructType).getElementType();
             } else {
                 if (_compositeName.index() >= 0) {
                     throw new BadAttributeNameException(_compositeName.fullName());
                 }
-                tempSAType = (StructAttributeType)tempStructType;
+                tempSAType = (StructType)tempStructType;
             }
             this.next = new StructAttributeHierarchy(this, tempSAType, _compositeName.next(), _factory);
         }
     }
 
-    public StructAttributeHierarchy(StructAttributeType _saType, CompositeName _compositeName, StructAttributeFactory _factory) {
+    public StructAttributeHierarchy(StructType _saType, CompositeName _compositeName, StructAttributeFactory _factory) {
         this(null, _saType, _compositeName.head(), _factory);
     }
 
@@ -61,11 +61,11 @@ public class StructAttributeHierarchy implements Cloneable {
         return this.compositeName;
     }
 
-    public StructAttributeType getBaseType() {
+    public StructType getBaseType() {
         return this.head.getParentType();
     }
 
-    public StructAttributeType getParentType() {
+    public StructType getParentType() {
         return this.parentType;
     }
 

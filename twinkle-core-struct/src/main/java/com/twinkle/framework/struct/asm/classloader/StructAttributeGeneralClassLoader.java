@@ -7,7 +7,7 @@ import com.twinkle.framework.struct.asm.define.StructAttributeBeanTypeDef;
 import com.twinkle.framework.struct.asm.define.StructAttributeGeneralBeanTypeDefImpl;
 import com.twinkle.framework.struct.error.StructAttributeException;
 import com.twinkle.framework.struct.resolver.StructAttributeTypeResolver;
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.StructType;
 import org.objectweb.asm.Type;
 
 /**
@@ -35,7 +35,7 @@ public class StructAttributeGeneralClassLoader extends EnhancedClassLoader {
     @Override
     protected Class<?> findClass(String _className) throws ClassNotFoundException {
         if (_className != null && _className.startsWith(PACKAGE_PREFIX)) {
-            StructAttributeType tempStructAttrType = null;
+            StructType tempStructAttrType = null;
 
             try {
                 tempStructAttrType = this.getStructAttributeType(StructAttributeGeneralBeanTypeDefImpl.getStructAttributeQualifiedTypeName(_className));
@@ -59,7 +59,7 @@ public class StructAttributeGeneralClassLoader extends EnhancedClassLoader {
         return super.findClass(_className);
     }
 
-    protected StructAttributeType getStructAttributeType(String _attrName) {
+    protected StructType getStructAttributeType(String _attrName) {
         return this.typeResolver.getStructAttributeType(_attrName);
     }
 
@@ -67,7 +67,7 @@ public class StructAttributeGeneralClassLoader extends EnhancedClassLoader {
         return StructAttributeGeneralBeanTypeDefImpl.getStructAttributeGeneralClassName(_className);
     }
 
-    protected StructAttributeBeanTypeDef createStructAttributeBeanTypeDef(StructAttributeType _attrType) throws ClassNotFoundException {
+    protected StructAttributeBeanTypeDef createStructAttributeBeanTypeDef(StructType _attrType) throws ClassNotFoundException {
         Type tempStructType = StructAttributeGeneralBeanTypeDefImpl.getType(_attrType);
         return new StructAttributeGeneralBeanTypeDefImpl(_attrType, tempStructType, this);
     }

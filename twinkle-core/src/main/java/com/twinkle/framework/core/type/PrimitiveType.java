@@ -1,4 +1,4 @@
-package com.twinkle.framework.struct.type;
+package com.twinkle.framework.core.type;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -9,7 +9,7 @@ package com.twinkle.framework.struct.type;
  * @see
  * @since JDK 1.8
  */
-public final class PrimitiveType implements StructType {
+public final class PrimitiveType implements AttributeType {
     private int typeID = 0;
     private String name;
     public static final int BYTE_ID = 1;

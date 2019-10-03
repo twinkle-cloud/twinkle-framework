@@ -1,7 +1,5 @@
 package com.twinkle.framework.core.lang;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -126,17 +124,12 @@ public class BinaryAttribute implements IBinaryAttribute, ILogAttribute, Cloneab
     }
 
     @Override
-    public void aggregate(int _operation, Attribute _attr) {
+    public void aggregate(Operation _operation, Attribute _attr) {
         switch(_operation) {
-            case OPERATION_SET:
+            case SET:
                 this.setValue(_attr);
             default:
         }
-    }
-
-    @Override
-    public int getOperationID(String _operationName) {
-        return _operationName != null && _operationName.equals(OPERATION_NAME_SET) ? OPERATION_SET : -1;
     }
 
     @Override
@@ -210,11 +203,6 @@ public class BinaryAttribute implements IBinaryAttribute, ILogAttribute, Cloneab
     @Override
     public Object getObjectValue() {
         return this.value;
-    }
-
-    @Override
-    public JSONObject getJsonObjectValue() {
-        return JSON.parseObject("" + this.value);
     }
 
     @Override

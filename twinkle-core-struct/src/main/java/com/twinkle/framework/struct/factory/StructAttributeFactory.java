@@ -7,7 +7,7 @@ import com.twinkle.framework.struct.error.StructAttributeException;
 import com.twinkle.framework.struct.ref.AttributeRef;
 import com.twinkle.framework.struct.ref.DynamicAttributeRef;
 import com.twinkle.framework.struct.type.StructAttribute;
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.StructType;
 import com.twinkle.framework.struct.util.ArrayAllocator;
 
 /**
@@ -27,7 +27,7 @@ public interface StructAttributeFactory {
      * @return
      * @throws StructAttributeException
      */
-    StructAttribute newStructAttribute(StructAttributeType _saType) throws StructAttributeException;
+    StructAttribute newStructAttribute(StructType _saType) throws StructAttributeException;
 
     /**
      * Get the current array allocator.
@@ -46,7 +46,7 @@ public interface StructAttributeFactory {
      * @throws AttributeTypeMismatchException
      * @throws BadAttributeNameException
      */
-    AttributeRef getAttributeRef(StructAttributeType _saType, String _className) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException;
+    AttributeRef getAttributeRef(StructType _saType, String _className) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException;
 
     /**
      * Get the composite attribute ref with given type and composite name.
@@ -59,7 +59,7 @@ public interface StructAttributeFactory {
      * @throws AttributeTypeMismatchException
      * @throws BadAttributeNameException
      */
-    AttributeRef getCompositeAttributeRef(StructAttributeType _saType, String _compositeName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException;
+    AttributeRef getCompositeAttributeRef(StructType _saType, String _compositeName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException;
 
     /**
      * Get the Dynamic attribute ref with given type and composite name.
@@ -72,7 +72,7 @@ public interface StructAttributeFactory {
      * @throws AttributeTypeMismatchException
      * @throws BadAttributeNameException
      */
-    DynamicAttributeRef getDynamicAttributeRef(StructAttributeType _saType, String _compositeName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException;
+    DynamicAttributeRef getDynamicAttributeRef(StructType _saType, String _compositeName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException;
 
     /**
      * Load the general bean class for StructAttribute Type with given StructAttributeType.
@@ -82,7 +82,7 @@ public interface StructAttributeFactory {
      * @return
      * @throws StructAttributeException
      */
-    Class<?> loadGeneralBeanClass(StructAttributeType _saType)throws StructAttributeException;
+    Class<?> loadGeneralBeanClass(StructType _saType)throws StructAttributeException;
 
     /**
      * Load the general bean class for StructAttribute Type with given type name.

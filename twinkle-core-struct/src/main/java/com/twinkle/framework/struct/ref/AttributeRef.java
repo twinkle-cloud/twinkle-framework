@@ -1,7 +1,7 @@
 package com.twinkle.framework.struct.ref;
 
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
-import com.twinkle.framework.struct.type.StructType;
+import com.twinkle.framework.core.type.AttributeType;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -25,7 +25,7 @@ public interface AttributeRef {
      *
      * @return
      */
-    StructType getType();
+    AttributeType getType();
 
     /**
      * get the referred attribute's descriptor.

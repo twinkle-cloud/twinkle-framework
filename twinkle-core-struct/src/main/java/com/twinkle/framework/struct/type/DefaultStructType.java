@@ -21,7 +21,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @see
  * @since JDK 1.8
  */
-public class DefaultStructAttributeType implements BeanStructAttributeType, Cloneable {
+public class DefaultStructType implements BeanStructType, Cloneable {
     private String name;
     protected BeanTypeDescriptor typeDescriptor;
     private String namespace;
@@ -34,11 +34,11 @@ public class DefaultStructAttributeType implements BeanStructAttributeType, Clon
     protected final Lock readLock;
     protected final Lock writeLock;
 
-    public DefaultStructAttributeType(String _name) {
+    public DefaultStructType(String _name) {
         this(_name, null);
     }
 
-    public DefaultStructAttributeType(String _name, BeanTypeDescriptor _typeDescriptor) {
+    public DefaultStructType(String _name, BeanTypeDescriptor _typeDescriptor) {
         this.namespace = null;
         this.typeManager = null;
         this.qualifiedName = null;
@@ -165,11 +165,11 @@ public class DefaultStructAttributeType implements BeanStructAttributeType, Clon
     @Override
     public Object clone() {
         this.readLock.lock();
-        DefaultStructAttributeType tempCloneType;
+        DefaultStructType tempCloneType;
         try {
-            DefaultStructAttributeType tempType;
+            DefaultStructType tempType;
             try {
-                tempType = (DefaultStructAttributeType) super.clone();
+                tempType = (DefaultStructType) super.clone();
                 if (!this.isPublished()) {
                     tempType.attributes = this.initAttributes(this.attributes);
                 }
@@ -400,11 +400,11 @@ public class DefaultStructAttributeType implements BeanStructAttributeType, Clon
 
     @Override
     public boolean equals(Object _obj) {
-        if (_obj != null && _obj instanceof DefaultStructAttributeType) {
+        if (_obj != null && _obj instanceof DefaultStructType) {
             if (this == _obj) {
                 return true;
             } else {
-                DefaultStructAttributeType tempObj = (DefaultStructAttributeType) _obj;
+                DefaultStructType tempObj = (DefaultStructType) _obj;
                 return System.identityHashCode(this) < System.identityHashCode(tempObj) ? equalsImpl(this, tempObj) : equalsImpl(tempObj, this);
             }
         } else {
@@ -458,7 +458,7 @@ public class DefaultStructAttributeType implements BeanStructAttributeType, Clon
      * @param _secondType
      * @return
      */
-    private static boolean equalsImpl(DefaultStructAttributeType _firstType, DefaultStructAttributeType _secondType) {
+    private static boolean equalsImpl(DefaultStructType _firstType, DefaultStructType _secondType) {
         _firstType.readLock.lock();
 
         try {

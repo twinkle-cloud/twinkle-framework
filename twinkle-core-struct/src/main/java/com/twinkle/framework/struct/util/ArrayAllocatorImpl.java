@@ -2,9 +2,9 @@ package com.twinkle.framework.struct.util;
 
 import com.twinkle.framework.core.lang.util.*;
 import com.twinkle.framework.struct.type.ArrayType;
-import com.twinkle.framework.struct.type.PrimitiveType;
+import com.twinkle.framework.core.type.PrimitiveType;
 import com.twinkle.framework.struct.type.StructAttribute;
-import com.twinkle.framework.struct.type.StructType;
+import com.twinkle.framework.core.type.AttributeType;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -140,7 +140,7 @@ public class ArrayAllocatorImpl implements ArrayAllocator {
     }
     @Override
     public MutableArray newArray(ArrayType _arrayType, int _size) {
-        StructType tempStructType = _arrayType.getElementType();
+        AttributeType tempStructType = _arrayType.getElementType();
         if (tempStructType.isStructType()) {
             return this.newStructAttributeArray(_size);
         } else if (tempStructType.isStringType()) {

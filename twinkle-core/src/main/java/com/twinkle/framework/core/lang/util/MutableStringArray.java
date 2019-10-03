@@ -65,6 +65,7 @@ public interface MutableStringArray extends StringArray, MutableArray, ArrayWrap
      * @return
      * @throws UnsupportedOperationException
      */
+    @Override
     String[] array() throws UnsupportedOperationException;
 
     /**

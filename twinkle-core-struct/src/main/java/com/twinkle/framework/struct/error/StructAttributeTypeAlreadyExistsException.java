@@ -1,6 +1,6 @@
 package com.twinkle.framework.struct.error;
 
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.StructType;
 import lombok.Getter;
 
 /**
@@ -17,13 +17,13 @@ public final class StructAttributeTypeAlreadyExistsException extends StructAttri
     private String namespace = null;
     private String structAttributeTypeName = null;
 
-    public StructAttributeTypeAlreadyExistsException(String _namespace, StructAttributeType _structAttrType) {
+    public StructAttributeTypeAlreadyExistsException(String _namespace, StructType _structAttrType) {
         super(_structAttrType + " type already exists in " + _namespace);
         this.namespace = _namespace;
         this.structAttributeTypeName = _structAttrType != null ? _structAttrType.getName() : null;
     }
 
-    public StructAttributeTypeAlreadyExistsException(String _namespace, StructAttributeType _structAttrType, Throwable _exception) {
+    public StructAttributeTypeAlreadyExistsException(String _namespace, StructType _structAttrType, Throwable _exception) {
         super(_structAttrType + " type already exists in " + _namespace, _exception);
         this.namespace = _namespace;
         this.structAttributeTypeName = _structAttrType != null ? _structAttrType.getName() : null;

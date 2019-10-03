@@ -1,6 +1,7 @@
 package com.twinkle.framework.connector.http.endpoint;
 
 import com.alibaba.fastjson.JSONObject;
+import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.asm.descriptor.AttributeDescriptor;
 import com.twinkle.framework.asm.descriptor.AttributeDescriptorImpl;
@@ -9,6 +10,7 @@ import com.twinkle.framework.asm.descriptor.TypeDescriptorImpl;
 import com.twinkle.framework.core.lang.Attribute;
 import com.twinkle.framework.core.lang.JavaAttributeInfo;
 import com.twinkle.framework.struct.converter.JavaAttributeConverter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -27,6 +29,7 @@ import java.util.Map;
  * @see
  * @since JDK 1.8
  */
+@Slf4j
 public class DefaultHttpRequest extends AbstractHttpHandler implements HttpRequest {
     /**
      * Request Headers.
@@ -110,13 +113,19 @@ public class DefaultHttpRequest extends AbstractHttpHandler implements HttpReque
     private AttributeDescriptor packAttributeDescriptor(AttributeNode _node) {
         JSONObject tempObj = new JSONObject();
         tempObj.put(Attribute.EXT_INFO_NC_INDEX, _node.getAttrNEAttrMapItem().getNeAttrIndex());
-        AttributeDescriptor tempDescriptor = AttributeDescriptorImpl.builder()
-                .access(Opcodes.ACC_FINAL)
-                .name(_node.getAttrName())
-                .annotations(_node.getAnnotations())
-                .type(this.getAttrTypeDescriptor(_node))
-                .extraInfo(tempObj)
-                .build();
+        AttributeDescriptor tempDescriptor = null;
+        try {
+            tempDescriptor = AttributeDescriptorImpl.builder()
+                    .access(Opcodes.ACC_FINAL)
+                    .name(_node.getAttrName())
+                    .annotations(_node.getAnnotations())
+                    .type(this.getAttrTypeDescriptor(_node))
+                    .extraInfo(tempObj)
+                    .build();
+        } catch (ClassNotFoundException e) {
+            log.warn("Struct Attribute is defined incorrectly.", e);
+            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_ATTR_VALUE_INVALID, "Struct Attribute is defined incorrectly.");
+        }
         return tempDescriptor;
     }
 
@@ -126,7 +135,7 @@ public class DefaultHttpRequest extends AbstractHttpHandler implements HttpReque
      * @param _node
      * @return
      */
-    private TypeDescriptor getAttrTypeDescriptor(AttributeNode _node) {
+    private TypeDescriptor getAttrTypeDescriptor(AttributeNode _node) throws ClassNotFoundException {
         JavaAttributeInfo tempAttrInfo = JavaAttributeConverter.convertToJavaAttribute(_node.getAttributeInfo());
 
         TypeDescriptor tempTypeDescriptor = TypeDescriptorImpl.builder().name(tempAttrInfo.getName())

@@ -1,5 +1,6 @@
 package com.twinkle.framework.struct.type;
 
+import com.twinkle.framework.core.type.AttributeType;
 import com.twinkle.framework.struct.error.TypeAlreadyExistsException;
 import com.twinkle.framework.struct.error.TypeNotFoundException;
 
@@ -46,7 +47,7 @@ public interface StructTypeManager {
      * @return
      * @throws TypeNotFoundException
      */
-    StructType getType(String _typeName) throws TypeNotFoundException;
+    AttributeType getType(String _typeName) throws TypeNotFoundException;
 
     /**
      * Get the struct type with the given type name, and the check flag for
@@ -57,7 +58,7 @@ public interface StructTypeManager {
      * @return
      * @throws TypeNotFoundException
      */
-    StructType getType(String _typeName, boolean _checkAliasFlag) throws TypeNotFoundException;
+    AttributeType getType(String _typeName, boolean _checkAliasFlag) throws TypeNotFoundException;
 
     /**
      * Add the struct type into the manager.
@@ -66,5 +67,5 @@ public interface StructTypeManager {
      * @param _type
      * @throws TypeAlreadyExistsException
      */
-    void addType(String _typeName, StructType _type) throws TypeAlreadyExistsException;
+    void addType(String _typeName, AttributeType _type) throws TypeAlreadyExistsException;
 }

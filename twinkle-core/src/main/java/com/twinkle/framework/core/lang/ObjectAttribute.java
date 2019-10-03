@@ -1,8 +1,5 @@
 package com.twinkle.framework.core.lang;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
 /**
  * Function: TODO ADD FUNCTION. <br/>
  * Reason:	 TODO ADD REASON. <br/>
@@ -70,17 +67,12 @@ public class ObjectAttribute implements Attribute {
     }
 
     @Override
-    public void aggregate(int _operation, Attribute _attr) {
+    public void aggregate(Operation _operation, Attribute _attr) {
         switch(_operation) {
-            case OPERATION_SET:
+            case SET:
                 this.setValue(_attr);
             default:
         }
-    }
-
-    @Override
-    public int getOperationID(String _operationName) {
-        return _operationName != null && _operationName.equals(OPERATION_NAME_SET) ? OPERATION_SET : -1;
     }
 
     @Override
@@ -123,10 +115,5 @@ public class ObjectAttribute implements Attribute {
     @Override
     public Object getObjectValue() {
         return this.value;
-    }
-
-    @Override
-    public JSONObject getJsonObjectValue() {
-        return JSON.parseObject(this.value.toString());
     }
 }

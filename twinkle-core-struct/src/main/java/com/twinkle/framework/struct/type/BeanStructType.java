@@ -11,7 +11,7 @@ import com.twinkle.framework.asm.descriptor.BeanTypeDescriptor;
  * @see
  * @since JDK 1.8
  */
-public interface BeanStructAttributeType extends StructAttributeType {
+public interface BeanStructType extends StructType {
     /**
      * Get the bean type descriptor for this type.
      *

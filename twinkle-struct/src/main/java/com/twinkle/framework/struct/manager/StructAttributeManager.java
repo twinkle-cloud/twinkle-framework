@@ -17,8 +17,8 @@ import com.twinkle.framework.struct.factory.StructAttributeFactoryCenterImpl;
 import com.twinkle.framework.struct.utils.StructAttributeUtil;
 import com.twinkle.framework.struct.serialize.FastJSONStructAttributeSerializer;
 import com.twinkle.framework.struct.type.StructAttribute;
-import com.twinkle.framework.struct.type.StructAttributeType;
 import com.twinkle.framework.struct.type.StructType;
+import com.twinkle.framework.core.type.AttributeType;
 import com.twinkle.framework.struct.type.StructTypeManager;
 import com.twinkle.framework.struct.utils.StructAttributeNameValidator;
 import lombok.Getter;
@@ -193,10 +193,10 @@ public class StructAttributeManager extends AbstractComponent implements Configu
         }
         _typeList.add(_namespace + NS_SEPARATOR + _typeName);
         StructTypeManager tempTypeManager = null;
-        StructAttributeType tempStructAttributeType = null;
+        StructType tempStructType = null;
 
         try {
-            tempStructAttributeType = _schema.newStructAttributeType(_namespace, _typeName);
+            tempStructType = _schema.newStructAttributeType(_namespace, _typeName);
             tempTypeManager = _schema.getTypeManager(_namespace);
         } catch (NamespaceNotFoundException e) {
             throw new ConfigurationException(ExceptionCode.LOGIC_CONF_SA_TYPE_ADD_FAILED, "Can not add struct attribute type " + _namespace + ":" + _typeName, e);
@@ -216,7 +216,7 @@ public class StructAttributeManager extends AbstractComponent implements Configu
             if (!StringUtils.isBlank(tempAttrOptional)) {
                 isOptional = Boolean.parseBoolean(tempAttrOptional);
             }
-            StructType tempAttrStructType = null;
+            AttributeType tempAttrStructType = null;
             try {
                 try {
                     tempAttrStructType = tempTypeManager.getType(tempAttrType);
@@ -244,7 +244,7 @@ public class StructAttributeManager extends AbstractComponent implements Configu
                         this.loadNameSpaceAttributes(_schema, tempAttrNameSpace, tempAttrNameOfNS, _typeList);
                     }
                 }
-                tempStructAttributeType.addAttribute(tempAttrName, tempAttrType, isOptional);
+                tempStructType.addAttribute(tempAttrName, tempAttrType, isOptional);
             } catch (AttributeAlreadyExistsException e) {
                 log.warn("Attribute [{}] already exists in type[{}].", tempAttrName, _typeName);
             } catch (TypeNotFoundException e) {
@@ -263,9 +263,10 @@ public class StructAttributeManager extends AbstractComponent implements Configu
         }
 
         try {
-            _schema.addStructAttributeType(tempStructAttributeType);
-            PrimitiveAttributeSchema.getInstance().addAttribute(tempStructAttributeType.getQualifiedName(), ObjectAttribute.class.getName());
-            this.structAttributeList.add(tempStructAttributeType.getQualifiedName());
+            _schema.addStructAttributeType(tempStructType);
+            PrimitiveAttributeSchema.getInstance().addAttribute(tempStructType.getQualifiedName(), ObjectAttribute.class.getName());
+//            PrimitiveAttributeSchema.getInstance().addAttribute(tempStructAttributeType.getQualifiedName() + "[]", ObjectAttribute.class.getName());
+            this.structAttributeList.add(tempStructType.getQualifiedName());
         } catch (StructAttributeTypeAlreadyExistsException e) {
         } catch (NamespaceNotFoundException e) {
         }

@@ -1,5 +1,6 @@
 package com.twinkle.framework.struct.type;
 
+import com.twinkle.framework.core.type.AttributeType;
 import lombok.Getter;
 
 /**
@@ -12,7 +13,7 @@ import lombok.Getter;
  * @since JDK 1.8
  */
 @Getter
-public final class AliasStructType implements StructType {
+public final class AliasStructType implements AttributeType {
     /**
      * Alias name.
      */
@@ -20,11 +21,11 @@ public final class AliasStructType implements StructType {
     /**
      * Struct type.
      */
-    private StructType sourceType;
+    private AttributeType sourceType;
 
-    public AliasStructType(String _aliasName, StructType _sourceType) {
+    public AliasStructType(String _aliasName, AttributeType _sourceType) {
         int tempTypeId = _sourceType.getID();
-        if (tempTypeId != StructAttributeType.STRUCT_ID && tempTypeId != ArrayType.STRUCT_ARRAY_ID) {
+        if (tempTypeId != StructType.STRUCT_ID && tempTypeId != ArrayType.STRUCT_ARRAY_ID) {
             this.name = _aliasName;
             this.sourceType = _sourceType;
         } else {

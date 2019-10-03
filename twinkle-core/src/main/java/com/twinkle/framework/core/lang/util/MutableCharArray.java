@@ -65,6 +65,7 @@ public interface MutableCharArray extends CharArray, MutableArray, ArrayWrapper<
      * @return
      * @throws UnsupportedOperationException
      */
+    @Override
     char[] array() throws UnsupportedOperationException;
 
     /**

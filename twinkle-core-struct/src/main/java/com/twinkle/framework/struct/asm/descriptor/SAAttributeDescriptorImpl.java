@@ -1,7 +1,7 @@
 package com.twinkle.framework.struct.asm.descriptor;
 
-import com.twinkle.framework.struct.type.StructAttributeType;
 import com.twinkle.framework.struct.type.StructType;
+import com.twinkle.framework.core.type.AttributeType;
 import lombok.Getter;
 
 /**
@@ -16,10 +16,10 @@ import lombok.Getter;
 @Getter
 public class SAAttributeDescriptorImpl implements SAAttributeDescriptor, Cloneable {
     private final String name;
-    private final StructType type;
+    private final AttributeType type;
     private final boolean optional;
 
-    public SAAttributeDescriptorImpl(String _name, StructType _type, boolean _optional) {
+    public SAAttributeDescriptorImpl(String _name, AttributeType _type, boolean _optional) {
         this.name = _name;
         this.type = _type;
         this.optional = _optional;
@@ -32,8 +32,8 @@ public class SAAttributeDescriptorImpl implements SAAttributeDescriptor, Cloneab
     }
     @Override
     public String getTypeName() {
-        StructType tempType = this.type;
-        return tempType.isStructType() ? ((StructAttributeType)tempType).getQualifiedName() : tempType.getName();
+        AttributeType tempType = this.type;
+        return tempType.isStructType() ? ((StructType)tempType).getQualifiedName() : tempType.getName();
     }
     @Override
     public boolean equals(Object _obj) {

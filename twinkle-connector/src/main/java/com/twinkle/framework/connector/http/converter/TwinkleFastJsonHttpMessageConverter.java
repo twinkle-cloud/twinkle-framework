@@ -43,25 +43,26 @@ public class TwinkleFastJsonHttpMessageConverter extends FastJsonHttpMessageConv
                        HttpInputMessage inputMessage
     ) throws IOException, HttpMessageNotReadableException {
         Type tempType = this.getType(type, contextClass);
-        if(tempType instanceof Class) {
-        if (StructAttribute.class.isAssignableFrom((Class)tempType)) {
-            String tempClassName = type.getTypeName();
-            String tempRootType = StructTypeUtil.getQualifiedName(tempClassName);
-            if (StringUtils.isBlank(tempRootType)) {
-                return super.read(type, contextClass, inputMessage);
-            }
+        if (tempType instanceof Class) {
+            if (StructAttribute.class.isAssignableFrom((Class) tempType)) {
+                String tempClassName = type.getTypeName();
+                String tempRootType = StructTypeUtil.getQualifiedName(tempClassName);
+                if (StringUtils.isBlank(tempRootType)) {
+                    return super.read(type, contextClass, inputMessage);
+                }
 
-            JsonSerializer tempJsonSerializer = this.serializerMap.get(tempRootType);
-            if (tempJsonSerializer == null) {
-                SerializerFactory tempFactory = new JsonIntrospectionSerializerFactory();
-                Serializer tempSerializer = tempFactory.getSerializer(tempRootType);
-                tempJsonSerializer = (JsonSerializer) tempSerializer;
-                this.serializerMap.put(tempRootType, tempJsonSerializer);
-            }
+                JsonSerializer tempJsonSerializer = this.serializerMap.get(tempRootType);
+                if (tempJsonSerializer == null) {
+                    SerializerFactory tempFactory = new JsonIntrospectionSerializerFactory();
+                    Serializer tempSerializer = tempFactory.getSerializer(tempRootType);
+                    tempJsonSerializer = (JsonSerializer) tempSerializer;
+                    this.serializerMap.put(tempRootType, tempJsonSerializer);
+                }
 
-            StructAttribute tempAttribute = tempJsonSerializer.read(inputMessage.getBody());
-            return tempAttribute;
-        }}
+                StructAttribute tempAttribute = tempJsonSerializer.read(inputMessage.getBody());
+                return tempAttribute;
+            }
+        }
         return super.read(type, contextClass, inputMessage);
     }
 

@@ -5,13 +5,13 @@ import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptorImpl;
 import com.twinkle.framework.core.lang.util.Array;
 import com.twinkle.framework.struct.error.*;
-import com.twinkle.framework.struct.type.StructType;
+import com.twinkle.framework.core.type.AttributeType;
 import com.twinkle.framework.struct.util.MutableStructAttributeArray;
 import com.twinkle.framework.struct.util.StructAttributeArray;
 import com.twinkle.framework.struct.factory.StructAttributeFactory;
 import com.twinkle.framework.struct.type.ArrayType;
 import com.twinkle.framework.struct.type.StructAttribute;
-import com.twinkle.framework.struct.type.StructAttributeType;
+import com.twinkle.framework.struct.type.StructType;
 
 import java.text.ParseException;
 
@@ -27,16 +27,16 @@ import java.text.ParseException;
 public class CompositeAttributeRefImpl implements StructAttributeRef, CompositeAttributeRef, Cloneable {
     private StructAttributeHierarchy head;
     protected StructAttributeHierarchy tail;
-    private StructAttributeType baseType;
+    private StructType baseType;
     protected StructAttributeRef attrRef;
     protected SAAttributeDescriptor descriptor;
     private StructAttributeFactory factory;
 
-    public CompositeAttributeRefImpl(StructAttributeType _saType, String _compositeName) throws BadAttributeNameException, AttributeNotFoundException, ParseException {
+    public CompositeAttributeRefImpl(StructType _saType, String _compositeName) throws BadAttributeNameException, AttributeNotFoundException, ParseException {
         this(_saType, (new CompositeName(_compositeName)).head(), StructAttributeSchemaManager.getStructAttributeFactory());
     }
 
-    protected CompositeAttributeRefImpl(StructAttributeType _saType, String _compositeName, StructAttributeFactory _factory) throws BadAttributeNameException, AttributeNotFoundException, ParseException {
+    protected CompositeAttributeRefImpl(StructType _saType, String _compositeName, StructAttributeFactory _factory) throws BadAttributeNameException, AttributeNotFoundException, ParseException {
         this(_saType, (new CompositeName(_compositeName)).head(), _factory);
     }
 
@@ -49,7 +49,7 @@ public class CompositeAttributeRefImpl implements StructAttributeRef, CompositeA
      * @throws BadAttributeNameException
      * @throws AttributeNotFoundException
      */
-    protected CompositeAttributeRefImpl(StructAttributeType _saType, CompositeName _compositeName, StructAttributeFactory _factory) throws BadAttributeNameException, AttributeNotFoundException {
+    protected CompositeAttributeRefImpl(StructType _saType, CompositeName _compositeName, StructAttributeFactory _factory) throws BadAttributeNameException, AttributeNotFoundException {
         this.factory = _factory;
         try {
             this.head = new StructAttributeHierarchy(_saType, _compositeName, _factory);
@@ -64,12 +64,12 @@ public class CompositeAttributeRefImpl implements StructAttributeRef, CompositeA
         this.tail = this.head.tail();
         this.baseType = this.head.getBaseType();
         StructAttributeRef tempTailAttrRef = this.tail.getAttributeRef();
-        StructType tempStructType = tempTailAttrRef.getType();
+        AttributeType tempStructType = tempTailAttrRef.getType();
         int tempNameIndex = this.tail.getCompositeName().index();
         if (!tempStructType.isArrayType() && tempNameIndex >= 0) {
             throw new BadAttributeNameException(this.tail.getCompositeName().fullName());
         }
-        StructAttributeType tempTailParentType = this.tail.getParentType();
+        StructType tempTailParentType = this.tail.getParentType();
         String tempCNName = this.tail.getCompositeName().name();
         SAAttributeDescriptor tempDescriptor = tempTailParentType.getAttribute(tempCNName);
         if (tempNameIndex >= 0) {
@@ -104,22 +104,22 @@ public class CompositeAttributeRefImpl implements StructAttributeRef, CompositeA
         CompositeName tempCompositeName = _hierarchy.getCompositeName();
         StructAttributeRef tempAttrRef = _hierarchy.getAttributeRef();
         int tempNameIndex = tempCompositeName.index();
-        StructType tempStructType;
+        AttributeType tempStructType;
         int tempIndex;
         if (!_attr.isAttributeSet(tempAttrRef)) {
             if (!_createFlag) {
                 throw new AttributeNotSetException(tempCompositeName.fullName());
             }
-            StructType tempType = tempAttrRef.getType();
+            AttributeType tempType = tempAttrRef.getType();
             if (tempNameIndex < 0) {
-                StructAttribute tempAttr = this.factory.newStructAttribute((StructAttributeType) tempType);
+                StructAttribute tempAttr = this.factory.newStructAttribute((StructType) tempType);
                 _attr.setStruct(tempAttrRef, tempAttr);
                 return tempAttr;
             }
             tempStructType = ((ArrayType) tempType).getElementType();
             tempIndex = tempNameIndex + 1;
             MutableStructAttributeArray tempSAArray = this.factory.getArrayAllocator().newStructAttributeArray(tempIndex);
-            tempSAArray.length(tempIndex, this.factory.newStructAttribute((StructAttributeType) tempStructType));
+            tempSAArray.length(tempIndex, this.factory.newStructAttribute((StructType) tempStructType));
             _attr.setArray(tempAttrRef, tempSAArray);
             return tempSAArray.get(tempNameIndex);
         } else if (tempNameIndex < 0) {
@@ -144,8 +144,8 @@ public class CompositeAttributeRefImpl implements StructAttributeRef, CompositeA
                 } else if (!_createFlag) {
                     throw new AttributeNotSetException(tempCompositeName.fullName());
                 }
-                StructType tempType = ((ArrayType) tempAttrRef.getType()).getElementType();
-                StructAttribute tempNewAttr = this.factory.newStructAttribute((StructAttributeType) tempType);
+                AttributeType tempType = ((ArrayType) tempAttrRef.getType()).getElementType();
+                StructAttribute tempNewAttr = this.factory.newStructAttribute((StructType) tempType);
                 tempSAArray.put(tempNameIndex, tempNewAttr);
                 return tempNewAttr;
             } else if (!_createFlag) {
@@ -154,7 +154,7 @@ public class CompositeAttributeRefImpl implements StructAttributeRef, CompositeA
                 tempStructType = ((ArrayType) tempAttrRef.getType()).getElementType();
                 tempIndex = tempNameIndex + 1;
                 tempSAArray.ensureCapacity(tempIndex);
-                ((MutableStructAttributeArray) tempSAArray).length(tempIndex, this.factory.newStructAttribute((StructAttributeType) tempStructType));
+                ((MutableStructAttributeArray) tempSAArray).length(tempIndex, this.factory.newStructAttribute((StructType) tempStructType));
                 return tempSAArray.get(tempNameIndex);
             }
         }
@@ -223,7 +223,7 @@ public class CompositeAttributeRefImpl implements StructAttributeRef, CompositeA
     }
 
     @Override
-    public StructType getType() {
+    public AttributeType getType() {
         return this.attrRef.getType();
     }
 
@@ -248,7 +248,7 @@ public class CompositeAttributeRefImpl implements StructAttributeRef, CompositeA
     }
 
     @Override
-    public StructAttributeType getTailType() {
+    public StructType getTailType() {
         return this.tail.getParentType();
     }
 
