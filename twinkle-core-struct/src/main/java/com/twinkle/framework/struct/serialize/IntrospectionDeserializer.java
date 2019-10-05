@@ -1,15 +1,12 @@
 package com.twinkle.framework.struct.serialize;
 
 import com.alibaba.fastjson.JSONReader;
-import com.twinkle.framework.core.type.PrimitiveType;
-import com.twinkle.framework.core.type.StringType;
-import com.twinkle.framework.core.type.AttributeType;
-import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
 import com.twinkle.framework.struct.context.StructAttributeSchema;
-import com.twinkle.framework.struct.error.StructAttributeException;
+import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
+import com.twinkle.framework.struct.factory.StructAttributeFactory;
 import com.twinkle.framework.struct.ref.AttributeRef;
 import com.twinkle.framework.core.lang.util.*;
-import com.twinkle.framework.struct.factory.StructAttributeFactory;
+import com.twinkle.framework.struct.error.StructAttributeException;
 import com.twinkle.framework.struct.type.*;
 import com.twinkle.framework.struct.util.ArrayAllocator;
 import com.twinkle.framework.struct.util.MutableStructAttributeArray;

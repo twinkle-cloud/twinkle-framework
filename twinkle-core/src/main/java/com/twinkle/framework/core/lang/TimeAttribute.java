@@ -44,13 +44,13 @@ public class TimeAttribute extends IntegerAttribute {
     }
 
     @Override
-    public final int getType() {
+    public final int getTypeIndex() {
         return type;
     }
 
     @Override
-    public final void setType(int _type) {
-        type = _type;
+    public final void setTypeIndex(int _index) {
+        type = _index;
     }
 
     public static int getTypeID() {

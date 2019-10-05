@@ -6,9 +6,9 @@ import com.twinkle.framework.core.lang.util.ImmutableIterator;
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
 import com.twinkle.framework.struct.error.*;
 import com.twinkle.framework.struct.type.DefaultStructType;
-import com.twinkle.framework.struct.type.DefaultStructTypeManager;
+import com.twinkle.framework.struct.type.DefaultAttributeTypeManager;
 import com.twinkle.framework.struct.type.StructType;
-import com.twinkle.framework.struct.type.StructTypeManager;
+import com.twinkle.framework.struct.type.AttributeTypeManager;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -49,8 +49,8 @@ public class DefaultStructAttributeSchema implements BeanStructAttributeSchema {
         this.typeDescriptors = _descriptor;
     }
 
-    protected StructTypeManager createNewTypeManager() {
-        return new DefaultStructTypeManager();
+    protected AttributeTypeManager createNewTypeManager() {
+        return new DefaultAttributeTypeManager();
     }
 
     protected Namespace createNewNamespace() {
@@ -93,10 +93,10 @@ public class DefaultStructAttributeSchema implements BeanStructAttributeSchema {
     }
 
     @Override
-    public StructTypeManager getTypeManager(String _namespace) throws NamespaceNotFoundException {
+    public AttributeTypeManager getTypeManager(String _namespace) throws NamespaceNotFoundException {
         this.readLock.lock();
 
-        StructTypeManager tempTypeManager;
+        AttributeTypeManager tempTypeManager;
         try {
             if (_namespace != null && _namespace.length() != 0) {
                 if (!this.namespaceMap.containsKey(_namespace)) {
@@ -163,7 +163,7 @@ public class DefaultStructAttributeSchema implements BeanStructAttributeSchema {
             }
 
             Namespace tempNamespace = this.createNewNamespace();
-            StructTypeManager tempTypeManager = tempNamespace.getTypeManager();
+            AttributeTypeManager tempTypeManager = tempNamespace.getTypeManager();
             if (tempTypeManager.hasTypeName(_namespace)) {
                 throw new IllegalArgumentException("Namespace name " + _namespace + " is already defined in TypeManager.");
             }
@@ -286,7 +286,7 @@ public class DefaultStructAttributeSchema implements BeanStructAttributeSchema {
             DefaultStructType tempSAType = this.createNewStructAttributeType(_attrName, _descriptor);
             tempSAType.setNamespace(_namespace);
             Namespace tempNamespace = this.namespaceMap.get(_namespace);
-            StructTypeManager tempTypeManager = tempNamespace.getTypeManager();
+            AttributeTypeManager tempTypeManager = tempNamespace.getTypeManager();
             tempSAType.setTypeManager(tempTypeManager);
             tempResultAttrType = tempSAType;
         } finally {
@@ -303,7 +303,7 @@ public class DefaultStructAttributeSchema implements BeanStructAttributeSchema {
     @Override
     public void addStructAttributeType(StructType _structType) throws NamespaceNotFoundException, StructAttributeTypeAlreadyExistsException {
         DefaultStructType tempSAType = (DefaultStructType) _structType;
-        StructTypeManager tempTypeManager = _structType.getTypeManager();
+        AttributeTypeManager tempTypeManager = _structType.getTypeManager();
         String tempNamespace = _structType.getNamespace();
         this.writeLock.lock();
 
@@ -437,7 +437,7 @@ public class DefaultStructAttributeSchema implements BeanStructAttributeSchema {
 
     @Getter
     static class Namespace {
-        private StructTypeManager typeManager = new DefaultStructTypeManager();
+        private AttributeTypeManager typeManager = new DefaultAttributeTypeManager();
         private Map<String, StructType> structAttributeTypes = new HashMap<>();
     }
 }

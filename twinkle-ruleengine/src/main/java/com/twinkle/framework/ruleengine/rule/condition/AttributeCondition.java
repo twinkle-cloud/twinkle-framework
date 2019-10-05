@@ -2,9 +2,9 @@ package com.twinkle.framework.ruleengine.rule.condition;
 
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.constant.ExceptionCode;
+import com.twinkle.framework.api.context.AttributeInfo;
 import com.twinkle.framework.api.exception.ConfigurationException;
-import com.twinkle.framework.core.lang.AttributeInfo;
-import com.twinkle.framework.core.context.model.NormalizedContext;
+import com.twinkle.framework.api.context.NormalizedContext;
 import com.twinkle.framework.core.lang.*;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,11 +1,11 @@
 package com.twinkle.framework.struct.serialize;
 
+import com.twinkle.framework.asm.factory.BeanFactory;
 import com.twinkle.framework.asm.serialize.Serializer;
 import com.twinkle.framework.asm.serialize.SerializerFactory;
-import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
 import com.twinkle.framework.struct.context.StructAttributeSchema;
 import com.twinkle.framework.struct.context.StructAttributeSchemaFactory;
-import com.twinkle.framework.asm.factory.BeanFactory;
+import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
 import com.twinkle.framework.struct.factory.StructAttributeFactory;
 
 import java.util.Objects;

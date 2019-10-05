@@ -2,9 +2,9 @@ package com.twinkle.framework.struct.serialize;
 
 import com.alibaba.fastjson.JSONWriter;
 import com.twinkle.framework.asm.serialize.Serializer;
+import com.twinkle.framework.core.lang.util.*;
 import com.twinkle.framework.struct.error.SerializationException;
 import com.twinkle.framework.struct.type.StructAttribute;
-import com.twinkle.framework.core.lang.util.*;
 import com.twinkle.framework.struct.util.StructAttributeArray;
 
 import java.io.IOException;

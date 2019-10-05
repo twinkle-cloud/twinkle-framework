@@ -1,8 +1,8 @@
 package com.twinkle.framework.struct.factory;
 
 import com.twinkle.framework.struct.context.BeanStructAttributeSchema;
-import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
 import com.twinkle.framework.struct.context.StructAttributeSchema;
+import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
 import com.twinkle.framework.struct.resolver.DefaultStructAttributeTypeResolver;
 import com.twinkle.framework.struct.resolver.StructAttributeTypeResolver;
 import com.twinkle.framework.struct.serialize.SerializerFactoryRegistry;

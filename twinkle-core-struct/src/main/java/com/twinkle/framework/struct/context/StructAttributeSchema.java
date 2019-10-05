@@ -5,7 +5,7 @@ import com.twinkle.framework.struct.error.NamespaceNotFoundException;
 import com.twinkle.framework.struct.error.StructAttributeTypeAlreadyExistsException;
 import com.twinkle.framework.struct.error.StructAttributeTypeNotFoundException;
 import com.twinkle.framework.struct.type.StructType;
-import com.twinkle.framework.struct.type.StructTypeManager;
+import com.twinkle.framework.struct.type.AttributeTypeManager;
 
 import java.util.Iterator;
 
@@ -62,7 +62,7 @@ public interface StructAttributeSchema {
      * @return
      * @throws NamespaceNotFoundException
      */
-    StructTypeManager getTypeManager(String _namespace) throws NamespaceNotFoundException;
+    AttributeTypeManager getTypeManager(String _namespace) throws NamespaceNotFoundException;
 
     /**
      * Get the struct types' num of this schema.

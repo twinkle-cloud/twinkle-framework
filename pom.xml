@@ -95,7 +95,7 @@
             </dependency>
             <dependency>
                 <groupId>com.twinkle.framework</groupId>
-                <artifactId>twinkle-struct</artifactId>
+                <artifactId>twinkle-context</artifactId>
                 <version>${twinkleframework.version}</version>
                 <scope>compile</scope>
                 <type>jar</type>
@@ -284,7 +284,7 @@
         <module>twinkle-core-struct</module>
         <module>twinkle-api</module>
         <module>twinkle-configure</module>
-        <module>twinkle-struct</module>
+        <module>twinkle-context</module>
         <module>twinkle-datacenter</module>
         <module>twinkle-ruleengine</module>
         <module>twinkle-connector</module>

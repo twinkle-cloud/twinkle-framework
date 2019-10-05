@@ -1,8 +1,8 @@
 package com.twinkle.framework.struct.context;
 
 import com.twinkle.framework.struct.factory.AbstractStructAttributeFactoryCenter;
-import com.twinkle.framework.struct.factory.StructAttributeFactoryCenter;
 import com.twinkle.framework.struct.factory.StructAttributeFactory;
+import com.twinkle.framework.struct.factory.StructAttributeFactoryCenter;
 import lombok.extern.slf4j.Slf4j;
 
 /**

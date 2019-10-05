@@ -1,11 +1,11 @@
 package com.twinkle.framework.struct.ref;
 
-import com.twinkle.framework.struct.error.BadAttributeNameException;
-import com.twinkle.framework.struct.factory.StructAttributeFactoryImpl;
-import com.twinkle.framework.struct.type.ArrayType;
 import com.twinkle.framework.struct.factory.StructAttributeFactory;
+import com.twinkle.framework.struct.factory.StructAttributeFactoryImpl;
+import com.twinkle.framework.struct.error.BadAttributeNameException;
+import com.twinkle.framework.struct.type.ArrayType;
+import com.twinkle.framework.struct.type.AttributeType;
 import com.twinkle.framework.struct.type.StructType;
-import com.twinkle.framework.core.type.AttributeType;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>

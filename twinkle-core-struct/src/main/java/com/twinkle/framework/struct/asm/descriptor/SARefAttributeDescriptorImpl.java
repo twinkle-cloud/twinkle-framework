@@ -1,7 +1,7 @@
 package com.twinkle.framework.struct.asm.descriptor;
 
 import com.twinkle.framework.struct.type.StructType;
-import com.twinkle.framework.core.type.AttributeType;
+import com.twinkle.framework.struct.type.AttributeType;
 import lombok.Getter;
 
 /**

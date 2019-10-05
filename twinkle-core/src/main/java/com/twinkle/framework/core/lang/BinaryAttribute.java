@@ -49,13 +49,13 @@ public class BinaryAttribute implements IBinaryAttribute, ILogAttribute, Cloneab
     }
 
     @Override
-    public int getType() {
+    public int getTypeIndex() {
         return type;
     }
 
     @Override
-    public void setType(int _type) {
-        type = _type;
+    public void setTypeIndex(int _index) {
+        type = _index;
     }
 
     @Override

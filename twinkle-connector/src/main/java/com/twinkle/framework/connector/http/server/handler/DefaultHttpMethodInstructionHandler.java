@@ -1,13 +1,13 @@
 package com.twinkle.framework.connector.http.server.handler;
 
 import com.twinkle.framework.api.constant.ResultCode;
+import com.twinkle.framework.api.context.NormalizedContext;
 import com.twinkle.framework.api.data.GeneralResult;
 import com.twinkle.framework.api.exception.RuleException;
 import com.twinkle.framework.asm.define.AttributeDef;
 import com.twinkle.framework.asm.define.MethodDef;
 import com.twinkle.framework.asm.handler.AbstractMethodInstructionHandler;
 import com.twinkle.framework.asm.utils.TypeUtil;
-import com.twinkle.framework.core.context.model.NormalizedContext;
 import com.twinkle.framework.core.lang.Attribute;
 import com.twinkle.framework.core.lang.MethodAttribute;
 import org.objectweb.asm.Label;

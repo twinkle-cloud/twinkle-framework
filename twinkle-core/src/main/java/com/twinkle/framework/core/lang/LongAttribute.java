@@ -27,13 +27,13 @@ public class LongAttribute extends AbstractNumericAttribute implements ILongAttr
     }
 
     @Override
-    public final int getType() {
+    public final int getTypeIndex() {
         return type;
     }
 
     @Override
-    public final void setType(int var1) {
-        type = var1;
+    public final void setTypeIndex(int _index) {
+        type = _index;
     }
 
     public static int getTypeID() {

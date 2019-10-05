@@ -25,7 +25,7 @@ public class DefaultStructType implements BeanStructType, Cloneable {
     private String name;
     protected BeanTypeDescriptor typeDescriptor;
     private String namespace;
-    protected StructTypeManager typeManager;
+    protected AttributeTypeManager typeManager;
     private String qualifiedName;
     private int hashCode;
     protected Map<String, SAAttributeDescriptor> attributes;
@@ -127,7 +127,7 @@ public class DefaultStructType implements BeanStructType, Cloneable {
      *
      * @param _typeManager
      */
-    public void setTypeManager(StructTypeManager _typeManager) {
+    public void setTypeManager(AttributeTypeManager _typeManager) {
         this.writeLock.lock();
         try {
             this.typeManager = _typeManager;
@@ -234,12 +234,12 @@ public class DefaultStructType implements BeanStructType, Cloneable {
     }
 
     @Override
-    public StructTypeManager getTypeManager() {
+    public AttributeTypeManager getTypeManager() {
         this.readLock.lock();
 
         try {
-            StructTypeManager tempStructTypeManager = this.typeManager;
-            return tempStructTypeManager;
+            AttributeTypeManager tempAttributeTypeManager = this.typeManager;
+            return tempAttributeTypeManager;
         } finally {
             this.readLock.unlock();
         }

@@ -1,9 +1,5 @@
 package com.twinkle.framework.struct.type;
 
-import com.twinkle.framework.core.type.PrimitiveType;
-import com.twinkle.framework.core.type.StringType;
-import com.twinkle.framework.core.type.AttributeType;
-
 /**
  * Function: TODO ADD FUNCTION. <br/>
  * Reason:	 TODO ADD REASON. <br/>

@@ -3,6 +3,7 @@ package com.twinkle.framework.asm.factory;
 import com.twinkle.framework.asm.classloader.BeanClassLoader;
 import com.twinkle.framework.asm.Bean;
 import com.twinkle.framework.asm.descriptor.TypeDescriptors;
+import com.twinkle.framework.asm.utils.BeanUtil;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -14,8 +15,6 @@ import com.twinkle.framework.asm.descriptor.TypeDescriptors;
  * @since JDK 1.8
  */
 public abstract class AbstractBeanFactory implements BeanFactory {
-    public static final String LEGACY_TYPE_SEPARATOR = ":";
-    public static final String TYPE_SEPARATOR = ".";
     private BeanClassLoader beanClassLoader;
 
     public AbstractBeanFactory(BeanClassLoader _classLoader) {
@@ -83,7 +82,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     }
 
     protected <T extends Bean> Class<T> loadBeanInterfaceByBeanType(String _typeName) {
-        String tempInterfaceName = typeNameToInterfaceName(_typeName);
+        String tempInterfaceName = BeanUtil.typeNameToInterfaceName(_typeName);
 
         try {
             return (Class<T>) this.getBeanClassLoader().loadClass(tempInterfaceName);
@@ -93,7 +92,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     }
 
     protected <T extends Bean> Class<T> loadBeanClassByBeanType(String _typeName) {
-        String tempClassName = typeNameToClassName(_typeName);
+        String tempClassName = BeanUtil.typeNameToClassName(_typeName);
 
         try {
             return (Class<T>) this.getBeanClassLoader().loadClass(tempClassName);
@@ -103,7 +102,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     }
 
     protected <E extends Enum> Class<E> loadEnumClassByEnumType(String _enumTypeName) {
-        String tempInterfaceName = typeNameToInterfaceName(_enumTypeName);
+        String tempInterfaceName = BeanUtil.typeNameToInterfaceName(_enumTypeName);
 
         try {
             return (Class<E>) this.getBeanClassLoader().loadClass(tempInterfaceName);
@@ -113,20 +112,12 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     }
 
     protected static String classNameToTypeName(String _className) {
-        String tempInterfaceName = BeanClassLoader.getInterfaceName(_className);
+        String tempInterfaceName = BeanUtil.getInterfaceName(_className);
         if (!tempInterfaceName.startsWith(Bean.DEFAULT_PACKAGE)) {
             throw new IllegalArgumentException("Bean class '" + _className + "' does not belong to the package " + Bean.DEFAULT_PACKAGE);
         } else {
             int tempPackageLength = Bean.DEFAULT_PACKAGE.length();
             return tempInterfaceName.substring(tempPackageLength, tempInterfaceName.length() - tempPackageLength);
         }
-    }
-
-    public static String typeNameToInterfaceName(String _typeName) {
-        return _typeName.startsWith(Bean.DEFAULT_PACKAGE) ? BeanClassLoader.getInterfaceName(_typeName) : Bean.DEFAULT_PACKAGE + _typeName.replaceAll(LEGACY_TYPE_SEPARATOR, TYPE_SEPARATOR);
-    }
-
-    public static String typeNameToClassName(String _typeName) {
-        return _typeName.startsWith(Bean.DEFAULT_PACKAGE) ? BeanClassLoader.getClassName(_typeName) : Bean.DEFAULT_PACKAGE + _typeName.replaceAll(LEGACY_TYPE_SEPARATOR, TYPE_SEPARATOR) + "Impl";
     }
 }

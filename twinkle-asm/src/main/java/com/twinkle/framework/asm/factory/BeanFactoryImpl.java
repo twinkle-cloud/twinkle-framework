@@ -5,6 +5,7 @@ import com.twinkle.framework.asm.Bean;
 import com.twinkle.framework.asm.builder.BeanImplBuilder;
 import com.twinkle.framework.asm.descriptor.TypeDescriptors;
 import com.twinkle.framework.asm.serialize.SerializerFactory;
+import com.twinkle.framework.asm.utils.BeanUtil;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -108,7 +109,7 @@ public class BeanFactoryImpl extends AbstractBeanFactory {
     }
 
     protected <T extends Bean> Class<? extends BeanImplBuilder<T>> loadBeanImplBuilderClassByBeanType(String _beanTypeName) {
-        String tempBuilderName = typeNameToImplBuilderClassName(_beanTypeName);
+        String tempBuilderName = BeanUtil.typeNameToImplBuilderClassName(_beanTypeName);
 
         try {
             return (Class<? extends BeanImplBuilder<T>>) this.getBeanClassLoader().loadClass(tempBuilderName);
@@ -118,7 +119,7 @@ public class BeanFactoryImpl extends AbstractBeanFactory {
     }
 
     protected <T extends Bean> Class<? extends BeanImplBuilder<T>> loadBeanImplBuilderClassByBeanClass(String _beanName) {
-        String tempBuilderName = BeanClassLoader.getImplBuilderName(_beanName);
+        String tempBuilderName = BeanUtil.getImplBuilderName(_beanName);
 
         try {
             return (Class<? extends BeanImplBuilder<T>>) this.getBeanClassLoader().loadClass(tempBuilderName);
@@ -127,9 +128,6 @@ public class BeanFactoryImpl extends AbstractBeanFactory {
         }
     }
 
-    protected static String typeNameToImplBuilderClassName(String _typeName) {
-        return _typeName.startsWith(Bean.DEFAULT_PACKAGE) ? BeanClassLoader.getImplBuilderName(_typeName) : Bean.DEFAULT_PACKAGE + _typeName.replaceAll(LEGACY_TYPE_SEPARATOR, TYPE_SEPARATOR) + "Impl$ImplBuilder";
-    }
     @Override
     public SerializerFactory getSerializerFactory(String _factoryName) {
         throw new UnsupportedOperationException("getSerializerFactory");

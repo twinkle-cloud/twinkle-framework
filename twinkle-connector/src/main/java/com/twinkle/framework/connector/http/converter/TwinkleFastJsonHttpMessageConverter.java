@@ -15,8 +15,12 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,25 +49,42 @@ public class TwinkleFastJsonHttpMessageConverter extends FastJsonHttpMessageConv
         Type tempType = this.getType(type, contextClass);
         if (tempType instanceof Class) {
             if (StructAttribute.class.isAssignableFrom((Class) tempType)) {
-                String tempClassName = type.getTypeName();
-                String tempRootType = StructTypeUtil.getQualifiedName(tempClassName);
-                if (StringUtils.isBlank(tempRootType)) {
-                    return super.read(type, contextClass, inputMessage);
+                JsonSerializer tempJsonSerializer = this.getJsonSerializer(type);
+                if(tempJsonSerializer == null) {
+                    super.read(type, contextClass, inputMessage);
                 }
-
-                JsonSerializer tempJsonSerializer = this.serializerMap.get(tempRootType);
-                if (tempJsonSerializer == null) {
-                    SerializerFactory tempFactory = new JsonIntrospectionSerializerFactory();
-                    Serializer tempSerializer = tempFactory.getSerializer(tempRootType);
-                    tempJsonSerializer = (JsonSerializer) tempSerializer;
-                    this.serializerMap.put(tempRootType, tempJsonSerializer);
-                }
-
                 StructAttribute tempAttribute = tempJsonSerializer.read(inputMessage.getBody());
                 return tempAttribute;
             }
+            if(((Class) tempType).isArray()) {
+                Class<?> tempGenericClass = ((Class) tempType).getComponentType();
+                if(StructAttribute.class.isAssignableFrom(tempGenericClass)) {
+                    JsonSerializer tempJsonSerializer = this.getJsonSerializer(tempGenericClass);
+                    if(tempJsonSerializer == null) {
+                        super.read(type, contextClass, inputMessage);
+                    }
+                    List<StructAttribute> tempAttribute = tempJsonSerializer.readMultiple(inputMessage.getBody());
+                    return tempAttribute.toArray((StructAttribute[])Array.newInstance(tempGenericClass, tempAttribute.size()));
+                }
+            }
         }
         return super.read(type, contextClass, inputMessage);
+    }
+
+    private JsonSerializer getJsonSerializer(Type _type) {
+        String tempClassName = _type.getTypeName();
+        String tempRootType = StructTypeUtil.getQualifiedName(tempClassName);
+        if (StringUtils.isBlank(tempRootType)) {
+            return null;
+        }
+        JsonSerializer tempJsonSerializer = this.serializerMap.get(tempRootType);
+        if (tempJsonSerializer == null) {
+            SerializerFactory tempFactory = new JsonIntrospectionSerializerFactory();
+            Serializer tempSerializer = tempFactory.getSerializer(tempRootType);
+            tempJsonSerializer = (JsonSerializer) tempSerializer;
+            this.serializerMap.put(tempRootType, tempJsonSerializer);
+        }
+        return tempJsonSerializer;
     }
 
     @Override

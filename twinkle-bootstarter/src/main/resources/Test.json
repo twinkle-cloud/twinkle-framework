@@ -37,7 +37,7 @@
               ],
               "RequestBody": {
                 "HttpAttr": "_request",
-                "NeAttr": "TestDemo:TestRequest"
+                "NeAttr": "userOrgInfo"
               }
             },
             "Response": {
@@ -99,10 +99,15 @@
       "resultData",
       "com.twinkle.framework.core.lang.StringAttribute",
       ""
+    ],
+    [
+      "userOrgInfo",
+      "com.twinkle.framework.struct.lang.StructAttributeList",
+      "TestDemo:TestRequest"
     ]
   ],
   "StructAttributeManager": {
-    "ClassName": "com.twinkle.framework.struct.manager.StructAttributeManager",
+    "ClassName": "com.twinkle.framework.context.manager.StructAttributeManager",
     "NameSpaceNames": [
       "TestDemo"
     ],

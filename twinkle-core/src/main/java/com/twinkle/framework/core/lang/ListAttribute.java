@@ -1,6 +1,8 @@
 package com.twinkle.framework.core.lang;
 
 import com.twinkle.framework.core.utils.CharsetUtil;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.*;
@@ -17,9 +19,11 @@ import java.util.*;
 public class ListAttribute implements IListAttribute, Cloneable, Serializable {
     private final String DELIMITER = "|";
     private final String NULL_VALUE = "null";
-    protected List<Attribute> elements = new ArrayList(8);
+    protected List<Attribute> elements = new ArrayList(32);
     private int type = 110;
-    protected Class<?> attrClass = null;
+    @Getter
+    @Setter
+    protected Class<?> elementClass = null;
 
     public ListAttribute() {
     }
@@ -43,13 +47,13 @@ public class ListAttribute implements IListAttribute, Cloneable, Serializable {
     }
 
     @Override
-    public int getType() {
+    public int getTypeIndex() {
         return this.type;
     }
 
     @Override
-    public void setType(int _type) {
-        this.type = _type;
+    public void setTypeIndex(int _index) {
+        this.type = _index;
     }
 
     @Override
@@ -77,13 +81,13 @@ public class ListAttribute implements IListAttribute, Cloneable, Serializable {
                 //abandon the delimiter between classname and size.
                 tempST.nextToken();
                 //Get attribute class.
-                this.attrClass = Class.forName(tempItemClassToken);
+                this.elementClass = Class.forName(tempItemClassToken);
                 //Get list size.
                 int tempTotalItemCount = Integer.parseInt(tempST.nextToken());
                 //Abandon the delimiter followed size.
                 tempST.nextToken();
                 if (tempTotalItemCount == 0) {
-                    this.attrClass = null;
+                    this.elementClass = null;
                 } else {
                     int tempCount = 0;
                     boolean isDelimiterFlag = true;
@@ -111,7 +115,7 @@ public class ListAttribute implements IListAttribute, Cloneable, Serializable {
                                 tempToken = CharsetUtil.hexToAscii(tempToken);
                                 tempCount++;
                                 //Get the attribute
-                                tempAttr = (Attribute) this.attrClass.newInstance();
+                                tempAttr = (Attribute) this.elementClass.newInstance();
 
                                 if (tempAttr instanceof TimeAttribute) {
                                     ((TimeAttribute) tempAttr).setTimeFormat(TimeAttribute.DEFAULT_TIME_FORMAT);
@@ -163,7 +167,7 @@ public class ListAttribute implements IListAttribute, Cloneable, Serializable {
                 this.clear();
                 int tempSize = tempAttr.size();
                 this.type = tempAttr.type;
-                this.attrClass = tempAttr.attrClass;
+                this.elementClass = tempAttr.elementClass;
 
                 for (int i = 0; i < tempSize; i++) {
                     this.elements.add((Attribute)tempAttr.get(i).clone());
@@ -206,7 +210,7 @@ public class ListAttribute implements IListAttribute, Cloneable, Serializable {
             return NULL_VALUE;
         } else {
             StringBuffer tempBuffer = new StringBuffer(256);
-            tempBuffer.append(this.attrClass.getName());
+            tempBuffer.append(this.elementClass.getName());
             tempBuffer.append("|");
             int tempSize = this.elements.size();
             tempBuffer.append(tempSize);
@@ -267,11 +271,11 @@ public class ListAttribute implements IListAttribute, Cloneable, Serializable {
     public void add(int _index, Attribute _attr) {
         if (_attr != null) {
             if (this.isEmpty()) {
-                this.attrClass = _attr.getClass();
+                this.elementClass = _attr.getClass();
                 this.elements.add(_index, _attr);
             } else {
-                if (!this.attrClass.equals(_attr.getClass())) {
-                    throw new IllegalArgumentException("Attribute of type " + _attr.getClass() + " cannot be added to list of " + this.attrClass + " attributes.");
+                if (!this.elementClass.equals(_attr.getClass())) {
+                    throw new IllegalArgumentException("Attribute of type " + _attr.getClass() + " cannot be added to list of " + this.elementClass + " attributes.");
                 }
                 this.elements.add(_index, _attr);
             }
@@ -310,10 +314,10 @@ public class ListAttribute implements IListAttribute, Cloneable, Serializable {
      */
     @Override
     public Attribute set(int _index, Attribute _attr) {
-        if (_attr != null && this.attrClass != null && this.attrClass.equals(_attr.getClass())) {
+        if (_attr != null && this.elementClass != null && this.elementClass.equals(_attr.getClass())) {
             return (Attribute) this.elements.set(_index, _attr);
         } else {
-            throw new IllegalArgumentException("Attribute of type " + (_attr != null ? _attr.getClass().getName() : NULL_VALUE) + " cannot be set in a list of " + this.attrClass + " attributes.");
+            throw new IllegalArgumentException("Attribute of type " + (_attr != null ? _attr.getClass().getName() : NULL_VALUE) + " cannot be set in a list of " + this.elementClass + " attributes.");
         }
     }
 
@@ -364,7 +368,7 @@ public class ListAttribute implements IListAttribute, Cloneable, Serializable {
 
     private void clear() {
         this.elements.clear();
-        this.attrClass = null;
+        this.elementClass = null;
     }
 
     public static void main(String[] _args) {

@@ -7,9 +7,9 @@ import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.configure.component.ComponentFactory;
 import com.twinkle.framework.configure.component.IComponentFactory;
 import com.twinkle.framework.connector.ConnectorManager;
-import com.twinkle.framework.core.context.PrimitiveAttributeSchema;
+import com.twinkle.framework.context.PrimitiveAttributeSchema;
 import com.twinkle.framework.ruleengine.RuleChainManager;
-import com.twinkle.framework.struct.manager.StructAttributeManager;
+import com.twinkle.framework.context.manager.StructAttributeManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.BeansException;
@@ -64,11 +64,6 @@ public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor {
 
         JSONObject tempObj = JSONObject.parseObject(tempConfiguration);
 
-        //Initialize the attributes in PrimitiveAttributeSchema.
-        JSONArray tempAttrArray = tempObj.getJSONArray(KEY_ATTRIBUTE_SET);
-        PrimitiveAttributeSchema tempSchema = PrimitiveAttributeSchema.getInstance();
-        tempSchema.configure(tempAttrArray);
-
         IComponentFactory componentFactory = new ComponentFactory(registry);
 
         //Initialize the Struct Attribute' Manager.
@@ -78,6 +73,11 @@ public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor {
         }
         //Add FastJSON HTTP message serializer support.
         tempStructAttributeManager.addFastJsonSerializerSupport();
+
+        //Initialize the attributes in PrimitiveAttributeSchema.
+        JSONArray tempAttrArray = tempObj.getJSONArray(KEY_ATTRIBUTE_SET);
+        PrimitiveAttributeSchema tempSchema = PrimitiveAttributeSchema.getInstance();
+        tempSchema.configure(tempAttrArray);
 
         //Initialize the connectors' Manager.
         ConnectorManager tempConnectorManager = componentFactory.loadComponent(tempObj.getJSONObject(KEY_CONNECTOR_MANAGER));

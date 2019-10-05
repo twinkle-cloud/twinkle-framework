@@ -22,7 +22,7 @@ import com.twinkle.framework.struct.ref.StructAttributeRef;
 import com.twinkle.framework.struct.type.ArrayType;
 import com.twinkle.framework.struct.type.StructAttribute;
 import com.twinkle.framework.struct.type.StructType;
-import com.twinkle.framework.core.type.AttributeType;
+import com.twinkle.framework.struct.type.AttributeType;
 import com.twinkle.framework.struct.utils.StructTypeUtil;
 import org.objectweb.asm.*;
 

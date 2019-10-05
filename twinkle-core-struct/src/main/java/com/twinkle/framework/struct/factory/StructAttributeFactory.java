@@ -1,11 +1,11 @@
 package com.twinkle.framework.struct.factory;
 
+import com.twinkle.framework.struct.ref.AttributeRef;
+import com.twinkle.framework.struct.ref.DynamicAttributeRef;
 import com.twinkle.framework.struct.error.AttributeNotFoundException;
 import com.twinkle.framework.struct.error.AttributeTypeMismatchException;
 import com.twinkle.framework.struct.error.BadAttributeNameException;
 import com.twinkle.framework.struct.error.StructAttributeException;
-import com.twinkle.framework.struct.ref.AttributeRef;
-import com.twinkle.framework.struct.ref.DynamicAttributeRef;
 import com.twinkle.framework.struct.type.StructAttribute;
 import com.twinkle.framework.struct.type.StructType;
 import com.twinkle.framework.struct.util.ArrayAllocator;

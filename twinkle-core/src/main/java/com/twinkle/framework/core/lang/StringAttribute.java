@@ -30,7 +30,7 @@ public class StringAttribute implements Attribute, Comparable {
     }
 
     @Override
-    public final int getType() {
+    public final int getTypeIndex() {
         return type;
     }
 
@@ -43,8 +43,8 @@ public class StringAttribute implements Attribute, Comparable {
     }
 
     @Override
-    public final void setType(int _type) {
-        type = _type;
+    public final void setTypeIndex(int _index) {
+        type = _index;
     }
 
     @Override

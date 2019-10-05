@@ -1,7 +1,7 @@
 package com.twinkle.framework.connector.data;
 
 import com.twinkle.framework.api.exception.ConfigurationException;
-import com.twinkle.framework.core.context.PrimitiveAttributeSchema;
+import com.twinkle.framework.context.PrimitiveAttributeSchema;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>

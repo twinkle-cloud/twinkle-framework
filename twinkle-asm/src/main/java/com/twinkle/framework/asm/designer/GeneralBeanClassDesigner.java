@@ -21,7 +21,6 @@ import java.util.*;
  * @since JDK 1.8
  */
 public class GeneralBeanClassDesigner extends AbstractGeneralBeanClassDesigner {
-    public static final String IMPL_SUFFIX = "Impl";
     @Getter
     private String beanInterfaceName = this.getClassName();
     protected static final Collection<Type> CLONE_EXCLUSIONS = new HashSet();
@@ -47,8 +46,8 @@ public class GeneralBeanClassDesigner extends AbstractGeneralBeanClassDesigner {
      */
     public GeneralBeanClassDesigner(String _className, BeanTypeDef _beanTypeDef) {
         super(_className, _beanTypeDef);
-        if (this.beanInterfaceName.endsWith(IMPL_SUFFIX)) {
-            String tempBeanInterface = this.beanInterfaceName.substring(0, _className.length() - IMPL_SUFFIX.length());
+        if (this.beanInterfaceName.endsWith(Bean.IMPL_SUFFIX)) {
+            String tempBeanInterface = this.beanInterfaceName.substring(0, _className.length() - Bean.IMPL_SUFFIX.length());
             if (this.getBeanInterfaces().contains(tempBeanInterface)) {
                 this.beanInterfaceName = tempBeanInterface;
             }

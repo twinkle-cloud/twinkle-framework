@@ -5,11 +5,12 @@ import com.twinkle.framework.asm.builder.TypeDefBuilder;
 import com.twinkle.framework.asm.define.*;
 import com.twinkle.framework.asm.descriptor.AttributeDescriptor;
 import com.twinkle.framework.asm.descriptor.BeanTypeDescriptor;
+import com.twinkle.framework.asm.utils.BeanUtil;
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
 import com.twinkle.framework.struct.type.ArrayType;
 import com.twinkle.framework.struct.type.BeanStructType;
 import com.twinkle.framework.struct.type.StructType;
-import com.twinkle.framework.core.type.AttributeType;
+import com.twinkle.framework.struct.type.AttributeType;
 import com.twinkle.framework.struct.util.StructAttributeArray;
 import com.twinkle.framework.struct.utils.StructTypeUtil;
 import lombok.Getter;
@@ -33,7 +34,6 @@ public class StructAttributeGeneralBeanTypeDefImpl extends BeanRefTypeDefImpl im
     protected List<TypeDef> interfaceTypeDefs;
     protected List<AttributeDef> attributes;
     protected List<AnnotationDef> annotations;
-    private static final String PACKAGE_PREFIX = "com.twinkle.framework.struct.beans.general.";
 
     public StructAttributeGeneralBeanTypeDefImpl(StructType _saType, Type _type, ClassLoader _classLoader) throws ClassNotFoundException {
         this(_saType, _type, _classLoader, new HashMap<>());
@@ -236,39 +236,7 @@ public class StructAttributeGeneralBeanTypeDefImpl extends BeanRefTypeDefImpl im
     }
 
     protected String getSAInterfaceName(String _className) {
-        return getStructAttributeInterfaceName(_className);
-    }
-
-    /**
-     * Get the StructAttribute's interface name.
-     *
-     * @param _className
-     * @return
-     */
-    protected static String getStructAttributeInterfaceName(String _className) {
-        return _className.startsWith(PACKAGE_PREFIX) ? _className : PACKAGE_PREFIX + _className.replace(':', '.');
-    }
-
-    /**
-     * Return the General bean class name for struct attribute.
-     *
-     * @param _className
-     * @return
-     */
-    public static String getStructAttributeGeneralClassName(String _className) {
-        return _className.startsWith(PACKAGE_PREFIX) ? _className : PACKAGE_PREFIX + _className.replace(':', '.');
-    }
-
-    /**
-     * Get StructAttributeType's type.
-     * ONLY for General Bean.
-     *
-     * @param _saType
-     * @return
-     */
-    public static Type getType(StructType _saType) {
-        String tempInterfaceName = getStructAttributeInterfaceName(_saType.getQualifiedName());
-        return TypeDefBuilder.getObjectType(tempInterfaceName);
+        return BeanUtil.getStructAttributeInterfaceName(_className);
     }
 
     @Override
@@ -296,15 +264,5 @@ public class StructAttributeGeneralBeanTypeDefImpl extends BeanRefTypeDefImpl im
     @Override
     public StructType getStructType() {
         return this.structType;
-    }
-
-    /**
-     * Get the StructAttribute's qualified name.
-     *
-     * @param _typeName
-     * @return
-     */
-    public static String getStructAttributeQualifiedTypeName(String _typeName) {
-        return _typeName.substring(PACKAGE_PREFIX.length()).replace('.', ':');
     }
 }

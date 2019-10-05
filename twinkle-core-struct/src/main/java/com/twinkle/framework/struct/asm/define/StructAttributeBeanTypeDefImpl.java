@@ -1,5 +1,6 @@
 package com.twinkle.framework.struct.asm.define;
 
+import com.twinkle.framework.asm.Bean;
 import com.twinkle.framework.asm.builder.TypeDefBuilder;
 import com.twinkle.framework.asm.define.BeanRefTypeDefImpl;
 import com.twinkle.framework.asm.define.TypeDef;
@@ -23,10 +24,6 @@ import java.util.Map;
  * @since JDK 1.8
  */
 public class StructAttributeBeanTypeDefImpl extends StructAttributeGeneralBeanTypeDefImpl {
-    private static final String PACKAGE_PREFIX = "com.twinkle.framework.struct.beans.";
-    private static final String IMPL_SUFFIX = "Impl";
-    private static final String IMPL_IMPL_BUILDER_SUFFIX = "Impl$ImplBuilder";
-
     public StructAttributeBeanTypeDefImpl(StructType _saType, ClassLoader _classLoader) throws ClassNotFoundException {
         this(_saType, _classLoader, new HashMap<>());
     }
@@ -102,7 +99,7 @@ public class StructAttributeBeanTypeDefImpl extends StructAttributeGeneralBeanTy
      * @return
      */
     protected static String getStructAttributeInterfaceName(String _className) {
-        return _className.startsWith(PACKAGE_PREFIX) ? _className : PACKAGE_PREFIX + _className.replace(':', '.');
+        return _className.startsWith(Bean.STRUCT_ATTRIBUTE_PACKAGE) ? _className : Bean.STRUCT_ATTRIBUTE_PACKAGE + _className.replace(':', '.');
     }
 
     /**
@@ -112,7 +109,7 @@ public class StructAttributeBeanTypeDefImpl extends StructAttributeGeneralBeanTy
      * @return
      */
     public static String getStructAttributeClassName(String _className) {
-        return getStructAttributeInterfaceName(_className) + IMPL_SUFFIX;
+        return getStructAttributeInterfaceName(_className) + Bean.IMPL_SUFFIX;
     }
 
     /**
@@ -122,7 +119,7 @@ public class StructAttributeBeanTypeDefImpl extends StructAttributeGeneralBeanTy
      * @return
      */
     public static String getStructAttributeBuilderClassName(String _className) {
-        return getStructAttributeInterfaceName(_className) + IMPL_IMPL_BUILDER_SUFFIX;
+        return getStructAttributeInterfaceName(_className) + Bean.IMPL_IMPL_BUILDER_SUFFIX;
     }
 
     /**
@@ -132,6 +129,6 @@ public class StructAttributeBeanTypeDefImpl extends StructAttributeGeneralBeanTy
      * @return
      */
     public static String getStructAttributeQualifiedTypeName(String _typeName) {
-        return _typeName.substring(PACKAGE_PREFIX.length()).replace('.', ':');
+        return _typeName.substring(Bean.STRUCT_ATTRIBUTE_PACKAGE.length()).replace('.', ':');
     }
 }

@@ -1,8 +1,8 @@
 package com.twinkle.framework.struct.ref;
 
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
+import com.twinkle.framework.struct.type.AttributeType;
 import com.twinkle.framework.struct.type.StructAttribute;
-import com.twinkle.framework.core.type.AttributeType;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>

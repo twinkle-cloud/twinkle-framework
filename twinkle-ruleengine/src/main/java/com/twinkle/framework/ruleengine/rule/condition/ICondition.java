@@ -2,7 +2,7 @@ package com.twinkle.framework.ruleengine.rule.condition;
 
 import com.twinkle.framework.api.config.Configurable;
 import com.twinkle.framework.api.exception.RuleException;
-import com.twinkle.framework.core.context.model.NormalizedContext;
+import com.twinkle.framework.api.context.NormalizedContext;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>

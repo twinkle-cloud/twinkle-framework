@@ -2,7 +2,7 @@ package com.twinkle.framework.ruleengine.rule;
 
 import com.twinkle.framework.api.component.AbstractComponent;
 import com.twinkle.framework.api.component.rule.IRule;
-import com.twinkle.framework.core.context.PrimitiveAttributeSchema;
+import com.twinkle.framework.context.PrimitiveAttributeSchema;
 import lombok.Data;
 
 /**

@@ -1,5 +1,6 @@
 package com.twinkle.framework.asm.designer;
 
+import com.twinkle.framework.asm.Bean;
 import com.twinkle.framework.asm.builder.BeanImplBuilder;
 import com.twinkle.framework.asm.utils.TypeUtil;
 import org.objectweb.asm.ClassVisitor;
@@ -16,9 +17,6 @@ import org.objectweb.asm.Type;
  * @since JDK 1.8
  */
 public class BeanImplBuilderDesigner extends InstanceBuilderDesigner {
-    protected static final String IMPL_BUILDER_INNER_NAME = "ImplBuilder";
-    protected static final String INNER_SEPARATOR = "$";
-
     public BeanImplBuilderDesigner(String _className, String _interfaceClassName) {
         super(getImplBuilderInnerClassName(_className), Type.getType(BeanImplBuilder.class), Type.getObjectType(toInternalName(_interfaceClassName)), Type.getObjectType(toInternalName(_className)));
     }
@@ -31,7 +29,7 @@ public class BeanImplBuilderDesigner extends InstanceBuilderDesigner {
     @Override
     protected ClassVisitor addClassDeclaration(ClassVisitor _visitor) {
         super.addClassDeclaration(_visitor);
-        _visitor.visitInnerClass(this.getBuilderClassName(), this.getInstanceType().getInternalName(), IMPL_BUILDER_INNER_NAME, Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC);
+        _visitor.visitInnerClass(this.getBuilderClassName(), this.getInstanceType().getInternalName(), Bean.IMPL_BUILDER_INNER_NAME, Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC);
         return _visitor;
     }
     @Override
@@ -42,7 +40,7 @@ public class BeanImplBuilderDesigner extends InstanceBuilderDesigner {
     }
 
     protected static String getImplBuilderInnerClassName(String _className) {
-        return _className + INNER_SEPARATOR + IMPL_BUILDER_INNER_NAME;
+        return _className + Bean.IMPL_BUILDER_SUFFIX;
     }
 
 }

@@ -13,6 +13,20 @@ import java.util.Collection;
  */
 public interface IListAttribute extends Attribute {
     /**
+     * Set the element class.
+     *
+     * @param _class
+     */
+    void setElementClass(Class<?> _class);
+
+    /**
+     * Get the element class.
+     *
+     * @return
+     */
+    Class<?> getElementClass();
+
+    /**
      * Add the given attr into the dest position.
      *
      * @param _index

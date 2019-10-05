@@ -52,7 +52,7 @@ public abstract class AbstractBeanClassDesigner extends AbstractClassDesigner {
     }
 
     /**
-     * Initialize the attribute com.twinkle.framework.struct.converter.
+     * Initialize the attribute com.twinkle.framework.context.converter.
      * Use the @LooseAttributeConverter by default.
      *
      * @param _className

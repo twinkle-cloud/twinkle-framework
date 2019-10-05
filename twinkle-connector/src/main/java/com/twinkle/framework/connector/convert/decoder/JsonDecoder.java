@@ -2,7 +2,7 @@ package com.twinkle.framework.connector.convert.decoder;
 
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.exception.ConfigurationException;
-import com.twinkle.framework.core.context.model.NormalizedContext;
+import com.twinkle.framework.context.model.DefaultNormalizedContext;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -20,7 +20,7 @@ public class JsonDecoder implements Decoder {
     }
 
     @Override
-    public void doDecode(NormalizedContext _nc) {
+    public void doDecode(DefaultNormalizedContext _nc) {
         // do the real decode.
     }
 }

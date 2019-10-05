@@ -1,6 +1,5 @@
 package com.twinkle.framework.struct.type;
 
-import com.twinkle.framework.core.type.AttributeType;
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
 import com.twinkle.framework.struct.error.*;
 
@@ -54,7 +53,7 @@ public interface StructType extends AttributeType {
      *
      * @return
      */
-    StructTypeManager getTypeManager();
+    AttributeTypeManager getTypeManager();
 
     /**
      * Get the attribute size of this struct attribute.

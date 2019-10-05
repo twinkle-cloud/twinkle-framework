@@ -48,8 +48,18 @@ public interface Attribute extends Cloneable, Serializable {
      * Object Type.
      */
     int OBJECT_TYPE = 8;
-
+    /**
+     * List Type.
+     */
     int LIST_ATTRIBUTE_TYPE = 110;
+    /**
+     * Struct type.
+     */
+    int STRUCT_TYPE = 200;
+    /**
+     * Struct Attribute list.
+     */
+    int LIST_STRUCT_ATTRIBUTE_TYPE = 300;
 
     /**
      * Get the attribute's primitive type.
@@ -65,14 +75,14 @@ public interface Attribute extends Cloneable, Serializable {
      * @return
      */
     @ApiModelProperty(hidden = true)
-    int getType();
+    int getTypeIndex();
 
     /**
      * Update the attribute's type.
      *
-     * @param _type
+     * @param _index
      */
-    void setType(int _type);
+    void setTypeIndex(int _index);
 
     /**
      * Update the value to be empty.

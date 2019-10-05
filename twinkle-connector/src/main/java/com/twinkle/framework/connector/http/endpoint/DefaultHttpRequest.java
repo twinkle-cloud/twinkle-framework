@@ -9,7 +9,7 @@ import com.twinkle.framework.asm.descriptor.TypeDescriptor;
 import com.twinkle.framework.asm.descriptor.TypeDescriptorImpl;
 import com.twinkle.framework.core.lang.Attribute;
 import com.twinkle.framework.core.lang.JavaAttributeInfo;
-import com.twinkle.framework.struct.converter.JavaAttributeConverter;
+import com.twinkle.framework.context.converter.JavaAttributeConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.objectweb.asm.Opcodes;

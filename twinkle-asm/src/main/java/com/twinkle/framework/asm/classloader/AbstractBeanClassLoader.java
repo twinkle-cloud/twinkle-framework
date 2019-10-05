@@ -9,6 +9,7 @@ import com.twinkle.framework.asm.define.*;
 import com.twinkle.framework.asm.descriptor.BeanTypeDescriptor;
 import com.twinkle.framework.asm.descriptor.EnumTypeDescriptor;
 import com.twinkle.framework.asm.descriptor.TypeDescriptor;
+import com.twinkle.framework.asm.utils.BeanUtil;
 
 import java.util.List;
 
@@ -22,9 +23,6 @@ import java.util.List;
  * @since JDK 1.8
  */
 public abstract class AbstractBeanClassLoader extends EnhancedClassLoader {
-    public static final String IMPL_SUFFIX = "Impl";
-    public static final String IMPL_BUILDER_SUFFIX = "$ImplBuilder";
-    public static final String IMPL_IMPL_BUILDER_SUFFIX = "Impl$ImplBuilder";
     private final BeanClassDesignerBuilder designerBuilder;
 
     protected AbstractBeanClassLoader(ClassLoader _classLoader, Class<? extends Bean> _class) {
@@ -43,8 +41,8 @@ public abstract class AbstractBeanClassLoader extends EnhancedClassLoader {
     @Override
     protected Class<?> findClass(String _className) throws ClassNotFoundException {
         if (_className != null && _className.startsWith(Bean.DEFAULT_PACKAGE) && !_className.endsWith("[]")) {
-            String tempInferfaceName = getInterfaceName(_className);
-            TypeDescriptor tempInterfaceDescriptor = this.getTypeDescriptor(tempInferfaceName);
+            String tempInterfaceName = BeanUtil.getInterfaceName(_className);
+            TypeDescriptor tempInterfaceDescriptor = this.getTypeDescriptor(tempInterfaceName);
             if (tempInterfaceDescriptor != null) {
                 TypeDef tempInterfaceTypeDef;
                 try {
@@ -55,18 +53,18 @@ public abstract class AbstractBeanClassLoader extends EnhancedClassLoader {
 
                 ClassDesigner tempInterfaceClassDesigner;
                 if (tempInterfaceTypeDef.isEnum()) {
-                    tempInterfaceClassDesigner = this.getEnumDesigner(tempInferfaceName, (EnumTypeDef)tempInterfaceTypeDef);
+                    tempInterfaceClassDesigner = this.getEnumDesigner(tempInterfaceName, (EnumTypeDef)tempInterfaceTypeDef);
                 } else {
                     if (!tempInterfaceTypeDef.isBean()) {
                         throw new ClassNotFoundException("Cannot generate class for descriptor: " + tempInterfaceDescriptor.getName() + " of type " + tempInterfaceDescriptor.getClass().getName());
                     }
 
                     BeanTypeDef tempInterfaceBeanTypeDef = (BeanTypeDef)tempInterfaceTypeDef;
-                    if (!_className.equals(tempInferfaceName)) {
-                        Class tempInterfaceClass = this.loadClass(tempInferfaceName);
+                    if (!_className.equals(tempInterfaceName)) {
+                        Class tempInterfaceClass = this.loadClass(tempInterfaceName);
                         String tempClassName;
-                        if (_className.endsWith(IMPL_BUILDER_SUFFIX)) {
-                            tempClassName = getClassName(_className);
+                        if (_className.endsWith(Bean.IMPL_BUILDER_SUFFIX)) {
+                            tempClassName = BeanUtil.getClassName(_className);
                             Class tempClass = this.loadClass(tempClassName);
                             tempInterfaceClassDesigner = this.getImplBuilderDesigner(tempClass, tempInterfaceClass);
                         } else {
@@ -108,48 +106,6 @@ public abstract class AbstractBeanClassLoader extends EnhancedClassLoader {
             return new EnumTypeDefImpl((EnumTypeDescriptor)_descriptor, this);
         } else {
             throw new IllegalArgumentException(_descriptor.getClassName() + " is not a proper type to generate Java class");
-        }
-    }
-
-    /**
-     * Get classname for IMPL or builder class.
-     *
-     * @param _className
-     * @return
-     */
-    public static String getClassName(String _className) {
-        if (_className.endsWith(IMPL_SUFFIX)) {
-            return _className;
-        } else {
-            return _className.endsWith(IMPL_BUILDER_SUFFIX) ? _className.substring(0, _className.length() - IMPL_BUILDER_SUFFIX.length()) : _className + IMPL_SUFFIX;
-        }
-    }
-
-    /**
-     *
-     *
-     * @param _className
-     * @return
-     */
-    public static String getInterfaceName(String _className) {
-        if (_className.endsWith(IMPL_SUFFIX)) {
-            return _className.substring(0, _className.length() - IMPL_SUFFIX.length());
-        } else {
-            return _className.endsWith(IMPL_IMPL_BUILDER_SUFFIX) ? _className.substring(0, _className.length() - IMPL_IMPL_BUILDER_SUFFIX.length()) : _className;
-        }
-    }
-
-    /**
-     * Get IMPL builder name.
-     *
-     * @param _className
-     * @return
-     */
-    public static String getImplBuilderName(String _className) {
-        if (_className.endsWith(IMPL_BUILDER_SUFFIX)) {
-            return _className;
-        } else {
-            return _className.endsWith(IMPL_SUFFIX) ? _className + IMPL_BUILDER_SUFFIX : _className + IMPL_IMPL_BUILDER_SUFFIX;
         }
     }
 

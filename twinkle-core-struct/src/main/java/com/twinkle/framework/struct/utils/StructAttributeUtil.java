@@ -1,5 +1,6 @@
 package com.twinkle.framework.struct.utils;
 
+import com.twinkle.framework.asm.factory.BeanFactory;
 import com.twinkle.framework.struct.context.StructAttributeSchema;
 import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
 import com.twinkle.framework.struct.factory.StructAttributeFactory;
@@ -27,5 +28,27 @@ public class StructAttributeUtil {
         StructAttributeFactory tempFactory = StructAttributeSchemaManager.getStructAttributeFactory();
         StructType tempType = tempStructSchema.getStructAttributeType(_qualifiedName);
         return tempFactory.newStructAttribute(tempType);
+    }
+
+    /**
+     * Get the class with given struct type.
+     *
+     * @param _type
+     * @return
+     */
+    public static Class<?> getStructAttributeClass(StructType _type) {
+        String tempTypeName = _type.getQualifiedName();
+        return getStructAttributeClass(tempTypeName);
+    }
+
+    /**
+     * Get the class with given struct type name.
+     *
+     * @param _type
+     * @return
+     */
+    public static Class<?> getStructAttributeClass(String _type) {
+        StructAttributeFactory tempFactory = StructAttributeSchemaManager.getStructAttributeFactory();
+        return ((BeanFactory)tempFactory).getBeanClass(_type);
     }
 }

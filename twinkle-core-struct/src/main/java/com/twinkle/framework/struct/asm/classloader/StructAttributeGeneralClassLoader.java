@@ -1,13 +1,16 @@
 package com.twinkle.framework.struct.asm.classloader;
 
+import com.twinkle.framework.asm.Bean;
 import com.twinkle.framework.asm.classloader.EnhancedClassLoader;
 import com.twinkle.framework.asm.designer.ClassDesigner;
 import com.twinkle.framework.asm.designer.GeneralBeanClassDesigner;
+import com.twinkle.framework.asm.utils.BeanUtil;
 import com.twinkle.framework.struct.asm.define.StructAttributeBeanTypeDef;
 import com.twinkle.framework.struct.asm.define.StructAttributeGeneralBeanTypeDefImpl;
 import com.twinkle.framework.struct.error.StructAttributeException;
 import com.twinkle.framework.struct.resolver.StructAttributeTypeResolver;
 import com.twinkle.framework.struct.type.StructType;
+import com.twinkle.framework.struct.utils.StructTypeUtil;
 import org.objectweb.asm.Type;
 
 /**
@@ -20,7 +23,6 @@ import org.objectweb.asm.Type;
  * @since JDK 1.8
  */
 public class StructAttributeGeneralClassLoader extends EnhancedClassLoader {
-    public static final String PACKAGE_PREFIX = "com.twinkle.framework.struct.beans.general.";
     private final StructAttributeTypeResolver typeResolver;
 
     public StructAttributeGeneralClassLoader(ClassLoader _classLoader, StructAttributeTypeResolver _resolver) {
@@ -34,11 +36,11 @@ public class StructAttributeGeneralClassLoader extends EnhancedClassLoader {
 
     @Override
     protected Class<?> findClass(String _className) throws ClassNotFoundException {
-        if (_className != null && _className.startsWith(PACKAGE_PREFIX)) {
+        if (_className != null && _className.startsWith(Bean.STRUCT_ATTRIBUTE_GENERAL_PACKAGE)) {
             StructType tempStructAttrType = null;
 
             try {
-                tempStructAttrType = this.getStructAttributeType(StructAttributeGeneralBeanTypeDefImpl.getStructAttributeQualifiedTypeName(_className));
+                tempStructAttrType = this.getStructAttributeType(BeanUtil.getStructAttributeQualifiedTypeName(_className));
             } catch (StructAttributeException e) {
             }
 
@@ -64,11 +66,11 @@ public class StructAttributeGeneralClassLoader extends EnhancedClassLoader {
     }
 
     public String getStructAttributeGeneralClassName(String _className) {
-        return StructAttributeGeneralBeanTypeDefImpl.getStructAttributeGeneralClassName(_className);
+        return BeanUtil.getStructAttributeGeneralClassName(_className);
     }
 
     protected StructAttributeBeanTypeDef createStructAttributeBeanTypeDef(StructType _attrType) throws ClassNotFoundException {
-        Type tempStructType = StructAttributeGeneralBeanTypeDefImpl.getType(_attrType);
+        Type tempStructType = StructTypeUtil.getType(_attrType);
         return new StructAttributeGeneralBeanTypeDefImpl(_attrType, tempStructType, this);
     }
 

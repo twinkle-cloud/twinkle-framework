@@ -27,12 +27,12 @@ public class FloatAttribute extends AbstractNumericAttribute implements IFloatAt
     }
 
     @Override
-    public int getType() {
+    public int getTypeIndex() {
         return type;
     }
 
     @Override
-    public void setType(int _type) {
+    public void setTypeIndex(int _type) {
         type = _type;
     }
 

@@ -20,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>com.twinkle.framework</groupId>
-            <artifactId>twinkle-struct</artifactId>
+            <artifactId>twinkle-context</artifactId>
         </dependency>
         <dependency>
             <groupId>com.twinkle.framework</groupId>

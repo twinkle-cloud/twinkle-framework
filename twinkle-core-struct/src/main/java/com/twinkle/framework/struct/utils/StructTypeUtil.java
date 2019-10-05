@@ -1,9 +1,15 @@
 package com.twinkle.framework.struct.utils;
 
-import com.twinkle.framework.core.type.PrimitiveType;
+import com.twinkle.framework.asm.Bean;
+import com.twinkle.framework.asm.builder.TypeDefBuilder;
+import com.twinkle.framework.asm.utils.BeanUtil;
+import com.twinkle.framework.struct.context.StructAttributeSchema;
+import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
+import com.twinkle.framework.struct.error.TypeNotFoundException;
+import com.twinkle.framework.struct.type.PrimitiveType;
 import com.twinkle.framework.core.lang.util.*;
-import com.twinkle.framework.core.type.StringType;
-import com.twinkle.framework.core.type.AttributeType;
+import com.twinkle.framework.struct.type.StringType;
+import com.twinkle.framework.struct.type.AttributeType;
 import com.twinkle.framework.struct.type.*;
 import com.twinkle.framework.struct.util.StructAttributeArray;
 import org.apache.commons.lang3.StringUtils;
@@ -22,7 +28,6 @@ import java.util.Map;
  * @since JDK 1.8
  */
 public class StructTypeUtil {
-    public final static String STRUCT_ATTRIBUTE_IMPL_SUFFIX = "Impl";
     public static final Type STRUCT_ATTRIBUTE_TYPE = Type.getType(StructAttribute.class);
     private static Map<Type, Type> SA_ARRAY_TO_JAVA = new HashMap<>(9);
 
@@ -38,6 +43,51 @@ public class StructTypeUtil {
         SA_ARRAY_TO_JAVA.put(Type.getType(StringArray.class), Type.getType(String[].class));
     }
 
+    /**
+     * Get Struct Type with given qualified name.
+     *
+     * @param _qualifiedName
+     * @return
+     * @throws TypeNotFoundException
+     */
+    public static AttributeType getStructTypeByName(String _qualifiedName) throws TypeNotFoundException {
+        return getStructTypeByName(_qualifiedName, null);
+    }
+
+    /**
+     * Get Struct Type with given qualified name.
+     *
+     * @param _qualifiedName
+     * @param _alternativeTypeManager
+     * @return
+     * @throws TypeNotFoundException
+     */
+    public static AttributeType getStructTypeByName(String _qualifiedName, AttributeTypeManager _alternativeTypeManager) throws TypeNotFoundException {
+        StructAttributeSchema structAttributeSchema = StructAttributeSchemaManager.getStructAttributeSchema();
+        AttributeType tempStructType;
+        String tempTypeName;
+        try {
+            int tempTypeIndex = _qualifiedName.indexOf(":");
+            if (tempTypeIndex != -1) {
+                tempTypeName = _qualifiedName.substring(0, tempTypeIndex);
+                String tempAttrName = _qualifiedName.substring(tempTypeIndex + 1);
+                tempStructType = structAttributeSchema.getTypeManager(tempTypeName).getType(tempAttrName);
+            } else if(_alternativeTypeManager == null){
+                throw new TypeNotFoundException("Type not found in StructAttribute Type Manager.");
+            } else {
+                tempStructType = _alternativeTypeManager.getType(_qualifiedName);
+            }
+        } catch (TypeNotFoundException e) {
+            if (_qualifiedName.endsWith("[]")) {
+                tempTypeName = _qualifiedName.substring(0, _qualifiedName.length() - 2);
+                StructType tempType1 = structAttributeSchema.getStructAttributeType(tempTypeName);
+                tempStructType = ArrayType.getStructAttributeTypeArray(_qualifiedName, tempType1);
+            } else {
+                tempStructType = structAttributeSchema.getStructAttributeType(_qualifiedName);
+            }
+        }
+        return tempStructType;
+    }
     /**
      * Get the given struct type's class type.
      *
@@ -188,19 +238,31 @@ public class StructTypeUtil {
         if (StringUtils.isBlank(_className)) {
             return "";
         }
-        int tempNameIndex = _className.lastIndexOf(".");
+        int tempNameIndex = _className.lastIndexOf('.');
         if (tempNameIndex <= 0) {
             return _className;
         }
-        int tempNamespaceIndex = _className.substring(0, tempNameIndex).lastIndexOf(".");
+        int tempNamespaceIndex = _className.substring(0, tempNameIndex).lastIndexOf('.');
         String tempClassName = _className;
-        if (_className.endsWith(STRUCT_ATTRIBUTE_IMPL_SUFFIX)) {
-            tempClassName = _className.substring(0, _className.indexOf(STRUCT_ATTRIBUTE_IMPL_SUFFIX));
+        if (_className.endsWith(Bean.IMPL_SUFFIX)) {
+            tempClassName = _className.substring(0, _className.indexOf(Bean.IMPL_SUFFIX));
         }
         if (tempNamespaceIndex > 0) {
             tempClassName = tempClassName.substring(tempNamespaceIndex + 1);
-            return tempClassName.replace(".", ":");
+            return tempClassName.replace('.', ':');
         }
         return tempClassName;
+    }
+
+    /**
+     * Get StructAttributeType's type.
+     * ONLY for General Bean.
+     *
+     * @param _saType
+     * @return
+     */
+    public static Type getType(StructType _saType) {
+        String tempInterfaceName = BeanUtil.getStructAttributeInterfaceName(_saType.getQualifiedName());
+        return TypeDefBuilder.getObjectType(tempInterfaceName);
     }
 }

@@ -1,19 +1,19 @@
 package com.twinkle.framework.struct.factory;
 
-import com.twinkle.framework.struct.asm.classloader.StructAttributeGeneralClassLoader;
-import com.twinkle.framework.struct.error.*;
-import com.twinkle.framework.struct.type.StructAttribute;
-import com.twinkle.framework.struct.type.StructType;
-import com.twinkle.framework.struct.asm.classloader.StructAttributeClassLoader;
+import com.twinkle.framework.asm.descriptor.TypeDescriptors;
 import com.twinkle.framework.struct.context.BeanStructAttributeSchema;
 import com.twinkle.framework.struct.context.StructAttributeSchema;
-import com.twinkle.framework.struct.asm.builder.StructAttributeImplBuilder;
-import com.twinkle.framework.asm.descriptor.TypeDescriptors;
 import com.twinkle.framework.struct.ref.AttributeRef;
 import com.twinkle.framework.struct.ref.CompositeAttributeRefFactory;
 import com.twinkle.framework.struct.ref.DynamicAttributeRef;
 import com.twinkle.framework.struct.resolver.DefaultStructAttributeTypeResolver;
 import com.twinkle.framework.struct.resolver.StructAttributeTypeResolver;
+import com.twinkle.framework.struct.asm.builder.StructAttributeImplBuilder;
+import com.twinkle.framework.struct.asm.classloader.StructAttributeClassLoader;
+import com.twinkle.framework.struct.asm.classloader.StructAttributeGeneralClassLoader;
+import com.twinkle.framework.struct.error.*;
+import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.type.StructType;
 import com.twinkle.framework.struct.util.ArrayAllocator;
 import com.twinkle.framework.struct.util.ArrayAllocatorImpl;
 

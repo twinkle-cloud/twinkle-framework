@@ -4,6 +4,9 @@ import com.twinkle.framework.asm.Bean;
 import com.twinkle.framework.asm.factory.AbstractBeanFactory;
 import com.twinkle.framework.asm.factory.BeanFactory;
 import com.twinkle.framework.asm.serialize.SerializerFactory;
+import com.twinkle.framework.asm.utils.BeanUtil;
+import com.twinkle.framework.struct.resolver.StructAttributeTypeResolver;
+import com.twinkle.framework.struct.serialize.SerializerFactoryRegistry;
 import com.twinkle.framework.struct.asm.builder.StructAttributeImplBuilder;
 import com.twinkle.framework.struct.asm.classloader.StructAttributeClassLoader;
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
@@ -11,12 +14,10 @@ import com.twinkle.framework.struct.error.NamespaceNotFoundException;
 import com.twinkle.framework.struct.error.StructAttributeException;
 import com.twinkle.framework.struct.error.StructAttributeInstantiationException;
 import com.twinkle.framework.struct.error.StructAttributeTypeNotFoundException;
-import com.twinkle.framework.struct.resolver.StructAttributeTypeResolver;
-import com.twinkle.framework.struct.serialize.SerializerFactoryRegistry;
 import com.twinkle.framework.struct.type.ArrayType;
+import com.twinkle.framework.struct.type.AttributeType;
 import com.twinkle.framework.struct.type.StructAttribute;
 import com.twinkle.framework.struct.type.StructType;
-import com.twinkle.framework.core.type.AttributeType;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Iterator;
@@ -108,8 +109,8 @@ public class StructAttributeFactoryImpl extends AbstractStructAttributeFactory i
     }
 
     @Override
-    public <T extends Bean> Class<T> getBeanClass(String _className) {
-        return (Class<T>) this.loadStructAttributeClassByStructAttributeType(_className);
+    public <T extends Bean> Class<T> getBeanClass(String _typeName) {
+        return (Class<T>) this.loadStructAttributeClassByStructAttributeType(_typeName);
     }
 
     @Override
@@ -138,7 +139,7 @@ public class StructAttributeFactoryImpl extends AbstractStructAttributeFactory i
      * @throws StructAttributeInstantiationException
      */
     private Class<?> loadStructAttributeInterfaceByStructAttributeType(String _typeName) throws StructAttributeInstantiationException {
-        String tempInterfaceName = AbstractBeanFactory.typeNameToInterfaceName(_typeName);
+        String tempInterfaceName = BeanUtil.typeNameToInterfaceName(_typeName);
         try {
             return this.getClassLoader().loadClass(tempInterfaceName);
         } catch (ClassNotFoundException e) {
@@ -190,7 +191,7 @@ public class StructAttributeFactoryImpl extends AbstractStructAttributeFactory i
      * @throws StructAttributeInstantiationException
      */
     private Class<?> loadStructAttributeClassByStructAttributeType(String _typeName) throws StructAttributeInstantiationException {
-        String tempClassName = AbstractBeanFactory.typeNameToClassName(_typeName);
+        String tempClassName = BeanUtil.structTypeNameToClassName(_typeName);
         try {
             return this.getClassLoader().loadClass(tempClassName);
         } catch (ClassNotFoundException e) {

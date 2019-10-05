@@ -5,6 +5,7 @@ import com.twinkle.framework.asm.classloader.EnhancedClassLoader;
 import com.twinkle.framework.asm.designer.*;
 import com.twinkle.framework.asm.Bean;
 import com.twinkle.framework.asm.SimpleReflectiveBean;
+import com.twinkle.framework.asm.utils.BeanUtil;
 import com.twinkle.framework.struct.asm.define.StructAttributeBeanTypeDef;
 import com.twinkle.framework.struct.asm.define.StructAttributeBeanTypeDefImpl;
 import com.twinkle.framework.struct.error.StructAttributeException;
@@ -25,9 +26,6 @@ import com.twinkle.framework.struct.utils.StructTypeUtil;
  * @since JDK 1.8
  */
 public abstract class AbstractStructAttributeClassLoader extends EnhancedClassLoader {
-    public static final String PACKAGE_PREFIX = "com.twinkle.framework.struct.beans.";
-    public static final String IMPL_SUFFIX = "Impl";
-    public static final String IMPL_BUILDER_SUFFIX = "$ImplBuilder";
     private final BeanClassDesignerBuilder designerBuilder = new BeanClassDesignerBuilder(SimpleReflectiveBean.class);
 
     public AbstractStructAttributeClassLoader(ClassLoader _classLoader) {
@@ -38,7 +36,7 @@ public abstract class AbstractStructAttributeClassLoader extends EnhancedClassLo
     }
     @Override
     protected Class<?> findClass(String _className) throws ClassNotFoundException {
-        if (_className != null && _className.startsWith(PACKAGE_PREFIX)) {
+        if (_className != null && _className.startsWith(Bean.STRUCT_ATTRIBUTE_PACKAGE)) {
             String tempInterfaceName = this.getInterfaceName(_className);
             StructType tempStructAttrType = null;
 
@@ -60,7 +58,7 @@ public abstract class AbstractStructAttributeClassLoader extends EnhancedClassLo
                     Class tempInterfaceClass = this.loadClass(tempInterfaceName);
                     String tempClassName;
                     Class tempClass;
-                    if (_className.endsWith(IMPL_BUILDER_SUFFIX)) {
+                    if (_className.endsWith(Bean.IMPL_BUILDER_SUFFIX)) {
                         tempClassName = this.getClassName(_className);
                         tempClass = this.loadClass(tempClassName);
                         tempDesigner = this.getImplBuilderDesigner(tempClass, tempInterfaceClass);
@@ -91,11 +89,11 @@ public abstract class AbstractStructAttributeClassLoader extends EnhancedClassLo
     }
 
     public String getInterfaceName(String _className) {
-        return AbstractBeanClassLoader.getInterfaceName(_className);
+        return BeanUtil.getInterfaceName(_className);
     }
 
     protected String getClassName(String _className) {
-        return AbstractBeanClassLoader.getClassName(_className);
+        return BeanUtil.getClassName(_className);
     }
 
     public String getStructAttributeBuilderClassName(String _className) {

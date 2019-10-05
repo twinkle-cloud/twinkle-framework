@@ -1,6 +1,6 @@
 package com.twinkle.framework.ruleengine.rule.condition;
 
-import com.twinkle.framework.core.context.PrimitiveAttributeSchema;
+import com.twinkle.framework.context.PrimitiveAttributeSchema;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>

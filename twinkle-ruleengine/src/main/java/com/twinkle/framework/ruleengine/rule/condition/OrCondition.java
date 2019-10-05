@@ -1,7 +1,7 @@
 package com.twinkle.framework.ruleengine.rule.condition;
 
 import com.twinkle.framework.api.exception.RuleException;
-import com.twinkle.framework.core.context.model.NormalizedContext;
+import com.twinkle.framework.api.context.NormalizedContext;
 import lombok.extern.slf4j.Slf4j;
 
 /**

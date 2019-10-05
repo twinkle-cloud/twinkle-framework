@@ -1,6 +1,7 @@
 package com.twinkle.framework.bootstarter.controller;
 
 import com.twinkle.framework.api.constant.ResultCode;
+import com.twinkle.framework.api.context.NormalizedContext;
 import com.twinkle.framework.api.exception.RuleException;
 import com.twinkle.framework.asm.serialize.Serializer;
 import com.twinkle.framework.asm.serialize.SerializerFactory;
@@ -10,7 +11,6 @@ import com.twinkle.framework.bootstarter.data.Title;
 import com.twinkle.framework.bootstarter.service.HelloWorld2Service;
 import com.twinkle.framework.api.data.GeneralResult;
 import com.twinkle.framework.connector.server.AbstractServer;
-import com.twinkle.framework.core.context.model.NormalizedContext;
 import com.twinkle.framework.struct.serialize.JsonIntrospectionSerializerFactory;
 import com.twinkle.framework.struct.serialize.JsonSerializer;
 import com.twinkle.framework.struct.type.StructAttribute;
@@ -50,7 +50,7 @@ public class HelloController extends AbstractServer {
     @ApiOperation(value = "获取用户Token")
     @RequestMapping(value = "authsec/token/{_userName}", method = RequestMethod.POST)
     public GeneralResult<Object> createAuthenticationToken(
-            @ApiParam(value = "请求体") @RequestBody List<HelloRequest> _request,
+            @ApiParam(value = "请求体") @RequestBody HelloRequest[] _request,
             @ApiParam(value = "UserName") @PathVariable(value = "_userName") String _userName,
             @RequestParam(value = "_testParam", defaultValue = "DDDFF") String _testParam) throws Exception {
         log.info("The request body is AA");

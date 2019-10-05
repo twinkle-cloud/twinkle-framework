@@ -1,11 +1,11 @@
 package com.twinkle.framework.struct.ref;
 
+import com.twinkle.framework.core.lang.util.Array;
 import com.twinkle.framework.struct.error.AttributeNotFoundException;
 import com.twinkle.framework.struct.error.AttributeNotSetException;
 import com.twinkle.framework.struct.error.AttributeTypeMismatchException;
 import com.twinkle.framework.struct.error.StructAttributeCopyException;
 import com.twinkle.framework.struct.type.StructAttribute;
-import com.twinkle.framework.core.lang.util.Array;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>

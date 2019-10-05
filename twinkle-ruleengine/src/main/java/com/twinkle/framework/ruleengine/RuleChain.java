@@ -9,13 +9,12 @@ import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.api.exception.RuleException;
 import com.twinkle.framework.configure.component.ComponentFactory;
-import com.twinkle.framework.core.context.model.NormalizedContext;
+import com.twinkle.framework.api.context.NormalizedContext;
 import com.twinkle.framework.ruleengine.rule.LastRule;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

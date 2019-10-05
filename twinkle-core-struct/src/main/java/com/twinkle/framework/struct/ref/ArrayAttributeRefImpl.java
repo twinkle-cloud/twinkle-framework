@@ -1,15 +1,13 @@
 package com.twinkle.framework.struct.ref;
 
-import com.twinkle.framework.core.type.PrimitiveType;
-import com.twinkle.framework.core.type.AttributeType;
+import com.twinkle.framework.struct.factory.StructAttributeFactory;
+import com.twinkle.framework.core.lang.util.*;
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptorImpl;
 import com.twinkle.framework.struct.error.AttributeNotFoundException;
 import com.twinkle.framework.struct.error.AttributeNotSetException;
 import com.twinkle.framework.struct.error.AttributeTypeMismatchException;
 import com.twinkle.framework.struct.error.StructAttributeCopyException;
-import com.twinkle.framework.core.lang.util.*;
-import com.twinkle.framework.struct.factory.StructAttributeFactory;
 import com.twinkle.framework.struct.type.*;
 import com.twinkle.framework.struct.util.MutableStructAttributeArray;
 import com.twinkle.framework.struct.util.StructAttributeArray;

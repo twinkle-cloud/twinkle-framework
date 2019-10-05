@@ -1,12 +1,12 @@
 package com.twinkle.framework.struct.ref;
 
 import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
+import com.twinkle.framework.struct.factory.StructAttributeFactory;
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptorImpl;
 import com.twinkle.framework.struct.error.AttributeNotFoundException;
 import com.twinkle.framework.struct.error.BadAttributeNameException;
 import com.twinkle.framework.struct.type.ArrayType;
 import com.twinkle.framework.struct.type.StructAttribute;
-import com.twinkle.framework.struct.factory.StructAttributeFactory;
 import com.twinkle.framework.struct.type.StructType;
 
 import java.text.ParseException;

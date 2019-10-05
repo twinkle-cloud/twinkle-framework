@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.api.exception.RuleException;
-import com.twinkle.framework.core.context.model.NormalizedContext;
+import com.twinkle.framework.api.context.NormalizedContext;
 import com.twinkle.framework.ruleengine.rule.operation.AttributeOperation;
 import com.twinkle.framework.ruleengine.rule.operation.MapOperation;
 import com.twinkle.framework.ruleengine.rule.operation.MathOperation;

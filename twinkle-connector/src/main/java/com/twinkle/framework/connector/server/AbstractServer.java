@@ -3,8 +3,9 @@ package com.twinkle.framework.connector.server;
 import com.twinkle.framework.api.exception.RuleException;
 import com.twinkle.framework.api.component.rule.IRuleChain;
 import com.twinkle.framework.api.component.rule.IRuleChainManager;
-import com.twinkle.framework.core.context.PrimitiveAttributeSchema;
-import com.twinkle.framework.core.context.model.NormalizedContext;
+import com.twinkle.framework.context.PrimitiveAttributeSchema;
+import com.twinkle.framework.context.model.DefaultNormalizedContext;
+import com.twinkle.framework.api.context.NormalizedContext;
 import com.twinkle.framework.core.lang.Attribute;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Slf4j
 public abstract class AbstractServer {
-    private final ThreadLocal<NormalizedContext> ncThreadLocal = new ThreadLocal();
+    private final ThreadLocal<DefaultNormalizedContext> ncThreadLocal = new ThreadLocal();
 
     @Autowired
     protected IRuleChainManager ruleChainManager;
@@ -100,10 +101,10 @@ public abstract class AbstractServer {
      * @return
      */
     protected NormalizedContext getNormalizedContext() {
-        NormalizedContext tempNc = this.ncThreadLocal.get();
+        DefaultNormalizedContext tempNc = this.ncThreadLocal.get();
         if (tempNc == null) {
             log.info("HttpServer-current thread[{}]", Thread.currentThread());
-            tempNc = new NormalizedContext();
+            tempNc = new DefaultNormalizedContext();
             this.ncThreadLocal.set(tempNc);
         } else {
             tempNc.clear();

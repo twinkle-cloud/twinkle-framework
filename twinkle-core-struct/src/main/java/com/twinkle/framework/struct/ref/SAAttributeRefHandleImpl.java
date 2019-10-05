@@ -1,10 +1,7 @@
 package com.twinkle.framework.struct.ref;
 
-import com.twinkle.framework.core.type.PrimitiveType;
-import com.twinkle.framework.core.type.StringType;
-import com.twinkle.framework.core.type.AttributeType;
-import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
 import com.twinkle.framework.core.lang.util.Array;
+import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
 import com.twinkle.framework.struct.error.*;
 import com.twinkle.framework.struct.type.*;
 import com.twinkle.framework.struct.util.StructAttributeArray;

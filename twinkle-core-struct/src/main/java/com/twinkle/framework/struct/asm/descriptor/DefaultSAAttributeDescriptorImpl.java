@@ -1,16 +1,15 @@
 package com.twinkle.framework.struct.asm.descriptor;
 
-import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
 import com.twinkle.framework.struct.context.StructAttributeSchema;
+import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
 import com.twinkle.framework.struct.error.BadAttributeNameException;
 import com.twinkle.framework.struct.error.NamespaceNotFoundException;
 import com.twinkle.framework.struct.error.StructAttributeTypeNotFoundException;
 import com.twinkle.framework.struct.error.TypeNotFoundException;
-import com.twinkle.framework.struct.type.ArrayType;
-import com.twinkle.framework.struct.type.StructType;
-import com.twinkle.framework.core.type.AttributeType;
-import com.twinkle.framework.struct.type.StructTypeManager;
+import com.twinkle.framework.struct.type.AttributeType;
+import com.twinkle.framework.struct.type.AttributeTypeManager;
 import com.twinkle.framework.struct.utils.StructAttributeNameValidator;
+import com.twinkle.framework.struct.utils.StructTypeUtil;
 import lombok.Getter;
 
 /**
@@ -30,34 +29,15 @@ public class DefaultSAAttributeDescriptorImpl implements SAAttributeDescriptor {
     protected AttributeType type;
     protected StructAttributeSchema structAttributeSchema;
 
-    public DefaultSAAttributeDescriptorImpl(String _name, String _typeName, StructTypeManager _typeManager, boolean _optional) throws TypeNotFoundException, StructAttributeTypeNotFoundException, BadAttributeNameException, NamespaceNotFoundException {
+    public DefaultSAAttributeDescriptorImpl(String _name, String _typeName, AttributeTypeManager _typeManager, boolean _optional) throws TypeNotFoundException, StructAttributeTypeNotFoundException, BadAttributeNameException, NamespaceNotFoundException {
         StructAttributeNameValidator.checkName(_name);
         this.name = _name;
         this.typeName = _typeName;
         this.optional = _optional;
         this.structAttributeSchema = StructAttributeSchemaManager.getStructAttributeSchema();
-
-        String tempTypeName;
-        try {
-            int tempTypeIndex = _typeName.indexOf(":");
-            if (tempTypeIndex != -1) {
-                tempTypeName = _typeName.substring(0, tempTypeIndex);
-                String tempAttrName = _typeName.substring(tempTypeIndex + 1);
-                this.type = this.structAttributeSchema.getTypeManager(tempTypeName).getType(tempAttrName);
-            } else {
-                this.type = _typeManager.getType(_typeName);
-            }
-        } catch (TypeNotFoundException e) {
-            if (_typeName.endsWith("[]")) {
-                tempTypeName = _typeName.substring(0, _typeName.length() - 2);
-                StructType tempType = this.structAttributeSchema.getStructAttributeType(tempTypeName);
-                this.type = ArrayType.getStructAttributeTypeArray(_typeName, tempType);
-            } else {
-                this.type = this.structAttributeSchema.getStructAttributeType(_typeName);
-            }
-        }
-
+        this.type = StructTypeUtil.getStructTypeByName(_typeName, _typeManager);
     }
+
     @Override
     public boolean equals(Object _obj) {
         if (_obj != null && _obj instanceof DefaultSAAttributeDescriptorImpl) {

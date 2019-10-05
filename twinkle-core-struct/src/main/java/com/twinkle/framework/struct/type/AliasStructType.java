@@ -1,6 +1,5 @@
 package com.twinkle.framework.struct.type;
 
-import com.twinkle.framework.core.type.AttributeType;
 import lombok.Getter;
 
 /**
