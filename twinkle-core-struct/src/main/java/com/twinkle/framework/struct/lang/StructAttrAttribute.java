@@ -2,7 +2,6 @@ package com.twinkle.framework.struct.lang;
 
 import com.twinkle.framework.core.lang.Attribute;
 import com.twinkle.framework.core.lang.Operation;
-import com.twinkle.framework.struct.type.StructAttribute;
 import lombok.Data;
 
 /**

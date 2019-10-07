@@ -8,6 +8,7 @@ import com.twinkle.framework.struct.error.AttributeNotFoundException;
 import com.twinkle.framework.struct.error.AttributeNotSetException;
 import com.twinkle.framework.struct.error.AttributeTypeMismatchException;
 import com.twinkle.framework.struct.error.StructAttributeCopyException;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.type.*;
 import com.twinkle.framework.struct.util.MutableStructAttributeArray;
 import com.twinkle.framework.struct.util.StructAttributeArray;

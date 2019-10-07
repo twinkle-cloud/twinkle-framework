@@ -1,4 +1,4 @@
-package com.twinkle.framework.struct.type;
+package com.twinkle.framework.struct.lang;
 
 import com.twinkle.framework.struct.error.*;
 import com.twinkle.framework.struct.ref.AttributeRef;

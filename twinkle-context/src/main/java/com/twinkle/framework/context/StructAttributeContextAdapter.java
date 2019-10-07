@@ -5,7 +5,7 @@ import com.twinkle.framework.api.context.NormalizedContext;
 import com.twinkle.framework.context.model.DefaultNormalizedContext;
 import com.twinkle.framework.struct.error.StructAttributeCopyException;
 import com.twinkle.framework.struct.error.StructAttributeException;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.utils.StructAttributePrintFormatter;
 
 /**
@@ -149,16 +149,16 @@ public class StructAttributeContextAdapter extends DefaultNormalizedContext {
         return tempBuilder.toString();
     }
     @Override
-    public String toStringWithAttrNames(boolean _withAttrNameFlag, boolean var2, boolean var3, boolean var4, String var5) {
+    public String toStringWithAttrNames(boolean _printNullFlag, boolean _logAttrFlag, boolean _logStructAttributeFlag, boolean _inSingleLineFlag, String var5) {
         StringBuilder tempBuilder = new StringBuilder();
-        if (var2) {
-            tempBuilder.append(super.toStringWithAttrNames(_withAttrNameFlag, var2, var3, var4, var5));
+        if (_logAttrFlag) {
+            tempBuilder.append(super.toStringWithAttrNames(_printNullFlag, _logAttrFlag, _logStructAttributeFlag, _inSingleLineFlag, var5));
         }
 
-        if (var3 && this.structAttribute != null) {
+        if (_logStructAttributeFlag && this.structAttribute != null) {
             String tempLineSeparator = System.getProperty("line.separator", "\n");
-            if (var4) {
-                if (var2) {
+            if (_inSingleLineFlag) {
+                if (_logAttrFlag) {
                     tempBuilder.append(var5);
                 }
 

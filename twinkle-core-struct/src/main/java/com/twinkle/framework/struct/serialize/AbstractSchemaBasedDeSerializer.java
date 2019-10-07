@@ -3,7 +3,7 @@ package com.twinkle.framework.struct.serialize;
 import com.alibaba.fastjson.JSONReader;
 import com.twinkle.framework.asm.factory.BeanFactory;
 import com.twinkle.framework.core.lang.util.*;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.util.ArrayAllocator;
 import com.twinkle.framework.struct.util.MutableStructAttributeArray;
 import com.twinkle.framework.struct.util.StructAttributeArray;

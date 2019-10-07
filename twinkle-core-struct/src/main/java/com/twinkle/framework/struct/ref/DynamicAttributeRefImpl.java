@@ -8,7 +8,7 @@ import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptorImpl;
 import com.twinkle.framework.struct.error.*;
 import com.twinkle.framework.struct.type.AttributeType;
 import com.twinkle.framework.struct.type.PrimitiveType;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.type.StructType;
 
 import java.text.ParseException;

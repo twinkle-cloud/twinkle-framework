@@ -5,7 +5,7 @@ import com.twinkle.framework.asm.serialize.Serializer;
 import com.twinkle.framework.asm.serialize.SerializerFactory;
 import com.twinkle.framework.struct.serialize.JsonIntrospectionSerializerFactory;
 import com.twinkle.framework.struct.serialize.JsonSerializer;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.utils.StructTypeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpInputMessage;
@@ -16,8 +16,6 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;

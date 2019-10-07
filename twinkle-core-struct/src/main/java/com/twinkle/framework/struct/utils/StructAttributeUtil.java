@@ -5,12 +5,12 @@ import com.twinkle.framework.core.lang.*;
 import com.twinkle.framework.core.lang.util.*;
 import com.twinkle.framework.struct.context.StructAttributeSchema;
 import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
-import com.twinkle.framework.struct.error.AttributeNotFoundException;
-import com.twinkle.framework.struct.error.AttributeNotSetException;
-import com.twinkle.framework.struct.error.AttributeTypeMismatchException;
-import com.twinkle.framework.struct.error.BadAttributeNameException;
+import com.twinkle.framework.struct.error.*;
 import com.twinkle.framework.struct.factory.StructAttributeFactory;
+import com.twinkle.framework.struct.lang.StructAttribute;
+import com.twinkle.framework.struct.ref.ArrayAttributeRef;
 import com.twinkle.framework.struct.ref.AttributeRef;
+import com.twinkle.framework.struct.ref.CompositeAttributeRef;
 import com.twinkle.framework.struct.type.*;
 import com.twinkle.framework.struct.util.ArrayAllocator;
 
@@ -453,6 +453,66 @@ public class StructAttributeUtil {
             default:
                 throw new IllegalArgumentException("Unknown primitive type: " + tempTypeID);
         }
+    }
 
+    /**
+     * Prepare the StructAttribute: add the attributeRef's attribute.
+     *
+     * @param _structAttribute
+     * @param _attrRef
+     * @throws BadAttributeNameException
+     * @throws AttributeNotFoundException
+     * @throws AttributeTypeMismatchException
+     * @throws AttributeNotSetException
+     */
+    public static void prepareStructAttribute(StructAttribute _structAttribute, AttributeRef _attrRef) throws BadAttributeNameException, AttributeNotFoundException, AttributeTypeMismatchException, AttributeNotSetException {
+        if (_attrRef.isComposite()) {
+            StructAttribute tempStructAttribute = ((CompositeAttributeRef)_attrRef).getTailStructAttribute(_structAttribute, true);
+            AttributeRef tempAttrRef = ((CompositeAttributeRef)_attrRef).getTailAttributeRef();
+            AttributeType tempType = tempAttrRef.getType();
+            if (tempType.isStructType()) {
+                StructAttributeFactory var5 = StructAttributeSchemaManager.getStructAttributeFactory();
+                tempStructAttribute.setStruct(tempAttrRef, var5.newStructAttribute((StructType)tempType));
+            }
+
+            if (tempAttrRef.isArray()) {
+                ((ArrayAttributeRef)tempAttrRef).ensureSize(tempStructAttribute);
+            }
+        } else if (_attrRef.isArray()) {
+            ((ArrayAttributeRef)_attrRef).ensureSize(_structAttribute);
+        } else {
+            AttributeType tempRefType = _attrRef.getType();
+            if (tempRefType.isStructType()) {
+                StructAttributeFactory tempFactory = StructAttributeSchemaManager.getStructAttributeFactory();
+                _structAttribute.setStruct(_attrRef, tempFactory.newStructAttribute((StructType)tempRefType));
+            }
+        }
+    }
+
+    /**
+     * Build an empty StructAttribute with StructType's name.
+     *
+     * @param _structTypeName
+     * @return
+     * @throws NamespaceNotFoundException
+     * @throws StructAttributeTypeNotFoundException
+     */
+    public static StructAttribute createEmptyStructAttribute(String _structTypeName) throws NamespaceNotFoundException, StructAttributeTypeNotFoundException {
+        StructType tempType = StructAttributeSchemaManager.getStructAttributeSchema().getStructAttributeType(_structTypeName);
+        return StructAttributeSchemaManager.getStructAttributeFactory().newStructAttribute(tempType);
+    }
+
+    /**
+     * Get StructType's attribute ref with given attribute name.
+     *
+     * @param _type
+     * @param _attrName
+     * @return
+     * @throws AttributeNotFoundException
+     * @throws AttributeTypeMismatchException
+     * @throws BadAttributeNameException
+     */
+    public static AttributeRef getAttributeRef(StructType _type, String _attrName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
+        return StructAttributeSchemaManager.getStructAttributeFactory().getCompositeAttributeRef(_type, _attrName);
     }
 }

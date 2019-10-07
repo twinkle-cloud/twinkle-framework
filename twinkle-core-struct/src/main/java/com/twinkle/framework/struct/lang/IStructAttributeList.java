@@ -1,7 +1,6 @@
 package com.twinkle.framework.struct.lang;
 
 import com.twinkle.framework.core.lang.IListAttribute;
-import com.twinkle.framework.struct.type.StructAttribute;
 
 import java.util.List;
 

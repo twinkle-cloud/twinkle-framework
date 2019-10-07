@@ -1,7 +1,6 @@
 package com.twinkle.framework.struct.factory;
 
 import com.twinkle.framework.asm.Bean;
-import com.twinkle.framework.asm.factory.AbstractBeanFactory;
 import com.twinkle.framework.asm.factory.BeanFactory;
 import com.twinkle.framework.asm.serialize.SerializerFactory;
 import com.twinkle.framework.asm.utils.BeanUtil;
@@ -16,7 +15,7 @@ import com.twinkle.framework.struct.error.StructAttributeInstantiationException;
 import com.twinkle.framework.struct.error.StructAttributeTypeNotFoundException;
 import com.twinkle.framework.struct.type.ArrayType;
 import com.twinkle.framework.struct.type.AttributeType;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.type.StructType;
 import lombok.extern.slf4j.Slf4j;
 

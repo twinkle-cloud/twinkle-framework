@@ -4,7 +4,7 @@ import com.twinkle.framework.api.context.AttributeInfo;
 import com.twinkle.framework.core.lang.Attribute;
 import com.twinkle.framework.core.lang.JavaAttributeInfo;
 import com.twinkle.framework.struct.ref.AttributeRef;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.utils.StructAttributeUtil;
 import com.twinkle.framework.struct.utils.StructTypeUtil;
 import org.apache.commons.lang3.StringUtils;

@@ -220,26 +220,26 @@ public class DefaultNormalizedContext implements NormalizedContext {
     /**
      * To string with attribute name or not.
      *
-     * @param _withAttrNameFlag
+     * @param _printNullFlag
      * @return
      */
     @Override
-    public String toStringWithAttrNames(boolean _withAttrNameFlag) {
-        return this.toStringWithAttrNames(_withAttrNameFlag, true, true, false, System.getProperty("line.separator", "\n"));
+    public String toStringWithAttrNames(boolean _printNullFlag) {
+        return this.toStringWithAttrNames(_printNullFlag, true, true, false, System.getProperty("line.separator", "\n"));
     }
 
     @Override
-    public String toStringWithAttrNames(boolean _withAttrNameFlag, boolean var2, boolean var3, boolean var4, String _separator) {
+    public String toStringWithAttrNames(boolean _printNullFlag, boolean _logAttrFlag, boolean _logStructAttributeFlag, boolean _inSingleLineFlag, String _separator) {
         if (this.attributes == null) {
             return "Empty StructAttribute";
-        } else if (!var2) {
+        } else if (!_logAttrFlag) {
             return "";
         }
         StringBuffer tempBuffer = new StringBuffer(300);
         String[] tempAttributeNameArray = this.typeInfo.getAttributeNames();
 
         for (int i = 0; i < this.attributes.length; ++i) {
-            if (this.attributes[i] != null || _withAttrNameFlag) {
+            if (this.attributes[i] != null || _printNullFlag) {
                 tempBuffer.append(tempAttributeNameArray[i]);
                 tempBuffer.append("=");
                 tempBuffer.append(toLogString(this.attributes[i]));

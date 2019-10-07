@@ -1,6 +1,5 @@
 package com.twinkle.framework.struct.asm.classloader;
 
-import com.twinkle.framework.asm.classloader.AbstractBeanClassLoader;
 import com.twinkle.framework.asm.classloader.EnhancedClassLoader;
 import com.twinkle.framework.asm.designer.*;
 import com.twinkle.framework.asm.Bean;
@@ -9,7 +8,7 @@ import com.twinkle.framework.asm.utils.BeanUtil;
 import com.twinkle.framework.struct.asm.define.StructAttributeBeanTypeDef;
 import com.twinkle.framework.struct.asm.define.StructAttributeBeanTypeDefImpl;
 import com.twinkle.framework.struct.error.StructAttributeException;
-import com.twinkle.framework.struct.type.AbstractStructAttribute;
+import com.twinkle.framework.struct.lang.AbstractStructAttribute;
 import com.twinkle.framework.struct.type.StructType;
 import com.twinkle.framework.struct.asm.designer.StructAttributeClassDesigner;
 import com.twinkle.framework.struct.asm.designer.StructAttributeImplBuilderDesigner;

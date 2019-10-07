@@ -6,6 +6,7 @@ import com.twinkle.framework.asm.utils.BeanUtil;
 import com.twinkle.framework.struct.context.StructAttributeSchema;
 import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
 import com.twinkle.framework.struct.error.TypeNotFoundException;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.type.PrimitiveType;
 import com.twinkle.framework.core.lang.util.*;
 import com.twinkle.framework.struct.type.StringType;

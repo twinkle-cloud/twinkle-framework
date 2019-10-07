@@ -8,7 +8,7 @@ package com.twinkle.framework.ruleengine.rule.support;
 //import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
 //import com.twinkle.framework.struct.factory.StructAttributeFactory;
 //import com.twinkle.framework.struct.ref.AttributeRef;
-//import com.twinkle.framework.struct.type.StructAttribute;
+//import com.twinkle.framework.struct.lang.StructAttribute;
 //import com.twinkle.framework.struct.type.StructType;
 //
 //import java.util.HashMap;

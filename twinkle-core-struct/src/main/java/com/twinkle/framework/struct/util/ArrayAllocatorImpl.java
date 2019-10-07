@@ -3,7 +3,7 @@ package com.twinkle.framework.struct.util;
 import com.twinkle.framework.core.lang.util.*;
 import com.twinkle.framework.struct.type.ArrayType;
 import com.twinkle.framework.struct.type.PrimitiveType;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.type.AttributeType;
 
 /**

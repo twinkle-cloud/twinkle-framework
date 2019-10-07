@@ -3,7 +3,7 @@ package com.twinkle.framework.struct.util;
 import com.twinkle.framework.core.lang.util.MutableObjectArray;
 import com.twinkle.framework.core.lang.util.ObjectArray;
 import com.twinkle.framework.core.lang.util.ObjectArrayImpl;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>

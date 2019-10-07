@@ -17,7 +17,7 @@ import com.twinkle.framework.struct.error.AttributeTypeMismatchException;
 import com.twinkle.framework.struct.error.StructAttributeException;
 import com.twinkle.framework.struct.ref.AttributeRef;
 import com.twinkle.framework.struct.type.AttributeType;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.type.StructType;
 import com.twinkle.framework.struct.utils.StructAttributeUtil;
 import lombok.extern.slf4j.Slf4j;

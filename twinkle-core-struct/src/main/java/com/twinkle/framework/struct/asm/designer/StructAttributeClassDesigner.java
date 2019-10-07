@@ -20,7 +20,7 @@ import com.twinkle.framework.struct.ref.AttributeRef;
 import com.twinkle.framework.struct.ref.SAAttributeRefHandleImpl;
 import com.twinkle.framework.struct.ref.StructAttributeRef;
 import com.twinkle.framework.struct.type.ArrayType;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.type.StructType;
 import com.twinkle.framework.struct.type.AttributeType;
 import com.twinkle.framework.struct.utils.StructTypeUtil;

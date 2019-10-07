@@ -1,7 +1,7 @@
 package com.twinkle.framework.struct.serialize;
 
 import com.alibaba.fastjson.JSONReader;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 
 import java.io.IOException;
 

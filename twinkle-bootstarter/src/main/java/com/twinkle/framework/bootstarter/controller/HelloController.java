@@ -13,7 +13,7 @@ import com.twinkle.framework.api.data.GeneralResult;
 import com.twinkle.framework.connector.server.AbstractServer;
 import com.twinkle.framework.struct.serialize.JsonIntrospectionSerializerFactory;
 import com.twinkle.framework.struct.serialize.JsonSerializer;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

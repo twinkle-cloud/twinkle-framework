@@ -13,7 +13,7 @@ import com.twinkle.framework.struct.factory.StructAttributeFactory;
 import com.twinkle.framework.struct.ref.AttributeRef;
 import com.twinkle.framework.struct.ref.CompositeName;
 import com.twinkle.framework.struct.ref.DynamicAttributeRef;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.type.StructType;
 import lombok.Getter;
 

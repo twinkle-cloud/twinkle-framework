@@ -63,7 +63,9 @@
         "ClassName": "com.twinkle.framework.ruleengine.RuleChain",
         "RuleNames": [
           "TestDemoRule",
-          "TestConversionRule"
+          "BeforeConversionLog",
+          "TestConversionRule",
+          "AfterConversionLog"
         ],
         "Rules": [
           {
@@ -72,12 +74,28 @@
             "Attribute": "position"
           },
           {
+            "Name": "BeforeConversionLog",
+            "ClassName": "com.twinkle.framework.ruleengine.rule.LogAttributeRule",
+            "LogLevel": "INFO",
+            "Message": "Attribute before conversion are: ",
+            "Attributes": ["userName","position","age","dept", "addressId", "userOrgInfo"]
+          },
+          {
             "Name": "TestConversionRule",
             "ClassName": "com.twinkle.framework.ruleengine.rule.AttributeConversionRule",
             "StructAttribute": "userOrgInfo",
             "StructAttributeToAttributeMap": [["age", "age", "100"], ["titles[0].dept", "dept"]],
             "AttributeToStructAttributeMap": [["addressId", "age", "50"], ["position","titles[0].position"]],
             "CreateStructAttributeIfNeeded": true
+          },
+          {
+            "Name": "AfterConversionLog",
+            "ClassName": "com.twinkle.framework.ruleengine.rule.LogAttributeRule",
+            "LogLevel": "INFO",
+            "Message": "Attribute after conversion are: ",
+            "NullAlso": "true",
+            "ConvertToJson": "true",
+            "Attributes": ["userName","position","age","dept", "addressId", "userOrgInfo"]
           }
         ]
       }

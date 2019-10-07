@@ -1,7 +1,7 @@
 package com.twinkle.framework.struct.ref;
 
 import com.twinkle.framework.struct.type.ArrayType;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>

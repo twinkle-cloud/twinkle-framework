@@ -2,7 +2,6 @@ package com.twinkle.framework.struct.lang;
 
 import com.twinkle.framework.core.lang.ListAttribute;
 import com.twinkle.framework.core.lang.ObjectAttribute;
-import com.twinkle.framework.struct.type.StructAttribute;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;

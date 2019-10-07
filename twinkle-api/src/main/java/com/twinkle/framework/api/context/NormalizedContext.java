@@ -92,22 +92,22 @@ public interface NormalizedContext extends Serializable, Cloneable {
     /**
      * Output the attributes in the context as string.
      *
-     * @param _withAttrNameFlag
+     * @param _printNullFlag
      * @return
      */
-    String toStringWithAttrNames(boolean _withAttrNameFlag);
+    String toStringWithAttrNames(boolean _printNullFlag);
 
     /**
      * Output the attributes in the context as string.
      *
-     * @param _withAttrNameFlag
-     * @param var2
-     * @param var3
-     * @param var4
+     * @param _printNullFlag
+     * @param _logAttrFlag
+     * @param _logStructAttributeFlag
+     * @param _inSingleLineFlag
      * @param _separator
      * @return
      */
-    String toStringWithAttrNames(boolean _withAttrNameFlag, boolean var2, boolean var3, boolean var4, String _separator);
+    String toStringWithAttrNames(boolean _printNullFlag, boolean _logAttrFlag, boolean _logStructAttributeFlag, boolean _inSingleLineFlag, String _separator);
 
     /**
      * Output the attributes' values.

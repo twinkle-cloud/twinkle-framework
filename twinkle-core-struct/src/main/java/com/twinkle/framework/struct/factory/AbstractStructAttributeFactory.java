@@ -12,7 +12,7 @@ import com.twinkle.framework.struct.asm.builder.StructAttributeImplBuilder;
 import com.twinkle.framework.struct.asm.classloader.StructAttributeClassLoader;
 import com.twinkle.framework.struct.asm.classloader.StructAttributeGeneralClassLoader;
 import com.twinkle.framework.struct.error.*;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.type.StructType;
 import com.twinkle.framework.struct.util.ArrayAllocator;
 import com.twinkle.framework.struct.util.ArrayAllocatorImpl;

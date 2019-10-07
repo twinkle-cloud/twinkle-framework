@@ -7,7 +7,7 @@ import com.twinkle.framework.asm.descriptor.AttributeDescriptor;
 import com.twinkle.framework.asm.descriptor.BeanTypeDescriptor;
 import com.twinkle.framework.asm.descriptor.TypeDescriptor;
 import com.twinkle.framework.struct.serialize.AbstractSchemaBasedSerializer;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.core.lang.util.Array;
 import com.twinkle.framework.asm.utils.ClassDesignerUtil;
 import org.objectweb.asm.*;

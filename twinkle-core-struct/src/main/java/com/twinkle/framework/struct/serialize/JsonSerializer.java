@@ -1,7 +1,7 @@
 package com.twinkle.framework.struct.serialize;
 
 import com.twinkle.framework.asm.serialize.TextSerializer;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>

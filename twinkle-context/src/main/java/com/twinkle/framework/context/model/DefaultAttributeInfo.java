@@ -3,7 +3,7 @@ package com.twinkle.framework.context.model;
 import com.twinkle.framework.api.context.AttributeInfo;
 import com.twinkle.framework.context.PrimitiveAttributeSchema;
 import com.twinkle.framework.core.lang.Attribute;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.utils.StructAttributeUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

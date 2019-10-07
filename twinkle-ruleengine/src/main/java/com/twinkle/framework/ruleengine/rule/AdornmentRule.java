@@ -48,11 +48,11 @@ public class AdornmentRule extends AbstractRule {
         } else {
             String tempUrl = _conf.getString("MapURL");
             JSONArray tempURLCommentsJsonArray = _conf.getJSONArray("MapURLComments");
-            String[] tempURLCommnetArray = tempURLCommentsJsonArray.toArray(new String[]{});
+            String[] tempURLCommentArray = tempURLCommentsJsonArray.toArray(new String[]{});
             boolean tempUseArrayFlag = _conf.getBooleanValue("MapUseArray");
             boolean tempEnableRefresh = _conf.getBooleanValue("MapRefresh");
             String tempOperator = _conf.getString("MapSeparator");
-            this.mapHash = MapHash.createMapHash(tempUrl, tempURLCommnetArray, tempUseArrayFlag, tempEnableRefresh, tempOperator);
+            this.mapHash = MapHash.createMapHash(tempUrl, tempURLCommentArray, tempUseArrayFlag, tempEnableRefresh, tempOperator);
             this.loadOperations(tempArray.toArray(new String[]{}), _conf);
         }
     }

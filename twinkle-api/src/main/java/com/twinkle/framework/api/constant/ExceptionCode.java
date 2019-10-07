@@ -20,6 +20,10 @@ public interface ExceptionCode {
     int LOGIC_CONF_DUPLICATE_COMPONENT_FOUND = 0x001007;
     int LOGIC_CONF_INVALID_EXPRESSION = 0x001010;
     int LOGIC_CONF_REQUIRED_ATTR_MISSED = 0x001011;
+    /**
+     * Escape character is at invalid position.
+     */
+    int LOGIC_CONF_ESCAPE_CHAR_POSITION_INVALID = 0x001012;
 
     int LOGIC_CONF_ATTR_MISSED_IN_SCHEMA = 0x001100;
     int LOGIC_CONF_ATTR_NOT_INIT = 0x001101;
@@ -27,6 +31,7 @@ public interface ExceptionCode {
     int LOGIC_CONF_ATTR_NOT_ALLOWED = 0x001103;
     int LOGIC_CONF_ATTR_VALUE_INVALID = 0x001104;
     /**
+     * Struct Attribute related exceptions.
      * The attributes parameters missed for the Struct Attribute type.
      */
     int LOGIC_CONF_SA_TYPE_ATTR_MISSED = 0x001105;
@@ -66,6 +71,11 @@ public interface ExceptionCode {
      * Struct Attribute's attribute is invalid.
      */
     int LOGIC_CONF_SA_ATTR_INVALID = 0x00110e;
+    /**
+     * The Struct Attribute Factory is missing.
+     */
+    int LOGIC_CONF_SA_BEAN_FACTORY_MISSING = 0x001110;
+    int LOGIC_CONF_SA_SERIALIZER_FACTORY_MISSING = 0x001111;
 
     int RULE_ADN_INVALID_URL = 0x010001;
     int RULE_ADN_URL_READ_FAILED = 0x010002;
@@ -124,4 +134,10 @@ public interface ExceptionCode {
      * Copy attribute to struct attribute failed.
      */
     int RULE_APPLY_Attr_2_SA_FAILED = 0x020005;
+
+    /**
+     * Character code exceptions;
+     * Unicode is invalid.
+     */
+    int CHARACTER_CODE_UNICODE_INVALID = 0x30001;
 }

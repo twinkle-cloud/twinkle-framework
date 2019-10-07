@@ -1,6 +1,7 @@
 package com.twinkle.framework.struct.serialize;
 
 import com.alibaba.fastjson.JSONWriter;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.ref.AttributeRef;
 import com.twinkle.framework.core.lang.util.*;
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;

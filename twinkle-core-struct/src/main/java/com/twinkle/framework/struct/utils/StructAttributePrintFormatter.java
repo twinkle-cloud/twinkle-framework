@@ -3,6 +3,7 @@ package com.twinkle.framework.struct.utils;
 import com.twinkle.framework.core.lang.util.Array;
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
 import com.twinkle.framework.struct.error.StructAttributeException;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.ref.AttributeRef;
 import com.twinkle.framework.struct.type.*;
 import com.twinkle.framework.struct.util.StructAttributeArray;

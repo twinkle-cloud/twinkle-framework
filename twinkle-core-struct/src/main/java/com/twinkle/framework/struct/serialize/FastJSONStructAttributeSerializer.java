@@ -5,7 +5,7 @@ import com.alibaba.fastjson.serializer.ObjectSerializer;
 import com.alibaba.fastjson.serializer.SerializeWriter;
 import com.twinkle.framework.asm.serialize.Serializer;
 import com.twinkle.framework.asm.serialize.SerializerFactory;
-import com.twinkle.framework.struct.type.StructAttribute;
+import com.twinkle.framework.struct.lang.StructAttribute;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
