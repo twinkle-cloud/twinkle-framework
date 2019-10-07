@@ -19,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public abstract class AttributeOperation extends AbstractRule {
-
     public AttributeOperation(){
         super();
         log.info("AttributeOperation.initialized().");
@@ -27,8 +26,8 @@ public abstract class AttributeOperation extends AbstractRule {
 
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
-        String var2 = _conf.getString("Operation");
-        this.loadOperation(var2);
+        String tempOperation = _conf.getString("Operation");
+        this.loadOperation(tempOperation);
     }
 
     public abstract void loadOperation(String _operation) throws ConfigurationException;
@@ -41,7 +40,7 @@ public abstract class AttributeOperation extends AbstractRule {
      * @param _index
      * @return
      */
-    protected boolean modifyNormalizedContext(NormalizedContext _context, Attribute _attr, int _index) {
+    protected boolean modifyContextAttribute(NormalizedContext _context, Attribute _attr, int _index) {
         Attribute tempDestAttr = _context.getAttribute(_index);
         if (tempDestAttr == null) {
             if (!_context.getType().isMember(_index)) {
@@ -56,5 +55,17 @@ public abstract class AttributeOperation extends AbstractRule {
             tempDestAttr.setValue(_attr);
             return false;
         }
+    }
+
+    /**
+     * Reset the following Operation.
+     *
+     * @param _context
+     */
+    public void reset(NormalizedContext _context) {
+        if (this.nextRule != null) {
+            ((AttributeOperation)this.nextRule).reset(_context);
+        }
+
     }
 }

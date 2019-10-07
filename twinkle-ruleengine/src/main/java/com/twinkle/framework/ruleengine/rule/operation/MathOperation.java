@@ -5,7 +5,6 @@ import com.twinkle.framework.api.context.AttributeInfo;
 import com.twinkle.framework.api.context.NormalizedContext;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.api.exception.RuleException;
-import com.twinkle.framework.context.model.DefaultNormalizedContext;
 import com.twinkle.framework.core.lang.Attribute;
 import com.twinkle.framework.core.lang.INumericAttribute;
 import com.twinkle.framework.core.lang.IScalarAttribute;
@@ -25,28 +24,7 @@ import java.util.StringTokenizer;
  */
 @Slf4j
 public class MathOperation extends AttributeOperation {
-
-    private static final int ADD = 1;
-    private static final int SUBTRACT = 2;
-    private static final int MULTIPLY = 3;
-    private static final int DIVIDE = 4;
-    private static final int MOD = 5;
-    private static final int AND = 6;
-    private static final int OR = 7;
-    private static final int XOR = 8;
-    private static final int SHIFTL = 9;
-    private static final int SHIFTR = 10;
-    private static final String S_ADD = "+";
-    private static final String S_SUBTRACT = "-";
-    private static final String S_MULTIPLY = "*";
-    private static final String S_DIVIDE = "/";
-    private static final String S_MOD = "%";
-    private static final String S_AND = "&";
-    private static final String S_OR = "|";
-    private static final String S_XOR = "^";
-    private static final String S_SHIFTL = "<<";
-    private static final String S_SHIFTR = ">>";
-    private int math_op_;
+    private MathOperator mathOperation;
     protected int mathDestAttrIndex;
     private boolean isDstTree_ = false;
     private int mathOp1AttrIndex;
@@ -55,17 +33,18 @@ public class MathOperation extends AttributeOperation {
     private boolean isSrc2Tree_ = false;
     private Attribute mathConstOp1;
     private Attribute mathConstOp2;
-    private boolean nonNumeric_;
+    private boolean nonNumeric;
 
     public MathOperation() {
         log.debug("MathOperation.initialize().");
-        this.math_op_ = -1;
+        this.mathOperation = MathOperator.UNKOWN;
         this.mathDestAttrIndex = -1;
         this.mathOp1AttrIndex = -1;
         this.mathOp2AttrIndex = -1;
         this.mathConstOp1 = null;
         this.mathConstOp2 = null;
     }
+
     @Override
     public void loadOperation(String _operation) throws ConfigurationException {
         StringTokenizer tempST = new StringTokenizer(_operation);
@@ -101,7 +80,7 @@ public class MathOperation extends AttributeOperation {
 
                     try {
                         this.mathConstOp1.setValue(tempFirstParam);
-                    } catch (NumberFormatException var13) {
+                    } catch (NumberFormatException e) {
                         throw new ConfigurationException(ExceptionCode.LOGIC_CONF_ATTR_MISSED_IN_SCHEMA, tempFirstParam + " in MathOperation " + _operation + " should be either defined in NMESchema or a Constant Value of required Type");
                     }
                 }
@@ -122,7 +101,7 @@ public class MathOperation extends AttributeOperation {
 
                     try {
                         this.mathConstOp2.setValue(tempSecondParam);
-                    } catch (NumberFormatException var12) {
+                    } catch (NumberFormatException e) {
                         throw new ConfigurationException(ExceptionCode.LOGIC_CONF_ATTR_MISSED_IN_SCHEMA, tempSecondParam + " in MathOperation " + _operation + " should be either defined in NMESchema or a Constant Value of required Type");
                     }
                 }
@@ -140,33 +119,33 @@ public class MathOperation extends AttributeOperation {
 
     @Override
     public void applyRule(NormalizedContext _context) throws RuleException {
-        log.debug("MathOperation:applyRule()");
+        log.debug("Going to apply MathOperation.applyRule()");
 
-        if (this.math_op_ == 1 && this.nonNumeric_) {
+        if (this.mathOperation == MathOperator.ADD && this.nonNumeric) {
             this.concatenate(_context);
             if (this.nextRule != null) {
                 this.nextRule.applyRule(_context);
             }
         } else {
-            INumericAttribute tempDestAttr = (INumericAttribute)_context.getAttribute(this.mathDestAttrIndex);
+            INumericAttribute tempDestAttr = (INumericAttribute) _context.getAttribute(this.mathDestAttrIndex);
             INumericAttribute tempOp1Attr;
             if (this.mathOp1AttrIndex != -1) {
-                tempOp1Attr = (INumericAttribute)_context.getAttribute(this.mathOp1AttrIndex);
+                tempOp1Attr = (INumericAttribute) _context.getAttribute(this.mathOp1AttrIndex);
                 if (tempOp1Attr == null) {
                     throw new RuleException(ExceptionCode.LOGIC_CONF_ATTR_NOT_INIT, "NC attribute " + this.primitiveAttributeSchema.getAttribute(this.mathOp1AttrIndex).getName() + " not set");
                 }
             } else {
-                tempOp1Attr = (INumericAttribute)this.mathConstOp1;
+                tempOp1Attr = (INumericAttribute) this.mathConstOp1;
             }
 
             INumericAttribute tempOp2Attr;
             if (this.mathOp2AttrIndex != -1) {
-                tempOp2Attr = (INumericAttribute)_context.getAttribute(this.mathOp2AttrIndex);
+                tempOp2Attr = (INumericAttribute) _context.getAttribute(this.mathOp2AttrIndex);
                 if (tempOp2Attr == null) {
                     throw new RuleException(ExceptionCode.LOGIC_CONF_ATTR_NOT_INIT, "NC attribute " + this.primitiveAttributeSchema.getAttribute(this.mathOp2AttrIndex).getName() + " not set");
                 }
             } else {
-                tempOp2Attr = (INumericAttribute)this.mathConstOp2;
+                tempOp2Attr = (INumericAttribute) this.mathConstOp2;
             }
 
             if (tempDestAttr == null) {
@@ -175,13 +154,13 @@ public class MathOperation extends AttributeOperation {
                     _context.getType().addAttribute(tempDestAttrInfo);
                 }
 
-                tempDestAttr = (INumericAttribute)this.primitiveAttributeSchema.newAttributeInstance(this.mathDestAttrIndex);
+                tempDestAttr = (INumericAttribute) this.primitiveAttributeSchema.newAttributeInstance(this.mathDestAttrIndex);
                 _context.setAttribute(tempDestAttr, this.mathDestAttrIndex);
             }
 
             boolean tempCalResultFlag = this.calculate(tempDestAttr, tempOp1Attr, tempOp2Attr);
             if (!tempCalResultFlag) {
-                throw new RuleException(ExceptionCode.RULE_ADN_MATH_OPERATION_INVALID, "Operation is not supported by the target attribute - " + this.math_op_);
+                throw new RuleException(ExceptionCode.RULE_ADN_MATH_OPERATION_INVALID, "Operation is not supported by the target attribute - " + this.mathOperation);
             } else {
                 if (this.nextRule != null) {
                     this.nextRule.applyRule(_context);
@@ -201,42 +180,28 @@ public class MathOperation extends AttributeOperation {
      */
     protected boolean validate(String _operation, String _tempOpr) throws ConfigurationException {
         boolean tempResult = true;
-        if (_tempOpr.equals(S_ADD)) {
-            this.math_op_ = ADD;
-            this.nonNumeric_ = !this.checkNumeric();
-        } else if (_tempOpr.equals(S_SUBTRACT)) {
-            this.math_op_ = SUBTRACT;
-            tempResult = this.checkNumeric();
-        } else if (_tempOpr.equals(S_MULTIPLY)) {
-            this.math_op_ = MULTIPLY;
-            tempResult = this.checkNumeric();
-        } else if (_tempOpr.equals(S_DIVIDE)) {
-            this.math_op_ = DIVIDE;
-            tempResult = this.checkNumeric();
-        } else if (_tempOpr.equals(S_MOD)) {
-            this.math_op_ = MOD;
-            tempResult = this.checkNumeric();
-        } else if (_tempOpr.equals(S_AND)) {
-            this.math_op_ = AND;
-            tempResult = this.checkScalar();
-        } else if (_tempOpr.equals(S_OR)) {
-            this.math_op_ = OR;
-            tempResult = this.checkScalar();
-        } else if (_tempOpr.equals(S_XOR)) {
-            this.math_op_ = XOR;
-            tempResult = this.checkScalar();
-        } else if (_tempOpr.equals(S_SHIFTL)) {
-            this.math_op_ = SHIFTL;
-            tempResult = this.checkScalar();
-        } else {
-            if (!_tempOpr.equals(S_SHIFTR)) {
+        this.mathOperation = MathOperator.valueOfOperator(_tempOpr);
+        switch (this.mathOperation) {
+            case ADD:
+                this.nonNumeric = !this.checkNumeric();
+                break;
+            case SUBTRACT:
+            case MULTIPLY:
+            case DIVIDE:
+            case MOD:
+                tempResult = this.checkNumeric();
+                break;
+            case AND:
+            case OR:
+            case XOR:
+            case SHIFTL:
+            case SHIFTR:
+                tempResult = this.checkScalar();
+                break;
+            default:
                 throw new ConfigurationException(ExceptionCode.RULE_ADN_MATH_OPERATION_INVALID, "In MathOperation.loadOperations():  operator '+', '-', '*', '/', '&', '|', '%', '<<', or '>>' (" + _operation + ")");
-            }
 
-            this.math_op_ = SHIFTR;
-            tempResult = this.checkScalar();
         }
-
         return tempResult;
     }
 
@@ -247,10 +212,10 @@ public class MathOperation extends AttributeOperation {
     private boolean checkScalar() {
         return (this.mathOp1AttrIndex == -1 || this.primitiveAttributeSchema.newAttributeInstance(this.mathOp1AttrIndex) instanceof IScalarAttribute) && (this.mathOp2AttrIndex == -1 || this.primitiveAttributeSchema.newAttributeInstance(this.mathOp2AttrIndex) instanceof IScalarAttribute) && (this.mathOp1AttrIndex != -1 || this.mathConstOp1 instanceof INumericAttribute) && (this.mathOp2AttrIndex != -1 || this.mathConstOp2 instanceof INumericAttribute) && this.primitiveAttributeSchema.newAttributeInstance(this.mathDestAttrIndex) instanceof IScalarAttribute;
     }
-    
+
     protected boolean calculate(INumericAttribute _destAttr, INumericAttribute _op1Attr, INumericAttribute _op2Attr) throws RuleException {
         boolean tempOprResultFlag = true;
-        switch(this.math_op_) {
+        switch (this.mathOperation) {
             case ADD:
                 tempOprResultFlag = _destAttr.add(_op1Attr, _op2Attr);
                 break;
@@ -267,22 +232,22 @@ public class MathOperation extends AttributeOperation {
                 tempOprResultFlag = _destAttr.mod(_op1Attr, _op2Attr);
                 break;
             case AND:
-                tempOprResultFlag = ((IScalarAttribute)_destAttr).and((IScalarAttribute)_op1Attr, (IScalarAttribute)_op2Attr);
+                tempOprResultFlag = ((IScalarAttribute) _destAttr).and((IScalarAttribute) _op1Attr, (IScalarAttribute) _op2Attr);
                 break;
             case OR:
-                tempOprResultFlag = ((IScalarAttribute)_destAttr).or((IScalarAttribute)_op1Attr, (IScalarAttribute)_op2Attr);
+                tempOprResultFlag = ((IScalarAttribute) _destAttr).or((IScalarAttribute) _op1Attr, (IScalarAttribute) _op2Attr);
                 break;
             case XOR:
-                tempOprResultFlag = ((IScalarAttribute)_destAttr).xor((IScalarAttribute)_op1Attr, (IScalarAttribute)_op2Attr);
+                tempOprResultFlag = ((IScalarAttribute) _destAttr).xor((IScalarAttribute) _op1Attr, (IScalarAttribute) _op2Attr);
                 break;
             case SHIFTL:
-                tempOprResultFlag = ((IScalarAttribute)_destAttr).shiftl((IScalarAttribute)_op1Attr, (IScalarAttribute)_op2Attr);
+                tempOprResultFlag = ((IScalarAttribute) _destAttr).shiftl((IScalarAttribute) _op1Attr, (IScalarAttribute) _op2Attr);
                 break;
             case SHIFTR:
-                tempOprResultFlag = ((IScalarAttribute)_destAttr).shiftr((IScalarAttribute)_op1Attr, (IScalarAttribute)_op2Attr);
+                tempOprResultFlag = ((IScalarAttribute) _destAttr).shiftr((IScalarAttribute) _op1Attr, (IScalarAttribute) _op2Attr);
                 break;
             default:
-                throw new RuleException(ExceptionCode.RULE_ADN_MATH_OPERATION_INVALID, "Invalid math operation - " + this.math_op_);
+                throw new RuleException(ExceptionCode.RULE_ADN_MATH_OPERATION_INVALID, "Invalid math operation - " + this.mathOperation);
         }
 
         return tempOprResultFlag;

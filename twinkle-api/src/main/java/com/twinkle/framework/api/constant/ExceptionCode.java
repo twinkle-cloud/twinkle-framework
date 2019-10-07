@@ -134,6 +134,10 @@ public interface ExceptionCode {
      * Copy attribute to struct attribute failed.
      */
     int RULE_APPLY_Attr_2_SA_FAILED = 0x020005;
+    /**
+     * Operation not supported exception.
+     */
+    int RULE_APPLY_OPERATION_NOT_SUPPORT = 0x020006;
 
     /**
      * Character code exceptions;
