@@ -58,6 +58,14 @@ public interface ExceptionCode {
      * Struct attribute's namespace is not found in the schema.
      */
     int LOGIC_CONF_SA_NAMESPACE_NOT_FOUND = 0x00110c;
+    /**
+     * Struct Attribute's attribute is missing.
+     */
+    int LOGIC_CONF_SA_ATTR_MISSED = 0x00110d;
+    /**
+     * Struct Attribute's attribute is invalid.
+     */
+    int LOGIC_CONF_SA_ATTR_INVALID = 0x00110e;
 
     int RULE_ADN_INVALID_URL = 0x010001;
     int RULE_ADN_URL_READ_FAILED = 0x010002;
@@ -69,12 +77,28 @@ public interface ExceptionCode {
 
     int RULE_ADN_MATH_OPERATION_INVALID = 0x011008;
 
-    int RULE_CON_EXPRES_ATTR_MISMATCH = 0x011009;
-    int RULE_CON_EXPRES_ATTR_INVALID = 0x01100A;
+    int RULE_CON_EXPRESS_ATTR_MISMATCH = 0x011009;
+    int RULE_CON_EXPRESS_ATTR_INVALID = 0x01100A;
+    /**
+     * Required Struct Attribute missed.
+     */
+    int RULE_MANDATORY_SA_MISSED = 0x01100B;
 
-    int RULE_MADANTORY_ATTR_MISSED = 0x011000;
+    int RULE_MANDATORY_ATTR_MISSED = 0x011000;
+    /**
+     * The required attribute not initialized int the context.
+     */
+    int RULE_ATTR_NOT_INITIALIZED = 0x011001;
+    /**
+     * The required attribute valued is invalid.
+     */
+    int RULE_ATTR_VALUE_UNEXPECTED = 0x011002;
+    /**
+     * The struct attribute resolved failed.
+     */
+    int RULE_SA_RESOLVED_FAILED = 0x011003;
 
-    int CONNECTOR_MADANTORY_ATTR_MISSED = 0x012000;
+    int CONNECTOR_MANDATORY_ATTR_MISSED = 0x012000;
 
     int COMPONENT_CLASS_MISSED = 0x012001;
     int COMPONENT_FACTORY_NOT_INITIALIZED = 0x012003;
@@ -88,4 +112,16 @@ public interface ExceptionCode {
      */
     int RULE_APPLY_ERROR = 0x020001;
     int RULE_APPLY_OUTSIDE_RULECHAIN = 0x020002;
+    /**
+     * Struct attribute is null.
+     */
+    int RULE_APPLY_SA_IS_NULL = 0x020003;
+    /**
+     * Copy Struct Attribute to Attribute failed.
+     */
+    int RULE_APPLY_SA_2_Attr_FAILED = 0x020004;
+    /**
+     * Copy attribute to struct attribute failed.
+     */
+    int RULE_APPLY_Attr_2_SA_FAILED = 0x020005;
 }

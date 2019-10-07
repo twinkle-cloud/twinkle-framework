@@ -40,13 +40,13 @@ public interface StructAttributeFactory {
      * Get the struct attribute ref with given type and Struct Attribute class name.
      *
      * @param _saType
-     * @param _className
+     * @param _attrName
      * @return
      * @throws AttributeNotFoundException
      * @throws AttributeTypeMismatchException
      * @throws BadAttributeNameException
      */
-    AttributeRef getAttributeRef(StructType _saType, String _className) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException;
+    AttributeRef getAttributeRef(StructType _saType, String _attrName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException;
 
     /**
      * Get the composite attribute ref with given type and composite name.

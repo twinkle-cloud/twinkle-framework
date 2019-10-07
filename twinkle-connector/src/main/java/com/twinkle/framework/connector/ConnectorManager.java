@@ -41,7 +41,7 @@ public class ConnectorManager extends AbstractComponent implements Configurable 
         JSONArray tempNameArray = _conf.getJSONArray("ConnectorNames");
         JSONArray tempConnectorArray = _conf.getJSONArray("Connectors");
         if (CollectionUtils.isEmpty(tempNameArray) || CollectionUtils.isEmpty(tempConnectorArray)) {
-            throw new ConfigurationException(ExceptionCode.CONNECTOR_MADANTORY_ATTR_MISSED, "ConnectorManager.configure(): Connectors is a mandatory parameter. ");
+            throw new ConfigurationException(ExceptionCode.CONNECTOR_MANDATORY_ATTR_MISSED, "ConnectorManager.configure(): Connectors is a mandatory parameter. ");
         }
         this.connectorNameList = new ArrayList<>(tempNameArray.size());
         this.connectorMap = new HashMap<>(tempNameArray.size());

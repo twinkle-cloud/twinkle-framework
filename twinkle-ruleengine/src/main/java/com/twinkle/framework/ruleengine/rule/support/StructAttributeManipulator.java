@@ -1,14 +1,15 @@
-package com.twinkle.framework.context.manager.support;
+package com.twinkle.framework.ruleengine.rule.support;
 
 //import com.alibaba.fastjson.JSONObject;
 //import com.twinkle.framework.api.config.Configurable;
+//import com.twinkle.framework.api.context.NormalizedContext;
 //import com.twinkle.framework.api.exception.ConfigurationException;
 //import com.twinkle.framework.struct.context.StructAttributeSchema;
 //import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
 //import com.twinkle.framework.struct.factory.StructAttributeFactory;
 //import com.twinkle.framework.struct.ref.AttributeRef;
 //import com.twinkle.framework.struct.type.StructAttribute;
-//import com.twinkle.framework.struct.type.StructAttributeType;
+//import com.twinkle.framework.struct.type.StructType;
 //
 //import java.util.HashMap;
 //import java.util.Map;
@@ -23,11 +24,11 @@ package com.twinkle.framework.context.manager.support;
 // * @since JDK 1.8
 // */
 //public class StructAttributeManipulator implements Configurable {
-//    private StructAttributeType rootNMEType_;
+//    private StructType rootNMEType_;
 //    private String encodeAttrName_;
 //    private AttributeRef encodeAttr_;
 //    private Map<String, String> decodeAttrNameMap_;
-//    private Map<StructAttributeType, AttributeRef> decodeAttributeMap_;
+//    private Map<StructType, AttributeRef> decodeAttributeMap_;
 //    private boolean dynamicEncode_;
 //    private String decodeSpecifier_;
 //    private AttributeRef decodeSpecifierAttr_;
@@ -97,7 +98,7 @@ package com.twinkle.framework.context.manager.support;
 //
 //        }
 //    }
-//    public StructAttribute drillDown(NormalizedEvent var1) {
+//    public StructAttribute drillDown(NormalizedContext var1) {
 //        StructAttribute var2 = null;
 //        if (this.encodeAttrName_ != null && var1 instanceof NMEAdapter) {
 //            NMEAdapter var3 = (NMEAdapter)var1;
@@ -113,7 +114,7 @@ package com.twinkle.framework.context.manager.support;
 //    public StructAttribute getSubSNME(StructAttribute var1) {
 //        if (this.encodeAttrName_ != null) {
 //            StructAttributeFactory var2 = StructAttributeSchemaManager.getStructAttributeFactory();
-//            StructAttributeType var3 = var1.getType();
+//            StructType var3 = var1.getType();
 //            AttributeRef var4;
 //            if (this.encodeAttr_ != null) {
 //                if (!var3.equals(this.rootNMEType_)) {
@@ -140,7 +141,7 @@ package com.twinkle.framework.context.manager.support;
 //        if (this.encodeAttrName_ != null) {
 //            if (this.dynamicEncode_) {
 //                StructAttributeFactory var2 = StructAttributeSchemaManager.getStructAttributeFactory();
-//                StructAttributeType var3 = var1.getType();
+//                StructType var3 = var1.getType();
 //                AttributeRef var4;
 //                if (this.encodeAttr_ != null) {
 //                    if (!var3.equals(this.rootNMEType_)) {
@@ -161,7 +162,7 @@ package com.twinkle.framework.context.manager.support;
 //        }
 //    }
 //
-//    public void floatUp(NormalizedMeteredEvent var1, StructAttribute var2) {
+//    public void floatUp(NormalizedContext var1, StructAttribute var2) {
 //        if (this.decodeAttrNameMap_ != null && var1 instanceof NMEAdapter) {
 //            NMEAdapter var3 = (NMEAdapter)var1;
 //            StructAttribute var4 = var3.getNME();

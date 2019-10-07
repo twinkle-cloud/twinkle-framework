@@ -88,24 +88,24 @@ public abstract class AbstractStructAttributeFactory implements StructAttributeF
      * Get the Attribute ref with given Struct Attribute type, and class name.
      *
      * @param _saType
-     * @param _className
+     * @param _attrName
      * @return
      * @throws AttributeNotFoundException
      * @throws AttributeTypeMismatchException
      * @throws BadAttributeNameException
      */
-    public AttributeRef _getAttributeRef(StructType _saType, String _className) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
+    public AttributeRef _getAttributeRef(StructType _saType, String _attrName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
         String tempQualifiedName = _saType.getQualifiedName();
         StructAttributeImplBuilder tempBuilder = this.getStructAttributeImplBuilder(tempQualifiedName);
-        return tempBuilder.getAttributeReference(_className);
+        return tempBuilder.getAttributeReference(_attrName);
     }
 
     @Override
-    public AttributeRef getAttributeRef(StructType _saType, String _className) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
-        if (_className == null) {
+    public AttributeRef getAttributeRef(StructType _saType, String _attrName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
+        if (_attrName == null) {
             throw new BadAttributeNameException("Attribute name is NULL");
         }
-        return !_saType.hasAttribute(_className) ? CompositeAttributeRefFactory.getCompositeAttributeRef(this, _saType, _className) : this._getAttributeRef(_saType, _className);
+        return !_saType.hasAttribute(_attrName) ? CompositeAttributeRefFactory.getCompositeAttributeRef(this, _saType, _attrName) : this._getAttributeRef(_saType, _attrName);
     }
 
     @Override

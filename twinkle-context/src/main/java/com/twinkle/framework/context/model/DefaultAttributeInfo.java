@@ -161,4 +161,9 @@ public class DefaultAttributeInfo implements AttributeInfo {
         }
         return this.valueAttributeInfo;
     }
+
+    @Override
+    public String getValueType() {
+        return this.extraInfo;
+    }
 }

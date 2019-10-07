@@ -261,13 +261,13 @@ public class AttributeCondition extends AbstractCondition {
                     if (tempOp2Attr.getPrimitiveType() != tempOp1PrimitiveType) {
                         tempStr = _conditionLine + " - Cannot compare (" + tempOp1Token + ") with (" + tempOp2Token;
                         tempStr = tempStr + ") as they belong to different types";
-                        throw new ConfigurationException(ExceptionCode.RULE_CON_EXPRES_ATTR_MISMATCH, tempStr);
+                        throw new ConfigurationException(ExceptionCode.RULE_CON_EXPRESS_ATTR_MISMATCH, tempStr);
                     }
 
                     if (this.operation >= OP_WITHIN) {
                         tempStr = _conditionLine + " - Cannot support operation (" + tempOperationToken;
                         tempStr = tempStr + ") against another attribute";
-                        throw new ConfigurationException(ExceptionCode.RULE_CON_EXPRES_ATTR_INVALID, tempStr);
+                        throw new ConfigurationException(ExceptionCode.RULE_CON_EXPRESS_ATTR_INVALID, tempStr);
                     }
 
                     this.attrIndex2 = tempOp2Attr.getIndex();
@@ -281,7 +281,7 @@ public class AttributeCondition extends AbstractCondition {
                     if (tempLeftIndex < 0 | tempRightIndex < 0) {
                         tempStr = _conditionLine + " - for operation (" + tempOperationToken;
                         tempStr = tempStr + ") value should be within [ ]";
-                        throw new ConfigurationException(ExceptionCode.RULE_CON_EXPRES_ATTR_INVALID, tempStr);
+                        throw new ConfigurationException(ExceptionCode.RULE_CON_EXPRESS_ATTR_INVALID, tempStr);
                     }
 
                     StringTokenizer tempSetST = new StringTokenizer(_conditionLine.substring(tempLeftIndex + 1, tempRightIndex), ",");

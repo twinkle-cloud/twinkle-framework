@@ -44,7 +44,7 @@ public class AdornmentRule extends AbstractRule {
     public void configure(JSONObject _conf) throws ConfigurationException {
         JSONArray tempArray = _conf.getJSONArray("AdornOps");
         if (tempArray == null) {
-            throw new ConfigurationException(ExceptionCode.RULE_MADANTORY_ATTR_MISSED, "AdornmentRule.configure(): AdornOps is a mandatory parameter. ");
+            throw new ConfigurationException(ExceptionCode.RULE_MANDATORY_ATTR_MISSED, "AdornmentRule.configure(): AdornOps is a mandatory parameter. ");
         } else {
             String tempUrl = _conf.getString("MapURL");
             JSONArray tempURLCommentsJsonArray = _conf.getJSONArray("MapURLComments");

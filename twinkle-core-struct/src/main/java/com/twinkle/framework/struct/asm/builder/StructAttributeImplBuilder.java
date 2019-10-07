@@ -3,7 +3,7 @@ package com.twinkle.framework.struct.asm.builder;
 import com.twinkle.framework.asm.Bean;
 import com.twinkle.framework.asm.builder.BeanImplBuilder;
 import com.twinkle.framework.struct.error.AttributeNotFoundException;
-import com.twinkle.framework.struct.ref.StructAttributeRef;
+import com.twinkle.framework.struct.ref.AttributeRef;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -22,5 +22,5 @@ public interface StructAttributeImplBuilder<T extends Bean> extends BeanImplBuil
      * @return
      * @throws AttributeNotFoundException
      */
-    StructAttributeRef getAttributeReference(String _attrRefName) throws AttributeNotFoundException;
+    AttributeRef getAttributeReference(String _attrRefName) throws AttributeNotFoundException;
 }

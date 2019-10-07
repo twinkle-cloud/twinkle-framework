@@ -44,7 +44,7 @@
               "ClassName": "com.twinkle.framework.connector.http.endpoint.RestHttpResponse",
               "ResultData": {
                 "HttpAttr": "tempResult",
-                "NeAttr": "resultData"
+                "NeAttr": "userOrgInfo"
               }
             }
           }
@@ -62,13 +62,22 @@
         "Name": "TestRuleChain",
         "ClassName": "com.twinkle.framework.ruleengine.RuleChain",
         "RuleNames": [
-          "TestDemoRule"
+          "TestDemoRule",
+          "TestConversionRule"
         ],
         "Rules": [
           {
             "Name": "TestDemoRule",
             "ClassName": "com.twinkle.framework.ruleengine.rule.DemoIRule",
-            "Attribute": "resultData"
+            "Attribute": "position"
+          },
+          {
+            "Name": "TestConversionRule",
+            "ClassName": "com.twinkle.framework.ruleengine.rule.AttributeConversionRule",
+            "StructAttribute": "userOrgInfo",
+            "StructAttributeToAttributeMap": [["age", "age", "100"], ["titles[0].dept", "dept"]],
+            "AttributeToStructAttributeMap": [["addressId", "age", "50"], ["position","titles[0].position"]],
+            "CreateStructAttributeIfNeeded": true
           }
         ]
       }
@@ -82,6 +91,16 @@
     ],
     [
       "password",
+      "com.twinkle.framework.core.lang.StringAttribute",
+      ""
+    ],
+    [
+      "position",
+      "com.twinkle.framework.core.lang.StringAttribute",
+      ""
+    ],
+    [
+      "dept",
       "com.twinkle.framework.core.lang.StringAttribute",
       ""
     ],
@@ -102,7 +121,7 @@
     ],
     [
       "userOrgInfo",
-      "com.twinkle.framework.struct.lang.StructAttributeList",
+      "com.twinkle.framework.struct.lang.StructAttrAttribute",
       "TestDemo:TestRequest"
     ]
   ],

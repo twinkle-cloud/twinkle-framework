@@ -47,7 +47,7 @@ public class RestHttpServerConnector extends AbstractComponent implements Server
         JSONArray tempEndpointNameArray = _conf.getJSONArray("EndpointNames");
         JSONArray tempEndpointsArray = _conf.getJSONArray("Endpoints");
         if (CollectionUtils.isEmpty(tempEndpointNameArray) || CollectionUtils.isEmpty(tempEndpointsArray)) {
-            throw new ConfigurationException(ExceptionCode.CONNECTOR_MADANTORY_ATTR_MISSED, "ConnectorManager.configure(): Connector's Endpoints is a mandatory parameter. ");
+            throw new ConfigurationException(ExceptionCode.CONNECTOR_MANDATORY_ATTR_MISSED, "ConnectorManager.configure(): Connector's Endpoints is a mandatory parameter. ");
         }
         this.endpointNameList = new ArrayList<>(tempEndpointNameArray.size());
         this.endpointMap = new HashMap<>(tempEndpointNameArray.size());

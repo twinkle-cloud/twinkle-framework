@@ -90,4 +90,11 @@ public interface AttributeInfo extends Serializable {
      * @return
      */
     AttributeInfo getValueAttributeInfo();
+
+    /**
+     * Only for Struct Attribute.
+     *
+     * @return the Qualified name of the struct attribute's type.
+     */
+    String getValueType();
 }
