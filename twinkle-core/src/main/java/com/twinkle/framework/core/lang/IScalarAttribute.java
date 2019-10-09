@@ -10,14 +10,45 @@ package com.twinkle.framework.core.lang;
  * @since JDK 1.8
  */
 public interface IScalarAttribute extends INumericAttribute {
+    /**
+     * Do logic and (&).
+     *
+     * @param _attr1
+     * @param _attr2
+     * @return
+     */
+    boolean and(IScalarAttribute _attr1, IScalarAttribute _attr2);
 
-    boolean and(IScalarAttribute _var1, IScalarAttribute _var2);
+    /**
+     * Do logic or (|)
+     * @param _attr1
+     * @param _attr2
+     * @return
+     */
+    boolean or(IScalarAttribute _attr1, IScalarAttribute _attr2);
 
-    boolean or(IScalarAttribute _var1, IScalarAttribute _var2);
+    /**
+     * Do logic (^)
+     * @param _attr1
+     * @param _attr2
+     * @return
+     */
+    boolean xor(IScalarAttribute _attr1, IScalarAttribute _attr2);
 
-    boolean xor(IScalarAttribute _var1, IScalarAttribute _var2);
+    /**
+     * Do logic (<<)
+     *
+     * @param _attr1
+     * @param _attr2
+     * @return
+     */
+    boolean shiftl(IScalarAttribute _attr1, IScalarAttribute _attr2);
 
-    boolean shiftl(IScalarAttribute _var1, IScalarAttribute _var2);
-
-    boolean shiftr(IScalarAttribute _var1, IScalarAttribute _var2);
+    /**
+     * Do logic (>>)
+     * @param _attr1
+     * @param _attr2
+     * @return
+     */
+    boolean shiftr(IScalarAttribute _attr1, IScalarAttribute _attr2);
 }

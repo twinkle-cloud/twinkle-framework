@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public class SetOperation extends AttributeOperation {
+public class SetOperation extends AbstractAttributeOperation {
     private int destIndex;
     private Attribute destAttribute;
     private boolean isSetFlag;
@@ -81,7 +81,7 @@ public class SetOperation extends AttributeOperation {
             }
 
             if (this.nextRule != null) {
-                ((AttributeOperation) this.nextRule).reset(_context);
+                ((AbstractAttributeOperation) this.nextRule).reset(_context);
             }
 
         }

@@ -24,6 +24,18 @@ public interface ExceptionCode {
      * Escape character is at invalid position.
      */
     int LOGIC_CONF_ESCAPE_CHAR_POSITION_INVALID = 0x001012;
+    /**
+     * Required express field missed.
+     */
+    int LOGIC_CONF_EXPRESSION_FIELD_MISSED = 0x001013;
+    /**
+     * The digest is not supported currently.
+     */
+    int LOGIC_CONF_DIGEST_NOT_SUPPORTED = 0x001014;
+    /**
+     * The digest is invalid.
+     */
+    int LOGIC_CONF_DIGEST_INVALID = 0x001015;
 
     int LOGIC_CONF_ATTR_MISSED_IN_SCHEMA = 0x001100;
     int LOGIC_CONF_ATTR_NOT_INIT = 0x001101;
@@ -76,6 +88,14 @@ public interface ExceptionCode {
      */
     int LOGIC_CONF_SA_BEAN_FACTORY_MISSING = 0x001110;
     int LOGIC_CONF_SA_SERIALIZER_FACTORY_MISSING = 0x001111;
+    /**
+     * Attribute not found in the schema.
+     */
+    int LOGIC_CONF_ATTR_NOT_IN_SCHEMA = 0x001112;
+    /**
+     * Attribute's class is incompatible with given class.
+     */
+    int LOGIC_CONF_ATTR_CLASS_INCOMPATIBLE = 0x001113;
 
     int RULE_ADN_INVALID_URL = 0x010001;
     int RULE_ADN_URL_READ_FAILED = 0x010002;
@@ -118,6 +138,10 @@ public interface ExceptionCode {
      */
     int CONNECTOR_ACCESS_INCORRECT = 0x012003;
     /**
+     * Digest operation's calculation implementation is not found.
+     */
+    int OPERATION_DIGEST_CAL_NOT_IMPLEMENTED = 0x012004;
+    /**
      * Apply Rule error.
      */
     int RULE_APPLY_ERROR = 0x020001;
@@ -138,7 +162,19 @@ public interface ExceptionCode {
      * Operation not supported exception.
      */
     int RULE_APPLY_OPERATION_NOT_SUPPORT = 0x020006;
-
+    /**
+     * Operation is not initialized properly.
+     */
+    int RULE_APPLY_OPERATION_NOT_INITIALIZED = 0x020007;
+    /**
+     * Base64Operation Rule, digest name is empty.
+     */
+    int RULE_APPLY_BASE64_DIGEST_IS_EMPTY = 0x020008;
+    /**
+     * The digest operation:
+     *  Extract attribute failed.
+     */
+    int RULE_APPLY_DIGEST_ATTRIBUTE_EXTRACT_FAILED = 0x020009;
     /**
      * Character code exceptions;
      * Unicode is invalid.

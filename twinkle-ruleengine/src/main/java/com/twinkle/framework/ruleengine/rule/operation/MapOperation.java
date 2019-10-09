@@ -8,7 +8,6 @@ import com.twinkle.framework.api.exception.RuleException;
 import com.twinkle.framework.core.lang.Attribute;
 import com.twinkle.framework.core.lang.INumericAttribute;
 import com.twinkle.framework.ruleengine.utils.MapHash;
-import com.twinkle.framework.ruleengine.utils.TreeMarker;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
@@ -24,12 +23,10 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public class MapOperation extends AttributeOperation {
+public class MapOperation extends AbstractAttributeOperation {
     private String defaultValue;
     private int srcIndex = -1;
     private int dstIndex = -1;
-    private boolean isSrcTree = false;
-    private boolean isDstTree = false;
     private Map mapHash;
     private String[] mapArray;
 
@@ -51,9 +48,9 @@ public class MapOperation extends AttributeOperation {
         Attribute tempSrcAttr = _context.getAttribute(this.srcIndex);
         String tempSrcAttrStr = null;
         if (this.mapHash != null) {
-            tempSrcAttrStr = (String)this.mapHash.get(tempSrcAttr.toString());
+            tempSrcAttrStr = (String) this.mapHash.get(tempSrcAttr.toString());
         } else {
-            int tempAttrValue = ((INumericAttribute)tempSrcAttr).getInt();
+            int tempAttrValue = ((INumericAttribute) tempSrcAttr).getInt();
             if (tempAttrValue >= 0 && tempAttrValue < this.mapArray.length) {
                 tempSrcAttrStr = this.mapArray[tempAttrValue];
             } else {
@@ -80,31 +77,19 @@ public class MapOperation extends AttributeOperation {
         StringTokenizer tempST = new StringTokenizer(_operation);
         if (tempST.countTokens() < 3) {
             throw new ConfigurationException(ExceptionCode.RULE_ADN_MAP_OPERATION_INVALID, "In MapOperation.loadOperation(): operation missing fields (" + _operation + ")");
+        }
+        String tempOprToken = tempST.nextToken();
+        if (!tempOprToken.equals("map")) {
+            throw new ConfigurationException(ExceptionCode.RULE_ADN_MAP_OPERATION_INVALID, "In MapOperation.loadOperation(): only map operation supported, not (" + _operation + ")");
+        }
+        String tempToken = tempST.nextToken();
+        this.srcIndex = this.primitiveAttributeSchema.getAttributeIndex(tempToken, _operation);
+        tempToken = tempST.nextToken();
+        this.dstIndex = this.primitiveAttributeSchema.getAttributeIndex(tempToken, _operation);
+        if (tempST.hasMoreTokens()) {
+            this.defaultValue = tempST.nextToken();
         } else {
-            String tempOprToken = tempST.nextToken();
-            if (!tempOprToken.equals("map")) {
-                throw new ConfigurationException(ExceptionCode.RULE_ADN_MAP_OPERATION_INVALID, "In MapOperation.loadOperation(): only map operation supported, not (" + _operation + ")");
-            } else {
-                String tempToken = tempST.nextToken();
-                if (TreeMarker.isTreeAttribute(tempToken)) {
-                    this.isSrcTree = true;
-                    tempToken = TreeMarker.extractAttributeName(tempToken);
-                }
-
-                this.srcIndex = this.primitiveAttributeSchema.getAttributeIndex(tempToken, _operation);
-                tempToken = tempST.nextToken();
-                if (TreeMarker.isTreeAttribute(tempToken)) {
-                    this.isDstTree = true;
-                    tempToken = TreeMarker.extractAttributeName(tempToken);
-                }
-
-                this.dstIndex = this.primitiveAttributeSchema.getAttributeIndex(tempToken, _operation);
-                if (tempST.hasMoreTokens()) {
-                    this.defaultValue = tempST.nextToken();
-                } else {
-                    this.defaultValue = null;
-                }
-            }
+            this.defaultValue = null;
         }
     }
 

@@ -206,20 +206,20 @@ public class IntegerAttribute extends AbstractNumericAttribute implements IInteg
     }
 
     @Override
-    public final boolean and(IScalarAttribute _var1, IScalarAttribute _var2) {
-        this.value = _var1.getInt() & _var2.getInt();
+    public final boolean and(IScalarAttribute _attr1, IScalarAttribute _attr2) {
+        this.value = _attr1.getInt() & _attr2.getInt();
         return true;
     }
 
     @Override
-    public final boolean or(IScalarAttribute _var1, IScalarAttribute _var2) {
-        this.value = _var1.getInt() | _var2.getInt();
+    public final boolean or(IScalarAttribute _attr1, IScalarAttribute _attr2) {
+        this.value = _attr1.getInt() | _attr2.getInt();
         return true;
     }
 
     @Override
-    public final boolean xor(IScalarAttribute _var1, IScalarAttribute _var2) {
-        this.value = _var1.getInt() ^ _var2.getInt();
+    public final boolean xor(IScalarAttribute _attr1, IScalarAttribute _attr2) {
+        this.value = _attr1.getInt() ^ _attr2.getInt();
         return true;
     }
 
@@ -230,14 +230,14 @@ public class IntegerAttribute extends AbstractNumericAttribute implements IInteg
     }
 
     @Override
-    public final boolean shiftl(IScalarAttribute _var1, IScalarAttribute _var2) {
-        this.value = _var1.getInt() << _var2.getInt();
+    public final boolean shiftl(IScalarAttribute _attr1, IScalarAttribute _attr2) {
+        this.value = _attr1.getInt() << _attr2.getInt();
         return true;
     }
 
     @Override
-    public final boolean shiftr(IScalarAttribute _var1, IScalarAttribute var2) {
-        this.value = _var1.getInt() >> var2.getInt();
+    public final boolean shiftr(IScalarAttribute _attr1, IScalarAttribute _attr2) {
+        this.value = _attr1.getInt() >> _attr2.getInt();
         return true;
     }
 

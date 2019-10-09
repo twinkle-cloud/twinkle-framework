@@ -23,7 +23,7 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public class MathOperation extends AttributeOperation {
+public class MathOperation extends AbstractAttributeOperation {
     private MathOperator mathOperation;
     protected int mathDestAttrIndex;
     private boolean isDstTree_ = false;

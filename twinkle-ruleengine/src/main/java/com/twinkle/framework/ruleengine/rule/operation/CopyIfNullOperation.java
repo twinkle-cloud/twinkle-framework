@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public class CopyIfNullOperation extends AttributeOperation {
+public class CopyIfNullOperation extends AbstractAttributeOperation {
     private int srcIndex;
     private int destIndex;
     private Attribute destAttribute;
@@ -103,7 +103,7 @@ public class CopyIfNullOperation extends AttributeOperation {
             }
 
             if (this.nextRule != null) {
-                ((AttributeOperation)this.nextRule).reset(_context);
+                ((AbstractAttributeOperation)this.nextRule).reset(_context);
             }
 
         }

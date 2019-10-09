@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public class MaxOperation extends AttributeOperation {
+public class MaxOperation extends AbstractAttributeOperation {
     private int leftAttrIndex;
     private int rightAttrIndex;
     private int destAttrIndex;

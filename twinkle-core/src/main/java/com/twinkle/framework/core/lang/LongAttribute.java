@@ -176,20 +176,20 @@ public class LongAttribute extends AbstractNumericAttribute implements ILongAttr
     }
 
     @Override
-    public final boolean and(IScalarAttribute _var1, IScalarAttribute _var2) {
-        this.value = _var1.getLong() & _var2.getLong();
+    public final boolean and(IScalarAttribute _attr1, IScalarAttribute _attr2) {
+        this.value = _attr1.getLong() & _attr2.getLong();
         return true;
     }
 
     @Override
-    public final boolean or(IScalarAttribute _var1, IScalarAttribute _var2) {
-        this.value = _var1.getLong() | _var2.getLong();
+    public final boolean or(IScalarAttribute _attr1, IScalarAttribute _attr2) {
+        this.value = _attr1.getLong() | _attr2.getLong();
         return true;
     }
 
     @Override
-    public final boolean xor(IScalarAttribute _var1, IScalarAttribute _var2) {
-        this.value = _var1.getLong() ^ _var2.getLong();
+    public final boolean xor(IScalarAttribute _attr1, IScalarAttribute _attr2) {
+        this.value = _attr1.getLong() ^ _attr2.getLong();
         return true;
     }
 
@@ -200,14 +200,14 @@ public class LongAttribute extends AbstractNumericAttribute implements ILongAttr
     }
 
     @Override
-    public final boolean shiftl(IScalarAttribute _var1, IScalarAttribute _var2) {
-        this.value = _var1.getLong() << (int)_var2.getLong();
+    public final boolean shiftl(IScalarAttribute _attr1, IScalarAttribute _attr2) {
+        this.value = _attr1.getLong() << (int) _attr2.getLong();
         return true;
     }
 
     @Override
-    public final boolean shiftr(IScalarAttribute _var1, IScalarAttribute _var2) {
-        this.value = _var1.getLong() >> (int)_var2.getLong();
+    public final boolean shiftr(IScalarAttribute _attr1, IScalarAttribute _attr2) {
+        this.value = _attr1.getLong() >> (int) _attr2.getLong();
         return true;
     }
 

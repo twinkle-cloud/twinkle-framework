@@ -18,8 +18,8 @@ import lombok.extern.slf4j.Slf4j;
  * @since JDK 1.8
  */
 @Slf4j
-public abstract class AttributeOperation extends AbstractRule {
-    public AttributeOperation(){
+public abstract class AbstractAttributeOperation extends AbstractRule {
+    public AbstractAttributeOperation(){
         super();
         log.info("AttributeOperation.initialized().");
     }
@@ -64,7 +64,7 @@ public abstract class AttributeOperation extends AbstractRule {
      */
     public void reset(NormalizedContext _context) {
         if (this.nextRule != null) {
-            ((AttributeOperation)this.nextRule).reset(_context);
+            ((AbstractAttributeOperation)this.nextRule).reset(_context);
         }
 
     }

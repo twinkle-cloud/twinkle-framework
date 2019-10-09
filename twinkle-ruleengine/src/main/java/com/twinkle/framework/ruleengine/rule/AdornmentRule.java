@@ -25,7 +25,7 @@ import java.util.StringTokenizer;
  */
 @Slf4j
 public class AdornmentRule extends AbstractRule {
-    private AttributeOperation attrOperation;
+    private AbstractAttributeOperation attrOperation;
     /**
      * Will be used by Map Operation,
      * to load the map content from URL. Usually from a local file or web URL.
@@ -55,8 +55,8 @@ public class AdornmentRule extends AbstractRule {
 
     public void loadOperations(String[] _operations, JSONObject _conf) throws ConfigurationException {
         log.debug("Going to apply AdornmentRule.loadOperations()");
-        AttributeOperation tempPreOperation = null;
-        AttributeOperation tempOperation = null;
+        AbstractAttributeOperation tempPreOperation = null;
+        AbstractAttributeOperation tempOperation = null;
 
         for (int i = 0; i < _operations.length; ++i) {
             StringTokenizer tempTokenizer = new StringTokenizer(_operations[i]);
@@ -64,7 +64,7 @@ public class AdornmentRule extends AbstractRule {
             tempPreOperation = tempOperation;
 
             try {
-                tempOperation = (AttributeOperation) AdornmentRule.Operation.getOperation(tempToken).newInstance();
+                tempOperation = (AbstractAttributeOperation) AdornmentRule.Operation.getOperation(tempToken).newInstance();
                 tempOperation.configure(_conf);
             } catch (Exception e) {
                 throw new ConfigurationException(ExceptionCode.RULE_ADN_OPERATION_INIT_FAILED, "Cannot create instance of operation class for operation-" + _operations[i]);
@@ -83,7 +83,6 @@ public class AdornmentRule extends AbstractRule {
                 this.attrOperation = tempOperation;
             }
         }
-
     }
 
     @Override
@@ -112,13 +111,12 @@ public class AdornmentRule extends AbstractRule {
         public static final AdornmentRule.Operation MOVE = new AdornmentRule.Operation("move", MoveOperation.class);
         public static final AdornmentRule.Operation COPY = new AdornmentRule.Operation("copy", CopyOperation.class);
         public static final AdornmentRule.Operation SWAP = new AdornmentRule.Operation("swap", SwapOperation.class);
-        //        public static final AdornmentRule.Operation COPYFROM = new AdornmentRule.Operation("copyfrom", CopyFromOperation.class);
-//        public static final AdornmentRule.Operation COPYTO = new AdornmentRule.Operation("copyto", CopyToOperation.class);
-//        public static final AdornmentRule.Operation MAP = new AdornmentRule.Operation("map", MapOperation.class);
-//        public static final AdornmentRule.Operation DIGEST = new AdornmentRule.Operation("digest", DigestOperation.class);
-//        public static final AdornmentRule.Operation BASE64_ENCODE = new AdornmentRule.Operation("encBase64", Encode.class);
-//        public static final AdornmentRule.Operation BASE64_DECODE = new AdornmentRule.Operation("decBase64", Decode.class);
-//        public static final AdornmentRule.Operation SECRET_KEY_GEN = new AdornmentRule.Operation("genKey", GenKey.class);
+        //        public static final AdornmentRule.Operation COPYTO = new AdornmentRule.Operation("copyto", CopyToOperation.class);
+        public static final AdornmentRule.Operation MAP = new AdornmentRule.Operation("map", MapOperation.class);
+        public static final AdornmentRule.Operation DIGEST = new AdornmentRule.Operation("digest", DigestOperation.class);
+        public static final AdornmentRule.Operation BASE64_ENCODE = new AdornmentRule.Operation("encBase64", Base64EncodeOperation.class);
+        public static final AdornmentRule.Operation BASE64_DECODE = new AdornmentRule.Operation("decBase64", Base64DecodeOperation.class);
+        //        public static final AdornmentRule.Operation SECRET_KEY_GEN = new AdornmentRule.Operation("genKey", GenKey.class);
 //        public static final AdornmentRule.Operation ENCRYPT = new AdornmentRule.Operation("encrypt", Encrypt.class);
 //        public static final AdornmentRule.Operation DECRYPT = new AdornmentRule.Operation("decrypt", Decrypt.class);
 //        public static final AdornmentRule.Operation HMAC = new AdornmentRule.Operation("hMac", Hmac.class);
