@@ -64,11 +64,11 @@ public abstract class AbstractGeneralClassDesigner extends AbstractGeneralBeanCl
      * @param _methodDefList
      */
     protected void addMethodsDefinition(ClassVisitor _visitor, String _className, List<MethodDef> _methodDefList) {
-        _methodDefList.parallelStream().forEach(item -> {
-            Map<String, LocalAttributeIndexInfo> tempIndexMap = new HashMap<>(1 + item.getLocalParameterAttrs().size() + item.getParameterAttrs().size());
-            this.methodAttributeIndexMap.put(item.getName(), tempIndexMap);
-            this.addMethodDefinition(_visitor, _className, item);
-        });
+        for(MethodDef tempItem : _methodDefList) {
+            Map<String, LocalAttributeIndexInfo> tempIndexMap = new HashMap<>(1 + tempItem.getLocalParameterAttrs().size() + tempItem.getParameterAttrs().size());
+            this.methodAttributeIndexMap.put(tempItem.getName(), tempIndexMap);
+            this.addMethodDefinition(_visitor, _className, tempItem);
+        }
     }
 
     /**

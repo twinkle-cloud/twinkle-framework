@@ -161,9 +161,9 @@ public abstract class EnhancedClassLoader extends ClassLoader{
                 tempBuffer.append("[");
             }
 
-            ClassDescriptor tempDesinger = PRIMITIVES.get(_className);
-            if (tempDesinger != null) {
-                tempBuffer.append(tempDesinger.code);
+            ClassDescriptor tempDesigner = PRIMITIVES.get(_className);
+            if (tempDesigner != null) {
+                tempBuffer.append(tempDesigner.code);
             } else {
                 tempBuffer.append("L").append(_className).append(";");
             }

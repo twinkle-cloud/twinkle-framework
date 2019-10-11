@@ -176,7 +176,7 @@ public abstract class AbstractReflectiveBeanClassDesigner extends RecyclableBean
      * @return
      */
     protected List<AttributeDef> filterExactMatch(List<AttributeDef> _sourceList, Type _matchType) {
-        return _sourceList.parallelStream().filter(item -> _matchType.equals(item.getType().getType())).collect(Collectors.toList());
+        return _sourceList.stream().filter(item -> _matchType.equals(item.getType().getType())).collect(Collectors.toList());
     }
 
     /**
@@ -188,7 +188,7 @@ public abstract class AbstractReflectiveBeanClassDesigner extends RecyclableBean
      * @return
      */
     protected List<AttributeDef> filterObjectExcludes(List<AttributeDef> _sourceList, Collection<Type> _excludeTypes) {
-        return _sourceList.parallelStream().filter(item -> item.getType().getType().getSort() == Type.OBJECT
+        return _sourceList.stream().filter(item -> item.getType().getType().getSort() == Type.OBJECT
                 && !_excludeTypes.contains(item.getType().getType())).collect(Collectors.toList());
     }
 
@@ -201,7 +201,7 @@ public abstract class AbstractReflectiveBeanClassDesigner extends RecyclableBean
      * @return
      */
     protected List<AttributeDef> filterObjectArraysExcludes(List<AttributeDef> _sourceList, Collection<Type> _excludeTypes) {
-        return _sourceList.parallelStream().filter(item -> item.getType().getType().getSort() == Type.ARRAY
+        return _sourceList.stream().filter(item -> item.getType().getType().getSort() == Type.ARRAY
                 && item.getType().getType().getElementType().getSort() == Type.OBJECT
                 && !_excludeTypes.contains(item.getType().getType())).collect(Collectors.toList());
     }

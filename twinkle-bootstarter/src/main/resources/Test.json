@@ -10,7 +10,8 @@
         "ClassName": "com.twinkle.framework.connector.http.server.RestHttpServerConnector",
         "Description": "Connector Test1",
         "EndpointNames": [
-          "testHelloworld"
+          "testHelloworld",
+          "testUserMgmt"
         ],
         "Endpoints": [
           {
@@ -47,6 +48,30 @@
                 "NeAttr": "userOrgInfo"
               }
             }
+          },
+          {
+            "Name": "testUserMgmt",
+            "ClassName": "com.twinkle.framework.connector.http.server.endpoint.RestHttpEndpoint",
+            "Description": "Demo for TestUser.",
+            "RequestType": 1,
+            "URL": "authsec/user/{_userId}",
+            "RuleChain": "UserRuleChain",
+            "Request": {
+              "ClassName": "com.twinkle.framework.connector.http.endpoint.DefaultHttpRequest",
+              "PathVariables": [
+                {
+                  "HttpAttr": "_userId",
+                  "NeAttr": "userId"
+                }
+              ]
+            },
+            "Response": {
+              "ClassName": "com.twinkle.framework.connector.http.endpoint.RestHttpResponse",
+              "ResultData": {
+                "HttpAttr": "tempResult",
+                "NeAttr": "position"
+              }
+            }
           }
         ]
       }
@@ -55,7 +80,8 @@
   "RuleChainManager": {
     "ClassName": "com.twinkle.framework.ruleengine.RuleChainManager",
     "RuleChainNames": [
-      "TestRuleChain"
+      "TestRuleChain",
+      "UserRuleChain"
     ],
     "RuleChains": [
       {
@@ -98,6 +124,30 @@
             "Attributes": ["userName","position","age","dept", "addressId", "userOrgInfo"]
           }
         ]
+      },
+      {
+        "Name": "UserRuleChain",
+        "ClassName": "com.twinkle.framework.ruleengine.RuleChain",
+        "RuleNames": [
+          "UserTest1",
+          "UserTest2"
+        ],
+        "Rules": [
+          {
+            "Name": "UserTest1",
+            "ClassName": "com.twinkle.framework.ruleengine.rule.DemoIRule",
+            "Attribute": "position"
+          },
+          {
+            "Name": "UserTest2",
+            "ClassName": "com.twinkle.framework.ruleengine.rule.LogAttributeRule",
+            "LogLevel": "INFO",
+            "Message": "Attribute after conversion are: ",
+            "NullAlso": "true",
+            "ConvertToJson": "true",
+            "Attributes": ["userId","position"]
+          }
+        ]
       }
     ]
   },
@@ -105,6 +155,11 @@
     [
       "userName",
       "com.twinkle.framework.core.lang.StringAttribute",
+      ""
+    ],
+    [
+      "userId",
+      "com.twinkle.framework.core.lang.IntegerAttribute",
       ""
     ],
     [
@@ -159,6 +214,11 @@
                 "Name": "name",
                 "Type": "string",
                 "Optional": "false"
+              },
+              {
+                "Name": "gender",
+                "Type": "int",
+                "Optional": "true"
               },
               {
                 "Name": "age",

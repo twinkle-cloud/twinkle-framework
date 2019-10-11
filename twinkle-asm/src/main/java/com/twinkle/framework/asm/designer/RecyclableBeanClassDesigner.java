@@ -87,7 +87,7 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
         }
 
         MethodVisitor tempVisitor = _visitor.visitMethod(1, TypeUtil.getSetterName(_attrDef), TypeUtil.getSetterSignature(_attrDef.getType().getType()), tempSignature, null);
-        _attrDef.getAnnotations().parallelStream().forEach(item -> this.addMethodAnnotation(tempVisitor, item, AnnotationDef.Kind.SETTER));
+        _attrDef.getAnnotations().stream().forEach(item -> this.addMethodAnnotation(tempVisitor, item, AnnotationDef.Kind.SETTER));
 
         tempVisitor.visitCode();
         if (_attrDef.isReadOnly()) {
@@ -416,7 +416,7 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
     private List<AttributeDef> getAttributesForHashCode() {
         AnnotationDef tempAnnotationDef = this.getKeyAnnotation(this.getBeanTypeDef().getAnnotations());
         if (tempAnnotationDef != null && this.isKeyAnnotEnabled(tempAnnotationDef)) {
-            return this.getBeanTypeDef().getAttributes().parallelStream().filter(item -> {
+            return this.getBeanTypeDef().getAttributes().stream().filter(item -> {
                 AnnotationDef tempItemDef = this.getKeyAnnotation(item.getAnnotations());
                 if (tempItemDef != null && !this.isKeyAnnotEnabled(tempItemDef)) {
                     return false;
@@ -424,7 +424,7 @@ public class RecyclableBeanClassDesigner extends GeneralBeanClassDesigner {
                 return true;
             }).collect(Collectors.toList());
         } else {
-            return this.getBeanTypeDef().getAttributes().parallelStream().filter(item -> {
+            return this.getBeanTypeDef().getAttributes().stream().filter(item -> {
                 AnnotationDef tempItemDef = this.getKeyAnnotation(item.getAnnotations());
                 if (tempItemDef != null && this.isKeyAnnotEnabled(tempItemDef)) {
                     return true;
