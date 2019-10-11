@@ -175,6 +175,11 @@ public interface ExceptionCode {
      *  Extract attribute failed.
      */
     int RULE_APPLY_DIGEST_ATTRIBUTE_EXTRACT_FAILED = 0x020009;
+
+    /**
+     * ATTRIBUTE type is not expected.
+     */
+    int RULE_APPLY_ATTR_TYPE_UNEXPECTED = 0x02000A;
     /**
      * Character code exceptions;
      * Unicode is invalid.
