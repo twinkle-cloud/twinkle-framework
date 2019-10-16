@@ -22,6 +22,10 @@
             <groupId>com.twinkle.framework</groupId>
             <artifactId>twinkle-configure</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.twinkle.framework</groupId>
+            <artifactId>twinkle-datasource</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

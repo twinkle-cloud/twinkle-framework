@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.twinkle.framework.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration

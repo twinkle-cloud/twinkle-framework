@@ -13,7 +13,44 @@ spring:
   profiles: development
   main:
     allow-bean-definition-overriding: true
+  datasource:
+    dynamic:
+      enabled: true
+      datasource:
+        master:
+          username: useradmin
+          password: abcd1234
+          driver-class-name: org.postgresql.Driver
+          url: jdbc:postgresql://127.0.0.1:5432/usermgmt
+        metadata:
+          username: mdadmin
+          password: abcd1234
+          driver-class-name: org.postgresql.Driver
+          url: jdbc:postgresql://127.0.0.1:5432/metadata
+      hikari:
+        connection-test-query: select 1
+        maximum-pool-size: 20
+        minimum-idle: 5
+        idle-timeout: 180000 #空闲超时是 180000 毫秒，当数据库连接的空闲时间大于180000毫秒时，这些空闲超时的连接会被关闭，直到超时的空闲连接数达到 minimum-idle的值
 
 ---
 spring:
   profiles: test
+  datasource:
+    dynamic:
+      datasource:
+        master:
+          username: useradmin
+          password: abcd1234
+          driver-class-name: org.postgresql.Driver
+          url: jdbc:postgresql://127.0.0.1:5432/usermgmt
+        metadata:
+          username: mdadmin
+          password: md5d0bd9e4ea8a8e5efaf0f2354f5bf242b
+          driver-class-name: org.postgresql.Driver
+          url: jdbc:postgresql://127.0.0.1:5432/metadata
+      hikari:
+        connection-test-query: select 1
+        maximum-pool-size: 20
+        minimum-idle: 5
+        idle-timeout: 180000 #空闲超时是 180000 毫秒，当数据库连接的空闲时间大于180000毫秒时，这些空闲超时的连接会被关闭，直到超时的空闲连接数达到 minimum-idle的值

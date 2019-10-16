@@ -40,6 +40,10 @@
         <commonbeanutils.version>1.9.3</commonbeanutils.version>
         <jodatime.version>2.10.1</jodatime.version>
         <logstash.version>6.1</logstash.version>
+        <druid.version>1.1.20</druid.version>
+        <p6spy.version>3.8.6</p6spy.version>
+        <mysql-driver.version>8.0.17</mysql-driver.version>
+        <pgsql-driver.version>42.2.8</pgsql-driver.version>
 
         <hibernatejpa.version>1.0.2.Final</hibernatejpa.version>
         <hibernatevalidator.version>6.0.13.Final</hibernatevalidator.version>
@@ -96,6 +100,13 @@
             <dependency>
                 <groupId>com.twinkle.framework</groupId>
                 <artifactId>twinkle-context</artifactId>
+                <version>${twinkleframework.version}</version>
+                <scope>compile</scope>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>com.twinkle.framework</groupId>
+                <artifactId>twinkle-datasource</artifactId>
                 <version>${twinkleframework.version}</version>
                 <scope>compile</scope>
                 <type>jar</type>
@@ -253,6 +264,28 @@
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
+            <!-- Datasource pool druid support. -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <!-- SQL trace. -->
+            <dependency>
+                <groupId>p6spy</groupId>
+                <artifactId>p6spy</artifactId>
+                <version>3.8.6</version>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-driver.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${pgsql-driver.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -285,6 +318,7 @@
         <module>twinkle-api</module>
         <module>twinkle-configure</module>
         <module>twinkle-context</module>
+        <module>twinkle-datasource</module>
         <module>twinkle-datacenter</module>
         <module>twinkle-ruleengine</module>
         <module>twinkle-connector</module>

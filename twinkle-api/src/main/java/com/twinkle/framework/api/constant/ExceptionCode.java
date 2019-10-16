@@ -10,6 +10,25 @@ package com.twinkle.framework.api.constant;
  * @since JDK 1.8
  */
 public interface ExceptionCode {
+    /**
+     * BASE INFO ERROR.
+     *
+     * DATA SOURCE related.
+     */
+    int DATASOURCE_BASE_INITIALIZE_FAILED = 0x000101;
+    /**
+     * DRUID DATASOURCE initialized failed.
+     */
+    int DATASOURCE_DRUID_INITIALIZE_FAILED = 0x000102;
+    /**
+     * The required primary data source missed.
+     */
+    int DATASOURCE_PRIMARY_MISSING = 0x000103;
+    /**
+     * The data source is not initialized properly.
+     */
+    int DATASOURCE_NOT_INITIALIZED = 0x000104;
+
     int LOGIC_CONF_INVALID_CONNECTOR = 0x001000;
     int LOGIC_CONF_INVALID_CLIENT_CONNECTOR = 0x001001;
     int LOGIC_CONF_INVALID_SERVER_CONNECTOR = 0x001002;
