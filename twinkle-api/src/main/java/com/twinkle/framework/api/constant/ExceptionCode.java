@@ -28,6 +28,14 @@ public interface ExceptionCode {
      * The data source is not initialized properly.
      */
     int DATASOURCE_NOT_INITIALIZED = 0x000104;
+    /**
+     * No statement found.
+     */
+    int DATACENTER_NO_STATEMENT_FOUND = 0x000201;
+    /**
+     * The executor has not been initialized.
+     */
+    int DATACENTER_EXECUTOR_NOT_FOUND = 0x000202;
 
     int LOGIC_CONF_INVALID_CONNECTOR = 0x001000;
     int LOGIC_CONF_INVALID_CLIENT_CONNECTOR = 0x001001;
@@ -115,6 +123,14 @@ public interface ExceptionCode {
      * Attribute's class is incompatible with given class.
      */
     int LOGIC_CONF_ATTR_CLASS_INCOMPATIBLE = 0x001113;
+    /**
+     * The attribute is not struct attribute.
+     */
+    int LOGIC_CONF_ATTR_IS_NOT_STRUCT = 0x001114;
+    /**
+     * The attribute's type is not expected.
+     */
+    int LOGIC_CONF_ATTR_TYPE_IS_UNEXPECTED = 0x001115;
 
     int RULE_ADN_INVALID_URL = 0x010001;
     int RULE_ADN_URL_READ_FAILED = 0x010002;

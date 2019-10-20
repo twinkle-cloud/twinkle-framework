@@ -2,6 +2,7 @@ package com.twinkle.framework.configure.component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.component.IComponent;
+import com.twinkle.framework.api.component.IComponentFactory;
 import com.twinkle.framework.api.config.Configurable;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
@@ -105,7 +106,7 @@ public class ComponentFactory implements IComponentFactory {
                             tempComponentName, tempClassName);
                     throw new ConfigurationException(ExceptionCode.LOGIC_CONF_DUPLICATE_COMPONENT_FOUND, "Found the duplicate bean [" + tempComponentName + "] had been registered already.");
                 } catch (NoSuchBeanDefinitionException ex) {
-                    log.debug("Did not find the bean with name [{" + tempComponentName + "}].");
+                    log.debug("Did not find the bean with name [{}].", tempComponentName);
                 }
                 T tempComponent = (T) tempClass.newInstance();
                 if (tempComponent instanceof IComponent) {

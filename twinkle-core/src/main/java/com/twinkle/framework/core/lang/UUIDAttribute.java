@@ -28,7 +28,7 @@ public class UUIDAttribute extends BinaryAttribute {
     private static Random UUID_SEED;
     private static final short HOSTADDR_SIZE = 4;
     private static byte[] HOST_ADDRS;
-    public static final int[] IUM_UUID_FORMAT;
+    public static final int[] SYS_UUID_FORMAT;
 
     static {
         NIL_UUID_ATTR = new UUIDAttribute(NIL_UUID);
@@ -44,11 +44,11 @@ public class UUIDAttribute extends BinaryAttribute {
 
         String tempFormat = System.getProperty("twinkle.uuid.format", "DEFAULT");
         if ("INTERNAL".equalsIgnoreCase(tempFormat)) {
-            IUM_UUID_FORMAT = new int[]{3, 5, 7, 11};
+            SYS_UUID_FORMAT = new int[]{3, 5, 7, 11};
         } else if ("IPDR".equalsIgnoreCase(tempFormat)) {
-            IUM_UUID_FORMAT = new int[]{3, 5, 7, 9};
+            SYS_UUID_FORMAT = new int[]{3, 5, 7, 9};
         } else {
-            IUM_UUID_FORMAT = new int[]{4, 6, 8, 10};
+            SYS_UUID_FORMAT = new int[]{4, 6, 8, 10};
         }
 
         long tempSeed = (System.currentTimeMillis() & -1L) << 32 | (long) ByteProcessor.readInt(HOST_ADDRS, 0);
@@ -192,12 +192,12 @@ public class UUIDAttribute extends BinaryAttribute {
             }
         }
 
-        StringBuilder tempBuilder = new StringBuilder("");
+        StringBuffer tempBuilder = new StringBuffer("");
         for (int i = 0; i < tempLength; i++) {
             byte tempByte = _byteArray[i];
             tempBuilder.append(Character.forDigit(tempByte >> 4 & 15, 16));
             tempBuilder.append(Character.forDigit(tempByte & 15, 16));
-            if (i == IUM_UUID_FORMAT[0] || i == IUM_UUID_FORMAT[1] || i == IUM_UUID_FORMAT[2] || i == IUM_UUID_FORMAT[3]) {
+            if (i == SYS_UUID_FORMAT[0] || i == SYS_UUID_FORMAT[1] || i == SYS_UUID_FORMAT[2] || i == SYS_UUID_FORMAT[3]) {
                 tempBuilder.append("-");
             }
         }

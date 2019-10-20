@@ -7,9 +7,7 @@ import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.api.component.rule.IRuleChain;
 import com.twinkle.framework.api.component.rule.IRuleChainManager;
 import com.twinkle.framework.configure.component.ComponentFactory;
-import com.twinkle.framework.configure.component.IComponentFactory;
 import org.apache.commons.collections4.MapUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.HashMap;

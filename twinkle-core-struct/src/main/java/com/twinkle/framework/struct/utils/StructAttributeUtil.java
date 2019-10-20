@@ -515,4 +515,55 @@ public class StructAttributeUtil {
     public static AttributeRef getAttributeRef(StructType _type, String _attrName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
         return StructAttributeSchemaManager.getStructAttributeFactory().getCompositeAttributeRef(_type, _attrName);
     }
+
+    /**
+     * Get StructType's attribute ref with given attribute name.
+     *
+     * @param _structTypeName
+     * @param _attrName
+     * @return
+     * @throws AttributeNotFoundException
+     * @throws AttributeTypeMismatchException
+     * @throws BadAttributeNameException
+     */
+    public static AttributeRef getAttributeRef(String _structTypeName, String _attrName) throws AttributeNotFoundException, AttributeTypeMismatchException, BadAttributeNameException {
+        StructType tempType = StructAttributeSchemaManager.getStructAttributeSchema().getStructAttributeType(_structTypeName);
+        return StructAttributeSchemaManager.getStructAttributeFactory().getCompositeAttributeRef(tempType, _attrName);
+    }
+
+    /**
+     * Get the StructAttribute's attribute value.
+     *
+     * @param _attribute
+     * @param _attrRef
+     * @return
+     */
+    public static Object getStructAttributeAttributeValue(StructAttribute _attribute, AttributeRef _attrRef) {
+        if (_attribute != null && _attribute.isAttributeSet(_attrRef)) {
+            int tempTypeId = _attrRef.getType().getID();
+            switch (tempTypeId) {
+                case PrimitiveType.BYTE_ID:
+                    return new Byte(_attribute.getByte(_attrRef));
+                case PrimitiveType.SHORT_ID:
+                    return new Short(_attribute.getShort(_attrRef));
+                case PrimitiveType.INT_ID:
+                    return new Integer(_attribute.getInt(_attrRef));
+                case PrimitiveType.LONG_ID:
+                    return new Long(_attribute.getLong(_attrRef));
+                case PrimitiveType.CHAR_ID:
+                    return new Character(_attribute.getChar(_attrRef));
+                case PrimitiveType.BOOLEAN_ID:
+                    return new Boolean(_attribute.getBoolean(_attrRef));
+                case PrimitiveType.FLOAT_ID:
+                    return new Float(_attribute.getFloat(_attrRef));
+                case PrimitiveType.DOUBLE_ID:
+                    return new Double(_attribute.getDouble(_attrRef));
+                case StringType.STRING_ID:
+                    return _attribute.getString(_attrRef);
+                default:
+                    throw new IllegalArgumentException("" + _attrRef.getType().getName());
+            }
+        }
+        return null;
+    }
 }

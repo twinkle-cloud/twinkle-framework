@@ -2,7 +2,7 @@ package com.twinkle.framework.ruleengine.rule.condition;
 
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.exception.ConfigurationException;
-import com.twinkle.framework.configure.component.IComponentFactory;
+import com.twinkle.framework.api.component.IComponentFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

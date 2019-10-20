@@ -91,13 +91,20 @@
           "TestDemoRule",
           "BeforeConversionLog",
           "TestConversionRule",
-          "AfterConversionLog"
+          "AfterConversionLog",
+          "TestDB"
         ],
         "Rules": [
           {
             "Name": "TestDemoRule",
-            "ClassName": "com.twinkle.framework.ruleengine.rule.DemoIRule",
-            "Attribute": "position"
+            "ClassName": "com.twinkle.framework.ruleengine.rule.AdornmentRule",
+            "AdornOps": [
+              "set password \"abcd1234\"",
+              "set age \"50\"",
+              "set assessId \"ccxxdd\"",
+              "set assessPaperId \"ddffeegg\"",
+              "set assessCategoryId \"ppooodd\""
+            ]
           },
           {
             "Name": "BeforeConversionLog",
@@ -122,6 +129,11 @@
             "NullAlso": "true",
             "ConvertToJson": "true",
             "Attributes": ["userName","position","age","dept", "addressId", "userOrgInfo"]
+          },
+          {
+            "Name": "TestDB",
+            "ClassName": "com.twinkle.framework.ruleengine.rule.DataCenterOperationRule",
+            "ExecutorName": "DoSQLTest"
           }
         ]
       },
@@ -147,6 +159,55 @@
             "ConvertToJson": "true",
             "Attributes": ["userId","position"]
           }
+        ]
+      }
+    ]
+  },
+  "DataCenterManager": {
+    "ClassName": "com.twinkle.framework.datacenter.DataCenterManager",
+    "StatementNames": [
+      "TestPgSQL",
+      "TestMySQL"
+    ],
+    "Statements": [
+      {
+        "Name": "TestPgSQL",
+        "ClassName": "com.twinkle.framework.datacenter.statement.InsertSqlStatement",
+        "DestTable": "U_USER",
+        "IsBatch": false,
+        "DataSource": "usermgmt",
+        "FieldMap": [
+          ["NAME", 12, "userName"],
+          ["LOGIN_NAME", 12, "userName"],
+          ["PASSWORD", 12, "password"],
+          ["AGE", 4, "age", 10],
+          ["GENDER", -7, "gender", 0]
+        ]
+      },
+      {
+        "Name": "TestMySQL",
+        "ClassName": "com.twinkle.framework.datacenter.statement.InsertSqlStatement",
+        "DestTable": "PER_TEST1",
+        "IsBatch": false,
+        "DataSource": "assessmgmt",
+        "FieldMap": [
+          ["ID", 12, "assessId"],
+          ["ASSESS_ID", 12, "assessId"],
+          ["ASSESS_PAPER_ID", 12, "assessPaperId"],
+          ["ASSESS_CATEGORY_ID", 12, "assessCategoryId"]
+        ]
+      }
+    ],
+    "ExecutorNames": [
+      "DoSQLTest"
+    ],
+    "Executors": [
+      {
+        "Name": "DoSQLTest",
+        "ClassName": "com.twinkle.framework.datacenter.executor.DefaultStatementExecutor",
+        "StatementNames": [
+          "TestPgSQL",
+          "TestMySQL"
         ]
       }
     ]
@@ -183,7 +244,27 @@
       ""
     ],
     [
+      "gender",
+      "com.twinkle.framework.core.lang.IntegerAttribute",
+      ""
+    ],
+    [
       "addressId",
+      "com.twinkle.framework.core.lang.StringAttribute",
+      ""
+    ],
+    [
+      "assessId",
+      "com.twinkle.framework.core.lang.StringAttribute",
+      ""
+    ],
+    [
+      "assessPaperId",
+      "com.twinkle.framework.core.lang.StringAttribute",
+      ""
+    ],
+    [
+      "assessCategoryId",
       "com.twinkle.framework.core.lang.StringAttribute",
       ""
     ],

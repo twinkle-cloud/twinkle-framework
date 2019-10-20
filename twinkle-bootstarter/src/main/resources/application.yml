@@ -27,6 +27,11 @@ spring:
           password: abcd1234
           driver-class-name: org.postgresql.Driver
           url: jdbc:postgresql://127.0.0.1:5432/metadata
+        assessmgmt:
+          username: admin
+          password: 1qaz!QAZ
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://61.178.80.86:3306/yy?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
       hikari:
         connection-test-query: select 1
         maximum-pool-size: 20

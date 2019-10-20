@@ -149,9 +149,9 @@ public class DefaultAttributeInfo implements AttributeInfo {
 
     @Override
     public AttributeInfo getValueAttributeInfo() {
-        if(this.valueAttributeInfo != null) {
-            return this.valueAttributeInfo;
-        }
+//        if(this.valueAttributeInfo != null) {
+//            return this.valueAttributeInfo;
+//        }
         if (this.primitiveType == Attribute.LIST_ATTRIBUTE_TYPE) {
             if (StringUtils.isBlank(this.extraInfo)) {
                 return null;

@@ -1,8 +1,11 @@
-package com.twinkle.framework.configure.component;
+package com.twinkle.framework.api.component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.config.Configurable;
 import com.twinkle.framework.asm.Bean;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.config.BeanDefinition;
 
 /**
@@ -55,4 +58,18 @@ public interface IComponentFactory {
      * @param _definition
      */
     void registerBeanDefinition(String _beanName, BeanDefinition _definition);
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ComponentNamePair {
+        /**
+         * Component name.
+         */
+        private String name;
+        /**
+         * Component full path name.
+         */
+        private String fullPathName;
+    }
 }

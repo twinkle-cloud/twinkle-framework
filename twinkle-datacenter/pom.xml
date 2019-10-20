@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>com.twinkle.framework</groupId>
-            <artifactId>twinkle-api</artifactId>
+            <artifactId>twinkle-context</artifactId>
         </dependency>
         <dependency>
             <groupId>com.twinkle.framework</groupId>

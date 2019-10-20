@@ -2,10 +2,11 @@ package com.twinkle.framework.bootstarter.config;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.twinkle.framework.api.component.datacenter.IDataCenterManager;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.configure.component.ComponentFactory;
-import com.twinkle.framework.configure.component.IComponentFactory;
+import com.twinkle.framework.api.component.IComponentFactory;
 import com.twinkle.framework.connector.ConnectorManager;
 import com.twinkle.framework.context.PrimitiveAttributeSchema;
 import com.twinkle.framework.ruleengine.RuleChainManager;
@@ -36,6 +37,7 @@ import java.io.IOException;
 public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor {
     private final static String KEY_CONNECTOR_MANAGER = "ConnectorManager";
     private final static String KEY_RULECHAIN_MANAGER = "RuleChainManager";
+    private final static String KEY_DATACENTER_MANAGER = "DataCenterManager";
     private final static String KEY_STRUCT_ATTRIBUTE_MANAGER = "StructAttributeManager";
     private final static String KEY_ATTRIBUTE_SET = "AttributeSet";
 
@@ -84,6 +86,9 @@ public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor {
         if (tempConnectorManager == null) {
             throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_CONNECTOR, "Did not find valid connector obj in the logic configuration.");
         }
+
+        IDataCenterManager tempDataCenterManager = componentFactory.loadComponent(tempObj.getJSONObject(KEY_DATACENTER_MANAGER));
+
         //Initialize the rule Manager.
         RuleChainManager tempRuleManager = componentFactory.loadComponent(tempObj.getJSONObject(KEY_RULECHAIN_MANAGER));
         if (tempRuleManager == null) {

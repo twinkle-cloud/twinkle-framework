@@ -39,4 +39,17 @@ public abstract class AbstractComponent implements IComponent {
             this.name = "";
         }
     }
+
+    /**
+     * Get component name which will be used to generate MD5 bean name.
+     *
+     * @param _name
+     * @return
+     */
+    protected String getComponentName(String _name) {
+        StringBuilder tempBuilder = new StringBuilder(this.getFullPathName());
+        tempBuilder.append((char) 92);
+        tempBuilder.append(_name);
+        return tempBuilder.toString();
+    }
 }

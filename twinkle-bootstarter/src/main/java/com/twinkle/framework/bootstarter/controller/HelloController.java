@@ -59,7 +59,7 @@ public class HelloController extends AbstractServer {
 
         log.info("The _testParam = [{}].", _testParam);
 //        log.info("The request _testParam = [{}].", request.getParameter("_testParam"));
-        String tempContent = this.helloWorldService.sayHello("DDFFSS");
+        String tempContent = this.helloWorldService.sayHello("assessmgmt");
 
         GeneralResult<Object> tempResult = new GeneralResult<>();
         HelloResponse tempResponse = new HelloResponse();

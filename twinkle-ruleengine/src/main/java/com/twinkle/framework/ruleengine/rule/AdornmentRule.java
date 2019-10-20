@@ -45,7 +45,10 @@ public class AdornmentRule extends AbstractRule {
         }
         String tempUrl = _conf.getString("MapURL");
         JSONArray tempURLCommentsJsonArray = _conf.getJSONArray("MapURLComments");
-        String[] tempURLCommentArray = tempURLCommentsJsonArray.toArray(new String[]{});
+        String[] tempURLCommentArray = null;
+        if(tempURLCommentsJsonArray != null && !tempURLCommentsJsonArray.isEmpty()) {
+            tempURLCommentArray = tempURLCommentsJsonArray.toArray(new String[]{});
+        }
         boolean tempUseArrayFlag = _conf.getBooleanValue("MapUseArray");
         boolean tempEnableRefresh = _conf.getBooleanValue("MapRefresh");
         String tempOperator = _conf.getString("MapSeparator");
@@ -65,7 +68,7 @@ public class AdornmentRule extends AbstractRule {
 
             try {
                 tempOperation = (AbstractAttributeOperation) AdornmentRule.Operation.getOperation(tempToken).newInstance();
-                tempOperation.configure(_conf);
+//                tempOperation.configure(_conf);
             } catch (Exception e) {
                 throw new ConfigurationException(ExceptionCode.RULE_ADN_OPERATION_INIT_FAILED, "Cannot create instance of operation class for operation-" + _operations[i]);
             }
