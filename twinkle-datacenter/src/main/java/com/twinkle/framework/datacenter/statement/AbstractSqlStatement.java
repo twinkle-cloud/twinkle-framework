@@ -1,6 +1,5 @@
 package com.twinkle.framework.datacenter.statement;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.component.AbstractComponent;
 import com.twinkle.framework.api.component.datacenter.ISqlStatement;
@@ -34,26 +33,6 @@ public abstract class AbstractSqlStatement extends AbstractComponent implements 
      */
     @Getter
     private String dataSourceName;
-    /**
-     * The database fields array, which will be used by this statement.
-     */
-    protected String[] dbFieldArray;
-    /**
-     * The database field type array.
-     *
-     * Refer to java.sql.Types.
-     */
-    protected int[] dbFieldTypeArray;
-    /**
-     * The attributes which will be used by this statement,
-     * Set the fetched values into the attributes,
-     * or update the database fields with the attributes' value.
-     */
-    protected HybridAttribute[] attributeArray;
-    /**
-     * The default value for the database field, or for the attribute.
-     */
-    protected String[] defaultValue;
     /**
      * The Result
      */
@@ -96,34 +75,6 @@ public abstract class AbstractSqlStatement extends AbstractComponent implements 
         this.dataSourceName = _conf.getString("DataSource");
         if (StringUtils.isBlank(this.dataSourceName)) {
             throw new ConfigurationException(ExceptionCode.LOGIC_CONF_REQUIRED_ATTR_MISSED, "The DataSource is mandatory for SQL Statement Component.");
-        }
-        JSONArray tempArray = _conf.getJSONArray("FieldMap");
-        if (tempArray == null || tempArray.isEmpty()) {
-            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_REQUIRED_ATTR_MISSED, "The FieldMap is mandatory for SQL Statement Component.");
-        }
-        this.dbFieldArray = new String[tempArray.size()];
-        this.dbFieldTypeArray = new int[tempArray.size()];
-        this.attributeArray = new HybridAttribute[tempArray.size()];
-        this.defaultValue = new String[tempArray.size()];
-        String tempItemValue;
-        for (int i = 0; i < tempArray.size(); i++) {
-            JSONArray tempItemArray = tempArray.getJSONArray(i);
-            if (tempItemArray.isEmpty()) {
-                throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_EXPRESSION, "The FieldMap item is empty.");
-            }
-            if (tempItemArray.size() < 3) {
-                throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_EXPRESSION, "The FieldMap item is invalid.");
-            }
-            this.dbFieldArray[i] = tempItemArray.getString(0);
-            this.dbFieldTypeArray[i] = tempItemArray.getIntValue(1);
-            tempItemValue = tempItemArray.getString(2);
-            this.attributeArray[i] = new HybridAttribute(tempItemValue, tempItemArray.toJSONString());
-            if (tempItemArray.size() > 3) {
-                tempItemValue = tempItemArray.getString(3);
-            } else {
-                tempItemValue = null;
-            }
-            this.defaultValue[i] = tempItemValue;
         }
         String tempAttrName = _conf.getString("ResultIndexAttribute");
         if (!StringUtils.isBlank(tempAttrName)) {

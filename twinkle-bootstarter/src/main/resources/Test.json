@@ -101,8 +101,9 @@
             "AdornOps": [
               "set password \"abcd1234\"",
               "set age \"50\"",
+              "set userId \"12\"",
               "set assessId \"f8091fc001-6d50-00fc-eddf-fbac1f85bc\"",
-              "set assessPaperId \"AADDSS\"",
+              "set assessPaperId \"OOOOOO\"",
               "set assessCategoryId \"GGFFJJ\""
             ]
           },

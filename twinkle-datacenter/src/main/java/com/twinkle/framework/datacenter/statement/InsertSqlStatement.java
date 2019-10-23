@@ -6,16 +6,13 @@ import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.context.AttributeInfo;
 import com.twinkle.framework.api.context.NormalizedContext;
 import com.twinkle.framework.api.exception.ConfigurationException;
-import com.twinkle.framework.api.exception.DataCenterException;
 import com.twinkle.framework.core.lang.*;
 import com.twinkle.framework.datacenter.support.HybridAttribute;
 import com.twinkle.framework.datacenter.support.SnowflakeUidGenerator;
 import com.twinkle.framework.datacenter.utils.JDBCUtil;
-import com.twinkle.framework.datasource.annotation.TwinkleDataSource;
 import com.twinkle.framework.struct.error.AttributeNotSetException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.SqlParameterValue;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -23,7 +20,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.Types;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -38,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since JDK 1.8
  */
 @Slf4j
-public class InsertSqlStatement extends AbstractSqlStatement {
+public class InsertSqlStatement extends AbstractUpdateSqlStatement {
     private final static int PK_GENERATED_TYPE_ORACLE_SEQ = 1;
     private final static int PK_GENERATED_TYPE_AUTO_INCREMENT = 2;
     private final static int PK_GENERATED_TYPE_SNOWFLAKE = 3;
@@ -46,22 +42,27 @@ public class InsertSqlStatement extends AbstractSqlStatement {
     private final static int PK_GENERATED_TYPE_SIMPLE_UUID = 5;
 
     private final static Map<String, SnowflakeUidGenerator> ENTITY_IDGENERATOR_MAP;
+
     /**
-     * The destination table's name.
+     * The database fields array, which will be used by this statement.
      */
-    protected String destTableName;
+    protected String[] dbFieldArray;
     /**
-     * Is batch or not?
-     */
-    protected boolean batchFlag = false;
-    /**
-     * If batch model, this attribute is required.
+     * The database field type array.
      * <p>
-     * Source Attribute name, The attribute type should be List or Array.
-     * If the sub-attribute of an Struct Attribute is array, then could be set to
-     * xxx.aaa
+     * Refer to java.sql.Types.
      */
-    private HybridAttribute sourceAttribute;
+    protected int[] dbFieldTypeArray;
+    /**
+     * The attributes which will be used by this statement,
+     * Set the fetched values into the attributes,
+     * or update the database fields with the attributes' value.
+     */
+    protected HybridAttribute[] attributeArray;
+    /**
+     * The default value for the database field, or for the attribute.
+     */
+    protected String[] defaultValue;
     /**
      * The primary key attribute. This attribute is not mandatory, ONLY for ID retrieve.
      */
@@ -112,86 +113,105 @@ public class InsertSqlStatement extends AbstractSqlStatement {
 
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
-        this.destTableName = _conf.getString("DestTable");
-        if (StringUtils.isBlank(this.destTableName)) {
-            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_REQUIRED_ATTR_MISSED, "The destination table name is required for insert statement.");
+        JSONArray tempArray = _conf.getJSONArray("FieldMap");
+        if (tempArray == null || tempArray.isEmpty()) {
+            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_REQUIRED_ATTR_MISSED, "The FieldMap is mandatory for Update SQL Statement Component.");
         }
-        this.batchFlag = _conf.getBooleanValue("IsBatch");
-        String tempSourceAttrName = _conf.getString("SourceAttribute");
-        if (StringUtils.isBlank(tempSourceAttrName)) {
-            if (this.batchFlag) {
-                throw new ConfigurationException(ExceptionCode.LOGIC_CONF_REQUIRED_ATTR_MISSED, "The SourceAttribute is required for insert statement batch model.");
+        this.dbFieldArray = new String[tempArray.size()];
+        this.dbFieldTypeArray = new int[tempArray.size()];
+        this.attributeArray = new HybridAttribute[tempArray.size()];
+        this.defaultValue = new String[tempArray.size()];
+        String tempItemValue;
+        for (int i = 0; i < tempArray.size(); i++) {
+            JSONArray tempItemArray = tempArray.getJSONArray(i);
+            if (tempItemArray.isEmpty()) {
+                throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_EXPRESSION, "The FieldMap item is empty.");
             }
-            log.debug("There is no source attribute, so will use primitive attributes as the values.");
-        } else {
-            if (this.batchFlag) {
-                this.sourceAttribute = new HybridAttribute(tempSourceAttrName);
-                if (!this.sourceAttribute.isArrayFlag()) {
-                    throw new ConfigurationException(ExceptionCode.LOGIC_CONF_ATTR_TYPE_IS_UNEXPECTED, "The attribute [" + tempSourceAttrName + "]'s type should be array or list type.");
-                }
+            if (tempItemArray.size() < 3) {
+                throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_EXPRESSION, "The FieldMap item is invalid.");
             }
+            this.dbFieldArray[i] = tempItemArray.getString(0);
+            this.dbFieldTypeArray[i] = tempItemArray.getIntValue(1);
+            tempItemValue = tempItemArray.getString(2);
+            this.attributeArray[i] = new HybridAttribute(tempItemValue, tempItemArray.toJSONString());
+            if (tempItemArray.size() > 3) {
+                tempItemValue = tempItemArray.getString(3);
+            } else {
+                tempItemValue = null;
+            }
+            this.defaultValue[i] = tempItemValue;
         }
         JSONArray tempPKArray = _conf.getJSONArray("PrimaryKey");
         if (!CollectionUtils.isEmpty(tempPKArray)) {
-            this.primaryKeyName = tempPKArray.getString(0);
-            this.primaryKeySqlType = tempPKArray.getIntValue(1);
-            String tempAttrName = tempPKArray.getString(2);
-            if (!tempAttrName.equals(NO_AVAILABLE)) {
-                this.primaryKeyAttrInfo = this.primitiveAttributeSchema.getAttribute(tempAttrName);
-                if (this.primaryKeyAttrInfo != null) {
-                    this.primaryKeyAttrIndex = this.primitiveAttributeSchema.getAttributeIndex(tempAttrName, tempPKArray.toJSONString());
-                } else {
-                    log.info("The Primary Key attribute [{}] is missed in Attribute Schema.", tempAttrName);
-                }
-            }
-            this.pkGeneratedType = tempPKArray.getIntValue(3);
-            if (this.pkGeneratedType == 0 || this.pkGeneratedType > 5) {
-                if (this.primaryKeyAttrIndex < 0) {
-                    throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_EXPRESSION, "The PrimaryKey Value Generated Type [" + this.pkGeneratedType + "] is invalid.");
-                }
-            }
-            int tempPrimitiveType = this.primaryKeyAttrInfo == null ? 0 : this.primaryKeyAttrInfo.getPrimitiveType();
-            switch (this.pkGeneratedType) {
-                case -1:
-                    log.info("The primary key attribute is not set, please ensure the SQL is valid for INSERT Dest table.");
-                    break;
-                case PK_GENERATED_TYPE_AUTO_INCREMENT:
-                case PK_GENERATED_TYPE_SNOWFLAKE:
-                    //For auto-increment type, No need add ID field in the sql.
-                    if (tempPrimitiveType > 0 && tempPrimitiveType != Attribute.LONG_TYPE
-                            && tempPrimitiveType != Attribute.LIST_ATTRIBUTE_TYPE) {
-                        throw new ConfigurationException(ExceptionCode.LOGIC_CONF_ATTR_NOT_ALLOWED, "The Primary Key Attribute should be LongAttribute or ListAttribute");
-                    }
-                    if (ENTITY_IDGENERATOR_MAP.get(this.destTableName) == null) {
-                        long workerId = SnowflakeUidGenerator.getWorkerIdByIP(24);
-                        ENTITY_IDGENERATOR_MAP.put(this.destTableName, new SnowflakeUidGenerator(workerId));
-                    }
-                    break;
-                case PK_GENERATED_TYPE_ORACLE_SEQ:
-                    //For auto-increment type, No need add ID field in the sql.
-                    if (tempPrimitiveType > 0 && tempPrimitiveType != Attribute.LONG_TYPE
-                            && tempPrimitiveType != Attribute.LIST_ATTRIBUTE_TYPE) {
-                        throw new ConfigurationException(ExceptionCode.LOGIC_CONF_ATTR_NOT_ALLOWED, "The Primary Key Attribute should be LongAttribute or ListAttribute");
-                    }
-                    //Add Oracle ID Sequence Support.
-                    if (tempPKArray.size() > 4) {
-                        this.primaryKeyComment = tempPKArray.getString(4);
-                    } else {
-                        //Default sequence name is S_TableName.
-                        this.primaryKeyComment = "S_" + this.destTableName;
-                    }
-                    break;
-                case PK_GENERATED_TYPE_UUID:
-                case PK_GENERATED_TYPE_SIMPLE_UUID:
-                    //For auto-increment type, No need add ID field in the sql.
-                    if (tempPrimitiveType > 0 && tempPrimitiveType != Attribute.STRING_TYPE
-                            && tempPrimitiveType != Attribute.LIST_ATTRIBUTE_TYPE) {
-                        throw new ConfigurationException(ExceptionCode.LOGIC_CONF_ATTR_NOT_ALLOWED, "The Primary Key Attribute should be StringAttribute or ListAttribute");
-                    }
-                    break;
-            }
+            this.parsePrimaryKey(tempPKArray);
         }
         super.configure(_conf);
+    }
+
+    /**
+     * Parse the Primary key for the dest table.
+     *
+     * @param _conf
+     * @throws ConfigurationException
+     */
+    private void parsePrimaryKey(JSONArray _conf) throws ConfigurationException {
+        this.primaryKeyName = _conf.getString(0);
+        this.primaryKeySqlType = _conf.getIntValue(1);
+        String tempAttrName = _conf.getString(2);
+        if (!tempAttrName.equals(NO_AVAILABLE)) {
+            this.primaryKeyAttrInfo = this.primitiveAttributeSchema.getAttribute(tempAttrName);
+            if (this.primaryKeyAttrInfo != null) {
+                this.primaryKeyAttrIndex = this.primitiveAttributeSchema.getAttributeIndex(tempAttrName, _conf.toJSONString());
+            } else {
+                log.info("The Primary Key attribute [{}] is missed in Attribute Schema.", tempAttrName);
+            }
+        }
+        this.pkGeneratedType = _conf.getIntValue(3);
+        if (this.pkGeneratedType == 0 || this.pkGeneratedType > 5) {
+            if (this.primaryKeyAttrIndex < 0) {
+                throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_EXPRESSION, "The PrimaryKey Value Generated Type [" + this.pkGeneratedType + "] is invalid.");
+            }
+        }
+        int tempPrimitiveType = this.primaryKeyAttrInfo == null ? 0 : this.primaryKeyAttrInfo.getPrimitiveType();
+        switch (this.pkGeneratedType) {
+            case -1:
+                log.info("The primary key attribute is not set, please ensure the SQL is valid for INSERT Dest table.");
+                break;
+            case PK_GENERATED_TYPE_AUTO_INCREMENT:
+            case PK_GENERATED_TYPE_SNOWFLAKE:
+                //For auto-increment type, No need add ID field in the sql.
+                if (tempPrimitiveType > 0 && tempPrimitiveType != Attribute.LONG_TYPE
+                        && tempPrimitiveType != Attribute.LIST_ATTRIBUTE_TYPE) {
+                    throw new ConfigurationException(ExceptionCode.LOGIC_CONF_ATTR_NOT_ALLOWED, "The Primary Key Attribute should be LongAttribute or ListAttribute");
+                }
+                if (ENTITY_IDGENERATOR_MAP.get(this.destTableName) == null) {
+                    long workerId = SnowflakeUidGenerator.getWorkerIdByIP(24);
+                    ENTITY_IDGENERATOR_MAP.put(this.destTableName, new SnowflakeUidGenerator(workerId));
+                }
+                break;
+            case PK_GENERATED_TYPE_ORACLE_SEQ:
+                //For auto-increment type, No need add ID field in the sql.
+                if (tempPrimitiveType > 0 && tempPrimitiveType != Attribute.LONG_TYPE
+                        && tempPrimitiveType != Attribute.LIST_ATTRIBUTE_TYPE) {
+                    throw new ConfigurationException(ExceptionCode.LOGIC_CONF_ATTR_NOT_ALLOWED, "The Primary Key Attribute should be LongAttribute or ListAttribute");
+                }
+                //Add Oracle ID Sequence Support.
+                if (_conf.size() > 4) {
+                    this.primaryKeyComment = _conf.getString(4);
+                } else {
+                    //Default sequence name is S_TableName.
+                    this.primaryKeyComment = "S_" + this.destTableName;
+                }
+                break;
+            case PK_GENERATED_TYPE_UUID:
+            case PK_GENERATED_TYPE_SIMPLE_UUID:
+                //For auto-increment type, No need add ID field in the sql.
+                if (tempPrimitiveType > 0 && tempPrimitiveType != Attribute.STRING_TYPE
+                        && tempPrimitiveType != Attribute.LIST_ATTRIBUTE_TYPE) {
+                    throw new ConfigurationException(ExceptionCode.LOGIC_CONF_ATTR_NOT_ALLOWED, "The Primary Key Attribute should be StringAttribute or ListAttribute");
+                }
+                break;
+        }
     }
 
     @Override
@@ -244,30 +264,14 @@ public class InsertSqlStatement extends AbstractSqlStatement {
         return tempBuffer.toString();
     }
 
-    @TwinkleDataSource(value = "#_dataSource")
-    @Override
-    public void execute(NormalizedContext _context, String _dataSource) throws DataCenterException {
-        List<SqlParameterSource> tempBatchList = this.prepareValueArrays(_context);
-        if(this.batchFlag) {
-            if(tempBatchList.size() == 0) {
-                log.info("The batch size is 0, so do nothing this time.");
-                return;
-            }
-            log.info("Going to execute the statement in batch model, and the batch size is [{}].", tempBatchList.size());
-            this.executeBatch(_context, tempBatchList);
-        } else {
-            log.info("Going to execute the statement in single model.");
-            this.executeSingle(_context, tempBatchList.get(0));
-        }
-    }
-
     /**
      * Execute the statement in batch model.
      *
      * @param _context
      * @param _sqlSourceList
      */
-    private void executeBatch(NormalizedContext _context, List<SqlParameterSource> _sqlSourceList) {
+    @Override
+    protected void executeBatch(NormalizedContext _context, List<SqlParameterSource> _sqlSourceList) {
         int tempFromIndex = 0;
         int tempToIndex = BATCH_SIZE;
 
@@ -301,7 +305,8 @@ public class InsertSqlStatement extends AbstractSqlStatement {
      * @param _context
      * @param _sqlSource
      */
-    private void executeSingle(NormalizedContext _context, SqlParameterSource _sqlSource) {
+    @Override
+    protected void executeSingle(NormalizedContext _context, SqlParameterSource _sqlSource) {
         if (this.pkGeneratedType == PK_GENERATED_TYPE_ORACLE_SEQ
                 || this.pkGeneratedType == PK_GENERATED_TYPE_AUTO_INCREMENT) {
             KeyHolder tempHolder = new GeneratedKeyHolder();
@@ -327,29 +332,6 @@ public class InsertSqlStatement extends AbstractSqlStatement {
                 log.info("There is no row updated this time.");
             }
         }
-
-    }
-
-    /**
-     * Pack the Batch values array.
-     *
-     * @param _context
-     * @return
-     */
-    private List<SqlParameterSource> prepareValueArrays(NormalizedContext _context) {
-        int tempSize = 1;
-        List<SqlParameterSource> tempBatchList;
-        if (this.batchFlag) {
-            tempSize = this.sourceAttribute.getArraySize(_context);
-            tempBatchList = new ArrayList<>(tempSize);
-            for (int i = 0; i < tempSize; i++) {
-                tempBatchList.add(this.packValuesArray(_context, i));
-            }
-        } else {
-            tempBatchList = new ArrayList<>(tempSize);
-            tempBatchList.add(this.packValuesArray(_context, -1));
-        }
-        return tempBatchList;
     }
 
     /**
@@ -389,7 +371,8 @@ public class InsertSqlStatement extends AbstractSqlStatement {
      * @param _rowIndex
      * @return
      */
-    private SqlParameterSource packValuesArray(NormalizedContext _context, int _rowIndex) {
+    @Override
+    protected SqlParameterSource packValuesArray(NormalizedContext _context, int _rowIndex) {
         MapSqlParameterSource tempSource = new MapSqlParameterSource();
         // Update the generated ID into the AttributeId.
         if (this.pkGeneratedType == PK_GENERATED_TYPE_SNOWFLAKE) {

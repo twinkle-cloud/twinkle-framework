@@ -63,7 +63,7 @@ public class UpdateSqlStatement extends InsertSqlStatement {
                 tempBuffer.append("=:");
                 tempBuffer.append(this.attributeArray[i].getAttributeName());
             } else {
-                tempBuffer.append(",");
+                tempBuffer.append(", ");
                 tempBuffer.append(this.dbFieldArray[i]);
                 tempBuffer.append("=:");
                 tempBuffer.append(this.attributeArray[i].getAttributeName());
