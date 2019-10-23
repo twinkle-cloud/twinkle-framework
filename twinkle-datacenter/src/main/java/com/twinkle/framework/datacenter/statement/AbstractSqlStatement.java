@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -76,7 +76,13 @@ public abstract class AbstractSqlStatement extends AbstractComponent implements 
      * The JDBC template, From Spring Bean context.
      */
     @Autowired
-    protected JdbcTemplate jdbcTemplate;
+    protected NamedParameterJdbcTemplate jdbcTemplate;
+
+    /**
+     * The SQL will be executed by this statement.
+     */
+    @Getter
+    private String preparedSQL;
 
     public AbstractSqlStatement() {
         this.primitiveAttributeSchema = PrimitiveAttributeSchema.getInstance();
@@ -92,7 +98,7 @@ public abstract class AbstractSqlStatement extends AbstractComponent implements 
             throw new ConfigurationException(ExceptionCode.LOGIC_CONF_REQUIRED_ATTR_MISSED, "The DataSource is mandatory for SQL Statement Component.");
         }
         JSONArray tempArray = _conf.getJSONArray("FieldMap");
-        if (tempArray.isEmpty()) {
+        if (tempArray == null || tempArray.isEmpty()) {
             throw new ConfigurationException(ExceptionCode.LOGIC_CONF_REQUIRED_ATTR_MISSED, "The FieldMap is mandatory for SQL Statement Component.");
         }
         this.dbFieldArray = new String[tempArray.size()];
@@ -142,6 +148,7 @@ public abstract class AbstractSqlStatement extends AbstractComponent implements 
         if (!StringUtils.isBlank(tempAttrName)) {
             this.errorMessageAttribute = new HybridAttribute(tempAttrName);
         }
+        this.preparedSQL = this.packSqlStatement();
     }
 
     /**

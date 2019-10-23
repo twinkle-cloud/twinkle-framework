@@ -12,5 +12,15 @@ import com.alibaba.fastjson.JSONObject;
  * @since JDK 1.8
  */
 public interface Configurable {
+    /**
+     * The default no available value.
+     */
+    String NO_AVAILABLE = "NA";
+    /**
+     * Parse the configuration of the component.
+     *
+     * @param _conf
+     * @throws com.twinkle.framework.api.exception.ConfigurationException
+     */
     void configure(JSONObject _conf) throws com.twinkle.framework.api.exception.ConfigurationException;
 }

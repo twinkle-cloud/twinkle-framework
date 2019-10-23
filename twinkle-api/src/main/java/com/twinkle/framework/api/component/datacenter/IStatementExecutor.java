@@ -1,6 +1,10 @@
 package com.twinkle.framework.api.component.datacenter;
 
+import com.twinkle.framework.api.component.IComponent;
 import com.twinkle.framework.api.component.IComponentFactory;
+import com.twinkle.framework.api.config.Configurable;
+import com.twinkle.framework.api.context.NormalizedContext;
+import com.twinkle.framework.api.exception.DataCenterException;
 
 import java.util.List;
 
@@ -13,7 +17,7 @@ import java.util.List;
  * @see
  * @since JDK 1.8
  */
-public interface IStatementExecutor extends IStatement {
+public interface IStatementExecutor extends IComponent, Configurable {
     /**
      * Check the given statement is valid or not?
      *
@@ -22,12 +26,10 @@ public interface IStatementExecutor extends IStatement {
     void checkStatement(List<IComponentFactory.ComponentNamePair> _definedStatementList);
 
     /**
-     * Type is no use for executor.
+     * Execute the Sql Statement.
      *
-     * @return
+     * @param _context
+     * @throws DataCenterException
      */
-    @Override
-    default int getType() {
-        return TYPE_NONE;
-    }
+    void execute(NormalizedContext _context) throws DataCenterException;
 }

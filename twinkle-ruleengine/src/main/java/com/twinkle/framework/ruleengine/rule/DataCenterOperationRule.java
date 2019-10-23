@@ -42,7 +42,7 @@ public class DataCenterOperationRule extends AbstractRule {
     public void applyRule(NormalizedContext _context) throws RuleException {
         log.debug("Going to apply DataCenterOperationRule.applyRule().");
         IStatementExecutor tempExecutor = this.dataCenterManager.getStatementExecutor(this.executorName);
-        tempExecutor.execute(_context, null);
+        tempExecutor.execute(_context);
         if (this.nextRule != null) {
             this.nextRule.applyRule(_context);
         }

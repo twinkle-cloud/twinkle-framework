@@ -180,6 +180,12 @@ public class UUIDAttribute extends BinaryAttribute {
         return toString(tempByteArray);
     }
 
+    /**
+     * Convert the UUID to normal string.
+     *
+     * @param _byteArray
+     * @return
+     */
     public static String toString(byte[] _byteArray) {
         if (_byteArray == null) {
             return null;
@@ -192,19 +198,46 @@ public class UUIDAttribute extends BinaryAttribute {
             }
         }
 
-        StringBuffer tempBuilder = new StringBuffer("");
+        StringBuffer tempBuffer = new StringBuffer("");
         for (int i = 0; i < tempLength; i++) {
             byte tempByte = _byteArray[i];
-            tempBuilder.append(Character.forDigit(tempByte >> 4 & 15, 16));
-            tempBuilder.append(Character.forDigit(tempByte & 15, 16));
+            tempBuffer.append(Character.forDigit(tempByte >> 4 & 15, 16));
+            tempBuffer.append(Character.forDigit(tempByte & 15, 16));
             if (i == SYS_UUID_FORMAT[0] || i == SYS_UUID_FORMAT[1] || i == SYS_UUID_FORMAT[2] || i == SYS_UUID_FORMAT[3]) {
-                tempBuilder.append("-");
+                tempBuffer.append("-");
             }
         }
 
-        return tempBuilder.toString();
+        return tempBuffer.toString();
     }
 
+    /**
+     * Return the UUID without '-'
+     *
+     * @param _byteArray
+     * @return
+     */
+    public static String toStringWithoutDelimiter(byte[] _byteArray) {
+        if (_byteArray == null) {
+            return null;
+        }
+        int tempLength = UUID_SIZE;
+        if (_byteArray.length != UUID_SIZE) {
+            log.warn("The length of given byte array [{}] is not equal UUID_SIZE.", _byteArray.length);
+            if (_byteArray.length < UUID_SIZE) {
+                tempLength = _byteArray.length;
+            }
+        }
+
+        StringBuffer tempBuffer = new StringBuffer("");
+        for (int i = 0; i < tempLength; i++) {
+            byte tempByte = _byteArray[i];
+            tempBuffer.append(Character.forDigit(tempByte >> 4 & 15, 16));
+            tempBuffer.append(Character.forDigit(tempByte & 15, 16));
+        }
+
+        return tempBuffer.toString();
+    }
     /**
      * Update UUID.
      *

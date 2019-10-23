@@ -70,7 +70,7 @@ public abstract class AbstractStatementExecutor extends AbstractComponent implem
     }
 
     @Override
-    public void execute(NormalizedContext _context, String _dataSourceName) throws DataCenterException {
+    public void execute(NormalizedContext _context) throws DataCenterException {
         log.debug("Going to execute the SQL statement.");
         for (Map.Entry<String, String> entryItem : this.statementBeanMap.entrySet()) {
             log.debug("Going to execute the [{}] statement.", entryItem.getKey());

@@ -101,9 +101,9 @@
             "AdornOps": [
               "set password \"abcd1234\"",
               "set age \"50\"",
-              "set assessId \"ccxxdd\"",
-              "set assessPaperId \"ddffeegg\"",
-              "set assessCategoryId \"ppooodd\""
+              "set assessId \"f8091fc001-6d50-00fc-eddf-fbac1f85bc\"",
+              "set assessPaperId \"AADDSS\"",
+              "set assessCategoryId \"GGFFJJ\""
             ]
           },
           {
@@ -172,29 +172,31 @@
     "Statements": [
       {
         "Name": "TestPgSQL",
-        "ClassName": "com.twinkle.framework.datacenter.statement.InsertSqlStatement",
+        "ClassName": "com.twinkle.framework.datacenter.statement.UpdateSqlStatement",
         "DestTable": "U_USER",
         "IsBatch": false,
         "DataSource": "usermgmt",
+        "ConditionFields": [
+          ["userId", 4]
+        ],
+        "WhereClause": "id=:userId",
         "FieldMap": [
-          ["NAME", 12, "userName"],
-          ["LOGIN_NAME", 12, "userName"],
-          ["PASSWORD", 12, "password"],
-          ["AGE", 4, "age", 10],
-          ["GENDER", -7, "gender", 0]
+          ["AGE", 4, "userId", 90],
+          ["GENDER", -7, "gender", 1]
         ]
       },
       {
         "Name": "TestMySQL",
-        "ClassName": "com.twinkle.framework.datacenter.statement.InsertSqlStatement",
+        "ClassName": "com.twinkle.framework.datacenter.statement.UpdateSqlStatement",
         "DestTable": "PER_TEST1",
         "IsBatch": false,
         "DataSource": "assessmgmt",
+        "ConditionFields": [
+          ["assessId", 12]
+        ],
+        "WhereClause": "id=:assessId",
         "FieldMap": [
-          ["ID", 12, "assessId"],
-          ["ASSESS_ID", 12, "assessId"],
-          ["ASSESS_PAPER_ID", 12, "assessPaperId"],
-          ["ASSESS_CATEGORY_ID", 12, "assessCategoryId"]
+          ["ASSESS_PAPER_ID", 12, "assessPaperId"]
         ]
       }
     ],
@@ -220,7 +222,7 @@
     ],
     [
       "userId",
-      "com.twinkle.framework.core.lang.IntegerAttribute",
+      "com.twinkle.framework.core.lang.LongAttribute",
       ""
     ],
     [
