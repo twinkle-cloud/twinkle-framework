@@ -20,7 +20,7 @@ public class TimeAttribute extends IntegerAttribute {
     private static Date cachedDate_ = new Date();
     private static Object mutex = new Object();
     private transient TimeAttribute.TimeAttributeParser inDateFormat_;
-    public static final String DEFAULT_TIME_FORMAT = new String("MM/dd/yyyy HH:mm:ss z");
+    public static final String DEFAULT_TIME_FORMAT = new String("yyyy-MM-dd HH:mm:ss.SS");
 
     public TimeAttribute() {
         this.value = 0;
@@ -165,15 +165,15 @@ public class TimeAttribute extends IntegerAttribute {
         }
     }
 
-    private TimeAttribute.TimeAttributeParser createTimeAttributeParser() {
+    private TimeAttributeParser createTimeAttributeParser() {
         synchronized(mutex) {
-            return new TimeAttribute.TimeAttributeParser();
+            return new TimeAttributeParser();
         }
     }
 
-    private TimeAttribute.TimeAttributeParser createTimeAttributeParser(String _formatStr, String _timeZone) {
+    private TimeAttributeParser createTimeAttributeParser(String _formatStr, String _timeZone) {
         synchronized(mutex) {
-            return new TimeAttribute.TimeAttributeParser(_formatStr, _timeZone);
+            return new TimeAttributeParser(_formatStr, _timeZone);
         }
     }
 
@@ -261,5 +261,12 @@ public class TimeAttribute extends IntegerAttribute {
 
             return tempValue;
         }
+    }
+
+    public static void main(String[] _args) {
+        String tempStr = "2018-02-09 14:57:24.0";
+        TimeAttribute timeAttribute = new TimeAttribute();
+        ((TimeAttribute) timeAttribute).setTimeFormat(TimeAttribute.DEFAULT_TIME_FORMAT);
+        timeAttribute.setValue(tempStr);
     }
 }

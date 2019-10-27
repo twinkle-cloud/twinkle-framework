@@ -7,7 +7,6 @@ import com.twinkle.framework.api.context.AttributeInfo;
 import com.twinkle.framework.api.context.NormalizedContext;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.core.lang.*;
-import com.twinkle.framework.datacenter.support.HybridAttribute;
 import com.twinkle.framework.datacenter.support.SnowflakeUidGenerator;
 import com.twinkle.framework.datacenter.utils.JDBCUtil;
 import com.twinkle.framework.struct.error.AttributeNotSetException;
@@ -43,26 +42,6 @@ public class InsertSqlStatement extends AbstractUpdateSqlStatement {
 
     private final static Map<String, SnowflakeUidGenerator> ENTITY_IDGENERATOR_MAP;
 
-    /**
-     * The database fields array, which will be used by this statement.
-     */
-    protected String[] dbFieldArray;
-    /**
-     * The database field type array.
-     * <p>
-     * Refer to java.sql.Types.
-     */
-    protected int[] dbFieldTypeArray;
-    /**
-     * The attributes which will be used by this statement,
-     * Set the fetched values into the attributes,
-     * or update the database fields with the attributes' value.
-     */
-    protected HybridAttribute[] attributeArray;
-    /**
-     * The default value for the database field, or for the attribute.
-     */
-    protected String[] defaultValue;
     /**
      * The primary key attribute. This attribute is not mandatory, ONLY for ID retrieve.
      */
@@ -113,39 +92,14 @@ public class InsertSqlStatement extends AbstractUpdateSqlStatement {
 
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
-        JSONArray tempArray = _conf.getJSONArray("FieldMap");
-        if (tempArray == null || tempArray.isEmpty()) {
-            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_REQUIRED_ATTR_MISSED, "The FieldMap is mandatory for Update SQL Statement Component.");
-        }
-        this.dbFieldArray = new String[tempArray.size()];
-        this.dbFieldTypeArray = new int[tempArray.size()];
-        this.attributeArray = new HybridAttribute[tempArray.size()];
-        this.defaultValue = new String[tempArray.size()];
-        String tempItemValue;
-        for (int i = 0; i < tempArray.size(); i++) {
-            JSONArray tempItemArray = tempArray.getJSONArray(i);
-            if (tempItemArray.isEmpty()) {
-                throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_EXPRESSION, "The FieldMap item is empty.");
-            }
-            if (tempItemArray.size() < 3) {
-                throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_EXPRESSION, "The FieldMap item is invalid.");
-            }
-            this.dbFieldArray[i] = tempItemArray.getString(0);
-            this.dbFieldTypeArray[i] = tempItemArray.getIntValue(1);
-            tempItemValue = tempItemArray.getString(2);
-            this.attributeArray[i] = new HybridAttribute(tempItemValue, tempItemArray.toJSONString());
-            if (tempItemArray.size() > 3) {
-                tempItemValue = tempItemArray.getString(3);
-            } else {
-                tempItemValue = null;
-            }
-            this.defaultValue[i] = tempItemValue;
-        }
         JSONArray tempPKArray = _conf.getJSONArray("PrimaryKey");
         if (!CollectionUtils.isEmpty(tempPKArray)) {
             this.parsePrimaryKey(tempPKArray);
         }
         super.configure(_conf);
+        if (this.dbFieldArray == null || this.dbFieldArray.length == 0) {
+            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_REQUIRED_ATTR_MISSED, "The FieldMap is mandatory for Update SQL Statement Component.");
+        }
     }
 
     /**

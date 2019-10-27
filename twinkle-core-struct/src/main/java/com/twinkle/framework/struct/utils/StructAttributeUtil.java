@@ -241,6 +241,432 @@ public class StructAttributeUtil {
     }
 
     /**
+     * Update the StructAttribute's sub-attribute value.
+     *
+     * @param _value
+     * @param _structAttribute
+     * @param _attrRef
+     * @param _itemIndex       if _itemIndex exists, then will update the sub-Array attribute's dest index item.
+     * @throws AttributeNotFoundException
+     * @throws AttributeTypeMismatchException
+     * @throws AttributeNotSetException
+     */
+    public static void updateStructAttributeValue(Object _value, StructAttribute _structAttribute, AttributeRef _attrRef, int _itemIndex) throws AttributeNotFoundException, AttributeTypeMismatchException, AttributeNotSetException {
+        StructAttributeFactory tempFactory = StructAttributeSchemaManager.getStructAttributeFactory();
+        ArrayAllocator tempAllocator = tempFactory.getArrayAllocator();
+        int tempTypeId = _attrRef.getType().getID();
+        switch (tempTypeId) {
+            case PrimitiveType.BYTE_ID:
+                if (_value != null) {
+                    if (_value instanceof Number) {
+                        _structAttribute.setByte(_attrRef, ((Number) _value).byteValue());
+                    } else {
+                        _structAttribute.setByte(_attrRef, Byte.parseByte(_value.toString()));
+                    }
+                } else {
+                    _structAttribute.clear(_attrRef);
+                }
+                break;
+            case PrimitiveType.SHORT_ID:
+                if (_value != null) {
+                    if (_value instanceof Number) {
+                        _structAttribute.setShort(_attrRef, ((Number) _value).shortValue());
+                    } else {
+                        _structAttribute.setShort(_attrRef, Short.parseShort(_value.toString()));
+                    }
+                } else {
+                    _structAttribute.clear(_attrRef);
+                }
+                break;
+            case PrimitiveType.INT_ID:
+                if (_value != null) {
+                    if (_value instanceof Number) {
+                        _structAttribute.setInt(_attrRef, ((Number) _value).intValue());
+                    } else {
+                        _structAttribute.setInt(_attrRef, Integer.parseInt(_value.toString()));
+                    }
+                } else {
+                    _structAttribute.clear(_attrRef);
+                }
+                break;
+            case PrimitiveType.LONG_ID:
+                if (_value != null) {
+                    if (_value instanceof Number) {
+                        _structAttribute.setLong(_attrRef, ((Number) _value).longValue());
+                    } else {
+                        _structAttribute.setLong(_attrRef, Long.parseLong(_value.toString()));
+                    }
+                } else {
+                    _structAttribute.clear(_attrRef);
+                }
+                break;
+            case PrimitiveType.CHAR_ID:
+                if (_value != null) {
+                    if (_value instanceof Character) {
+                        _structAttribute.setChar(_attrRef, (Character) _value);
+                    } else {
+                        _structAttribute.setChar(_attrRef, _value.toString().charAt(0));
+                    }
+                } else {
+                    _structAttribute.clear(_attrRef);
+                }
+                break;
+            case PrimitiveType.BOOLEAN_ID:
+                if (_value != null) {
+                    if (_value instanceof Boolean) {
+                        _structAttribute.setBoolean(_attrRef, (Boolean) _value);
+                    } else {
+                        _structAttribute.setBoolean(_attrRef, Boolean.parseBoolean(_value.toString()));
+                    }
+                } else {
+                    _structAttribute.clear(_attrRef);
+                }
+                break;
+            case PrimitiveType.FLOAT_ID:
+                if (_value != null) {
+                    if (_value instanceof Number) {
+                        _structAttribute.setFloat(_attrRef, ((Number) _value).floatValue());
+                    } else {
+                        _structAttribute.setFloat(_attrRef, Float.parseFloat(_value.toString()));
+                    }
+                } else {
+                    _structAttribute.clear(_attrRef);
+                }
+                break;
+            case PrimitiveType.DOUBLE_ID:
+                if (_value != null) {
+                    if (_value instanceof Number) {
+                        _structAttribute.setDouble(_attrRef, ((Number) _value).doubleValue());
+                    } else {
+                        _structAttribute.setDouble(_attrRef, Double.parseDouble(_value.toString()));
+                    }
+                } else {
+                    _structAttribute.clear(_attrRef);
+                }
+                break;
+            case ArrayType.BYTE_ARRAY_ID:
+                if (_value != null) {
+                    byte[] tempByteArray;
+                    int i;
+                    MutableByteArray tempMutableArray;
+                    if (!_structAttribute.isAttributeSet(_attrRef)) {
+                        tempMutableArray = tempAllocator.newByteArray(128 > (_itemIndex + 1) ? 128 : (_itemIndex + 1));
+
+                        if (_itemIndex >= 0) {
+                            byte tempItemValue;
+                            if (_value instanceof Number) {
+                                tempItemValue = ((Number) _value).byteValue();
+                            } else {
+                                tempItemValue = Byte.parseByte(_value.toString());
+                            }
+                            tempMutableArray.put(_itemIndex, tempItemValue);
+                        } else {
+                            tempByteArray = (_value instanceof byte[]) ? (byte[]) _value : _value.toString().getBytes();
+                            for (i = 0; i < tempByteArray.length; ++i) {
+                                tempMutableArray.add(tempByteArray[i]);
+                            }
+                        }
+                    } else {
+                        tempMutableArray = (MutableByteArray) _structAttribute.getArray(_attrRef);
+                        if (_itemIndex >= 0) {
+                            tempMutableArray.ensureCapacity(tempMutableArray.length() > (_itemIndex + 1) ? tempMutableArray.length() : (_itemIndex + 1));
+                            byte tempItemValue;
+                            if (_value instanceof Number) {
+                                tempItemValue = ((Number) _value).byteValue();
+                            } else {
+                                tempItemValue = Byte.parseByte(_value.toString());
+                            }
+                            tempMutableArray.put(_itemIndex, tempItemValue);
+                        } else {
+                            tempByteArray = (_value instanceof byte[]) ? (byte[]) _value : _value.toString().getBytes();
+                            tempMutableArray.ensureCapacity(tempMutableArray.length() + tempByteArray.length);
+                            for (i = 0; i < tempByteArray.length; ++i) {
+                                tempMutableArray.add(tempByteArray[i]);
+                            }
+                        }
+                    }
+                    _structAttribute.setArray(_attrRef, tempMutableArray);
+                } else {
+                    _structAttribute.clear(_attrRef);
+                }
+                break;
+            case ArrayType.SHORT_ARRAY_ID:
+                if (_value != null) {
+                    MutableShortArray tempMutableArray;
+                    if (!_structAttribute.isAttributeSet(_attrRef)) {
+                        tempMutableArray = tempAllocator.newShortArray(64 > (_itemIndex + 1) ? 64 : (_itemIndex + 1));
+                    } else {
+                        tempMutableArray = (MutableShortArray) _structAttribute.getArray(_attrRef);
+                        if (!(_value instanceof short[])) {
+                            tempMutableArray.ensureCapacity(tempMutableArray.length() + 1);
+                        }
+                    }
+                    short tempItemValue = 0;
+                    if (_value instanceof Number) {
+                        tempItemValue = ((Number) _value).shortValue();
+                    } else if (_value instanceof short[]) {
+                    } else {
+                        tempItemValue = Short.parseShort(_value.toString());
+                    }
+                    if (_itemIndex >= 0) {
+                        tempMutableArray.put(_itemIndex, tempItemValue);
+                    } else if (_value instanceof short[]) {
+                        tempMutableArray.reallocate(((short[]) _value).length);
+                        for (int i = 0; i < ((short[]) _value).length; ++i) {
+                            tempMutableArray.add(((short[]) _value)[i]);
+                        }
+                    } else {
+                        tempMutableArray.add(tempItemValue);
+                    }
+                    _structAttribute.setArray(_attrRef, tempMutableArray);
+                } else {
+                    _structAttribute.clear(_attrRef);
+                }
+                break;
+            case ArrayType.INT_ARRAY_ID:
+                if (_value != null) {
+                    MutableIntegerArray tempMutableArray;
+                    if (!_structAttribute.isAttributeSet(_attrRef)) {
+                        tempMutableArray = tempAllocator.newIntegerArray(64 > (_itemIndex + 1) ? 64 : (_itemIndex + 1));
+                    } else {
+                        tempMutableArray = (MutableIntegerArray) _structAttribute.getArray(_attrRef);
+                        if (!(_value instanceof int[])) {
+                            tempMutableArray.ensureCapacity(tempMutableArray.length() + 1);
+                        }
+                    }
+                    int tempItemValue = 0;
+                    if (_value instanceof Number) {
+                        tempItemValue = ((Number) _value).intValue();
+                    } else if (_value instanceof int[]) {
+                    } else {
+                        tempItemValue = Integer.parseInt(_value.toString());
+                    }
+                    if (_itemIndex >= 0) {
+                        tempMutableArray.put(_itemIndex, tempItemValue);
+                    } else if (_value instanceof int[]) {
+                        tempMutableArray.reallocate(((int[]) _value).length);
+                        for (int i = 0; i < ((int[]) _value).length; ++i) {
+                            tempMutableArray.add(((int[]) _value)[i]);
+                        }
+                    } else {
+                        tempMutableArray.add(tempItemValue);
+                    }
+                    _structAttribute.setArray(_attrRef, tempMutableArray);
+                } else {
+                    _structAttribute.clear(_attrRef);
+                }
+                break;
+            case ArrayType.LONG_ARRAY_ID:
+                if (_value != null) {
+                    MutableLongArray tempMutableArray;
+                    if (!_structAttribute.isAttributeSet(_attrRef)) {
+                        tempMutableArray = tempAllocator.newLongArray(64 > (_itemIndex + 1) ? 64 : (_itemIndex + 1));
+                    } else {
+                        tempMutableArray = (MutableLongArray) _structAttribute.getArray(_attrRef);
+                        if (!(_value instanceof long[])) {
+                            tempMutableArray.ensureCapacity(tempMutableArray.length() + 1);
+                        }
+                    }
+                    long tempItemValue = 0;
+                    if (_value instanceof Number) {
+                        tempItemValue = ((Number) _value).longValue();
+                    } else if (_value instanceof long[]) {
+
+                    } else {
+                        tempItemValue = Long.parseLong(_value.toString());
+                    }
+                    if (_itemIndex >= 0) {
+                        tempMutableArray.put(_itemIndex, tempItemValue);
+                    } else if (_value instanceof long[]) {
+                        tempMutableArray.reallocate(((long[]) _value).length);
+                        for (int i = 0; i < ((long[]) _value).length; ++i) {
+                            tempMutableArray.add(((long[]) _value)[i]);
+                        }
+                    } else {
+                        tempMutableArray.add(tempItemValue);
+                    }
+                    _structAttribute.setArray(_attrRef, tempMutableArray);
+                } else {
+                    _structAttribute.clear(_attrRef);
+                }
+                break;
+            case ArrayType.CHAR_ARRAY_ID:
+                if (_value != null) {
+                    MutableCharArray tempMutableArray;
+                    if (!_structAttribute.isAttributeSet(_attrRef)) {
+                        tempMutableArray = tempAllocator.newCharArray(128 > (_itemIndex + 1) ? 128 : (_itemIndex + 1));
+                    } else {
+                        tempMutableArray = (MutableCharArray) _structAttribute.getArray(_attrRef);
+                        if (!(_value instanceof long[])) {
+                            tempMutableArray.ensureCapacity(tempMutableArray.length() + 1);
+                        }
+                    }
+                    char tempItemValue = 0;
+                    if (_value instanceof Character) {
+                        tempItemValue = (char) _value;
+                    } else if (_value instanceof char[]) {
+
+                    } else {
+                        tempItemValue = _value.toString().charAt(0);
+                    }
+                    if (_itemIndex >= 0) {
+                        tempMutableArray.put(_itemIndex, tempItemValue);
+                    } else if (_value instanceof char[]) {
+                        tempMutableArray.reallocate(((char[]) _value).length);
+                        for (int i = 0; i < ((char[]) _value).length; ++i) {
+                            tempMutableArray.add(((char[]) _value)[i]);
+                        }
+                    } else {
+                        tempMutableArray.add(tempItemValue);
+                    }
+                    _structAttribute.setArray(_attrRef, tempMutableArray);
+                } else {
+                    _structAttribute.clear(_attrRef);
+                }
+                break;
+            case ArrayType.BOOLEAN_ARRAY_ID:
+                if (_value != null) {
+                    MutableBooleanArray tempMutableArray;
+                    if (!_structAttribute.isAttributeSet(_attrRef)) {
+                        tempMutableArray = tempAllocator.newBooleanArray(64 > (_itemIndex + 1) ? 64 : (_itemIndex + 1));
+                    } else {
+                        tempMutableArray = (MutableBooleanArray) _structAttribute.getArray(_attrRef);
+                        if (!(_value instanceof boolean[])) {
+                            tempMutableArray.ensureCapacity(tempMutableArray.length() + 1);
+                        }
+                    }
+                    boolean tempItemValue = false;
+                    if (_value instanceof Boolean) {
+                        tempItemValue = (boolean) _value;
+                    } else if (_value instanceof boolean[]) {
+
+                    } else {
+                        tempItemValue = Boolean.parseBoolean(_value.toString());
+                    }
+                    if (_itemIndex >= 0) {
+                        tempMutableArray.put(_itemIndex, tempItemValue);
+                    } else if (_value instanceof boolean[]) {
+                        tempMutableArray.reallocate(((boolean[]) _value).length);
+                        for (int i = 0; i < ((boolean[]) _value).length; ++i) {
+                            tempMutableArray.add(((boolean[]) _value)[i]);
+                        }
+                    } else {
+                        tempMutableArray.add(tempItemValue);
+                    }
+                    _structAttribute.setArray(_attrRef, tempMutableArray);
+                } else {
+                    _structAttribute.clear(_attrRef);
+                }
+                break;
+            case ArrayType.FLOAT_ARRAY_ID:
+                if (_value != null) {
+                    MutableFloatArray tempMutableArray;
+                    if (!_structAttribute.isAttributeSet(_attrRef)) {
+                        tempMutableArray = tempAllocator.newFloatArray(64 > (_itemIndex + 1) ? 64 : (_itemIndex + 1));
+                    } else {
+                        tempMutableArray = (MutableFloatArray) _structAttribute.getArray(_attrRef);
+                        if (!(_value instanceof float[])) {
+                            tempMutableArray.ensureCapacity(tempMutableArray.length() + 1);
+                        }
+                    }
+                    float tempItemValue = 0.0f;
+                    if (_value instanceof Number) {
+                        tempItemValue = ((Number) _value).floatValue();
+                    } else if (_value instanceof float[]) {
+
+                    } else {
+                        tempItemValue = Float.parseFloat(_value.toString());
+                    }
+                    if (_itemIndex >= 0) {
+                        tempMutableArray.put(_itemIndex, tempItemValue);
+                    } else if (_value instanceof float[]) {
+                        tempMutableArray.reallocate(((float[]) _value).length);
+                        for (int i = 0; i < ((float[]) _value).length; ++i) {
+                            tempMutableArray.add(((float[]) _value)[i]);
+                        }
+                    } else {
+                        tempMutableArray.add(tempItemValue);
+                    }
+                    _structAttribute.setArray(_attrRef, tempMutableArray);
+                } else {
+                    _structAttribute.clear(_attrRef);
+                }
+                break;
+            case ArrayType.DOUBLE_ARRAY_ID:
+                if (_value != null) {
+                    MutableDoubleArray tempMutableArray;
+                    if (!_structAttribute.isAttributeSet(_attrRef)) {
+                        tempMutableArray = tempAllocator.newDoubleArray(64 > (_itemIndex + 1) ? 64 : (_itemIndex + 1));
+                    } else {
+                        tempMutableArray = (MutableDoubleArray) _structAttribute.getArray(_attrRef);
+                        if (!(_value instanceof double[])) {
+                            tempMutableArray.ensureCapacity(tempMutableArray.length() + 1);
+                        }
+                    }
+                    double tempItemValue = 0.0d;
+                    if (_value instanceof Number) {
+                        tempItemValue = ((Number) _value).doubleValue();
+                    } else if (_value instanceof double[]) {
+
+                    } else {
+                        tempItemValue = Double.parseDouble(_value.toString());
+                    }
+                    if (_itemIndex >= 0) {
+                        tempMutableArray.put(_itemIndex, tempItemValue);
+                    } else if (_value instanceof double[]) {
+                        tempMutableArray.reallocate(((double[]) _value).length);
+                        for (int i = 0; i < ((double[]) _value).length; ++i) {
+                            tempMutableArray.add(((double[]) _value)[i]);
+                        }
+                    } else {
+                        tempMutableArray.add(tempItemValue);
+                    }
+                    _structAttribute.setArray(_attrRef, tempMutableArray);
+                } else {
+                    _structAttribute.clear(_attrRef);
+                }
+                break;
+            case StringType.STRING_ID:
+                if (_value != null) {
+                    _structAttribute.setString(_attrRef, _value.toString());
+                } else {
+                    _structAttribute.clear(_attrRef);
+                }
+                break;
+            case ArrayType.STRING_ARRAY_ID:
+                if (_value != null) {
+                    MutableStringArray tempMutableArray = null;
+                    if (!_structAttribute.isAttributeSet(_attrRef)) {
+                        tempMutableArray = tempAllocator.newStringArray(10 > (_itemIndex + 1) ? 10 : (_itemIndex + 1));
+                    } else {
+                        tempMutableArray = (MutableStringArray) _structAttribute.getArray(_attrRef);
+                    }
+                    String tempItemValue = "";
+                    if (_value instanceof String[]) {
+                    } else {
+                        tempItemValue = _value.toString();
+                    }
+                    if (_itemIndex >= 0) {
+                        tempMutableArray.put(_itemIndex, tempItemValue);
+                    } else if (_value instanceof String[]) {
+                        tempMutableArray.reallocate(((String[]) _value).length);
+                        for (int i = 0; i < ((String[]) _value).length; ++i) {
+                            tempMutableArray.add(((String[]) _value)[i]);
+                        }
+                    } else {
+                        tempMutableArray.add(tempItemValue);
+                    }
+                    _structAttribute.setArray(_attrRef, tempMutableArray);
+                } else {
+                    _structAttribute.clear(_attrRef);
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("" + _attrRef.getType().getName());
+        }
+    }
+
+    /**
      * Set struct attribute value to primitive attribute.
      *
      * @param _structAttribute
@@ -471,8 +897,8 @@ public class StructAttributeUtil {
             AttributeRef tempAttrRef = ((CompositeAttributeRef)_attrRef).getTailAttributeRef();
             AttributeType tempType = tempAttrRef.getType();
             if (tempType.isStructType()) {
-                StructAttributeFactory var5 = StructAttributeSchemaManager.getStructAttributeFactory();
-                tempStructAttribute.setStruct(tempAttrRef, var5.newStructAttribute((StructType)tempType));
+                StructAttributeFactory tempFactory = StructAttributeSchemaManager.getStructAttributeFactory();
+                tempStructAttribute.setStruct(tempAttrRef, tempFactory.newStructAttribute((StructType)tempType));
             }
 
             if (tempAttrRef.isArray()) {

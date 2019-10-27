@@ -15,10 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.util.DigestUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -47,7 +44,7 @@ public abstract class AbstractStatementExecutor extends AbstractComponent implem
             throw new ConfigurationException(ExceptionCode.LOGIC_CONF_REQUIRED_ATTR_MISSED, "The Statements should not be empty for executor.");
         }
         this.sqlStatementList = new ArrayList<>(tempStatementItems.size());
-        this.statementBeanMap = new HashMap<>(tempStatementItems.size());
+        this.statementBeanMap = new LinkedHashMap<>(tempStatementItems.size());
         for (int i = 0; i < tempStatementItems.size(); i++) {
             this.sqlStatementList.add(tempStatementItems.getString(i));
         }

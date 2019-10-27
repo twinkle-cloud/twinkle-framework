@@ -92,7 +92,8 @@
           "BeforeConversionLog",
           "TestConversionRule",
           "AfterConversionLog",
-          "TestDB"
+          "TestDB",
+          "AfterSQLLog"
         ],
         "Rules": [
           {
@@ -102,8 +103,8 @@
               "set password \"abcd1234\"",
               "set age \"50\"",
               "set userId \"12\"",
-              "set assessId \"f8091fc001-6d50-00fc-eddf-fbac1f85bc\"",
-              "set assessPaperId \"OOOOOO\"",
+              "set assessId \"ec4b5ca6-a4f4-11e7-b65e-0cc47a669986\"",
+              "set assessPaperId \"59ef2aca-7b11-4969-8c4f-12244fa2a42a\"",
               "set assessCategoryId \"GGFFJJ\""
             ]
           },
@@ -135,6 +136,15 @@
             "Name": "TestDB",
             "ClassName": "com.twinkle.framework.ruleengine.rule.DataCenterOperationRule",
             "ExecutorName": "DoSQLTest"
+          },
+          {
+            "Name": "AfterSQLLog",
+            "ClassName": "com.twinkle.framework.ruleengine.rule.LogAttributeRule",
+            "LogLevel": "INFO",
+            "Message": "Attribute after conversion are: ",
+            "NullAlso": "true",
+            "ConvertToJson": "true",
+            "Attributes": ["userName","position","age","dept", "addressId", "userOrgInfo", "assessId", "assessPaperId", "apacMapId", "createDate"]
           }
         ]
       },
@@ -168,7 +178,8 @@
     "ClassName": "com.twinkle.framework.datacenter.DataCenterManager",
     "StatementNames": [
       "TestPgSQL",
-      "TestMySQL"
+      "TestMySQL",
+      "TestMySQLQuery"
     ],
     "Statements": [
       {
@@ -199,6 +210,22 @@
         "FieldMap": [
           ["ASSESS_PAPER_ID", 12, "assessPaperId"]
         ]
+      },
+      {
+        "Name": "TestMySQLQuery",
+        "ClassName": "com.twinkle.framework.datacenter.statement.QuerySqlStatement",
+        "DataSource": "assessmgmt",
+        "FromTables": "PER_AP_AC_MAP P, PER_ASSESS_ASP_MAP PM",
+        "ConditionFields": [
+          ["assessId", 12],
+          ["assessPaperId", 12]
+        ],
+        "WhereClause": "P.ASSESS_PAPER_ID = PM.ASSESS_PAPER_ID AND P.ASSESS_CATEGORY_ID = PM.ASSESS_CATEGORY_ID AND PM.STATUS=1 AND PM.ASSESS_ID=:assessId AND PM.ASSESS_PAPER_ID=:assessPaperId",
+        "FieldMap": [
+          ["P.ID", 12, "apacMapId"],
+          ["P.ASSESS_CATEGORY_ID", 12, "assessCategoryId"],
+          ["P.CREATE_DATE", 93, "createDate"]
+        ]
       }
     ],
     "ExecutorNames": [
@@ -210,7 +237,8 @@
         "ClassName": "com.twinkle.framework.datacenter.executor.DefaultStatementExecutor",
         "StatementNames": [
           "TestPgSQL",
-          "TestMySQL"
+          "TestMySQL",
+          "TestMySQLQuery"
         ]
       }
     ]
@@ -218,68 +246,64 @@
   "AttributeSet": [
     [
       "userName",
-      "com.twinkle.framework.core.lang.StringAttribute",
-      ""
+      "com.twinkle.framework.core.lang.StringAttribute"
     ],
     [
       "userId",
-      "com.twinkle.framework.core.lang.LongAttribute",
-      ""
+      "com.twinkle.framework.core.lang.LongAttribute"
     ],
     [
       "password",
-      "com.twinkle.framework.core.lang.StringAttribute",
-      ""
+      "com.twinkle.framework.core.lang.StringAttribute"
     ],
     [
       "position",
-      "com.twinkle.framework.core.lang.StringAttribute",
-      ""
+      "com.twinkle.framework.core.lang.StringAttribute"
     ],
     [
       "dept",
-      "com.twinkle.framework.core.lang.StringAttribute",
-      ""
+      "com.twinkle.framework.core.lang.StringAttribute"
     ],
     [
       "age",
-      "com.twinkle.framework.core.lang.IntegerAttribute",
-      ""
+      "com.twinkle.framework.core.lang.IntegerAttribute"
     ],
     [
       "gender",
-      "com.twinkle.framework.core.lang.IntegerAttribute",
-      ""
+      "com.twinkle.framework.core.lang.IntegerAttribute"
     ],
     [
       "addressId",
-      "com.twinkle.framework.core.lang.StringAttribute",
-      ""
+      "com.twinkle.framework.core.lang.StringAttribute"
     ],
     [
       "assessId",
-      "com.twinkle.framework.core.lang.StringAttribute",
-      ""
+      "com.twinkle.framework.core.lang.StringAttribute"
     ],
     [
       "assessPaperId",
-      "com.twinkle.framework.core.lang.StringAttribute",
-      ""
+      "com.twinkle.framework.core.lang.StringAttribute"
     ],
     [
       "assessCategoryId",
-      "com.twinkle.framework.core.lang.StringAttribute",
-      ""
+      "com.twinkle.framework.core.lang.StringAttribute"
     ],
     [
       "resultData",
-      "com.twinkle.framework.core.lang.StringAttribute",
-      ""
+      "com.twinkle.framework.core.lang.StringAttribute"
     ],
     [
       "userOrgInfo",
       "com.twinkle.framework.struct.lang.StructAttrAttribute",
       "TestDemo:TestRequest"
+    ],
+    [
+      "createDate",
+      "com.twinkle.framework.core.lang.TimeAttribute"
+    ],
+    [
+      "apacMapId",
+      "com.twinkle.framework.core.lang.StringAttribute"
     ]
   ],
   "StructAttributeManager": {

@@ -4,8 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.context.NormalizedContext;
 import com.twinkle.framework.api.exception.ConfigurationException;
-import com.twinkle.framework.datacenter.support.HybridAttribute;
-import com.twinkle.framework.datacenter.support.WhereClauseSupport;
 import com.twinkle.framework.struct.error.AttributeNotSetException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -26,33 +24,12 @@ import java.util.List;
  */
 @Slf4j
 public class DeleteSqlStatement extends AbstractUpdateSqlStatement {
-    /**
-     * The where condition.
-     */
-    private String whereQuery;
-
-    /**
-     * The attributes which will be used in where clause by this statement,
-     * Set the fetched values into the attributes,
-     * or update the database fields with the attributes' value.
-     */
-    private HybridAttribute[] conditionAttrArray;
-    /**
-     * The Condition Fields type array.
-     */
-    private int[] conditionFieldTypeArray;
-
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
-        WhereClauseSupport tempSupport = new WhereClauseSupport();
-        tempSupport.configure(_conf);
-        this.whereQuery = tempSupport.getWhereQuery();
-        this.conditionAttrArray = tempSupport.getConditionAttrArray();
-        this.conditionFieldTypeArray = tempSupport.getConditionFieldTypeArray();
+        super.configure(_conf);
         if (StringUtils.isBlank(this.whereQuery)) {
             throw new ConfigurationException(ExceptionCode.LOGIC_CONF_REQUIRED_ATTR_MISSED, "For safety reason, please set the where clause.");
         }
-        super.configure(_conf);
     }
 
     @Override

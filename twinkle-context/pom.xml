@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>twinkle-context</artifactId>
     <packaging>jar</packaging>
-    <name>Twinkle Framework - Struct Attribute Context Library</name>
-    <description>Twinkle Framework - Struct Attribute Context Library.</description>
+    <name>Twinkle Framework - Attribute Context Library</name>
+    <description>Twinkle Framework - Attribute Context Library.</description>
 
     <parent>
         <groupId>com.twinkle.framework</groupId>

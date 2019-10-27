@@ -67,7 +67,11 @@ public class PrimitiveAttributeSchema {
             if (StringUtils.isBlank(tempAttrType)) {
                 throw new IllegalArgumentException("Attribute type is empty/null in \"" + tempArray + "\" value.");
             }
-            this.addAttribute(tempAttrName, tempAttrType, tempArray.getString(2));
+            String tempExtrInfo = "";
+            if(tempArray.size() > 2) {
+                tempExtrInfo = tempArray.getString(2);
+            }
+            this.addAttribute(tempAttrName, tempAttrType, tempExtrInfo);
         }
     }
 

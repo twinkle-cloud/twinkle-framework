@@ -36,6 +36,10 @@ public interface ExceptionCode {
      * The executor has not been initialized.
      */
     int DATACENTER_EXECUTOR_NOT_FOUND = 0x000202;
+    /**
+     * Extract query field failed.
+     */
+    int DATACENTER_QUERY_EXTRACT_FAILED = 0x000203;
 
     int LOGIC_CONF_INVALID_CONNECTOR = 0x001000;
     int LOGIC_CONF_INVALID_CLIENT_CONNECTOR = 0x001001;
