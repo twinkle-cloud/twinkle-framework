@@ -37,7 +37,7 @@ public class MathOperation extends AbstractAttributeOperation {
 
     public MathOperation() {
         log.debug("MathOperation.initialize().");
-        this.mathOperation = MathOperator.UNKOWN;
+        this.mathOperation = MathOperator.UNKNOWN;
         this.mathDestAttrIndex = -1;
         this.mathOp1AttrIndex = -1;
         this.mathOp2AttrIndex = -1;

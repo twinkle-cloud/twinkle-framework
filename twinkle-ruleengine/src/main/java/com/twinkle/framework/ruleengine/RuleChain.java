@@ -60,6 +60,7 @@ public class RuleChain extends AbstractComponent implements IRuleChain {
 
     }
 
+    @Override
     public void configureChain(JSONObject _conf, String _keyName) throws ConfigurationException {
         this.ruleList = this.configureChainItem(_conf, _keyName);
         if (this.required && this.ruleList.isEmpty()) {
@@ -150,5 +151,10 @@ public class RuleChain extends AbstractComponent implements IRuleChain {
                 this.errorFirstRule.applyRule(_context);
             }
         }
+    }
+
+    @Override
+    public int size() {
+        return this.ruleList.size();
     }
 }

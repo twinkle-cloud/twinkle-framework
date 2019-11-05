@@ -30,7 +30,7 @@ public class NotCondition extends AbstractCondition {
     }
 
     @Override
-    public boolean check(NormalizedContext _context) throws RuleException {
-        return this.condition.check(_context);
+    public boolean check(NormalizedContext _context, boolean _validateFlag) throws RuleException {
+        return this.condition.check(_context, _validateFlag);
     }
 }

@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OrCondition extends AbstractBinaryCondition {
     @Override
-    public boolean check(NormalizedContext _context) throws RuleException {
-        return this.leftCondition.check(_context) || this.rightCondition.check(_context);
+    public boolean check(NormalizedContext _context, boolean _validateFlag) throws RuleException {
+        return this.leftCondition.check(_context, _validateFlag) || this.rightCondition.check(_context, _validateFlag);
     }
 }

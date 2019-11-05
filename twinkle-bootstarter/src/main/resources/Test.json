@@ -90,6 +90,7 @@
         "RuleNames": [
           "TestDemoRule",
           "BeforeConversionLog",
+          "TestCondition",
           "TestConversionRule",
           "AfterConversionLog",
           "TestDB",
@@ -114,6 +115,45 @@
             "LogLevel": "INFO",
             "Message": "Attribute before conversion are: ",
             "Attributes": ["userName","position","age","dept", "addressId", "userOrgInfo"]
+          },
+          {
+            "Name": "TestCondition",
+            "ClassName": "com.twinkle.framework.ruleengine.rule.ConditionRule",
+            "Conditions": ["age,<,60","userId,=,12"],
+            "TrueRuleChain": ["TestLog","TrueAdnRule","TestAfterLog"],
+            "FalseRuleChain": ["TestLog","FalseAdnRule","TestAfterLog"],
+            "Rules": [
+              {
+                "Name": "TestLog",
+                "ClassName": "com.twinkle.framework.ruleengine.rule.LogAttributeRule",
+                "LogLevel": "INFO",
+                "Message": "before condition are: ",
+                "Attributes": ["userId","userName","position","age","dept", "addressId", "userOrgInfo"]
+              },
+              {
+                "Name": "TrueAdnRule",
+                "ClassName": "com.twinkle.framework.ruleengine.rule.AdornmentRule",
+                "AdornOps": [
+                  "set age \"55\"",
+                  "set userId \"24\""
+                ]
+              },
+              {
+                "Name": "FalseAdnRule",
+                "ClassName": "com.twinkle.framework.ruleengine.rule.AdornmentRule",
+                "AdornOps": [
+                  "set age \"100\"",
+                  "set userId \"50\""
+                ]
+              },
+              {
+                "Name": "TestAfterLog",
+                "ClassName": "com.twinkle.framework.ruleengine.rule.LogAttributeRule",
+                "LogLevel": "INFO",
+                "Message": "After condition are: ",
+                "Attributes": ["userId","userName","position","age","dept", "addressId", "userOrgInfo"]
+              }
+            ]
           },
           {
             "Name": "TestConversionRule",

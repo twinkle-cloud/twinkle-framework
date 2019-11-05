@@ -15,7 +15,7 @@ import com.twinkle.framework.api.exception.ConfigurationException;
 public enum MathOperator {
     ADD("+"), SUBTRACT("-"), MULTIPLY("*"), DIVIDE("/"),
     MOD("%"), AND("&"), OR("|"), XOR("^"), SHIFTL("<<"), SHIFTR(">>"),
-    UNKOWN("unknown");
+    UNKNOWN("unknown");
     private String operator;
 
     private MathOperator(String _operator) {
