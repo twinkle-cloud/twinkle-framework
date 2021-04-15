@@ -21,9 +21,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RestControllerClassLoader extends EnhancedClassLoader {
     private GeneralClassTypeDescriptor typeDescriptor;
-    public RestControllerClassLoader(ClassLoader _parentLoader, GeneralClassTypeDescriptor _typeDescriptoer) {
+    public RestControllerClassLoader(ClassLoader _parentLoader, GeneralClassTypeDescriptor _typeDescriptor) {
         super(_parentLoader);
-        this.typeDescriptor = _typeDescriptoer;
+        this.typeDescriptor = _typeDescriptor;
     }
     @Override
     protected Class<?> findClass(String _className) throws ClassNotFoundException {

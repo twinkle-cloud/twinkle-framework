@@ -364,6 +364,11 @@
                 "Optional": "false"
               },
               {
+                "Name": "address",
+                "Type": "string",
+                "Optional": "false"
+              },
+              {
                 "Name": "gender",
                 "Type": "int",
                 "Optional": "true"
