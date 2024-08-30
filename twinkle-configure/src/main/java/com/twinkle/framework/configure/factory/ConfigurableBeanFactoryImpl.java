@@ -1,6 +1,6 @@
 package com.twinkle.framework.configure.factory;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import com.twinkle.framework.asm.classloader.BeanClassLoader;
 import com.twinkle.framework.asm.factory.BeanFactoryImpl;
 

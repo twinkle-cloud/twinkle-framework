@@ -1,0 +1,59 @@
+{
+  "ConnectorManager": {
+    "ClassName": "com.hundsun.o45.connector.ConnectorManager",
+    "ConnectorNames": [
+      "TestConnector"
+    ],
+    "Connectors": [
+      {
+        "Name": "T2Connector",
+        "ClassName": "com.hundsun.o45.connector.t2.T2ServerConnector",
+        "Description": "Connector Test1",
+        "EndpointNames": [
+          "testHelloworld",
+          "testUserMgmt"
+        ],
+        "Endpoints": [
+          {
+            "Name": "testHelloworld",
+            "ClassName": "com.hundsun.o45.connector.t2.endpoint.T2ProtocalEndpoint",
+            "Description": "Demo for hello world.",
+            "RequestType": 3,
+            "URL": "authsec/helloworld/{_addressId}",
+            "RuleChain": "TestRuleChain",
+            "Request": {
+              ...
+            },
+            "Response": {
+              ...
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "RuleChainManager": {
+    "ClassName": "com.hundsun.o45.ruleengine.RuleChainManager",
+    "RuleChainNames": [
+      "ComlianceCheckRuleChain", /**入参合规检查*/
+      "UsabilityRuleChain", /**可用*/
+      "DispatchRuleChain" /**指令分发*/
+      "OfferRuleChain" /**报盘*/
+    ],
+    "RuleChains": [
+      {
+        "Name": "ComlianceCheckRuleChain",
+        "ClassName": "com.hundsun.o45.ruleengine.RuleChain",
+        "RuleNames": [
+          "TestDemoRule",
+        ],
+        "Rules": [
+          {
+            "Name": "TestDemoRule",
+            "ClassName": "com.hundsun.o45.ruleengine.rule.AdornmentRule",
+            "AdornOps": [
+              "set password \"abcd1234\"",
+              ...
+            ]
+          },
+          ...

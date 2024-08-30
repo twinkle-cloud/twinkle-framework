@@ -1,6 +1,6 @@
 package com.twinkle.framework.struct.serialize;
 
-import com.alibaba.fastjson.JSONWriter;
+import com.alibaba.fastjson2.JSONWriter;
 import com.twinkle.framework.asm.serialize.Serializer;
 import com.twinkle.framework.core.lang.util.*;
 import com.twinkle.framework.struct.error.SerializationException;
@@ -33,7 +33,7 @@ public abstract class AbstractSchemaBasedSerializer extends AbstractSerializer {
     @Override
     protected void writeStructAttribute(StructAttribute _attr, JSONWriter _writer) throws IOException {
         if (_attr == null) {
-            _writer.writeValue(null);
+            _writer.writeNull();
             return;
         }
         String tempName = _attr.getType().getQualifiedName();
@@ -54,57 +54,66 @@ public abstract class AbstractSchemaBasedSerializer extends AbstractSerializer {
     protected abstract void writeFields(JSONWriter _writer, StructAttribute _value) throws IOException;
 
     protected void writeProperty(JSONWriter _writer, String _keyName, byte _value) throws IOException {
-        _writer.writeKey(_keyName);
-        _writer.writeValue((long) _value);
+//        _writer.writeKey(_keyName);
+//        _writer.writeValue((long) _value);
+        _writer.writeNameValue(_keyName, _value);
     }
 
     protected void writeProperty(JSONWriter _writer, String _keyName, short _value) throws IOException {
-        _writer.writeKey(_keyName);
-        _writer.writeValue((long) _value);
+//        _writer.writeKey(_keyName);
+//        _writer.writeValue((long) _value);
+        _writer.writeNameValue(_keyName, _value);
     }
 
     protected void writeProperty(JSONWriter _writer, String _keyName, int _value) throws IOException {
-        _writer.writeKey(_keyName);
-        _writer.writeValue((long) _value);
+//        _writer.writeKey(_keyName);
+//        _writer.writeValue((long) _value);
+        _writer.writeNameValue(_keyName, _value);
     }
 
     protected void writeProperty(JSONWriter _writer, String _keyName, long _value) throws IOException {
-        _writer.writeKey(_keyName);
-        _writer.writeValue(_value);
+//        _writer.writeKey(_keyName);
+//        _writer.writeValue(_value);
+        _writer.writeNameValue(_keyName, _value);
     }
 
     protected void writeProperty(JSONWriter _writer, String _keyName, float _value) throws IOException {
-        _writer.writeKey(_keyName);
-        _writer.writeValue((double) _value);
+//        _writer.writeKey(_keyName);
+//        _writer.writeValue((double) _value);
+        _writer.writeNameValue(_keyName, (double)_value);
     }
 
     protected void writeProperty(JSONWriter _writer, String _keyName, double _value) throws IOException {
-        _writer.writeKey(_keyName);
-        _writer.writeValue(_value);
+//        _writer.writeKey(_keyName);
+//        _writer.writeValue(_value);
+        _writer.writeNameValue(_keyName, _value);
     }
 
     protected void writeProperty(JSONWriter _writer, String _keyName, char _value) throws IOException {
-        _writer.writeKey(_keyName);
-        _writer.writeValue(String.valueOf(_value));
+//        _writer.writeKey(_keyName);
+//        _writer.writeValue(String.valueOf(_value));
+        _writer.writeNameValue(_keyName, String.valueOf(_value));
     }
 
     protected void writeProperty(JSONWriter _writer, String _keyName, boolean _value) throws IOException {
-        _writer.writeKey(_keyName);
-        _writer.writeValue(_value);
+//        _writer.writeKey(_keyName);
+//        _writer.writeValue(_value);
+        _writer.writeNameValue(_keyName, _value);
     }
 
     protected void writeProperty(JSONWriter _writer, String _keyName, String _value) throws IOException {
-        _writer.writeKey(_keyName);
-        _writer.writeValue(_value);
+//        _writer.writeKey(_keyName);
+//        _writer.writeValue(_value);
+        _writer.writeNameValue(_keyName, _value);
     }
 
     protected void writeProperty(JSONWriter _writer, String _keyName, StructAttribute _value) throws IOException {
-        _writer.writeKey(_keyName);
+        _writer.writeName(_keyName);
         this.writeStructAttribute(_value, _writer);
     }
 
     protected void writeProperty(JSONWriter _writer, String _keyName, Array _value) throws IOException {
-        _writer.writeKey(_keyName);
+        _writer.writeName(_keyName);
         _writer.startArray();
         if (_value instanceof ByteArray) {
             this.writeArray(_writer, (ByteArray) _value);
@@ -136,66 +145,66 @@ public abstract class AbstractSchemaBasedSerializer extends AbstractSerializer {
     }
 
     protected void writeArray(JSONWriter _writer, ByteArray _array) throws IOException {
-        for (int i = 0; i < _array.length(); ++i) {
-            _writer.writeValue((long) _array.get(i));
-        }
-
+        _writer.writeInt8(((MutableByteArray)_array).array());
+//        for (int i = 0; i < _array.length(); ++i) {
+//            _writer.writeInt8((long) _array.get(i));
+//        }
     }
 
     protected void writeArray(JSONWriter _writer, ShortArray _array) throws IOException {
-        for (int i = 0; i < _array.length(); ++i) {
-            _writer.writeValue((long) _array.get(i));
-        }
-
+//        for (int i = 0; i < _array.length(); ++i) {
+//            _writer.writeValue((long) _array.get(i));
+//        }
+        _writer.writeInt16(((MutableShortArray)_array).array());
     }
 
     protected void writeArray(JSONWriter _writer, IntegerArray _array) throws IOException {
-        for (int i = 0; i < _array.length(); ++i) {
-            _writer.writeValue((long) _array.get(i));
-        }
-
+//        for (int i = 0; i < _array.length(); ++i) {
+//            _writer.writeValue((long) _array.get(i));
+//        }
+        _writer.writeInt32(((MutableIntegerArray)_array).array());
     }
 
     protected void writeArray(JSONWriter _writer, LongArray _array) throws IOException {
-        for (int i = 0; i < _array.length(); ++i) {
-            _writer.writeValue(_array.get(i));
-        }
-
+//        for (int i = 0; i < _array.length(); ++i) {
+//            _writer.writeValue(_array.get(i));
+//        }
+        _writer.writeInt64(((MutableLongArray)_array).array());
     }
 
     protected void writeArray(JSONWriter _writer, FloatArray _array) throws IOException {
-        for (int i = 0; i < _array.length(); ++i) {
-            _writer.writeValue((double) _array.get(i));
-        }
-
+//        for (int i = 0; i < _array.length(); ++i) {
+//            _writer.writeValue((double) _array.get(i));
+//        }
+        _writer.writeFloat(((MutableFloatArray)_array).array());
     }
 
     protected void writeArray(JSONWriter _writer, DoubleArray _array) throws IOException {
-        for (int i = 0; i < _array.length(); ++i) {
-            _writer.writeValue(_array.get(i));
-        }
-
+//        for (int i = 0; i < _array.length(); ++i) {
+//            _writer.writeValue(_array.get(i));
+//        }
+        _writer.writeDouble(((MutableDoubleArray)_array).array());
     }
 
     protected void writeArray(JSONWriter _writer, CharArray _array) throws IOException {
-        for (int i = 0; i < _array.length(); ++i) {
-            _writer.writeValue(Character.toString(_array.get(i)));
-        }
-
+//        for (int i = 0; i < _array.length(); ++i) {
+//            _writer.writeValue(Character.toString(_array.get(i)));
+//        }
+        _writer.writeString(((MutableCharArray)_array).array());
     }
 
     protected void writeArray(JSONWriter _writer, StringArray _array) throws IOException {
-        for (int i = 0; i < _array.length(); ++i) {
-            _writer.writeValue(_array.get(i));
-        }
-
+//        for (int i = 0; i < _array.length(); ++i) {
+//            _writer.writeValue(_array.get(i));
+//        }
+        _writer.writeString(((MutableStringArray)_array).array());
     }
 
     protected void writeArray(JSONWriter _writer, BooleanArray _array) throws IOException {
-        for (int i = 0; i < _array.length(); ++i) {
-            _writer.writeValue(_array.get(i));
-        }
-
+//        for (int i = 0; i < _array.length(); ++i) {
+//            _writer.writeValue(_array.get(i));
+//        }
+        _writer.writeBool(((MutableBooleanArray)_array).array());
     }
 
     protected void writeArray(JSONWriter _writer, StructAttributeArray _array) throws IOException {
@@ -217,8 +226,8 @@ public abstract class AbstractSchemaBasedSerializer extends AbstractSerializer {
                 throw new RuntimeException("Unknown type: " + _value.getClass());
             }
 
-            _writer.writeKey(_keyName);
-            _writer.writeValue(null);
+            _writer.writeNameValue(_keyName, null);
+//            _writer.writeValue(null);
         }
     }
 }

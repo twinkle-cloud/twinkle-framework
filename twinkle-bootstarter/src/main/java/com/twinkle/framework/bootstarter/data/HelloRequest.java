@@ -1,6 +1,6 @@
 package com.twinkle.framework.bootstarter.data;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.List;
@@ -15,9 +15,10 @@ import java.util.List;
  * @since JDK 1.8
  */
 @Data
+@Schema(description = "HelloWorldRequest",name = "HelloWorld")
 public class HelloRequest {
     private String userName;
-    @ApiModelProperty(hidden = true)
+    @Schema(description = "Password",name = "Password", hidden = true)
     private String password;
     private List<Title> titles;
 }

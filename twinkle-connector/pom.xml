@@ -30,6 +30,10 @@
             <groupId>com.twinkle.framework</groupId>
             <artifactId>twinkle-configure</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.twinkle.framework</groupId>
+            <artifactId>twinkle-core-struct</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

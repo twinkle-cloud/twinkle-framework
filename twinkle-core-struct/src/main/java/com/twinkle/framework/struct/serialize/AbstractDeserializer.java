@@ -1,6 +1,6 @@
 package com.twinkle.framework.struct.serialize;
 
-import com.alibaba.fastjson.JSONReader;
+import com.alibaba.fastjson2.JSONReader;
 import com.twinkle.framework.struct.lang.StructAttribute;
 
 import java.io.IOException;
@@ -32,11 +32,11 @@ public abstract class AbstractDeserializer {
 
     protected String readHeader(JSONReader _reader) throws IOException {
         if (this.isSerializable) {
-            _reader.startObject();
+//            _reader.startObject(); //fastjson2 not need anymore.
             this.readProperty(_reader, JsonSerializer.TYPE_PROPERTY);
             String tempHeader = _reader.readString();
             this.readProperty(_reader, JsonSerializer.StructAttribute_PROPERTY);
-//                var1.endObject();
+//                _reader.endObject();
             return tempHeader;
         } else {
             return this.rootType;
@@ -54,7 +54,7 @@ public abstract class AbstractDeserializer {
 
     protected void readTrailer(JSONReader _reader) throws IOException {
         if (this.isSerializable) {
-            _reader.endObject();
+//            _reader.endObject();//endObject()
         }
     }
 }

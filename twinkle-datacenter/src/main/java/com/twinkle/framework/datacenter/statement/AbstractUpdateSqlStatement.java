@@ -1,12 +1,12 @@
 package com.twinkle.framework.datacenter.statement;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.context.NormalizedContext;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.api.exception.DataCenterException;
 import com.twinkle.framework.datacenter.support.HybridAttribute;
-import com.twinkle.framework.datasource.annotation.TwinkleDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -66,7 +66,7 @@ public abstract class AbstractUpdateSqlStatement extends AbstractSqlStatement {
         super.configure(_conf);
     }
 
-    @TwinkleDataSource(value = "#_dataSource")
+    @DS(value = "#_dataSource")
     @Override
     public void execute(NormalizedContext _context, String _dataSource) throws DataCenterException {
         List<SqlParameterSource> tempBatchList = this.prepareValueArrays(_context);

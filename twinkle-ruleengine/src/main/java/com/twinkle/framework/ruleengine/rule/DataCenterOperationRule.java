@@ -1,6 +1,6 @@
 package com.twinkle.framework.ruleengine.rule;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import com.twinkle.framework.api.component.datacenter.IDataCenterManager;
 import com.twinkle.framework.api.component.datacenter.IStatementExecutor;
 import com.twinkle.framework.api.constant.ExceptionCode;

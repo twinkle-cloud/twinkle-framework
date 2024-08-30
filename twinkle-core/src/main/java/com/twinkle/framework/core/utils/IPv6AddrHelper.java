@@ -1,6 +1,6 @@
 package com.twinkle.framework.core.utils;
 
-import sun.net.util.IPAddressUtil;
+//import sun.net.util.IPAddressUtil;
 
 import java.util.Arrays;
 
@@ -77,6 +77,7 @@ public class IPv6AddrHelper {
      * @return
      */
     private static byte[] textToNumericFormatV6(String _text) {
+
         return IPAddressUtil.textToNumericFormatV6(_text);
     }
 

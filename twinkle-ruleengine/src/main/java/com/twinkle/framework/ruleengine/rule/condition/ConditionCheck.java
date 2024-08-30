@@ -1,7 +1,7 @@
 package com.twinkle.framework.ruleengine.rule.condition;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.twinkle.framework.api.context.AttributeInfo;
 import com.twinkle.framework.api.context.NormalizedContext;
 import com.twinkle.framework.api.exception.ConfigurationException;

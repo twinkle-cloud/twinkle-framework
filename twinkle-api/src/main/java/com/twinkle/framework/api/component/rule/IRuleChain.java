@@ -1,6 +1,6 @@
 package com.twinkle.framework.api.component.rule;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import com.twinkle.framework.api.exception.ConfigurationException;
 
 /**

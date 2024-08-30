@@ -1,7 +1,7 @@
 package com.twinkle.framework.ruleengine;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.twinkle.framework.api.component.AbstractComponent;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.api.component.rule.IRuleChain;
@@ -21,10 +21,16 @@ public class RuleChainManager extends AbstractComponent implements IRuleChainMan
     private List<String> ruleChainNameList;
     private Map<String, IRuleChain> ruleChainMap;
 
+    private Map poolSizeMap_ = null;
+    private int maxPoolSize_;
+    private int minPoolSize_;
+
     public RuleChainManager(){
     }
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
+        this.maxPoolSize_ = _conf.getIntValue("MaxPoolSize", 5);
+        this.minPoolSize_ = _conf.getIntValue("MinPoolSize", 1);
         JSONArray tempArray = _conf.getJSONArray("RuleChainNames");
         JSONArray tempRuleChainArray = _conf.getJSONArray("RuleChains");
         if(tempArray.isEmpty() || tempRuleChainArray.isEmpty()) {

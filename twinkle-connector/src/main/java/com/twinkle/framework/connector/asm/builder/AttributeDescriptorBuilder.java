@@ -33,7 +33,7 @@ public class AttributeDescriptorBuilder {
 
     public static AttributeDescriptor getRequestParamMethodParameter(AttributeInfo _attr) {
         Set<String> tempAnnotationList = new HashSet<>();
-        tempAnnotationList.add("@io.swagger.annotations.ApiParam(value = \""+_attr.getName()+"\")");
+        tempAnnotationList.add("@io.swagger.v3.oas.annotations.Parameter(name = \""+_attr.getName()+"\")");
         tempAnnotationList.add("@org.springframework.web.bind.annotation.RequestParam");
 
         AttributeDescriptor tempAttr = AttributeDescriptorImpl.builder()
@@ -47,7 +47,7 @@ public class AttributeDescriptorBuilder {
 
     public static AttributeDescriptor getPathVarMethodParameter(AttributeInfo _attr) {
         Set<String> tempAnnotationList = new HashSet<>();
-        tempAnnotationList.add("@io.swagger.annotations.ApiParam(value = \""+_attr.getName()+"\")");
+        tempAnnotationList.add("@io.swagger.v3.oas.annotations.Parameter(name = \""+_attr.getName()+"\")");
         tempAnnotationList.add("@org.springframework.web.bind.annotation.PathVariable(value = \"_userName\")");
 
         AttributeDescriptor tempAttr = AttributeDescriptorImpl.builder()
@@ -61,7 +61,7 @@ public class AttributeDescriptorBuilder {
 
     public static AttributeDescriptor getRequestBodyMethodParameter(AttributeInfo _attr) {
         Set<String> tempAnnotationList = new HashSet<>();
-        tempAnnotationList.add("@io.swagger.annotations.ApiParam(value = \""+_attr.getName()+"\")");
+        tempAnnotationList.add("@io.swagger.v3.oas.annotations.Parameter(name = \""+_attr.getName()+"\")");
         tempAnnotationList.add("@org.springframework.web.bind.annotation.RequestBody");
 
         AttributeDescriptor tempAttr = AttributeDescriptorImpl.builder()

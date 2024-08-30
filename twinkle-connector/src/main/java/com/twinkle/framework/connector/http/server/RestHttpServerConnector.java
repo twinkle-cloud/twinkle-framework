@@ -1,7 +1,7 @@
 package com.twinkle.framework.connector.http.server;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.twinkle.framework.api.component.AbstractComponent;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
@@ -135,7 +135,7 @@ public class RestHttpServerConnector extends AbstractComponent implements Server
         Set<String> tempAnnotations = new HashSet<>(3);
         tempAnnotations.add("@org.springframework.web.bind.annotation.RestController");
         tempAnnotations.add("@lombok.extern.slf4j.Slf4j");
-        tempAnnotations.add("@io.swagger.annotations.Api");
+        tempAnnotations.add("@io.swagger.v3.oas.annotations.tags.Tag(name = \"" + this.connectorName + "\", description = \"Twinkle Framework\")");
         return tempAnnotations;
     }
 

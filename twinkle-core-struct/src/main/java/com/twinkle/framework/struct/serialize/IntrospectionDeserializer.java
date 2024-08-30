@@ -1,18 +1,22 @@
 package com.twinkle.framework.struct.serialize;
 
-import com.alibaba.fastjson.JSONReader;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONReader;
+import com.twinkle.framework.core.lang.util.MutableArray;
 import com.twinkle.framework.struct.context.StructAttributeSchema;
 import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
+import com.twinkle.framework.struct.error.StructAttributeException;
 import com.twinkle.framework.struct.factory.StructAttributeFactory;
 import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.ref.AttributeRef;
-import com.twinkle.framework.core.lang.util.*;
-import com.twinkle.framework.struct.error.StructAttributeException;
 import com.twinkle.framework.struct.type.*;
 import com.twinkle.framework.struct.util.ArrayAllocator;
 import com.twinkle.framework.struct.util.MutableStructAttributeArray;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.MapUtils;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -24,6 +28,7 @@ import java.util.Objects;
  * @see
  * @since JDK 1.8
  */
+@Slf4j
 public class IntrospectionDeserializer extends AbstractDeserializer {
     public static final int DEFAULT_CAPACITY = 8;
     private final StructAttributeFactory structAttributeFactory = Objects.requireNonNull(StructAttributeSchemaManager.getStructAttributeFactory(), "StructAttributeFactory is null, deserialisation wouldn't work");
@@ -34,31 +39,53 @@ public class IntrospectionDeserializer extends AbstractDeserializer {
         super(_serializable, _rootType);
         this.arrayAllocator = Objects.requireNonNull(this.structAttributeFactory.getArrayAllocator(), "ArrayAllocator is null, deserialisation wouldn't work");
     }
+
     @Override
     protected StructAttribute readStructAttribute(JSONReader _reader, String _property) throws IOException {
-        StructAttribute tempAttr = this.createStructAttribute(_property);
-        _reader.startObject();
+        Map<String, Object> tempObjMap = _reader.readObject();
+        if (MapUtils.isEmpty(tempObjMap)) {
+            log.info("Read object is empty, so return an empty struct.");
+            return this.createStructAttribute(_property);
+        }
 
-        while(true) {
-            while(_reader.hasNext()) {
-                String tempName = _reader.readString();
-                AttributeRef tempAttrRef = tempAttr.getAttributeRef(tempName);
+        return this.packStructAttribute(tempObjMap, _property);
+    }
+
+    /**
+     * Pack the Struct Attribute.
+     *
+     * @param _values
+     * @param _property
+     * @return
+     */
+    private StructAttribute packStructAttribute(Object _values, String _property) {
+        StructAttribute tempAttr = this.createStructAttribute(_property);
+        if(_values == null) {
+            return tempAttr;
+        }
+        if(_values instanceof Map<?, ?>) {
+            Map<String, Object> tempObjMap = (Map<String, Object>) _values;
+            for (Map.Entry<String, Object> tempEntry : tempObjMap.entrySet()) {
+                AttributeRef tempAttrRef = tempAttr.getAttributeRef(tempEntry.getKey());
                 AttributeType tempStructType = tempAttrRef.getType();
                 if (!tempStructType.isPrimitiveType() && !tempStructType.isStringType()) {
                     if (tempStructType.isArrayType()) {
-                        this.deserializeArrayAttribute(tempAttr, tempAttrRef, tempStructType, _reader);
+                        this.deserializeArrayAttribute(tempAttr, tempAttrRef, tempStructType, tempEntry.getValue());
                     } else if (tempStructType.isStructType()) {
-                        tempAttr.setStruct(tempAttrRef, this.readStructAttribute(_reader, ((StructType)tempStructType).getQualifiedName()));
+                        tempAttr.setStruct(tempAttrRef, this.packStructAttribute(tempEntry.getValue(), ((StructType) tempStructType).getQualifiedName()));
                     } else {
                         throw new RuntimeException("Unexpected type: " + tempStructType);
                     }
                 } else {
-                    this.deserializePrimitiveAttribute(tempAttr, tempAttrRef, tempStructType, _reader);
+                    //
+                    this.deserializePrimitiveAttribute(tempAttr, tempAttrRef, tempStructType, tempEntry.getValue());
                 }
             }
-            _reader.endObject();
+        } else {
+            log.debug("The given values[{}] is not suitable for struct attribute, so dismiss it.", _values);
             return tempAttr;
         }
+        return tempAttr;
     }
 
     /**
@@ -67,77 +94,32 @@ public class IntrospectionDeserializer extends AbstractDeserializer {
      * @param _attr
      * @param _attrRef
      * @param _type
-     * @param _reader
+     * @param _array
      * @throws IOException
      */
-    private void deserializeArrayAttribute(StructAttribute _attr, AttributeRef _attrRef, AttributeType _type, JSONReader _reader) throws IOException {
-        _reader.startArray();
-        if (_type == ArrayType.BYTE_ARRAY) {
-            MutableByteArray tempArray = this.arrayAllocator.newByteArray(DEFAULT_CAPACITY);
-            while(_reader.hasNext()) {
-                tempArray.add(_reader.readInteger().byteValue());
-            }
-            _attr.setArray(_attrRef, tempArray);
-        } else if (_type == ArrayType.SHORT_ARRAY) {
-            MutableShortArray tempArray = this.arrayAllocator.newShortArray(DEFAULT_CAPACITY);
-            while(_reader.hasNext()) {
-                tempArray.add(_reader.readInteger().shortValue());
-            }
-            _attr.setArray(_attrRef, tempArray);
-        } else if (_type == ArrayType.INT_ARRAY) {
-            MutableIntegerArray tempArray = this.arrayAllocator.newIntegerArray(DEFAULT_CAPACITY);
-            while(_reader.hasNext()) {
-                tempArray.add(_reader.readInteger());
-            }
-            _attr.setArray(_attrRef, tempArray);
-        } else if (_type == ArrayType.LONG_ARRAY) {
-            MutableLongArray tempArray = this.arrayAllocator.newLongArray(DEFAULT_CAPACITY);
-            while(_reader.hasNext()) {
-                tempArray.add(_reader.readLong());
-            }
-            _attr.setArray(_attrRef, tempArray);
-        } else if (_type == ArrayType.FLOAT_ARRAY) {
-            MutableFloatArray tempArray = this.arrayAllocator.newFloatArray(DEFAULT_CAPACITY);
-            while(_reader.hasNext()) {
-                tempArray.add(Float.valueOf(_reader.readString()));
-            }
-            _attr.setArray(_attrRef, tempArray);
-        } else if (_type == ArrayType.DOUBLE_ARRAY) {
-            MutableDoubleArray tempArray = this.arrayAllocator.newDoubleArray(DEFAULT_CAPACITY);
-            while(_reader.hasNext()) {
-                tempArray.add(Double.valueOf(_reader.readString()));
-            }
-            _attr.setArray(_attrRef, tempArray);
-        } else if (_type == ArrayType.CHAR_ARRAY) {
-            MutableCharArray tempArray = this.arrayAllocator.newCharArray(DEFAULT_CAPACITY);
-            while(_reader.hasNext()) {
-                tempArray.add(_reader.readString().charAt(0));
-            }
-            _attr.setArray(_attrRef, tempArray);
-        } else if (_type == ArrayType.BOOLEAN_ARRAY) {
-            MutableBooleanArray tempArray = this.arrayAllocator.newBooleanArray(DEFAULT_CAPACITY);
-            while(_reader.hasNext()) {
-                tempArray.add(Boolean.valueOf(_reader.readString()));
-            }
-            _attr.setArray(_attrRef, tempArray);
-        } else if (_type == ArrayType.STRING_ARRAY) {
-            MutableStringArray tempArray = this.arrayAllocator.newStringArray(DEFAULT_CAPACITY);
-            while(_reader.hasNext()) {
-                tempArray.add(_reader.readString());
-            }
-            _attr.setArray(_attrRef, tempArray);
-        } else if (_type.isArrayType()) {
-            ArrayType tempArrayType = (ArrayType)_type;
-            String tempElementName = ((StructType)tempArrayType.getElementType()).getQualifiedName();
-            MutableStructAttributeArray tempArray = this.arrayAllocator.newStructAttributeArray(DEFAULT_CAPACITY);
-            while(_reader.hasNext()) {
-                tempArray.add(this.readStructAttribute(_reader, tempElementName));
+    private void deserializeArrayAttribute(StructAttribute _attr, AttributeRef _attrRef, AttributeType _type, Object _array) {
+        if (_array == null) {
+            _attr.setArray(_attrRef, this.arrayAllocator.newArray((ArrayType)_type, 0));
+            return;
+        }
+        if(!(_array instanceof JSONArray)) {
+            log.debug("The given value[{}] is not array, so dismiss it.", _array);
+            _attr.setArray(_attrRef, this.arrayAllocator.newArray((ArrayType)_type, 0));
+            return;
+        }
+
+        if (((ArrayType)_type).getElementType() instanceof StructType){
+            String tempElementName = ((StructType)((ArrayType)_type).getElementType()).getQualifiedName();
+            MutableStructAttributeArray tempArray = this.arrayAllocator.newStructAttributeArray(((JSONArray)_array).size());
+            for(int i = 0; i < ((JSONArray)_array).size(); ++i) {
+                tempArray.add(this.packStructAttribute(((JSONArray)_array).get(i), tempElementName));
             }
             _attr.setArray(_attrRef, tempArray);
         } else {
-            throw new RuntimeException("Unexpected type: " + _type);
+            MutableArray tempArray = this.arrayAllocator.newArray((ArrayType)_type, ((JSONArray)_array).size());
+            tempArray.copyFrom(((JSONArray)_array).toArray(), 0, ((JSONArray)_array).size() -1, ((JSONArray)_array).size());
+            _attr.setArray(_attrRef, tempArray);
         }
-        _reader.endArray();
     }
 
     /**
@@ -146,28 +128,37 @@ public class IntrospectionDeserializer extends AbstractDeserializer {
      * @param _attr
      * @param _attrRef
      * @param _type
-     * @param _reader
+     * @param _obj
      * @throws IOException
      */
-    private void deserializePrimitiveAttribute(StructAttribute _attr, AttributeRef _attrRef, AttributeType _type, JSONReader _reader) throws IOException {
+    private void deserializePrimitiveAttribute(StructAttribute _attr, AttributeRef _attrRef, AttributeType _type, Object _obj) {
+        if (_obj == null) {
+            return;
+        }
         if (_type == PrimitiveType.BYTE) {
-            _attr.setByte(_attrRef, (_reader.readInteger()).byteValue());
+            byte tempValue = _obj instanceof Integer ? ((Integer) _obj).byteValue() : Byte.parseByte(_obj.toString());
+            _attr.setByte(_attrRef, tempValue);
         } else if (_type == PrimitiveType.SHORT) {
-            _attr.setShort(_attrRef, (_reader.readInteger()).shortValue());
+            short tempValue = _obj instanceof Integer ? ((Integer) _obj).shortValue() : Short.parseShort(_obj.toString());
+            _attr.setShort(_attrRef, tempValue);
         } else if (_type == PrimitiveType.INT) {
-            _attr.setInt(_attrRef, _reader.readInteger());
+            int tempValue = _obj instanceof Integer ? (Integer) _obj : Integer.parseInt(_obj.toString());
+            _attr.setInt(_attrRef, tempValue);
         } else if (_type == PrimitiveType.LONG) {
-            _attr.setLong(_attrRef, _reader.readLong());
+            long tempValue = _obj instanceof Long ? (Long) _obj : Long.parseLong(_obj.toString());
+            _attr.setLong(_attrRef, tempValue);
         } else if (_type == PrimitiveType.FLOAT) {
-            _attr.setFloat(_attrRef, Float.valueOf(_reader.readString()));
+            float tempValue = _obj instanceof Double ? ((Double) _obj).floatValue() : Float.parseFloat(_obj.toString());
+            _attr.setFloat(_attrRef, tempValue);
         } else if (_type == PrimitiveType.DOUBLE) {
-            _attr.setDouble(_attrRef, Double.valueOf(_reader.readString()));
+            double tempValue = _obj instanceof Double ? (Double) _obj : Double.parseDouble(_obj.toString());
+            _attr.setDouble(_attrRef, tempValue);
         } else if (_type == PrimitiveType.BOOLEAN) {
-            _attr.setBoolean(_attrRef, Boolean.valueOf(_reader.readString()));
+            _attr.setBoolean(_attrRef, Boolean.parseBoolean(_obj.toString()));
         } else if (_type == PrimitiveType.CHAR) {
-            _attr.setChar(_attrRef, _reader.readString().charAt(0));
+            _attr.setChar(_attrRef, _obj.toString().charAt(0));
         } else if (_type == StringType.STRING) {
-            _attr.setString(_attrRef, _reader.readString());
+            _attr.setString(_attrRef, _obj.toString());
         } else {
             throw new RuntimeException("Unexpected type: " + _type);
         }

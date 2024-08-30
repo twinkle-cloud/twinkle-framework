@@ -1,7 +1,7 @@
 package com.twinkle.framework.bootstarter.config;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.twinkle.framework.api.component.datacenter.IDataCenterManager;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
@@ -74,7 +74,7 @@ public class TwinkleInitializer implements BeanDefinitionRegistryPostProcessor {
             throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_CONNECTOR, "Did not find valid connector obj in the logic configuration.");
         }
         //Add FastJSON HTTP message serializer support.
-        tempStructAttributeManager.addFastJsonSerializerSupport();
+//        tempStructAttributeManager.addFastJsonSerializerSupport();
 
         //Initialize the attributes in PrimitiveAttributeSchema.
         JSONArray tempAttrArray = tempObj.getJSONArray(KEY_ATTRIBUTE_SET);

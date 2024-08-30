@@ -1,6 +1,6 @@
 package com.twinkle.framework.context;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson2.JSONArray;
 import com.twinkle.framework.api.context.AttributeInfo;
 import com.twinkle.framework.context.model.DefaultNormalizedAttributeType;
 import com.twinkle.framework.api.context.NormalizedAttributeType;

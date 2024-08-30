@@ -1,7 +1,7 @@
 package com.twinkle.framework.datacenter;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.twinkle.framework.api.component.AbstractComponent;
 import com.twinkle.framework.api.component.datacenter.IDataCenterManager;
 import com.twinkle.framework.api.component.datacenter.IStatement;

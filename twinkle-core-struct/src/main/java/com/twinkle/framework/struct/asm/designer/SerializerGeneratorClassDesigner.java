@@ -1,6 +1,6 @@
 package com.twinkle.framework.struct.asm.designer;
 
-import com.alibaba.fastjson.JSONWriter;
+import com.alibaba.fastjson2.JSONWriter;
 import com.twinkle.framework.asm.classloader.SerializerClassLoader;
 import com.twinkle.framework.asm.descriptor.ArrayTypeDescriptor;
 import com.twinkle.framework.asm.descriptor.AttributeDescriptor;

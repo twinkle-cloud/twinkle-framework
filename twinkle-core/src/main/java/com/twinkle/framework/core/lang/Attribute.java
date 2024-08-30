@@ -1,6 +1,6 @@
 package com.twinkle.framework.core.lang;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;
 
@@ -66,7 +66,7 @@ public interface Attribute extends Cloneable, Serializable {
      *
      * @return
      */
-    @ApiModelProperty(hidden = true)
+    @Schema(hidden = true)
     int getPrimitiveType();
 
     /**
@@ -74,7 +74,7 @@ public interface Attribute extends Cloneable, Serializable {
      *
      * @return
      */
-    @ApiModelProperty(hidden = true)
+    @Schema(hidden = true)
     int getTypeIndex();
 
     /**
@@ -146,6 +146,6 @@ public interface Attribute extends Cloneable, Serializable {
      *
      * @return
      */
-    @ApiModelProperty(hidden = true)
+    @Schema(hidden = true)
     Object getObjectValue();
 }

@@ -1,11 +1,11 @@
 package com.twinkle.framework.connector.http.converter;
 
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.alibaba.fastjson2.support.spring6.http.converter.FastJsonHttpMessageConverter;
 import com.twinkle.framework.asm.serialize.Serializer;
 import com.twinkle.framework.asm.serialize.SerializerFactory;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.serialize.JsonIntrospectionSerializerFactory;
 import com.twinkle.framework.struct.serialize.JsonSerializer;
-import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.utils.StructTypeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpInputMessage;

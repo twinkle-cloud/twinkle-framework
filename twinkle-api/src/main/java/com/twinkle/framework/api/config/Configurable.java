@@ -1,6 +1,6 @@
 package com.twinkle.framework.api.config;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>

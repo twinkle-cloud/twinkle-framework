@@ -1,6 +1,6 @@
 package com.twinkle.framework.ruleengine.rule.support;
 
-//import com.alibaba.fastjson.JSONObject;
+//import com.alibaba.fastjson2.JSONObject;
 //import com.twinkle.framework.api.config.Configurable;
 //import com.twinkle.framework.api.context.NormalizedContext;
 //import com.twinkle.framework.api.exception.ConfigurationException;

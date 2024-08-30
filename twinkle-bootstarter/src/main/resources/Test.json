@@ -103,7 +103,7 @@
             "AdornOps": [
               "set password \"abcd1234\"",
               "set age \"50\"",
-              "set userId \"12\"",
+              "set userId \"20000\"",
               "set assessId \"ec4b5ca6-a4f4-11e7-b65e-0cc47a669986\"",
               "set assessPaperId \"59ef2aca-7b11-4969-8c4f-12244fa2a42a\"",
               "set assessCategoryId \"GGFFJJ\""
@@ -181,7 +181,7 @@
             "Name": "AfterSQLLog",
             "ClassName": "com.twinkle.framework.ruleengine.rule.LogAttributeRule",
             "LogLevel": "INFO",
-            "Message": "Attribute after conversion are: ",
+            "Message": "Attribute after DoSQLTest are: ",
             "NullAlso": "true",
             "ConvertToJson": "true",
             "Attributes": ["userName","position","age","dept", "addressId", "userOrgInfo", "assessId", "assessPaperId", "apacMapId", "createDate"]
@@ -225,7 +225,7 @@
       {
         "Name": "TestPgSQL",
         "ClassName": "com.twinkle.framework.datacenter.statement.UpdateSqlStatement",
-        "DestTable": "U_USER",
+        "DestTable": "U_USER_INFO",
         "IsBatch": false,
         "DataSource": "usermgmt",
         "ConditionFields": [

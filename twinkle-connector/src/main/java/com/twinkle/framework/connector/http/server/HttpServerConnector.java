@@ -1,6 +1,6 @@
 package com.twinkle.framework.connector.http.server;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import com.twinkle.framework.api.component.AbstractComponent;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.connector.server.ServerConnector;

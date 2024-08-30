@@ -8,39 +8,64 @@ ribbon:
   eureka:
     enabled: true
 
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+  packages-to-scan: com.twinkle.framework
+
 ---
 spring:
-  profiles: development
+  config:
+    activate:
+      on-profile: development
   main:
     allow-bean-definition-overriding: true
   datasource:
     dynamic:
       enabled: true
       datasource:
-        master:
-          username: useradmin
-          password: abcd1234
-          driver-class-name: org.postgresql.Driver
-          url: jdbc:postgresql://127.0.0.1:5432/usermgmt
-        metadata:
-          username: mdadmin
-          password: abcd1234
-          driver-class-name: org.postgresql.Driver
-          url: jdbc:postgresql://127.0.0.1:5432/metadata
+#        master:
+#          username: useradmin
+#          password: abcd1234
+#          driver-class-name: org.postgresql.Driver
+#          url: jdbc:postgresql://127.0.0.1:5432/usermgmt
+#        metadata:
+#          username: mdadmin
+#          password: abcd1234
+#          driver-class-name: org.postgresql.Driver
+#          url: jdbc:postgresql://127.0.0.1:5432/metadata
+        usermgmt:
+          username: admin
+          password: 1qaz!QAZ
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/usermgmt?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
         assessmgmt:
           username: admin
           password: 1qaz!QAZ
           driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://61.178.80.86:3306/yy?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
-      hikari:
-        connection-test-query: select 1
-        maximum-pool-size: 20
-        minimum-idle: 5
-        idle-timeout: 180000 #空闲超时是 180000 毫秒，当数据库连接的空闲时间大于180000毫秒时，这些空闲超时的连接会被关闭，直到超时的空闲连接数达到 minimum-idle的值
+          url: jdbc:mysql://localhost:3306/yy?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+#      hikari:
+#        connection-test-query: select 1
+#        maximum-pool-size: 20
+#        minimum-idle: 5
+#        idle-timeout: 180000 #空闲超时是 180000 毫秒，当数据库连接的空闲时间大于180000毫秒时，这些空闲超时的连接会被关闭，直到超时的空闲连接数达到 minimum-idle的值
+      druid:
+        min-idle: 5
+        max-active: 10
+        init-connection-sqls: select 1
+    type: com.alibaba.druid.pool.DruidDataSource
+springdoc:
+  api-docs:
+    enabled: true
 
 ---
 spring:
-  profiles: test
+  config:
+    activate:
+      on-profile: test
   datasource:
     dynamic:
       datasource:

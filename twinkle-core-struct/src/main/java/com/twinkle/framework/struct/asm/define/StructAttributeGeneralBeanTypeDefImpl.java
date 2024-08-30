@@ -130,9 +130,9 @@ public class StructAttributeGeneralBeanTypeDefImpl extends BeanRefTypeDefImpl im
             TypeDef tempTypeDef = getAttributeTypeDef(tempStructType, _parentMap);
             if (tempStructType.isArrayType()) {
                 Set<String> tempAnnotationSet = new HashSet<>(1);
-                StringBuilder tempBuilder = new StringBuilder("@io.swagger.annotations.ApiModelProperty(name=\"");
+                StringBuilder tempBuilder = new StringBuilder("@io.swagger.v3.oas.annotations.media.Schema(name=\"");
                 tempBuilder.append(tempSADescriptor.getName());
-                tempBuilder.append("\", dataType=\"[L");
+                tempBuilder.append("\", types=\"[L");//dataType
                 if(tempTypeDef.isGeneric()) {
                     Type[] tempGenericTypes = ((GenericTypeDef)tempTypeDef).getTypeParameters();
                     if(tempGenericTypes != null) {

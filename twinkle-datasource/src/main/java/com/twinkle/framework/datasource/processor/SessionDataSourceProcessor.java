@@ -1,10 +1,9 @@
 package com.twinkle.framework.datasource.processor;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>

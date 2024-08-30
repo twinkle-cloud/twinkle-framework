@@ -2,6 +2,7 @@ package com.twinkle.framework.bootstarter.controller;
 
 import com.twinkle.framework.api.constant.ResultCode;
 import com.twinkle.framework.api.context.NormalizedContext;
+import com.twinkle.framework.api.data.GeneralResult;
 import com.twinkle.framework.api.exception.RuleException;
 import com.twinkle.framework.asm.serialize.Serializer;
 import com.twinkle.framework.asm.serialize.SerializerFactory;
@@ -9,21 +10,20 @@ import com.twinkle.framework.bootstarter.data.HelloRequest;
 import com.twinkle.framework.bootstarter.data.HelloResponse;
 import com.twinkle.framework.bootstarter.data.Title;
 import com.twinkle.framework.bootstarter.service.HelloWorld2Service;
-import com.twinkle.framework.api.data.GeneralResult;
 import com.twinkle.framework.connector.server.AbstractServer;
+import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.serialize.JsonIntrospectionSerializerFactory;
 import com.twinkle.framework.struct.serialize.JsonSerializer;
-import com.twinkle.framework.struct.lang.StructAttribute;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +37,9 @@ import java.util.List;
  * @see
  * @since JDK 1.8
  */
+@Tag(name = "HelloWorld", description = "Test Hello World")
 @RestController
 @Slf4j
-@Api
 public class HelloController extends AbstractServer {
     @Autowired
     private HttpServletRequest request;
@@ -47,11 +47,11 @@ public class HelloController extends AbstractServer {
     @Autowired
     private HelloWorld2Service helloWorldService;
 
-    @ApiOperation(value = "获取用户Token")
+    @Operation(summary = "获取用户Token")
     @RequestMapping(value = "authsec/token/{_userName}", method = RequestMethod.POST)
     public GeneralResult<Object> createAuthenticationToken(
-            @ApiParam(value = "请求体") @RequestBody HelloRequest[] _request,
-            @ApiParam(value = "UserName") @PathVariable(value = "_userName") String _userName,
+            @Parameter(name = "请求体") @RequestBody HelloRequest[] _request,
+            @Parameter(name = "UserName") @PathVariable(value = "_userName") String _userName,
             @RequestParam(value = "_testParam", defaultValue = "DDDFF") String _testParam) throws Exception {
         log.info("The request body is AA");
         log.info("The request body is: {}", _request);
@@ -92,14 +92,14 @@ public class HelloController extends AbstractServer {
         return tempAttribute;
     }
 
-    @ApiOperation(value = "Test Get")
+    @Operation(summary = "Test Get")
     @RequestMapping(value = "authsec/get/{_addressId}", method = RequestMethod.POST)
     public GeneralResult<String> getRequestString(
             //@ApiParam(value = "请求体") @RequestBody HelloRequest _request,
             @RequestParam(value = "_param1", defaultValue = "cxj110") String _testParam1,
             @RequestParam(value = "_param2") String _testParam2,
-            @ApiParam(value = "_addressId") @PathVariable(value = "_addressId") String _addressId,
-            @ApiParam(value = "requestBody") @RequestBody String _requestBody) {
+            @Parameter(name = "_addressId") @PathVariable(value = "_addressId") String _addressId,
+            @Parameter(name = "requestBody") @RequestBody String _requestBody) {
         log.info("The request is: {} -> {}, {}", _testParam1, _testParam2, _addressId);
         NormalizedContext tempNc = this.getNormalizedContext();
         this.decodeParameter(tempNc, 0, _testParam1);

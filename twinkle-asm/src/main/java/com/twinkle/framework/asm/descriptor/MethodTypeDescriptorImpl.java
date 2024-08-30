@@ -1,6 +1,6 @@
 package com.twinkle.framework.asm.descriptor;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import com.twinkle.framework.asm.handler.MethodInstructionHandler;
 import lombok.Builder;
 import lombok.Data;

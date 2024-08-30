@@ -1,7 +1,7 @@
 package com.twinkle.framework.connector.http.endpoint;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.context.AttributeInfo;
 import com.twinkle.framework.api.exception.ConfigurationException;
@@ -89,7 +89,7 @@ public abstract class AbstractHttpHandler implements HttpHandler {
         AttributeNode tempNode = new AttributeNode();
         tempNode.setAttrName(_obj.getString("HttpAttr"));
         tempNode.setAttrNEAttrMapItem(tempItem);
-        tempNode.addAnnotation("@io.swagger.annotations.ApiParam(value = \"" + tempAttrInfo.getName() + "\")");
+        tempNode.addAnnotation("@io.swagger.v3.oas.annotations.Parameter(name = \"" + tempAttrInfo.getName() + "\")");
         tempNode.setAttributeInfo(tempAttrInfo);
 
         StringBuilder tempBuilder;

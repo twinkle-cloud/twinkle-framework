@@ -642,7 +642,7 @@ public class TypeUtil {
         List<AnnotationDef> tempDefList = new ArrayList<>(1);
 
         try {
-            AnnotationDef tempDefine = AnnotationDefBuilder.getAnnotationDef("@io.swagger.annotations.ApiModelProperty(hidden = true)", AnnotationDef.class.getClassLoader());
+            AnnotationDef tempDefine = AnnotationDefBuilder.getAnnotationDef("@io.swagger.v3.oas.annotations.media.Schema(hidden = true)", AnnotationDef.class.getClassLoader());
             tempDefList.add(tempDefine);
         } catch (ClassNotFoundException e) {
             log.warn("Failed to build the Flag field [{}]'s annotation list.", _fieldName);

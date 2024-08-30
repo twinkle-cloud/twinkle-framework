@@ -1,10 +1,10 @@
 package com.twinkle.framework.struct.serialize;
 
-import com.alibaba.fastjson.JSONWriter;
-import com.twinkle.framework.struct.lang.StructAttribute;
-import com.twinkle.framework.struct.ref.AttributeRef;
+import com.alibaba.fastjson2.JSONWriter;
 import com.twinkle.framework.core.lang.util.*;
 import com.twinkle.framework.struct.asm.descriptor.SAAttributeDescriptor;
+import com.twinkle.framework.struct.lang.StructAttribute;
+import com.twinkle.framework.struct.ref.AttributeRef;
 import com.twinkle.framework.struct.type.*;
 import com.twinkle.framework.struct.util.StructAttributeArray;
 
@@ -28,7 +28,7 @@ public class IntrospectionSerializer extends AbstractSerializer {
     @Override
     protected void writeStructAttribute(StructAttribute _attr, JSONWriter _writer) throws IOException {
         if (_attr == null) {
-            _writer.writeValue(null);
+            _writer.writeAny(null);//writeValue
         } else {
             StructType _tempSAType = _attr.getType();
             _writer.startObject();
@@ -52,7 +52,8 @@ public class IntrospectionSerializer extends AbstractSerializer {
      */
     private void serializeAttribute(StructAttribute _attr, AttributeRef _attrRef, JSONWriter _writer) throws IOException {
         if (_attr.isAttributeSet(_attrRef)) {
-            _writer.writeKey(_attrRef.getName());
+            _writer.writeName(_attrRef.getName());//writeKey        _writer.writeName(_attrRef.getName());
+            _writer.writeColon();
             AttributeType _tempType = _attrRef.getType();
             if (!_tempType.isPrimitiveType() && !_tempType.isStringType()) {
                 if (_tempType.isArrayType()) {
@@ -79,23 +80,23 @@ public class IntrospectionSerializer extends AbstractSerializer {
      */
     private void serializePrimitiveAttribute(StructAttribute _attr, AttributeRef _attrRef, AttributeType _structType, JSONWriter _writer) throws IOException {
         if (_structType == PrimitiveType.BYTE) {
-            _writer.writeValue((long) _attr.getByte(_attrRef));
+            _writer.writeInt64(_attr.getByte(_attrRef));
         } else if (_structType == PrimitiveType.SHORT) {
-            _writer.writeValue((long) _attr.getShort(_attrRef));
+            _writer.writeInt64(_attr.getShort(_attrRef));
         } else if (_structType == PrimitiveType.INT) {
-            _writer.writeValue((long) _attr.getInt(_attrRef));
+            _writer.writeInt64(_attr.getInt(_attrRef));
         } else if (_structType == PrimitiveType.LONG) {
-            _writer.writeValue(_attr.getLong(_attrRef));
+            _writer.writeInt64(_attr.getLong(_attrRef));
         } else if (_structType == PrimitiveType.FLOAT) {
-            _writer.writeValue((double) _attr.getFloat(_attrRef));
+            _writer.writeDouble(_attr.getFloat(_attrRef));
         } else if (_structType == PrimitiveType.DOUBLE) {
-            _writer.writeValue(_attr.getDouble(_attrRef));
+            _writer.writeDouble(_attr.getDouble(_attrRef));
         } else if (_structType == PrimitiveType.BOOLEAN) {
-            _writer.writeValue(_attr.getBoolean(_attrRef));
+            _writer.writeBool(_attr.getBoolean(_attrRef));
         } else if (_structType == PrimitiveType.CHAR) {
-            _writer.writeValue(Character.toString(_attr.getChar(_attrRef)));
+            _writer.writeString(Character.toString(_attr.getChar(_attrRef)));
         } else if (_structType == StringType.STRING) {
-            _writer.writeValue(_attr.getString(_attrRef));
+            _writer.writeString(_attr.getString(_attrRef));
         } else {
             throw new RuntimeException("Unexpected type: " + _structType);
         }
@@ -114,50 +115,32 @@ public class IntrospectionSerializer extends AbstractSerializer {
     private void serializeArrayAttribute(StructAttribute _attr, AttributeRef _attrRef, AttributeType _structType, JSONWriter _writer) throws IOException {
         _writer.startArray();
         if (_structType == ArrayType.BYTE_ARRAY) {
-            ByteArray tempArray = (ByteArray) _attr.getArray(_attrRef);
-            for (int i = 0; i < tempArray.length(); ++i) {
-                _writer.writeValue((long) tempArray.get(i));
-            }
+            MutableByteArray tempArray = (MutableByteArray) _attr.getArray(_attrRef);
+            _writer.writeInt8(tempArray.array());
         } else if (_structType == ArrayType.SHORT_ARRAY) {
-            ShortArray tempArray = (ShortArray) _attr.getArray(_attrRef);
-            for (int i = 0; i < tempArray.length(); ++i) {
-                _writer.writeValue((long) tempArray.get(i));
-            }
+            MutableShortArray tempArray = (MutableShortArray) _attr.getArray(_attrRef);
+            _writer.writeInt16(tempArray.array());
         } else if (_structType == ArrayType.INT_ARRAY) {
-            IntegerArray tempArray = (IntegerArray) _attr.getArray(_attrRef);
-            for (int i = 0; i < tempArray.length(); ++i) {
-                _writer.writeValue((long) tempArray.get(i));
-            }
+            MutableIntegerArray tempArray = (MutableIntegerArray) _attr.getArray(_attrRef);
+            _writer.writeInt32(tempArray.array());
         } else if (_structType == ArrayType.LONG_ARRAY) {
-            LongArray tempArray = (LongArray) _attr.getArray(_attrRef);
-            for (int i = 0; i < tempArray.length(); ++i) {
-                _writer.writeValue(tempArray.get(i));
-            }
+            MutableLongArray tempArray = (MutableLongArray) _attr.getArray(_attrRef);
+            _writer.writeInt64(tempArray.array());
         } else if (_structType == ArrayType.FLOAT_ARRAY) {
-            FloatArray tempArray = (FloatArray) _attr.getArray(_attrRef);
-            for (int i = 0; i < tempArray.length(); ++i) {
-                _writer.writeValue((double) tempArray.get(i));
-            }
+            MutableFloatArray tempArray = (MutableFloatArray) _attr.getArray(_attrRef);
+            _writer.writeFloat(tempArray.array());
         } else if (_structType == ArrayType.DOUBLE_ARRAY) {
-            DoubleArray tempArray = (DoubleArray) _attr.getArray(_attrRef);
-            for (int i = 0; i < tempArray.length(); ++i) {
-                _writer.writeValue(tempArray.get(i));
-            }
+            MutableDoubleArray tempArray = (MutableDoubleArray) _attr.getArray(_attrRef);
+            _writer.writeDouble(tempArray.array());
         } else if (_structType == ArrayType.CHAR_ARRAY) {
-            CharArray tempArray = (CharArray) _attr.getArray(_attrRef);
-            for (int i = 0; i < tempArray.length(); ++i) {
-                _writer.writeValue(Character.toString(tempArray.get(i)));
-            }
+            MutableCharArray tempArray = (MutableCharArray) _attr.getArray(_attrRef);
+            _writer.writeString(tempArray.array());
         } else if (_structType == ArrayType.BOOLEAN_ARRAY) {
-            BooleanArray tempArray = (BooleanArray) _attr.getArray(_attrRef);
-            for (int i = 0; i < tempArray.length(); ++i) {
-                _writer.writeValue(tempArray.get(i));
-            }
+            MutableBooleanArray tempArray = (MutableBooleanArray) _attr.getArray(_attrRef);
+            _writer.writeBool(tempArray.array());
         } else if (_structType == ArrayType.STRING_ARRAY) {
-            StringArray tempArray = (StringArray) _attr.getArray(_attrRef);
-            for (int i = 0; i < tempArray.length(); ++i) {
-                _writer.writeValue(tempArray.get(i));
-            }
+            MutableStringArray tempArray = (MutableStringArray) _attr.getArray(_attrRef);
+            _writer.writeString(tempArray.array());
         } else if (_structType.isArrayType()) {
             StructAttributeArray tempArray = (StructAttributeArray) _attr.getArray(_attrRef);
             for (int i = 0; i < tempArray.length(); ++i) {

@@ -1,8 +1,7 @@
 package com.twinkle.framework.context.manager;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializeConfig;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.twinkle.framework.api.component.AbstractComponent;
 import com.twinkle.framework.api.config.Configurable;
 import com.twinkle.framework.api.constant.ExceptionCode;
@@ -11,15 +10,12 @@ import com.twinkle.framework.context.PrimitiveAttributeSchema;
 import com.twinkle.framework.core.lang.ObjectAttribute;
 import com.twinkle.framework.struct.context.StructAttributeSchema;
 import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
+import com.twinkle.framework.struct.error.*;
 import com.twinkle.framework.struct.factory.StructAttributeFactoryCenter;
 import com.twinkle.framework.struct.factory.StructAttributeFactoryCenterImpl;
-import com.twinkle.framework.struct.serialize.FastJSONStructAttributeSerializer;
-import com.twinkle.framework.struct.utils.StructAttributeUtil;
-import com.twinkle.framework.struct.error.*;
 import com.twinkle.framework.struct.type.AttributeType;
-import com.twinkle.framework.struct.lang.StructAttribute;
-import com.twinkle.framework.struct.type.StructType;
 import com.twinkle.framework.struct.type.AttributeTypeManager;
+import com.twinkle.framework.struct.type.StructType;
 import com.twinkle.framework.struct.utils.StructAttributeNameValidator;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -272,14 +268,14 @@ public class StructAttributeManager extends AbstractComponent implements Configu
         }
         _typeList.remove(_typeList.size() - 1);
     }
-
-    /**
-     * Add FastJSON Serializer support for Struct Attributes.
-     */
-    public final void addFastJsonSerializerSupport() {
-        for (String tempItem : this.structAttributeList) {
-            StructAttribute tempAttr = StructAttributeUtil.newStructAttribute(tempItem);
-            SerializeConfig.getGlobalInstance().put(tempAttr.getClass(), new FastJSONStructAttributeSerializer());
-        }
-    }
+//
+//    /**
+//     * Add FastJSON Serializer support for Struct Attributes.
+//     */
+//    public final void addFastJsonSerializerSupport() {
+//        for (String tempItem : this.structAttributeList) {
+//            StructAttribute tempAttr = StructAttributeUtil.newStructAttribute(tempItem);
+//            SerializeConfig.getGlobalInstance().put(tempAttr.getClass(), new FastJSONStructAttributeSerializer());
+//        }
+//    }
 }

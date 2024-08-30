@@ -1,11 +1,5 @@
 package com.twinkle.framework.bootstarter.config;
 
-import com.alibaba.fastjson.parser.ParserConfig;
-import com.alibaba.fastjson.serializer.SerializeConfig;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-
 /**
  * Function: TODO ADD FUNCTION. <br/>
  * Reason:	 TODO ADD REASON. <br/>

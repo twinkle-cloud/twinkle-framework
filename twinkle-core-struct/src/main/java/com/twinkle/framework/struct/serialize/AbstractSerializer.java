@@ -1,6 +1,6 @@
 package com.twinkle.framework.struct.serialize;
 
-import com.alibaba.fastjson.JSONWriter;
+import com.alibaba.fastjson2.JSONWriter;
 import com.twinkle.framework.struct.lang.StructAttribute;
 
 import java.io.IOException;
@@ -32,9 +32,9 @@ public abstract class AbstractSerializer {
     protected void writeHeader(StructAttribute _attr, JSONWriter _writer) throws IOException {
         if (this.isSerializable) {
             _writer.startObject();
-            _writer.writeKey(JsonSerializer.TYPE_PROPERTY);
-            _writer.writeValue(_attr.getType().getQualifiedName());
-            _writer.writeKey(JsonSerializer.StructAttribute_PROPERTY);
+//            _writer.writeName(JsonSerializer.TYPE_PROPERTY);//writeKey
+            _writer.writeNameValue(JsonSerializer.TYPE_PROPERTY, _attr.getType().getQualifiedName());//writeValue
+            _writer.writeName(JsonSerializer.StructAttribute_PROPERTY);
         }
     }
 

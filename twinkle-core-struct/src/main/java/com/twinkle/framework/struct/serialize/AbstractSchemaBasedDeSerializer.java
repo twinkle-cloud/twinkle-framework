@@ -1,17 +1,16 @@
 package com.twinkle.framework.struct.serialize;
 
-import com.alibaba.fastjson.JSONReader;
+import com.alibaba.fastjson2.JSONReader;
 import com.twinkle.framework.asm.factory.BeanFactory;
 import com.twinkle.framework.core.lang.util.*;
 import com.twinkle.framework.struct.lang.StructAttribute;
 import com.twinkle.framework.struct.util.ArrayAllocator;
 import com.twinkle.framework.struct.util.MutableStructAttributeArray;
 import com.twinkle.framework.struct.util.StructAttributeArray;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -24,7 +23,7 @@ import java.util.Map;
  */
 public abstract class AbstractSchemaBasedDeSerializer extends AbstractDeserializer {
     public static final int INITIAL_CAPACITY = 8;
-    protected Map<String, AbstractSchemaBasedDeSerializer> deserializers = new HashMap();
+    protected Map<String, AbstractSchemaBasedDeSerializer> deserializers = new HashMap<>();
     protected BeanFactory beanFactory;
     protected ArrayAllocator arrayAllocator;
 
@@ -58,12 +57,9 @@ public abstract class AbstractSchemaBasedDeSerializer extends AbstractDeserializ
             }
         } else {
             StructAttribute tempAttr = this.newStructAttribute();
-            _reader.startObject();
-
-            while(_reader.hasNext()) {
+            while(!_reader.isEnd()) {
                 this.onProperty(_reader.readString(), _reader, tempAttr);
             }
-            _reader.endObject();
             return tempAttr;
         }
     }
@@ -79,19 +75,20 @@ public abstract class AbstractSchemaBasedDeSerializer extends AbstractDeserializ
     }
 
     protected byte readByte(JSONReader _reader) throws IOException {
-        return (byte)(_reader.readInteger() & 255);
+        return _reader.readInt8Value();
     }
 
     protected short readShort(JSONReader _reader) throws IOException {
-        return (short)(_reader.readInteger() & '\uffff');
+//        return (short)(_reader.readInteger() & '\uffff');
+        return _reader.readInt16Value();
     }
 
     protected int readInt(JSONReader _reader) throws IOException {
-        return _reader.readInteger();
+        return _reader.readInt32Value();
     }
 
     protected long readLong(JSONReader _reader) throws IOException {
-        return _reader.readLong();
+        return _reader.readInt64Value();
     }
 
     protected float readFloat(JSONReader _reader) throws IOException {
@@ -116,121 +113,102 @@ public abstract class AbstractSchemaBasedDeSerializer extends AbstractDeserializ
 
     protected ByteArray readByteArray(JSONReader _reader) throws IOException {
         MutableByteArray tempArray = this.arrayAllocator.newByteArray(INITIAL_CAPACITY);
-        _reader.startArray();
 
-        while(_reader.hasNext()) {
-            tempArray.add((byte)(_reader.readInteger() & 255));
+        int[] tempResultArray = _reader.readInt32ValueArray();
+        if (tempResultArray != null && tempResultArray.length > 0) {
+            for (int i = 0; i < tempResultArray.length; ++i) {
+                tempArray.add((byte) tempResultArray[i]);
+            }
         }
-
-        _reader.endArray();
         return tempArray;
     }
 
     protected ShortArray readShortArray(JSONReader _reader) throws IOException {
         MutableShortArray tempArray = this.arrayAllocator.newShortArray(INITIAL_CAPACITY);
-        _reader.startArray();
-
-        while(_reader.hasNext()) {
-            tempArray.add((short)(_reader.readInteger() & '\uffff'));
+        int[] tempResultArray = _reader.readInt32ValueArray();
+        if (tempResultArray != null && tempResultArray.length > 0) {
+            for (int i = 0; i < tempResultArray.length; ++i) {
+                tempArray.add((short) tempResultArray[i]);
+            }
         }
-
-        _reader.endArray();
         return tempArray;
     }
 
     protected IntegerArray readIntegerArray(JSONReader _reader) throws IOException {
         MutableIntegerArray tempArray = this.arrayAllocator.newIntegerArray(INITIAL_CAPACITY);
-        _reader.startArray();
-
-        while(_reader.hasNext()) {
-            tempArray.add(_reader.readInteger());
+        int[] tempResultArray = _reader.readInt32ValueArray();
+        if (tempResultArray != null && tempResultArray.length > 0) {
+            tempArray.transfer(tempResultArray, 0, 0, tempResultArray.length);
         }
-
-        _reader.endArray();
         return tempArray;
     }
 
     protected LongArray readLongArray(JSONReader _reader) throws IOException {
         MutableLongArray tempArray = this.arrayAllocator.newLongArray(INITIAL_CAPACITY);
-        _reader.startArray();
-
-        while(_reader.hasNext()) {
-            tempArray.add(_reader.readLong());
+        long[] tempResultArray = _reader.readInt64ValueArray();
+        if (tempResultArray != null && tempResultArray.length > 0) {
+            tempArray.transfer(tempResultArray, 0, 0, tempResultArray.length);
         }
-
-        _reader.endArray();
         return tempArray;
     }
 
     protected FloatArray readFloatArray(JSONReader _reader) throws IOException {
         MutableFloatArray tempArray = this.arrayAllocator.newFloatArray(INITIAL_CAPACITY);
-        _reader.startArray();
-
-        while(_reader.hasNext()) {
-            tempArray.add(Float.valueOf(_reader.readString()));
+        List<Float> tempResultList = new ArrayList<>();
+        _reader.readArray(tempResultList, Float.TYPE);
+        if (CollectionUtils.isNotEmpty(tempResultList)) {
+            tempArray.copyFrom(tempResultList, 0, 0, tempResultList.size());
         }
-
-        _reader.endArray();
         return tempArray;
     }
 
     protected DoubleArray readDoubleArray(JSONReader _reader) throws IOException {
         MutableDoubleArray tempArray = this.arrayAllocator.newDoubleArray(INITIAL_CAPACITY);
-        _reader.startArray();
-
-        while(_reader.hasNext()) {
-            tempArray.add(Double.valueOf(_reader.readString()));
+        List<Double> tempResultList = new ArrayList<>();
+        _reader.readArray(tempResultList, Double.TYPE);
+        if (CollectionUtils.isNotEmpty(tempResultList)) {
+            tempArray.copyFrom(tempResultList, 0, 0, tempResultList.size());
         }
-
-        _reader.endArray();
         return tempArray;
     }
 
     protected CharArray readCharArray(JSONReader _reader) throws IOException {
         MutableCharArray tempArray = this.arrayAllocator.newCharArray(INITIAL_CAPACITY);
-        _reader.startArray();
-
-        while(_reader.hasNext()) {
-            tempArray.add(_reader.readString().charAt(0));
+        String[] tempResultArray = _reader.readStringArray();
+        if (tempResultArray!= null && tempResultArray.length > 0) {
+            for (int i = 0; i < tempResultArray.length; ++i) {
+                tempArray.add(tempResultArray[i].charAt(0));
+            }
         }
-
-        _reader.endArray();
         return tempArray;
     }
 
     protected StringArray readStringArray(JSONReader _reader) throws IOException {
         MutableStringArray tempArray = this.arrayAllocator.newStringArray(INITIAL_CAPACITY);
-        _reader.startArray();
-
-        while(_reader.hasNext()) {
-            tempArray.add(_reader.readString());
+        String[] tempResultArray = _reader.readStringArray();
+        if (tempResultArray!= null && tempResultArray.length > 0) {
+            tempArray.copyFrom(tempResultArray, 0, 0, tempResultArray.length);
         }
-
-        _reader.endArray();
         return tempArray;
     }
 
     protected BooleanArray readBooleanArray(JSONReader _reader) throws IOException {
         MutableBooleanArray tempArray = this.arrayAllocator.newBooleanArray(INITIAL_CAPACITY);
-        _reader.startArray();
-
-        while(_reader.hasNext()) {
-            tempArray.add(Boolean.valueOf(_reader.readString()));
+        List<Boolean> tempResultList = new ArrayList<>();
+        _reader.readArray(tempResultList, Boolean.TYPE);
+        if (CollectionUtils.isNotEmpty(tempResultList)) {
+            tempArray.copyFrom(tempResultList, 0, 0, tempResultList.size());
         }
-
-        _reader.endArray();
         return tempArray;
     }
 
     protected StructAttributeArray readStructAttributeArray(JSONReader _reader, String _attrName) throws IOException {
         MutableStructAttributeArray tempArray = this.arrayAllocator.newStructAttributeArray(INITIAL_CAPACITY);
-        _reader.startArray();
-
-        while(_reader.hasNext()) {
-            tempArray.add(this.readStructAttribute(_reader, _attrName));
+        if (_reader.nextIfArrayStart()) {
+            while (!_reader.nextIfArrayEnd()) {
+                tempArray.add(this.readStructAttribute(_reader, _attrName));
+            }
         }
-
-        _reader.endArray();
         return tempArray;
     }
 }

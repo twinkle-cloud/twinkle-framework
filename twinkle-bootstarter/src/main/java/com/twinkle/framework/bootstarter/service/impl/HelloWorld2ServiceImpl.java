@@ -1,7 +1,7 @@
 package com.twinkle.framework.bootstarter.service.impl;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.twinkle.framework.bootstarter.service.HelloWorld2Service;
-import com.twinkle.framework.datasource.annotation.TwinkleDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ public class HelloWorld2ServiceImpl implements HelloWorld2Service {
         this.dataSource = "usermgmt";
     }
 
-    @TwinkleDataSource(value="#_name")
+    @DS(value="#_name")
     @Override
     public String sayHello(String _name) {
 //        jdbcTemplate.update("INSERT INTO U_USER (USER_NAME,PASSWORD) VALUES(?, ?)",

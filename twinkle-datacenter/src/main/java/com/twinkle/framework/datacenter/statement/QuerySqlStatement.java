@@ -1,12 +1,12 @@
 package com.twinkle.framework.datacenter.statement;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.context.NormalizedContext;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.api.exception.DataCenterException;
 import com.twinkle.framework.datacenter.support.HybridAttribute;
-import com.twinkle.framework.datasource.annotation.TwinkleDataSource;
 import com.twinkle.framework.struct.error.AttributeNotSetException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -101,7 +101,7 @@ public class QuerySqlStatement extends AbstractSqlStatement {
         return tempBuffer.toString();
     }
 
-    @TwinkleDataSource(value = "#_dataSource")
+    @DS(value = "#_dataSource")
     @Override
     public void execute(NormalizedContext _context, String _dataSource) throws DataCenterException {
         log.debug("Going to apply query statement [{}].", this.getPreparedSQL());

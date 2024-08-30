@@ -16,18 +16,16 @@
 
 package com.twinkle.framework.configure.client.bootstrap;
 
-import java.io.Closeable;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import javax.annotation.PostConstruct;
-
+import jakarta.annotation.PostConstruct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.cloud.context.refresh.ContextRefresher;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
+
+import java.io.Closeable;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.springframework.util.StringUtils.hasText;
 

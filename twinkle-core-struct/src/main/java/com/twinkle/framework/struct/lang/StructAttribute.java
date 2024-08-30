@@ -4,7 +4,7 @@ import com.twinkle.framework.core.lang.util.Array;
 import com.twinkle.framework.struct.error.*;
 import com.twinkle.framework.struct.ref.AttributeRef;
 import com.twinkle.framework.struct.type.StructType;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Function: TODO ADD FUNCTION. <br/>
@@ -21,7 +21,7 @@ public interface StructAttribute extends Cloneable {
      *
      * @return
      */
-    @ApiModelProperty(hidden = true)
+    @Schema(hidden = true)
     StructType getType();
 
     /**

@@ -92,7 +92,8 @@ public abstract class AbstractServer {
             log.warn("The NE [{}] does not exists in NormalizedContext.", _neIndex);
             return null;
         }
-        return (T) tempAttr.getObjectValue();
+        T tempValue = (T) tempAttr.getObjectValue();
+        return tempValue;
     }
 
     /**

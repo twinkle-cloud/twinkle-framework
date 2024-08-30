@@ -1,7 +1,7 @@
 package com.twinkle.framework.struct.serialize;
 
-import com.alibaba.fastjson.JSONReader;
-import com.alibaba.fastjson.JSONWriter;
+import com.alibaba.fastjson2.JSONReader;
+import com.alibaba.fastjson2.JSONWriter;
 import com.twinkle.framework.asm.serialize.TextSerializerBase;
 import com.twinkle.framework.struct.type.AttributeType;
 import com.twinkle.framework.struct.lang.StructAttribute;
@@ -39,12 +39,14 @@ public abstract class AbstractJsonSerializer extends TextSerializerBase<StructAt
     }
 
     protected JSONWriter getJSONWriter(Writer _writer) {
-        JSONWriter tempJsonWriter = new JSONWriter(_writer);
+//        JSONWriter tempJsonWriter = new JSONWriter(_writer);
+
+        JSONWriter tempJsonWriter = JSONWriter.of();
         return tempJsonWriter;
     }
 
     protected JSONReader getJSONReader(Reader _reader) {
-        return new JSONReader(_reader);
+        return JSONReader.of(_reader);
     }
     @Override
     public boolean isSerializeType() {
@@ -76,6 +78,7 @@ public abstract class AbstractJsonSerializer extends TextSerializerBase<StructAt
     public void write(StructAttribute _attr, Writer _writer) throws IOException {
         JSONWriter tempJSONWriter = this.getJSONWriter(_writer);
         this.write(_attr, tempJSONWriter);
+        tempJSONWriter.flushTo(_writer);//FastJson2 构造函数不再支持将Writer内置进去2024/08/22
         tempJSONWriter.close();
     }
 
@@ -90,6 +93,7 @@ public abstract class AbstractJsonSerializer extends TextSerializerBase<StructAt
             this.write(tempItem, tempJSONWriter);
         }
         tempJSONWriter.endArray();
+        tempJSONWriter.flushTo(_writer);//FastJson2 构造函数不再支持将Writer内置进去2024/08/22
         tempJSONWriter.close();
     }
     @Override
@@ -108,10 +112,10 @@ public abstract class AbstractJsonSerializer extends TextSerializerBase<StructAt
         JSONReader tempJSONReader = this.getJSONReader(_reader);
         List<StructAttribute> tempList = new ArrayList<>();
         tempJSONReader.startArray();
-
-        while(tempJSONReader.hasNext()) {
-            tempList.add(this.read(tempJSONReader));
-        }
+        tempList.addAll(tempJSONReader.readArray());
+//        while(tempJSONReader.readA) {
+//            tempList.add(this.read(tempJSONReader));
+//        }
 
         tempJSONReader.endArray();
         tempJSONReader.close();

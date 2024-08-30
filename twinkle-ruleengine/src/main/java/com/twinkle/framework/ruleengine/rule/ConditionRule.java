@@ -1,7 +1,8 @@
 package com.twinkle.framework.ruleengine.rule;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
+import com.twinkle.framework.api.component.rule.IRule;
 import com.twinkle.framework.api.component.rule.IRuleChain;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.context.NormalizedContext;
@@ -99,5 +100,12 @@ public class ConditionRule extends AbstractRule {
         } else {
             this.falseRuleChain.applyRule(_context);
         }
+    }
+
+    @Override
+    public void addNextRule(IRule _rule) {
+        this.nextRule = _rule;
+        this.trueRuleChain.addNextRule(_rule);
+        this.falseRuleChain.addNextRule(_rule);
     }
 }
