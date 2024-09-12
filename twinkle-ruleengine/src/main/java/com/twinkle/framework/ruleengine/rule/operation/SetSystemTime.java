@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public class SetSystemTime extends AbstractAttributeOperation {
+public class SetSystemTime extends AbstractConfigurableAttributeOperation {
     private int destIndex;
     private Attribute destAttribute;
     private int attrType = -1;

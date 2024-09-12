@@ -3,9 +3,12 @@ package com.twinkle.framework.context;
 import com.twinkle.framework.api.context.NormalizedAttributeType;
 import com.twinkle.framework.api.context.NormalizedContext;
 import com.twinkle.framework.context.model.DefaultNormalizedContext;
+import com.twinkle.framework.struct.context.StructAttributeSchemaManager;
 import com.twinkle.framework.struct.error.StructAttributeCopyException;
 import com.twinkle.framework.struct.error.StructAttributeException;
+import com.twinkle.framework.struct.factory.StructAttributeFactory;
 import com.twinkle.framework.struct.lang.StructAttribute;
+import com.twinkle.framework.struct.type.StructType;
 import com.twinkle.framework.struct.utils.StructAttributePrintFormatter;
 
 /**
@@ -21,6 +24,8 @@ public class StructAttributeContextAdapter extends DefaultNormalizedContext {
     private static final long serialVersionUID = -2185322722215639575L;
     private transient StructAttribute structAttribute = null;
     private transient boolean structAttributeIsSet = false;
+    private static final StructType ROOT_STRUCT_TYPE = StructAttributeSchemaManager.getStructAttributeSchema().getRootNMEType();
+    private static final StructAttributeFactory STRUCT_ATTRIBUTE_SCHEMA_FACTORY = StructAttributeSchemaManager.getStructAttributeFactory();
     public StructAttributeContextAdapter() {
     }
 
@@ -40,11 +45,11 @@ public class StructAttributeContextAdapter extends DefaultNormalizedContext {
         super(_neType, _createFlag);
     }
 
-    public StructAttribute getNME() {
+    public StructAttribute getStructAttribute() {
         return this.structAttribute;
     }
 
-    public void setNME(StructAttribute _attr) {
+    public void setStructAttribute(StructAttribute _attr) {
         this.structAttribute = _attr;
         this.structAttributeIsSet = _attr != null;
     }
@@ -90,7 +95,7 @@ public class StructAttributeContextAdapter extends DefaultNormalizedContext {
     public void set(NormalizedContext _ne) {
         super.set(_ne);
         if (_ne instanceof StructAttributeContextAdapter) {
-            StructAttribute tempAttr = ((StructAttributeContextAdapter)_ne).getNME();
+            StructAttribute tempAttr = ((StructAttributeContextAdapter)_ne).getStructAttribute();
 
             try {
                 if (tempAttr == null) {
@@ -113,7 +118,7 @@ public class StructAttributeContextAdapter extends DefaultNormalizedContext {
     public void update(NormalizedContext _context) {
         super.update(_context);
         if (_context instanceof StructAttributeContextAdapter) {
-            StructAttribute tempAttr = ((StructAttributeContextAdapter)_context).getNME();
+            StructAttribute tempAttr = ((StructAttributeContextAdapter)_context).getStructAttribute();
 
             try {
                 if (tempAttr  == null) {
@@ -170,5 +175,13 @@ public class StructAttributeContextAdapter extends DefaultNormalizedContext {
         }
 
         return tempBuilder.toString();
+    }
+
+    private void initRootStructAttribute() {
+        if (ROOT_STRUCT_TYPE != null) {
+            StructAttribute tempAttr = STRUCT_ATTRIBUTE_SCHEMA_FACTORY.newStructAttribute(ROOT_STRUCT_TYPE);
+            this.setStructAttribute(tempAttr);
+        }
+
     }
 }

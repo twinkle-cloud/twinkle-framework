@@ -2,6 +2,7 @@ package com.twinkle.framework.connector.http.endpoint;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import com.twinkle.framework.api.component.AbstractConfigurableComponent;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.context.AttributeInfo;
 import com.twinkle.framework.api.exception.ConfigurationException;
@@ -24,7 +25,7 @@ import java.util.*;
  * @since JDK 1.8
  */
 @Slf4j
-public abstract class AbstractHttpHandler implements HttpHandler {
+public abstract class AbstractHttpHandler extends AbstractConfigurableComponent implements HttpHandler {
 
     /**
      * Pack Http attr-- Ne Attribute Map.

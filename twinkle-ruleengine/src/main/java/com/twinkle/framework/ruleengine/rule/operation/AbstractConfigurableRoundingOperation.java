@@ -17,7 +17,7 @@ import java.util.StringTokenizer;
  * @see
  * @since JDK 1.8
  */
-public abstract class AbstractRoundingOperation extends AbstractBinaryOperation {
+public abstract class AbstractConfigurableRoundingOperation extends AbstractConfigurableBinaryOperation {
     private int precision = 0;
     private int precisionAttrIndex = -1;
     private double defaultPrecision = 1.0D;

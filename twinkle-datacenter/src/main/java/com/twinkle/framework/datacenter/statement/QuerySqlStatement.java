@@ -27,7 +27,7 @@ import java.sql.SQLException;
  * @since JDK 1.8
  */
 @Slf4j
-public class QuerySqlStatement extends AbstractSqlStatement {
+public class QuerySqlStatement extends AbstractConfigurableSqlStatement {
     /**
      * From tables, can be 1 or 1more tables join model.
      */
@@ -83,8 +83,7 @@ public class QuerySqlStatement extends AbstractSqlStatement {
 
     @Override
     protected String packSqlStatement() {
-        StringBuffer tempBuffer = new StringBuffer("SELECT ");
-        StringBuffer tempValueBuffer = new StringBuffer();
+        StringBuilder tempBuffer = new StringBuilder("SELECT ");
         for (int i = 0; i < this.dbFieldArray.length; i++) {
             if (i == 0) {
                 tempBuffer.append(this.dbFieldArray[i]);

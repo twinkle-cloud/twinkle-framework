@@ -1,7 +1,6 @@
 package com.twinkle.framework.api.component.datacenter;
 
-import com.twinkle.framework.api.component.IComponent;
-import com.twinkle.framework.api.config.Configurable;
+import com.twinkle.framework.api.component.IConfigurableComponent;
 import com.twinkle.framework.api.context.NormalizedContext;
 import com.twinkle.framework.api.exception.DataCenterException;
 
@@ -14,7 +13,7 @@ import com.twinkle.framework.api.exception.DataCenterException;
  * @see
  * @since JDK 1.8
  */
-public interface IStatement extends IComponent, Configurable {
+public interface IStatement extends IConfigurableComponent {
     int TYPE_SQL = 0;
     int TYPE_MONGODB = 1;
     int TYPE_GRAPH = 2;

@@ -9,7 +9,7 @@ package com.twinkle.framework.ruleengine.rule.operation;
  * @see
  * @since JDK 1.8
  */
-public class RoundOperation extends AbstractRoundingOperation {
+public class RoundOperation extends AbstractConfigurableRoundingOperation {
     @Override
     protected double roundingMethod(double _srcValue, double _precision) {
         return Math.round(_srcValue * _precision) / _precision;

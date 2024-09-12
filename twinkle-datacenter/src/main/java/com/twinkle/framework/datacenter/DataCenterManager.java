@@ -1,23 +1,17 @@
 package com.twinkle.framework.datacenter;
 
-import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.twinkle.framework.api.component.AbstractComponent;
+import com.twinkle.framework.api.component.AbstractConfigurableComponent;
+import com.twinkle.framework.api.component.IComponentFactory;
 import com.twinkle.framework.api.component.datacenter.IDataCenterManager;
 import com.twinkle.framework.api.component.datacenter.IStatement;
 import com.twinkle.framework.api.component.datacenter.IStatementExecutor;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.api.exception.RuleException;
-import com.twinkle.framework.api.utils.SpringUtil;
-import com.twinkle.framework.configure.component.ComponentFactory;
-import com.twinkle.framework.api.component.IComponentFactory;
+import com.twinkle.framework.configure.component.ListComponentLoader;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.DigestUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +25,7 @@ import java.util.Map;
  * @since JDK 1.8
  */
 @Slf4j
-public class DataCenterManager extends AbstractComponent implements IDataCenterManager {
+public class DataCenterManager extends AbstractConfigurableComponent implements IDataCenterManager {
     /**
      * The statement List.
      */
@@ -39,69 +33,53 @@ public class DataCenterManager extends AbstractComponent implements IDataCenterM
     /**
      * The executor List.
      */
-    private Map<String, String> executorMap;
+    private List<IStatementExecutor> executorList;
 
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
-        JSONArray tempArray = _conf.getJSONArray("StatementNames");
-        JSONArray tempBeanArray = _conf.getJSONArray("Statements");
-        if (tempArray.isEmpty() || tempBeanArray.isEmpty()) {
+        super.configure(_conf);
+        ListComponentLoader<IStatement> tempLoader = new ListComponentLoader<>();
+        List<IStatement> tempList = tempLoader.loadListComponent("StatementNames", "Statements", this.getComponentName("Statements"), _conf);
+        if (tempList.isEmpty()) {
             return;
         }
-        this.statementListMap = new HashMap<>(6);
-        for (int i = 0; i < tempArray.size(); i++) {
-            String tempItem = tempArray.getString(i);
-            for (int j = 0; j < tempBeanArray.size(); j++) {
-                JSONObject tempObj = tempBeanArray.getJSONObject(j);
-                if (tempObj.getString("Name").equals(tempItem)) {
-                    IStatement tempStatement = ComponentFactory.getInstance().loadComponent(this.getComponentName(this.getComponentName(tempItem)), tempObj);
-                    List<IComponentFactory.ComponentNamePair> tempStatementList = this.statementListMap.get(tempStatement.getType());
-                    if (tempStatementList == null) {
-                        tempStatementList = new ArrayList<>(tempArray.size());
-                    }
-
-                    tempStatementList.add(new IComponentFactory.ComponentNamePair(tempItem, tempStatement.getFullPathName()));
-                    this.statementListMap.put(tempStatement.getType(), tempStatementList);
-                    break;
-                }
-            }
-        }
-        tempArray = _conf.getJSONArray("ExecutorNames");
-        tempBeanArray = _conf.getJSONArray("Executors");
-        if (tempArray.isEmpty() || tempBeanArray.isEmpty()) {
+        ListComponentLoader<IStatementExecutor> tempExecutorLoader = new ListComponentLoader<>();
+        this.executorList = tempExecutorLoader.loadListComponent("ExecutorNames", "Executors", this.getComponentName("Executors"), _conf);
+        if (this.executorList.isEmpty()) {
             return;
         }
-        this.executorMap = new HashMap<>(tempArray.size());
-        for (int i = 0; i < tempArray.size(); i++) {
-            String tempItem = tempArray.getString(i);
-            for (int j = 0; j < tempBeanArray.size(); j++) {
-                JSONObject tempObj = tempBeanArray.getJSONObject(j);
-                if (tempObj.getString("Name").equals(tempItem)) {
-                    String tempBeanName = this.getComponentName(tempItem);
-                    IStatementExecutor tempExecutor = ComponentFactory.getInstance().loadComponent(tempBeanName, tempObj);
-                    for(Map.Entry<Integer, List<IComponentFactory.ComponentNamePair>> tempStateMap : this.statementListMap.entrySet()) {
-                        if(CollectionUtils.isEmpty(tempStateMap.getValue())){
-                            continue;
-                        }
-                        tempExecutor.checkStatement(tempStateMap.getValue());
-                    }
-
-                    this.executorMap.put(tempItem, DigestUtils.md5DigestAsHex(tempBeanName.getBytes()));
-                    break;
-                }
-            }
+        for (IStatementExecutor tempExecutor : this.executorList) {
+            tempExecutor.filterStatement(tempList);
         }
     }
 
     @Override
     public IStatementExecutor getStatementExecutor(String _executorName) {
-        String tempBeanName = DigestUtils.md5DigestAsHex(this.getComponentName(_executorName).getBytes());
-        IStatementExecutor tempExecutor = SpringUtil.getBean(tempBeanName, IStatementExecutor.class);
-        if(tempExecutor == null) {
-            throw new RuleException(ExceptionCode.DATACENTER_EXECUTOR_NOT_FOUND, "The Executor ["+ _executorName +"] is not found.");
+        for (IStatementExecutor tempExecutor : this.executorList) {
+            if (tempExecutor.getName().equals(_executorName)) {
+                log.debug("Get the executor [{}] instance.", _executorName);
+                return tempExecutor;
+            }
         }
-        log.debug("Get the executor [{}]'s bean [{}].", _executorName, tempBeanName);
-        return tempExecutor;
+        throw new RuleException(ExceptionCode.DATACENTER_EXECUTOR_NOT_FOUND, "The Executor [" + _executorName + "] is not found.");
     }
 
+    @Override
+    public IStatementExecutor getStatementExecutor(int _executorIndex) {
+        if (_executorIndex < 0 || _executorIndex >= this.executorList.size()) {
+            throw new RuleException(ExceptionCode.DATACENTER_EXECUTOR_NOT_FOUND, "The executor index[" + _executorIndex + "] is out of bounds.");
+        }
+        return this.executorList.get(_executorIndex);
+    }
+
+    @Override
+    public int getStatementExecutorIndexByName(String _executorName) {
+        for (int i = 0; i < this.executorList.size(); i++) {
+            IStatementExecutor tempExecutor = this.executorList.get(i);
+            if (tempExecutor.getName().equals(_executorName)) {
+                return i;
+            }
+        }
+        throw new ConfigurationException(ExceptionCode.DATACENTER_EXECUTOR_NOT_FOUND, "The Executor [" + _executorName + "] is not found.");
+    }
 }

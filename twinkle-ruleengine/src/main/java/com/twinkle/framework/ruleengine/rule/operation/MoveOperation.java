@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public class MoveOperation extends AbstractAttributeOperation {
+public class MoveOperation extends AbstractConfigurableAttributeOperation {
     private int srcIndex;
     private int destIndex;
     private boolean isSrcTree_ = false;
@@ -69,7 +69,7 @@ public class MoveOperation extends AbstractAttributeOperation {
                 _context.setAttribute(this.primitiveAttributeSchema.newAttributeInstance(this.destIndex), this.destIndex);
             }
             if (this.nextRule != null) {
-                ((AbstractAttributeOperation) this.nextRule).reset(_context);
+                ((AbstractConfigurableAttributeOperation) this.nextRule).reset(_context);
             }
         }
     }

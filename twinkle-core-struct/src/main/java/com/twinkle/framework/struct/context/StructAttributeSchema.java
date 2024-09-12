@@ -139,4 +139,16 @@ public interface StructAttributeSchema {
      * @throws StructAttributeTypeAlreadyExistsException
      */
     void addStructAttributeType(StructType _structType) throws NamespaceNotFoundException, StructAttributeTypeAlreadyExistsException;
+
+    default void setRootNMEType(StructType _type) {
+        UnsupportedOperationException tempException = new UnsupportedOperationException("Must be overriden in the subclasses");
+        throw tempException;
+    }
+
+    default StructType getRootNMEType() {
+        UnsupportedOperationException tempException = new UnsupportedOperationException("Must be overriden in the subclasses");
+        throw tempException;
+    }
+
+    String toString();
 }

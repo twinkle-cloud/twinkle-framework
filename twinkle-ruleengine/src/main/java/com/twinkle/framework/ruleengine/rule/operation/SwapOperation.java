@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public class SwapOperation extends AbstractAttributeOperation {
+public class SwapOperation extends AbstractConfigurableAttributeOperation {
     private int srcIndex;
     private int destIndex;
 

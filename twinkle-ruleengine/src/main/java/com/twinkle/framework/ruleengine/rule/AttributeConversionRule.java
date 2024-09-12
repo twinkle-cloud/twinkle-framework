@@ -36,7 +36,7 @@ import java.util.List;
  * @since JDK 1.8
  */
 @Slf4j
-public class AttributeConversionRule extends AbstractRule {
+public class AttributeConversionRule extends AbstractConfigurableRule {
     private boolean autoMapSA2Attribute;
     private boolean autoMapAttribute2SA;
     private boolean createStructAttributeFlag;

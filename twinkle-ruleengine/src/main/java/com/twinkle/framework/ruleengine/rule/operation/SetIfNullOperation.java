@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public class SetIfNullOperation extends AbstractAttributeOperation {
+public class SetIfNullOperation extends AbstractConfigurableAttributeOperation {
     private int destIndex;
     private Attribute destAttr;
     private boolean isSetFlag;
@@ -90,7 +90,7 @@ public class SetIfNullOperation extends AbstractAttributeOperation {
             }
 
             if (this.nextRule != null) {
-                ((AbstractAttributeOperation) this.nextRule).reset(_context);
+                ((AbstractConfigurableAttributeOperation) this.nextRule).reset(_context);
             }
         }
     }

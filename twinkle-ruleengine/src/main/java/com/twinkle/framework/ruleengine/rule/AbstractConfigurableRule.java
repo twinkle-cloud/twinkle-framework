@@ -1,6 +1,6 @@
 package com.twinkle.framework.ruleengine.rule;
 
-import com.twinkle.framework.api.component.AbstractComponent;
+import com.twinkle.framework.api.component.AbstractConfigurableComponent;
 import com.twinkle.framework.api.component.rule.IRule;
 import com.twinkle.framework.context.PrimitiveAttributeSchema;
 import lombok.Data;
@@ -15,7 +15,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public abstract class AbstractRule extends AbstractComponent implements IRule {
+public abstract class AbstractConfigurableRule extends AbstractConfigurableComponent implements IRule {
     /**
      * The Next Rule.
      */
@@ -25,7 +25,7 @@ public abstract class AbstractRule extends AbstractComponent implements IRule {
      */
     protected transient PrimitiveAttributeSchema primitiveAttributeSchema;
 
-    public AbstractRule() {
+    public AbstractConfigurableRule() {
         primitiveAttributeSchema = PrimitiveAttributeSchema.getInstance();
     }
 

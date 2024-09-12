@@ -19,7 +19,7 @@ import java.util.Base64;
  * @since JDK 1.8
  */
 @Slf4j
-public class Base64EncodeOperation extends AbstractBase64Operation {
+public class Base64EncodeOperation extends AbstractConfigurableBase64Operation {
     public static final String OP_CODE = "encBase64";
 
     @Override

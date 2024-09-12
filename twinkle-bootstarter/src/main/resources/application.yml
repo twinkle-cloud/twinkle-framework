@@ -16,6 +16,10 @@ springdoc:
     path: /swagger-ui.html
   packages-to-scan: com.twinkle.framework
 
+twinkle:
+  launch:
+    program-load-path: ./Test.json
+
 ---
 spring:
   config:
@@ -60,6 +64,9 @@ spring:
 springdoc:
   api-docs:
     enabled: true
+twinkle:
+  launch:
+    program-load-path: ./Test.json
 
 ---
 spring:

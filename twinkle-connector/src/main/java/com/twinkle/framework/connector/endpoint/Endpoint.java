@@ -1,7 +1,6 @@
 package com.twinkle.framework.connector.endpoint;
 
-import com.twinkle.framework.api.component.IComponent;
-import com.twinkle.framework.api.config.Configurable;
+import com.twinkle.framework.api.component.IConfigurableComponent;
 import com.twinkle.framework.asm.descriptor.MethodTypeDescriptor;
 
 /**
@@ -13,7 +12,7 @@ import com.twinkle.framework.asm.descriptor.MethodTypeDescriptor;
  * @see
  * @since JDK 1.8
  */
-public interface Endpoint extends Configurable, IComponent {
+public interface Endpoint extends IConfigurableComponent {
 
     /**
      * Get Method's descriptor.

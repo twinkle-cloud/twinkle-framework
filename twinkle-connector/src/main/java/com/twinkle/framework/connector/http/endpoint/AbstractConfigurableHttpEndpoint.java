@@ -1,7 +1,7 @@
 package com.twinkle.framework.connector.http.endpoint;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.twinkle.framework.api.component.AbstractComponent;
+import com.twinkle.framework.api.component.AbstractConfigurableComponent;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.asm.descriptor.*;
@@ -29,7 +29,7 @@ import java.util.Set;
  */
 @Slf4j
 @Getter
-public abstract class AbstractHttpEndpoint extends AbstractComponent implements HttpEndpoint {
+public abstract class AbstractConfigurableHttpEndpoint extends AbstractConfigurableComponent implements HttpEndpoint {
     /**
      * The request type for this method.
      */
@@ -61,6 +61,7 @@ public abstract class AbstractHttpEndpoint extends AbstractComponent implements 
 
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
+        super.configure(_conf);
         this.methodName = _conf.getString("Name");
         this.requestType = HttpEndPointMethod.valueOf(_conf.getIntValue("RequestType"));
         this.description = _conf.getString("Description");

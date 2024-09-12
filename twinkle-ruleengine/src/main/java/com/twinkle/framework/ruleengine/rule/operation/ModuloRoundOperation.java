@@ -9,7 +9,7 @@ package com.twinkle.framework.ruleengine.rule.operation;
  * @see
  * @since JDK 1.8
  */
-public class ModuloRoundOperation extends AbstractModuloRoundingOperation {
+public class ModuloRoundOperation extends AbstractConfigurableModuloRoundingOperation {
     @Override
     protected long moduloRoundingMethod(long _srcValue, long _modulo) {
         return _srcValue + _modulo / 2L - (_srcValue + _modulo / 2L) % _modulo;

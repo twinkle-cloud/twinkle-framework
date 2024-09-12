@@ -2,7 +2,7 @@ package com.twinkle.framework.connector;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.twinkle.framework.api.component.AbstractComponent;
+import com.twinkle.framework.api.component.AbstractConfigurableComponent;
 import com.twinkle.framework.api.config.Configurable;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
@@ -23,7 +23,7 @@ import java.util.*;
  * @since JDK 1.8
  */
 @Slf4j
-public class ConnectorManager extends AbstractComponent implements Configurable {
+public class ConnectorManager extends AbstractConfigurableComponent implements Configurable {
     /**
      * Connector name list.
      */
@@ -38,6 +38,7 @@ public class ConnectorManager extends AbstractComponent implements Configurable 
 
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
+        super.configure(_conf);
         JSONArray tempNameArray = _conf.getJSONArray("ConnectorNames");
         JSONArray tempConnectorArray = _conf.getJSONArray("Connectors");
         if (CollectionUtils.isEmpty(tempNameArray) || CollectionUtils.isEmpty(tempConnectorArray)) {
@@ -52,11 +53,7 @@ public class ConnectorManager extends AbstractComponent implements Configurable 
             for (int j = 0; j < tempConnectorArray.size(); j++) {
                 JSONObject tempObj = tempConnectorArray.getJSONObject(j);
                 if (tempObj.getString("Name").equals(tempItem)) {
-                    StringBuilder tempBuilder = new StringBuilder(this.getFullPathName());
-                    tempBuilder.append((char) 92);
-                    tempBuilder.append(tempItem);
-
-                    Connector tempConnector = ComponentFactory.getInstance().loadComponent(tempBuilder.toString(), tempObj);
+                    Connector tempConnector = ComponentFactory.getInstance().loadComponent(this.getFullPathName(), tempObj);
                     this.connectorNameList.add(tempItem);
                     this.addConnector(tempItem, tempConnector);
                     break;

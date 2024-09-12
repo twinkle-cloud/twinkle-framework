@@ -1,6 +1,6 @@
 package com.twinkle.framework.connector.endpoint;
 
-import com.twinkle.framework.api.config.Configurable;
+import com.twinkle.framework.api.component.IConfigurableComponent;
 import com.twinkle.framework.asm.descriptor.AttributeDescriptor;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  * @see
  * @since JDK 1.8
  */
-public interface Request extends Configurable {
+public interface Request extends IConfigurableComponent {
     /**
      * Get the method's parameters by given method type.
      *

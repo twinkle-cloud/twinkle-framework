@@ -3,6 +3,8 @@ package com.twinkle.framework.api.component.rule;
 import com.twinkle.framework.api.component.IComponent;
 import com.twinkle.framework.api.config.Configurable;
 
+import java.util.Collection;
+
 /**
  * Function: TODO ADD FUNCTION. <br/>
  * Reason:	 TODO ADD REASON. <br/>
@@ -13,6 +15,12 @@ import com.twinkle.framework.api.config.Configurable;
  * @since JDK 1.8
  */
 public interface IRuleChainManager extends Configurable, IComponent {
+    /**
+     * Get the RuleChain names set.
+     *
+     * @return
+     */
+    Collection<String> getRuleChainNames();
     
     /**
      * Get RuleChain by Name.
@@ -29,4 +37,12 @@ public interface IRuleChainManager extends Configurable, IComponent {
      * @param _ruleChain
      */
     void addRuleChain(String _ruleChainName, IRuleChain _ruleChain);
+
+    /**
+     * Going to release the rule chain.
+     *
+     * @param _name
+     * @param _ruleChain
+     */
+    void releaseRuleChain(String _name, IRuleChain _ruleChain);
 }

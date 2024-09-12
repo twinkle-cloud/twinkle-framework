@@ -8,30 +8,35 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.IntUnaryOperator;
-
+/**
+ * Object Pool
+ *
+ * @author chenxj
+ * @date 2024/09/03
+ */
 public class ObjectPool<T> implements IObjectPool<T>, IObjectPoolInfo {
     private ArrayBlockingQueue<T> blockingQueue;
     @Getter
     private ObjectFactory<T> objectFactory;
-    private SizeCounter _maxObjectCounter;
-    private int maxSize;
-    private boolean strictFlag;
+    private final SizeCounter maxObjectCounter;
+    private final int maxSize;
+    private final boolean strictFlag;
     private PoolContentionListener poolContentionListener;
     private PoolUsageStatistics usageStatistics;
 
-    ObjectPool(ObjectFactory<T> _objectFactory, T[] var2, int _maxSize, boolean _strictFlag, PoolContentionListener _listener) {
+    ObjectPool(ObjectFactory<T> _objectFactory, T[] _poolObjArray, int _maxSize, boolean _strictFlag, PoolContentionListener _listener) {
         this.poolContentionListener = _listener;
         this.objectFactory = _objectFactory;
         this.maxSize = _maxSize;
         this.strictFlag = _strictFlag;
         this.blockingQueue = new ArrayBlockingQueue<>(_maxSize);
-        if (var2 != null) {
-            this.blockingQueue.addAll(Arrays.asList(var2));
+        if (_poolObjArray != null) {
+            this.blockingQueue.addAll(Arrays.asList(_poolObjArray));
         }
 
-        this._maxObjectCounter = new SizeCounter(_maxSize - this.blockingQueue.size());
+        this.maxObjectCounter = new SizeCounter(_maxSize - this.blockingQueue.size());
         this.usageStatistics = new PoolUsageStatistics();
-        this.usageStatistics.createCounter.set((long) this.blockingQueue.size());
+        this.usageStatistics.createCounter.set(this.blockingQueue.size());
     }
 
     public ObjectPool(ObjectFactory<T> _objectFactory, int _maxSize, boolean _strictFlag, PoolContentionListener _listener) {
@@ -54,14 +59,14 @@ public class ObjectPool<T> implements IObjectPool<T>, IObjectPoolInfo {
     }
 
     @Override
-    public T getObject(long var1) throws Exception {
+    public T getObject(long _timeOutSec) throws Exception {
         this.usageStatistics.getCounter.incrementAndGet();
         T tempObj = this.blockingQueue.poll();
         if (tempObj == null) {
             tempObj = this.createObject();
             if (tempObj == null) {
                 this.usageStatistics.waitCounter.incrementAndGet();
-                tempObj = this.blockingQueue.poll(var1, TimeUnit.MILLISECONDS);
+                tempObj = this.blockingQueue.poll(_timeOutSec, TimeUnit.MILLISECONDS);
             }
         }
 
@@ -69,7 +74,7 @@ public class ObjectPool<T> implements IObjectPool<T>, IObjectPoolInfo {
     }
 
     private T createObject() throws Exception {
-        if (this._maxObjectCounter.getAndDecrement() == 0) {
+        if (this.maxObjectCounter.getAndDecrement() == 0) {
             if (this.poolContentionListener != null) {
                 this.poolContentionListener.onPoolContention();
             }
@@ -80,8 +85,7 @@ public class ObjectPool<T> implements IObjectPool<T>, IObjectPoolInfo {
         }
 
         this.usageStatistics.createCounter.incrementAndGet();
-        T tempObj = this.objectFactory.create();
-        return tempObj;
+        return this.objectFactory.create();
     }
 
     @Override
@@ -141,18 +145,18 @@ public class ObjectPool<T> implements IObjectPool<T>, IObjectPoolInfo {
     }
 
     static class SizeCounter {
-        private AtomicInteger _counter;
+        private AtomicInteger counter;
 
-        public SizeCounter(int var1) {
-            this._counter = new AtomicInteger(var1);
+        public SizeCounter(int _counter) {
+            this.counter = new AtomicInteger(_counter);
         }
 
         public int getAndDecrement() {
-            return this._counter.getAndUpdate(ObjectPool.SizeCounter.DecrementUntilZeroOperator.INSTANCE);
+            return this.counter.getAndUpdate(ObjectPool.SizeCounter.DecrementUntilZeroOperator.INSTANCE);
         }
 
         public int getValue() {
-            return this._counter.get();
+            return this.counter.get();
         }
 
         static class DecrementUntilZeroOperator implements IntUnaryOperator {

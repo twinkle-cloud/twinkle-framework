@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @since JDK 1.8
  */
 @Slf4j
-public class DataCenterOperationRule extends AbstractRule {
+public class DataCenterOperationRule extends AbstractConfigurableRule {
     /**
      * Get the data center manager.
      */
@@ -31,16 +31,20 @@ public class DataCenterOperationRule extends AbstractRule {
 
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
+        super.configure(_conf);
         this.executorName = _conf.getString("ExecutorName");
         if (StringUtils.isBlank(this.executorName)) {
             throw new ConfigurationException(ExceptionCode.LOGIC_CONF_REQUIRED_ATTR_MISSED, "The ExecutorName is mandatory for DataCenterOperationRule.");
         }
-
     }
 
     @Override
     public void applyRule(NormalizedContext _context) throws RuleException {
         log.debug("Going to apply DataCenterOperationRule.applyRule().");
+        if(this.dataCenterManager == null) {
+            log.info("The DataCenterManager is null.");
+//            this.dataCenterManager = SpringUtil.getBean(IDataCenterManager.class);
+        }
         IStatementExecutor tempExecutor = this.dataCenterManager.getStatementExecutor(this.executorName);
         tempExecutor.execute(_context);
         if (this.nextRule != null) {

@@ -1,8 +1,6 @@
 package com.twinkle.framework.api.component.datacenter;
 
-import com.twinkle.framework.api.component.IComponent;
-import com.twinkle.framework.api.component.IComponentFactory;
-import com.twinkle.framework.api.config.Configurable;
+import com.twinkle.framework.api.component.IConfigurableComponent;
 import com.twinkle.framework.api.context.NormalizedContext;
 import com.twinkle.framework.api.exception.DataCenterException;
 
@@ -17,13 +15,13 @@ import java.util.List;
  * @see
  * @since JDK 1.8
  */
-public interface IStatementExecutor extends IComponent, Configurable {
+public interface IStatementExecutor extends IConfigurableComponent {
     /**
      * Check the given statement is valid or not?
      *
      * @param _definedStatementList
      */
-    void checkStatement(List<IComponentFactory.ComponentNamePair> _definedStatementList);
+    void filterStatement(List<IStatement> _definedStatementList);
 
     /**
      * Execute the Sql Statement.

@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public class MinOperation extends AbstractAttributeOperation {
+public class MinOperation extends AbstractConfigurableAttributeOperation {
     private int leftAttrIndex;
     private int rightAttrIndex;
     private int destAttrIndex;

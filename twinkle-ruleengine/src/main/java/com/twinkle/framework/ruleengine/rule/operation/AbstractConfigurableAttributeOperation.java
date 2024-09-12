@@ -5,7 +5,7 @@ import com.twinkle.framework.api.context.AttributeInfo;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.api.context.NormalizedContext;
 import com.twinkle.framework.core.lang.Attribute;
-import com.twinkle.framework.ruleengine.rule.AbstractRule;
+import com.twinkle.framework.ruleengine.rule.AbstractConfigurableRule;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -18,10 +18,10 @@ import lombok.extern.slf4j.Slf4j;
  * @since JDK 1.8
  */
 @Slf4j
-public abstract class AbstractAttributeOperation extends AbstractRule {
-    public AbstractAttributeOperation(){
+public abstract class AbstractConfigurableAttributeOperation extends AbstractConfigurableRule {
+    public AbstractConfigurableAttributeOperation(){
         super();
-        log.info("AttributeOperation.initialized().");
+        log.debug("AttributeOperation.initialized().");
     }
 
     @Override
@@ -64,7 +64,7 @@ public abstract class AbstractAttributeOperation extends AbstractRule {
      */
     public void reset(NormalizedContext _context) {
         if (this.nextRule != null) {
-            ((AbstractAttributeOperation)this.nextRule).reset(_context);
+            ((AbstractConfigurableAttributeOperation)this.nextRule).reset(_context);
         }
 
     }

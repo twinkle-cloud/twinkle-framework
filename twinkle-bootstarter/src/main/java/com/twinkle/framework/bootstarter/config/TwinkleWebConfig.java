@@ -38,8 +38,7 @@ public class TwinkleWebConfig implements WebMvcConfigurer {
 
     @Bean
     public HttpMessageConverters fastJsonHttpMessageConverters() {
-        // 1. 配置fastjson
-        FastJsonConfig config = new FastJsonConfig();
+        FastJsonConfig config = new FastJsonConfig();// 1. 配置fastjson
 
         config.setDateFormat("yyyy-MM-dd HH:mm:ss");
         config.setCharset(StandardCharsets.UTF_8);

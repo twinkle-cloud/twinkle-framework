@@ -338,6 +338,7 @@
         <module>twinkle-datacenter</module>
         <module>twinkle-ruleengine</module>
         <module>twinkle-connector</module>
+        <module>twinkle-connector-webflux</module>
         <module>twinkle-bootstarter</module>
     </modules>
     <distributionManagement>

@@ -24,8 +24,8 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public class AdornmentRule extends AbstractRule {
-    private AbstractAttributeOperation attrOperation;
+public class AdornmentRule extends AbstractConfigurableRule {
+    private AbstractConfigurableAttributeOperation attrOperation;
     /**
      * Will be used by Map Operation,
      * to load the map content from URL. Usually from a local file or web URL.
@@ -34,7 +34,7 @@ public class AdornmentRule extends AbstractRule {
 
     public AdornmentRule() {
         super();
-        log.info("AdornmentRule.initialized().");
+        log.debug("AdornmentRule.initialized().");
     }
 
     @Override
@@ -58,8 +58,8 @@ public class AdornmentRule extends AbstractRule {
 
     public void loadOperations(String[] _operations, JSONObject _conf) throws ConfigurationException {
         log.debug("Going to apply AdornmentRule.loadOperations()");
-        AbstractAttributeOperation tempPreOperation = null;
-        AbstractAttributeOperation tempOperation = null;
+        AbstractConfigurableAttributeOperation tempPreOperation = null;
+        AbstractConfigurableAttributeOperation tempOperation = null;
 
         for (int i = 0; i < _operations.length; ++i) {
             StringTokenizer tempTokenizer = new StringTokenizer(_operations[i]);
@@ -67,7 +67,7 @@ public class AdornmentRule extends AbstractRule {
             tempPreOperation = tempOperation;
 
             try {
-                tempOperation = (AbstractAttributeOperation) AdornmentRule.Operation.getOperation(tempToken).newInstance();
+                tempOperation = (AbstractConfigurableAttributeOperation) AdornmentRule.Operation.getOperation(tempToken).newInstance();
 //                tempOperation.configure(_conf);
             } catch (Exception e) {
                 throw new ConfigurationException(ExceptionCode.RULE_ADN_OPERATION_INIT_FAILED, "Cannot create instance of operation class for operation-" + _operations[i]);

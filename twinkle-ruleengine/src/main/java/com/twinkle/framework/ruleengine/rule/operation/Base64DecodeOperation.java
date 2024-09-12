@@ -19,7 +19,7 @@ import java.util.Base64;
  * @since JDK 1.8
  */
 @Slf4j
-public class Base64DecodeOperation extends AbstractBase64Operation {
+public class Base64DecodeOperation extends AbstractConfigurableBase64Operation {
     public static final String OP_CODE = "decBase64";
     @Override
     public void loadOperation(String _operation) throws ConfigurationException {

@@ -79,6 +79,10 @@
   },
   "RuleChainManager": {
     "ClassName": "com.twinkle.framework.ruleengine.RuleChainManager",
+    "MaxPoolSize": 10,
+    "MinPoolSize": 5,
+    "ThreadPoolSize": 5,
+    "IsPrototype": true,
     "RuleChainNames": [
       "TestRuleChain",
       "UserRuleChain"
@@ -227,7 +231,6 @@
         "ClassName": "com.twinkle.framework.datacenter.statement.UpdateSqlStatement",
         "DestTable": "U_USER_INFO",
         "IsBatch": false,
-        "DataSource": "usermgmt",
         "ConditionFields": [
           ["userId", 4]
         ],
@@ -242,7 +245,6 @@
         "ClassName": "com.twinkle.framework.datacenter.statement.UpdateSqlStatement",
         "DestTable": "PER_TEST1",
         "IsBatch": false,
-        "DataSource": "assessmgmt",
         "ConditionFields": [
           ["assessId", 12]
         ],
@@ -254,7 +256,6 @@
       {
         "Name": "TestMySQLQuery",
         "ClassName": "com.twinkle.framework.datacenter.statement.QuerySqlStatement",
-        "DataSource": "assessmgmt",
         "FromTables": "PER_AP_AC_MAP P, PER_ASSESS_ASP_MAP PM",
         "ConditionFields": [
           ["assessId", 12],
@@ -274,11 +275,19 @@
     "Executors": [
       {
         "Name": "DoSQLTest",
-        "ClassName": "com.twinkle.framework.datacenter.executor.DefaultStatementExecutor",
+        "DataSource": "assessmgmt",
+        "ClassName": "com.twinkle.framework.datacenter.executor.DefaultSqlStatementExecutor",
         "StatementNames": [
-          "TestPgSQL",
           "TestMySQL",
           "TestMySQLQuery"
+        ]
+      },
+      {
+        "Name": "DoPGTest",
+        "DataSource": "usermgmt",
+        "ClassName": "com.twinkle.framework.datacenter.executor.DefaultSqlStatementExecutor",
+        "StatementNames": [
+          "TestPgSQL"
         ]
       }
     ]

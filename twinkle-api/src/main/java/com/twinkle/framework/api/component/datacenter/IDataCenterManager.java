@@ -20,4 +20,21 @@ public interface IDataCenterManager extends Configurable, IComponent {
      * @return
      */
     IStatementExecutor getStatementExecutor(String _executorName);
+
+    /**
+     * Get the statement executor by index.
+     *
+     * @param _executorIndex
+     * @return
+     */
+    IStatementExecutor getStatementExecutor(int _executorIndex);
+
+    /**
+     * Get the Executor index by name.
+     *
+     * @param _executorName
+     * @return
+     */
+    int getStatementExecutorIndexByName(String _executorName);
+
 }

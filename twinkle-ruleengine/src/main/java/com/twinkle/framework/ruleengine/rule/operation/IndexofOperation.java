@@ -20,7 +20,7 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public class IndexofOperation extends AbstractBinaryOperation {
+public class IndexofOperation extends AbstractConfigurableBinaryOperation {
     protected String pattern;
     protected int patternAttrIndex = -1;
 

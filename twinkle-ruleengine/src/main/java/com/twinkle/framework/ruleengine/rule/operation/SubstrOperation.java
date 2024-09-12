@@ -20,7 +20,7 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public class SubstrOperation extends AbstractBinaryOperation {
+public class SubstrOperation extends AbstractConfigurableBinaryOperation {
     protected int beginIndex = -2147483648;
     protected int endIndex = -2147483648;
     protected int beginAttrIndex = -1;

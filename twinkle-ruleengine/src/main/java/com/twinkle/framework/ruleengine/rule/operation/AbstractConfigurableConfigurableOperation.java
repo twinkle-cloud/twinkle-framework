@@ -13,7 +13,7 @@ import com.twinkle.framework.api.exception.RuleException;
  * @see
  * @since JDK 1.8
  */
-public abstract class AbstractConfigurableOperation extends AbstractAttributeOperation {
+public abstract class AbstractConfigurableConfigurableOperation extends AbstractConfigurableAttributeOperation {
     protected boolean initialized = false;
 
     @Override

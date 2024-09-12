@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since JDK 1.8
  */
 @Slf4j
-public class LowerOperation extends AbstractBinaryOperation {
+public class LowerOperation extends AbstractConfigurableBinaryOperation {
     @Override
     public void applyRule(NormalizedContext _context) throws RuleException {
         log.debug("Going to apply LowerOperation.applyRule()");

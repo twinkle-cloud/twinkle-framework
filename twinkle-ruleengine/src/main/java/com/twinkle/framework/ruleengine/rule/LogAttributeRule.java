@@ -31,7 +31,7 @@ import java.util.List;
  * @since JDK 1.8
  */
 @Slf4j
-public class LogAttributeRule extends AbstractRule {
+public class LogAttributeRule extends AbstractConfigurableRule {
     private boolean printNullFlag;
     private boolean convertToJsonFlag = false;
     private boolean inSingleLineFlag = false;

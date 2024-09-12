@@ -17,7 +17,7 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public abstract class AbstractBase64Operation extends AbstractConfigurableOperation {
+public abstract class AbstractConfigurableBase64Operation extends AbstractConfigurableConfigurableOperation {
     protected OperationAttributeInfo sourceAttrInfo;
     protected OperationAttributeInfo targetAttrInfo;
 

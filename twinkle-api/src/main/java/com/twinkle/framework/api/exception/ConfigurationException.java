@@ -1,5 +1,7 @@
 package com.twinkle.framework.api.exception;
 
+import lombok.Getter;
+
 /**
  * Function: TODO ADD FUNCTION. <br/>
  * Reason:	 TODO ADD REASON. <br/>
@@ -9,6 +11,7 @@ package com.twinkle.framework.api.exception;
  * @see
  * @since JDK 1.8
  */
+@Getter
 public class ConfigurationException extends RuntimeException {
     /**
      * The exception code, refer to ExceptionCode.

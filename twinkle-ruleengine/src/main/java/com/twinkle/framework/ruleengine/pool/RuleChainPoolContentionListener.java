@@ -3,16 +3,27 @@ package com.twinkle.framework.ruleengine.pool;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.event.Level;
 
+/**
+ * @author chenxj
+ * @date 2024/09/03
+ */
 @Slf4j
 public class RuleChainPoolContentionListener implements PoolContentionListener{
     private String ruleChain_;
     private int poolMaxSize_;
     Level contentionLogLevel_;
 
-    public RuleChainPoolContentionListener(String var1, int var2, Level var3) {
-        this.ruleChain_ = var1;
-        this.poolMaxSize_ = var2;
-        this.contentionLogLevel_ = var3;
+    /**
+     * Constructor for RuleChain Pool Contention.
+     *
+     * @param _ruleChain
+     * @param _maxSize
+     * @param _level Log Level for this RuleChain
+     */
+    public RuleChainPoolContentionListener(String _ruleChain, int _maxSize, Level _level) {
+        this.ruleChain_ = _ruleChain;
+        this.poolMaxSize_ = _maxSize;
+        this.contentionLogLevel_ = _level;
     }
 
     public void onPoolContention() {

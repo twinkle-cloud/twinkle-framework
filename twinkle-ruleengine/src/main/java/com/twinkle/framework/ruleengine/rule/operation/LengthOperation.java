@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since JDK 1.8
  */
 @Slf4j
-public class LengthOperation extends AbstractBinaryOperation {
+public class LengthOperation extends AbstractConfigurableBinaryOperation {
     @Override
     public void loadOperation(String _operation) throws ConfigurationException {
         super.loadOperation(_operation);

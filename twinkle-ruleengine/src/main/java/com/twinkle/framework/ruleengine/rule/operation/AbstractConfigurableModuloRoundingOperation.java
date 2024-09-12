@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public abstract class AbstractModuloRoundingOperation extends AbstractBinaryOperation {
+public abstract class AbstractConfigurableModuloRoundingOperation extends AbstractConfigurableBinaryOperation {
     private int modulo_ = 0;
     private String moduloAttrName_ = null;
     private boolean moduloAttrInTree_ = false;

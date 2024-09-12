@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public class ReplaceOperation extends AbstractBinaryOperation {
+public class ReplaceOperation extends AbstractConfigurableBinaryOperation {
     protected String pattern;
     protected String replace;
     protected int patternAttrIndex = -1;

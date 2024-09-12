@@ -12,12 +12,12 @@
 
 	<appender name="LOGSTASH"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOG_PATH}/user-mgmt.log/</file>
+		<file>${LOG_PATH}/twinkle.log/</file>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<pattern>${default_pattern}</pattern>
 		</encoder>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${LOG_PATH}/logstash-user-mgmt-%d{yyyy-MM-dd}.log
+			<fileNamePattern>${LOG_PATH}/logstash-twinkle-%d{yyyy-MM-dd}.log
 			</fileNamePattern>
 			<!-- keep 30 days' worth of history -->
 			<maxHistory>30</maxHistory>
@@ -28,7 +28,7 @@
 
 	<springProfile name="test">
 		<logger name="com.twinkle">
-			<level value="DEBUG" />
+			<level value="INFO" />
 			<appender-ref ref="LOGSTASH" />
 		</logger>
 
@@ -39,7 +39,7 @@
 	
 	<springProfile name="development">
 		<logger name="com.twinkle">
-			<level value="DEBUG" />
+			<level value="INFO" />
 			<appender-ref ref="LOGSTASH" />
 		</logger>
 
@@ -50,7 +50,7 @@
 
 	<springProfile name="cloud">
 		<logger name="com.twinkle">
-			<level value="DEBUG" />
+			<level value="WARN" />
 			<appender-ref ref="LOGSTASH" />
 		</logger>
 

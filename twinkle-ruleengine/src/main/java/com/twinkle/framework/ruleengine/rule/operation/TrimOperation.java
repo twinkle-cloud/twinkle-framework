@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since JDK 1.8
  */
 @Slf4j
-public class TrimOperation extends AbstractBinaryOperation {
+public class TrimOperation extends AbstractConfigurableBinaryOperation {
 
     @Override
     public void applyRule(NormalizedContext _context) throws RuleException {

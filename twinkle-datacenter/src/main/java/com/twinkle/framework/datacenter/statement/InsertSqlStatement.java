@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since JDK 1.8
  */
 @Slf4j
-public class InsertSqlStatement extends AbstractUpdateSqlStatement {
+public class InsertSqlStatement extends AbstractConfigurableUpdateSqlStatement {
     private final static int PK_GENERATED_TYPE_ORACLE_SEQ = 1;
     private final static int PK_GENERATED_TYPE_AUTO_INCREMENT = 2;
     private final static int PK_GENERATED_TYPE_SNOWFLAKE = 3;
@@ -170,10 +170,10 @@ public class InsertSqlStatement extends AbstractUpdateSqlStatement {
 
     @Override
     protected String packSqlStatement() {
-        StringBuffer tempBuffer = new StringBuffer("INSERT INTO ");
+        StringBuilder tempBuffer = new StringBuilder("INSERT INTO ");
         tempBuffer.append(this.destTableName);
         tempBuffer.append(" (");
-        StringBuffer tempValueBuffer = new StringBuffer();
+        StringBuilder tempValueBuffer = new StringBuilder();
         boolean addIdFlag = false;
         switch (this.pkGeneratedType) {
             case -1:

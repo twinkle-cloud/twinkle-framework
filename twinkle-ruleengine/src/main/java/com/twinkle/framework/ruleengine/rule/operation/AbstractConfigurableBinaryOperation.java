@@ -18,12 +18,12 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public abstract class AbstractBinaryOperation extends AbstractAttributeOperation {
+public abstract class AbstractConfigurableBinaryOperation extends AbstractConfigurableAttributeOperation {
     protected int srcIndex;
     protected int destIndex;
     protected String operation;
 
-    public AbstractBinaryOperation() {
+    public AbstractConfigurableBinaryOperation() {
         this.srcIndex = -1;
         this.destIndex = -1;
     }

@@ -24,7 +24,7 @@ import java.util.List;
  * @since JDK 1.8
  */
 @Slf4j
-public abstract class AbstractUpdateSqlStatement extends AbstractSqlStatement {
+public abstract class AbstractConfigurableUpdateSqlStatement extends AbstractConfigurableSqlStatement {
     /**
      * The destination table's name.
      */
@@ -66,12 +66,12 @@ public abstract class AbstractUpdateSqlStatement extends AbstractSqlStatement {
         super.configure(_conf);
     }
 
-    @DS(value = "#_dataSource")
     @Override
+    @DS(value = "#_dataSource")
     public void execute(NormalizedContext _context, String _dataSource) throws DataCenterException {
         List<SqlParameterSource> tempBatchList = this.prepareValueArrays(_context);
         if (this.batchFlag) {
-            if (tempBatchList.size() == 0) {
+            if (tempBatchList.isEmpty()) {
                 log.info("The [{}]'s batch size is 0, so do nothing this time.", this.destTableName);
                 return;
             }
@@ -79,7 +79,7 @@ public abstract class AbstractUpdateSqlStatement extends AbstractSqlStatement {
             this.executeBatch(_context, tempBatchList);
         } else {
             log.info("Going to execute [{}]'s statement in single model.", this.destTableName);
-            this.executeSingle(_context, tempBatchList.get(0));
+            this.executeSingle(_context, tempBatchList.getFirst());
         }
     }
 

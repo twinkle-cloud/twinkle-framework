@@ -2,7 +2,7 @@ package com.twinkle.framework.ruleengine;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.twinkle.framework.api.component.AbstractComponent;
+import com.twinkle.framework.api.component.AbstractConfigurableComponent;
 import com.twinkle.framework.api.component.rule.IRule;
 import com.twinkle.framework.api.component.rule.IRuleChain;
 import com.twinkle.framework.api.constant.ExceptionCode;
@@ -21,7 +21,7 @@ import java.util.List;
  * @author chenxj
  */
 @Slf4j
-public class RuleChain extends AbstractComponent implements IRuleChain {
+public class RuleChain extends AbstractConfigurableComponent implements IRuleChain {
     private List<IRule> ruleList;
     private List<IRule> errorRuleList;
     private boolean continueAfterError = true;
@@ -54,6 +54,7 @@ public class RuleChain extends AbstractComponent implements IRuleChain {
 
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
+//        super.configure(_conf);
         this.configureChain(_conf, "RuleNames");
         this.configureErrorChain(_conf, "ErrorRuleNames");
         this.continueAfterError = _conf.getBooleanValue("ContinueAfterError");
@@ -67,14 +68,14 @@ public class RuleChain extends AbstractComponent implements IRuleChain {
             throw new ConfigurationException(ExceptionCode.LOGIC_CONF_REQUIRED_ATTR_MISSED, "The attribute " + _keyName + " in must specify at least one rule name");
         } else {
             this.addRuleToChain(this.lastRule, this.ruleList);
-            this.firstRule = this.ruleList.get(0);
+            this.firstRule = this.ruleList.getFirst();
         }
     }
 
     public void configureErrorChain(JSONObject _conf, String _keyName) throws ConfigurationException {
         this.errorRuleList = this.configureChainItem(_conf, _keyName);
         if (!this.errorRuleList.isEmpty()) {
-            this.errorFirstRule = this.errorRuleList.get(0);
+            this.errorFirstRule = this.errorRuleList.getFirst();
         }
 
         this.addRuleToChain(this.errorLastRule, this.errorRuleList);
@@ -92,10 +93,7 @@ public class RuleChain extends AbstractComponent implements IRuleChain {
             for(int j = 0; j<tempRuleItems.size(); j++) {
                 JSONObject tempObj = tempRuleItems.getJSONObject(j);
                 if(tempObj.getString("Name").equals(tempItem)) {
-                    StringBuilder tempBuilder = new StringBuilder(this.getFullPathName());
-                    tempBuilder.append((char) 92);
-                    tempBuilder.append(tempItem);
-                    IRule tempRule = ComponentFactory.getInstance().loadComponent(tempBuilder.toString(), tempObj);
+                    IRule tempRule = ComponentFactory.getInstance().loadComponent(this.getFullPathName(), tempObj);
 
                     this.addRuleToChain(tempRule, tempResultList);
                     break;
@@ -107,7 +105,7 @@ public class RuleChain extends AbstractComponent implements IRuleChain {
 
     private void addRuleToChain(IRule _rule, List<IRule> _ruleList) {
         if (!_ruleList.isEmpty()) {
-            IRule tempRule = _ruleList.get(_ruleList.size() - 1);
+            IRule tempRule = _ruleList.getLast();
             tempRule.addNextRule(_rule);
         }
         _ruleList.add(_rule);
@@ -117,7 +115,7 @@ public class RuleChain extends AbstractComponent implements IRuleChain {
     public void addNextRule(IRule _rule) {
         if (this.firstRule == null) {
             this.addRuleToChain(this.lastRule, this.ruleList);
-            this.firstRule = this.ruleList.get(0);
+            this.firstRule = this.ruleList.getFirst();
         }
 
         if (this.tailRule == null) {

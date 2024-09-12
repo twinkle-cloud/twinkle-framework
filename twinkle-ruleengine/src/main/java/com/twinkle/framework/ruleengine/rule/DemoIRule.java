@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since JDK 1.8
  */
 @Slf4j
-public class DemoIRule extends AbstractRule {
+public class DemoIRule extends AbstractConfigurableRule {
     private int attrIndex1 = -1;
 
     @Override

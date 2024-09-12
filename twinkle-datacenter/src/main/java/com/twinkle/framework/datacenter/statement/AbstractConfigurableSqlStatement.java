@@ -2,7 +2,7 @@ package com.twinkle.framework.datacenter.statement;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.twinkle.framework.api.component.AbstractComponent;
+import com.twinkle.framework.api.component.AbstractConfigurableComponent;
 import com.twinkle.framework.api.component.datacenter.ISqlStatement;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
@@ -25,16 +25,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
  * @since JDK 1.8
  */
 @Slf4j
-public abstract class AbstractSqlStatement extends AbstractComponent implements ISqlStatement {
+public abstract class AbstractConfigurableSqlStatement extends AbstractConfigurableComponent implements ISqlStatement {
     /**
      * The batch size for batch insert or update.
      */
     protected static final int BATCH_SIZE = 1000;
-    /**
-     * Data Source name.
-     */
-    @Getter
-    private String dataSourceName;
 
     /**
      * The database fields array, which will be used by this statement.
@@ -100,18 +95,15 @@ public abstract class AbstractSqlStatement extends AbstractComponent implements 
     @Getter
     private String preparedSQL;
 
-    public AbstractSqlStatement() {
+    public AbstractConfigurableSqlStatement() {
         this.primitiveAttributeSchema = PrimitiveAttributeSchema.getInstance();
     }
 
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
+        super.configure(_conf);
         if (_conf.isEmpty()) {
             throw new ConfigurationException(ExceptionCode.LOGIC_CONF_INVALID_DATACENTER, "The configuration for SQL statement is empty.");
-        }
-        this.dataSourceName = _conf.getString("DataSource");
-        if (StringUtils.isBlank(this.dataSourceName)) {
-            throw new ConfigurationException(ExceptionCode.LOGIC_CONF_REQUIRED_ATTR_MISSED, "The DataSource is mandatory for SQL Statement Component.");
         }
         JSONArray tempArray = _conf.getJSONArray("FieldMap");
         if (tempArray != null && !tempArray.isEmpty()) {

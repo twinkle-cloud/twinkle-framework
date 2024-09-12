@@ -1,7 +1,7 @@
 package com.twinkle.framework.connector.http.server;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.twinkle.framework.api.component.AbstractComponent;
+import com.twinkle.framework.api.component.AbstractConfigurableComponent;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.connector.server.ServerConnector;
 
@@ -14,7 +14,7 @@ import com.twinkle.framework.connector.server.ServerConnector;
  * @see
  * @since JDK 1.8
  */
-public class HttpServerConnector extends AbstractComponent implements ServerConnector {
+public class HttpServerConnector extends AbstractConfigurableComponent implements ServerConnector {
 
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {

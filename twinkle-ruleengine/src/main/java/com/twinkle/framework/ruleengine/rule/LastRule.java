@@ -15,7 +15,7 @@ import com.twinkle.framework.api.context.NormalizedContext;
  * @see
  * @since JDK 1.8
  */
-public class LastRule extends AbstractRule {
+public class LastRule extends AbstractConfigurableRule {
     private boolean executed;
     private boolean shouldCheck;
 

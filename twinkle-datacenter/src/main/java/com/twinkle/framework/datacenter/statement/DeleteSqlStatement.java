@@ -23,7 +23,7 @@ import java.util.List;
  * @since JDK 1.8
  */
 @Slf4j
-public class DeleteSqlStatement extends AbstractUpdateSqlStatement {
+public class DeleteSqlStatement extends AbstractConfigurableUpdateSqlStatement {
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
         super.configure(_conf);

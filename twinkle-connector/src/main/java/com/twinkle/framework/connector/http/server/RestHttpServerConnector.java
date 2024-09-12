@@ -2,7 +2,7 @@ package com.twinkle.framework.connector.http.server;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.twinkle.framework.api.component.AbstractComponent;
+import com.twinkle.framework.api.component.AbstractConfigurableComponent;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
 import com.twinkle.framework.asm.descriptor.*;
@@ -29,7 +29,7 @@ import java.util.*;
  * @since JDK 1.8
  */
 @Slf4j
-public class RestHttpServerConnector extends AbstractComponent implements ServerConnector {
+public class RestHttpServerConnector extends AbstractConfigurableComponent implements ServerConnector {
     private final static String REST_CONTROLLER_PATH = "com.twinkle.framework.bootstarter.controller.";
     /**
      * Will be used as class name to build the connector class.
@@ -43,6 +43,7 @@ public class RestHttpServerConnector extends AbstractComponent implements Server
 
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
+        super.configure(_conf);
         this.connectorName = _conf.getString("Name");
         JSONArray tempEndpointNameArray = _conf.getJSONArray("EndpointNames");
         JSONArray tempEndpointsArray = _conf.getJSONArray("Endpoints");
@@ -56,10 +57,7 @@ public class RestHttpServerConnector extends AbstractComponent implements Server
             for(int j =0; j<tempEndpointsArray.size(); j++) {
                 JSONObject tempObj = tempEndpointsArray.getJSONObject(j);
                 if(tempObj.getString("Name").equals(tempItem)) {
-                    StringBuilder tempBuilder = new StringBuilder(this.getFullPathName());
-                    tempBuilder.append((char) 92);
-                    tempBuilder.append(tempItem);
-                    HttpEndpoint tempEndPoint = ComponentFactory.getInstance().loadComponent(tempBuilder.toString(), tempObj);
+                    HttpEndpoint tempEndPoint = ComponentFactory.getInstance().loadComponent(this.getFullPathName(), tempObj);
 
                     this.endpointMap.put(tempItem, tempEndPoint);
                     break;

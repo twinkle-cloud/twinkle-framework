@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since JDK 1.8
  */
 @Slf4j
-public class ConditionRule extends AbstractRule {
+public class ConditionRule extends AbstractConfigurableRule {
     protected AbstractCondition condition = null;
     protected IRuleChain trueRuleChain;
     protected IRuleChain falseRuleChain;
@@ -37,6 +37,7 @@ public class ConditionRule extends AbstractRule {
 
     @Override
     public void configure(JSONObject _conf) throws ConfigurationException {
+        super.configure(_conf);
         log.debug("ConditionRule.configure()");
         this.setCondition(_conf);
         this.validateAttr = _conf.getBooleanValue("ValidateAttributes");
@@ -47,10 +48,7 @@ public class ConditionRule extends AbstractRule {
             _conf.put("TrueRuleChain", tempRuleChain);
         }
 
-        StringBuilder tempBuilder = new StringBuilder(this.getFullPathName());
-        tempBuilder.append((char) 92);
-        tempBuilder.append("TrueRuleChain");
-        this.trueRuleChain.setFullPathName(tempBuilder.toString());
+        this.trueRuleChain.setParentPath(this.getComponentName("TrueRuleChain"));
 
         this.trueRuleChain.configureChain(_conf, "TrueRuleChain");
         tempRuleChain = _conf.getJSONArray("FalseRuleChain");
@@ -59,11 +57,7 @@ public class ConditionRule extends AbstractRule {
             tempRuleChain.add("FalseRule");
             _conf.put("FalseRuleChain", tempRuleChain);
         }
-
-        tempBuilder = new StringBuilder(this.getFullPathName());
-        tempBuilder.append((char) 92);
-        tempBuilder.append("FalseRuleChain");
-        this.falseRuleChain.setFullPathName(tempBuilder.toString());
+        this.falseRuleChain.setParentPath(this.getComponentName("FalseRuleChain"));
         this.falseRuleChain.configureChain(_conf, "FalseRuleChain");
 
         if (this.trueRuleChain.size() == 0 && this.falseRuleChain.size() == 0) {
@@ -77,11 +71,7 @@ public class ConditionRule extends AbstractRule {
             this.condition = new ConditionCheck();
             this.condition.configure(_conf);
         } else {
-            StringBuilder tempBuilder = new StringBuilder(this.getFullPathName());
-            tempBuilder.append((char) 92);
-            tempBuilder.append(tempObj.getString("Name"));
-
-            this.condition = ComponentFactory.getInstance().loadComponent(tempBuilder.toString(), tempObj);
+            this.condition = ComponentFactory.getInstance().loadComponent(this.getFullPathName(), tempObj);
         }
     }
 

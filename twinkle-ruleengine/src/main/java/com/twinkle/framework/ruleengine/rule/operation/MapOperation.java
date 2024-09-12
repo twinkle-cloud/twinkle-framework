@@ -23,7 +23,7 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public class MapOperation extends AbstractAttributeOperation {
+public class MapOperation extends AbstractConfigurableAttributeOperation {
     private String defaultValue;
     private int srcIndex = -1;
     private int dstIndex = -1;

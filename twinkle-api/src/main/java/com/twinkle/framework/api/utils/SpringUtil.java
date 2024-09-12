@@ -1,5 +1,6 @@
 package com.twinkle.framework.api.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Component;
  * @see
  * @since JDK 1.8
  */
+//@Order(value = Ordered.HIGHEST_PRECEDENCE)
 @Component
+@Slf4j
 public class SpringUtil implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
 
@@ -23,6 +26,11 @@ public class SpringUtil implements ApplicationContextAware {
         if (SpringUtil.applicationContext == null) {
             SpringUtil.applicationContext = applicationContext;
         }
+    }
+
+    public static void setRootApplicationContext(ApplicationContext applicationContext) {
+        log.debug("Setting root application context");
+        SpringUtil.applicationContext = applicationContext;
     }
 
     /**

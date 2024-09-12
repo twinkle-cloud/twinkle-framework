@@ -10,13 +10,21 @@ package com.twinkle.framework.api.component;
  * @since JDK 1.8
  */
 public interface IComponent {
+    String KEY_NAME = "Name";
+    String KEY_CLASS_NAME = "ClassName";
     /**
-     * Update the name of the component.
+     * Update the parent path of the component.
      *
-     * @param _name
+     * @param _parentPath
      */
-    void setFullPathName(String _name);
+    void setParentPath(String _parentPath);
 
+    /**
+     * Update the name with aliasName.
+     *
+     * @param _aliasName
+     */
+    void setAliasName(String _aliasName);
     /**
      * Get the short name of this component.
      */

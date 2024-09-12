@@ -2,7 +2,7 @@ package com.twinkle.framework.context.manager;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.twinkle.framework.api.component.AbstractComponent;
+import com.twinkle.framework.api.component.AbstractConfigurableComponent;
 import com.twinkle.framework.api.config.Configurable;
 import com.twinkle.framework.api.constant.ExceptionCode;
 import com.twinkle.framework.api.exception.ConfigurationException;
@@ -36,7 +36,7 @@ import java.util.Vector;
  * @since JDK 1.8
  */
 @Slf4j
-public class StructAttributeManager extends AbstractComponent implements Configurable {
+public class StructAttributeManager extends AbstractConfigurableComponent implements Configurable {
     public static String NS_SEPARATOR = ":";
     private JSONArray structAttributeArray;
     /**

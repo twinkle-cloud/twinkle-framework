@@ -30,10 +30,9 @@ public class UpdateSqlStatement extends InsertSqlStatement {
 
     @Override
     protected String packSqlStatement() {
-        StringBuffer tempBuffer = new StringBuffer("UPDATE ");
+        StringBuilder tempBuffer = new StringBuilder("UPDATE ");
         tempBuffer.append(this.destTableName);
         tempBuffer.append(" SET ");
-        StringBuffer tempValueBuffer = new StringBuffer();
         for (int i = 0; i < this.dbFieldArray.length; i++) {
             if (i == 0) {
                 tempBuffer.append(this.dbFieldArray[i]);

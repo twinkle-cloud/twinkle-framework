@@ -18,5 +18,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 public class TwinkleApplicationBootStrap {
     public static void main(String[] args) {
         SpringApplication.run(TwinkleApplicationBootStrap.class, args);
+//        new TwinkleLauncher().loadTwinkleService();
+//        SpringUtil.setRootApplicationContext(tempContext);
     }
 }

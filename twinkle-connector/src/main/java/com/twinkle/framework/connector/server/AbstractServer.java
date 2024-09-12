@@ -44,11 +44,16 @@ public abstract class AbstractServer {
             log.warn("The RuleChain[{}] does not exists.", _ruleChainName);
             return _nc;
         }
+        ClassLoader tempClassLoader = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
         try {
             tempRuleChain.applyRule(_nc);
         } catch (RuleException e) {
             log.error("Encountered error while invoking rule chain[{}]: {}", _ruleChainName, e);
             throw new RuntimeException(e);
+        } finally {
+            Thread.currentThread().setContextClassLoader(tempClassLoader);
+            this.ruleChainManager.releaseRuleChain(_ruleChainName, tempRuleChain);
         }
         return _nc;
     }

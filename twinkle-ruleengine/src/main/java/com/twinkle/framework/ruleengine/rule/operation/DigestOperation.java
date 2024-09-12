@@ -31,7 +31,7 @@ import java.util.StringTokenizer;
  * @since JDK 1.8
  */
 @Slf4j
-public class DigestOperation extends AbstractConfigurableOperation {
+public class DigestOperation extends AbstractConfigurableConfigurableOperation {
     public static final String OP_CODE = "digest";
     protected final List<OperationAttributeExtractor> extractorList = new ArrayList<>();
     protected OperationAttributeExtractor targetExtractor;
