@@ -141,22 +141,26 @@ public abstract class AbstractConfigurableHttpEndpoint extends AbstractConfigura
     private Set<String> getAnnotaions() {
         Set<String> tempAnnotations = new HashSet<>();
         tempAnnotations.add("@io.swagger.v3.oas.annotations.Operation(summary = \"" + this.description + "\")");
-        switch (this.requestType) {
-            case GET:
+        return switch (this.requestType) {
+            case GET -> {
                 tempAnnotations.add("@org.springframework.web.bind.annotation.RequestMapping(value = \"" + this.url + "\", method = org.springframework.web.bind.annotation.RequestMethod.GET)");
-                return tempAnnotations;
-            case PUT:
+                yield tempAnnotations;
+            }
+            case PUT -> {
                 tempAnnotations.add("@org.springframework.web.bind.annotation.RequestMapping(value = \"" + this.url + "\", method = org.springframework.web.bind.annotation.RequestMethod.PUT)");
-                return tempAnnotations;
-            case POST:
+                yield tempAnnotations;
+            }
+            case POST -> {
                 tempAnnotations.add("@org.springframework.web.bind.annotation.RequestMapping(value = \"" + this.url + "\", method = org.springframework.web.bind.annotation.RequestMethod.POST)");
-                return tempAnnotations;
-            case DELETE:
+                yield tempAnnotations;
+            }
+            case DELETE -> {
                 tempAnnotations.add("@org.springframework.web.bind.annotation.RequestMapping(value = \"" + this.url + "\", method = org.springframework.web.bind.annotation.RequestMethod.DELETE)");
-                return tempAnnotations;
-            default:
-                throw new ConfigurationException(ExceptionCode.LOGIC_CONF_ATTR_VALUE_INVALID, "Http Method[" + this.requestType + "] is not supported currently.");
-        }
+                yield tempAnnotations;
+            }
+            default ->
+                    throw new ConfigurationException(ExceptionCode.LOGIC_CONF_ATTR_VALUE_INVALID, "Http Method[" + this.requestType + "] is not supported currently.");
+        };
     }
 
     private TypeDescriptor getReturnTypeDescriptor() {

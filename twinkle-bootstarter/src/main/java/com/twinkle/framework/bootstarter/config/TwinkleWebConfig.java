@@ -60,6 +60,7 @@ public class TwinkleWebConfig implements WebMvcConfigurer {
                 JSONWriter.Feature.MapSortField
         );
 
+//        JSON.registerIfAbsent(StructAttribute.class,  new StructAttributeFastJsonObjectWriter());
         // 2. 添加fastjson转换器
         FastJsonHttpMessageConverter converter = new TwinkleFastJsonHttpMessageConverter();
         List<MediaType> supportedMediaTypes = new ArrayList<>();

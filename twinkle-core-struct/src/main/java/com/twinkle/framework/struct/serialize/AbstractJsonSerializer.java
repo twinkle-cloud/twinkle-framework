@@ -82,7 +82,8 @@ public abstract class AbstractJsonSerializer extends TextSerializerBase<StructAt
         tempJSONWriter.close();
     }
 
-    protected void write(StructAttribute _attr, JSONWriter _writer) throws IOException {
+    @Override
+    public void write(StructAttribute _attr, JSONWriter _writer) throws IOException {
         this.serializer.serialize(_attr, _writer);
     }
     @Override
@@ -103,22 +104,28 @@ public abstract class AbstractJsonSerializer extends TextSerializerBase<StructAt
         tempReader.close();
         return tempAttr;
     }
-
-    protected StructAttribute read(JSONReader _reader) throws IOException {
+    @Override
+    public StructAttribute read(JSONReader _reader) throws IOException {
         return this.deserializer.deserialize(_reader);
     }
+
     @Override
     public List<StructAttribute> readMultiple(Reader _reader) throws IOException {
         JSONReader tempJSONReader = this.getJSONReader(_reader);
+        return readMultiple(tempJSONReader);
+    }
+
+    @Override
+    public List<StructAttribute> readMultiple(JSONReader _reader) throws IOException {
         List<StructAttribute> tempList = new ArrayList<>();
-        tempJSONReader.startArray();
-        tempList.addAll(tempJSONReader.readArray());
+        _reader.startArray();
+        tempList.addAll(_reader.readArray());
 //        while(tempJSONReader.readA) {
 //            tempList.add(this.read(tempJSONReader));
 //        }
 
-        tempJSONReader.endArray();
-        tempJSONReader.close();
+        _reader.endArray();
+        _reader.close();
         return tempList;
     }
 
